@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 function Header() {
     const [isToggled, setIsToggled] = useState(false);
     const [isToggled2, setIsToggled2] = useState(true);
-    const handleClick = () => {
+    const handleClick = ():void => {
         setIsToggled(!isToggled);
     };
-    const handleClick2 = () => {
+    const handleClick2 = ():void => {
         console.log("hai");
 
         setIsToggled2(!isToggled2);
