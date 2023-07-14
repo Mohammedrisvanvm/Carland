@@ -1,4 +1,5 @@
 import express,{Request,Response} from 'express'
+import { DBconnect } from './config/mongoDB'
 
 
 
@@ -7,6 +8,9 @@ import express,{Request,Response} from 'express'
 
 
 const app = express()
+DBconnect()
+
+
 
 app.get('/',(req:Request,res:Response):void=>{
     res.send("hai")
