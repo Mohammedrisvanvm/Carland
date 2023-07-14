@@ -1,5 +1,7 @@
 import { Banner } from "./components/banner/Banner"
 import { LoginMainPage } from "./components/loginpage/LoginMainPage"
+import { HAI } from "./components/loginpage/loginform/HAI"
+import { LoginForm } from "./components/loginpage/loginform/LoginForm"
 import { MainHeader } from "./components/userHeader/MainHeader/MainHeader"
 
 
@@ -18,6 +20,8 @@ function App() {
 <MainHeader/>
 <Banner/>
 <LoginMainPage/>
+<LoginForm/>
+<HAI/>
 
       </div>
        
