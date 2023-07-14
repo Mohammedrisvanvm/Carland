@@ -1,1 +1,0 @@
-import moongoose from 'mongoose'
