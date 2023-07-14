@@ -24,7 +24,7 @@ export const LoginMainPage = (): ReactElement => {
               aria-label=""
               className="inline-flex items-center font-semibold tracking-wider transition-colors duration-200 text-teal-accent-400 hover:text-teal-accent-700"
             >
-              Learn more
+              Learn more 
               <svg
                 className="inline-block w-3 ml-2"
                 fill="currentColor"
@@ -43,15 +43,16 @@ export const LoginMainPage = (): ReactElement => {
               >
                 <div className="flex items-center">
                   <div className="mr-3 font-semibold text-white">
-                    Login with Facebook
+                    Login with Google
                   </div>
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    className="w-4 h-4"
-                  >
-                    <path d="M22,0H2C0.895,0,0,0.895,0,2v20c0,1.105,0.895,2,2,2h11v-9h-3v-4h3V8.413c0-3.1,1.893-4.788,4.659-4.788 c1.325,0,2.463,0.099,2.795,0.143v3.24l-1.918,0.001c-1.504,0-1.795,0.715-1.795,1.763V11h4.44l-1,4h-3.44v9H22c1.105,0,2-0.895,2-2 V2C24,0.895,23.105,0,22,0z" />
-                  </svg>
+                  <svg  viewBox="0 0 48 48" width="24px" height="24px">
+  <path fill="#FFC107" d="M41.44,20.184c0-1.424-0.127-2.807-0.369-4.137H24v7.851h10.959c-0.455,2.563-2.024,4.725-4.464,5.877v4.878h7.218 C39.681,33.693,41.44,27.988,41.44,20.184z"/>
+  <path fill="#FF3D00" d="M24,44.871c6.479,0,11.979-2.117,16.001-5.759l-7.718-6.033c-1.773,1.192-4.038,1.902-6.538,1.902 c-5.033,0-9.301-3.385-10.8-7.939H3.876v4.978C8.041,39.297,15.605,44.871,24,44.871z"/>
+  <path fill="#4CAF50" d="M13.203,26.322c-0.325-0.966-0.498-2.002-0.498-3.078s0.173-2.112,0.498-3.078V14.18H3.876 C2.549,16.499,2,19.11,2,21.826s0.549,5.327,1.876,7.646L13.203,26.322z"/>
+  <path fill="#1976D2" d="M24,8.129c2.867,0,5.46,1.019,7.507,2.688l5.605-5.605C35.977,2.565,30.479,0,24,0 C15.605,0,8.041,5.574,5.482,13.212l7.218,5.666C14.699,11.514,19.967,8.129,24,8.129z"/>
+  <path fill="#FF6D00" d="M5.482,13.212L5.482,13.212l-2.876,3.697C2.223,17.843,2,19.305,2,20.826s0.223,2.983,0.606,4.118 l7.218-5.666C8.041,18.426,15.605,24,24,24v-4.129C19.967,19.871,14.699,16.486,5.482,13.212z"/>
+</svg>
+
                 </div>
               </button>
             </div>
