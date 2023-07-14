@@ -2,6 +2,7 @@ import { Banner } from "./components/banner/Banner"
 import { LoginMainPage } from "./components/loginpage/LoginMainPage"
 import { HAI } from "./components/loginpage/loginform/HAI"
 import { LoginForm } from "./components/loginpage/loginform/LoginForm"
+import { Otp } from "./components/loginpage/loginform/Otp"
 import { MainHeader } from "./components/userHeader/MainHeader/MainHeader"
 
 
@@ -22,6 +23,7 @@ function App() {
 <LoginMainPage/>
 <LoginForm/>
 <HAI/>
+<Otp/>
 
       </div>
        
