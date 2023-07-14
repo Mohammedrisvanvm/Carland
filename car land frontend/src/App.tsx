@@ -1,5 +1,9 @@
 import { Banner } from "./components/banner/Banner"
+import { LoginMainPage } from "./components/loginpage/LoginMainPage"
 import { MainHeader } from "./components/userHeader/MainHeader/MainHeader"
+
+
+
 
 
 
@@ -13,6 +17,8 @@ function App() {
 
 <MainHeader/>
 <Banner/>
+<LoginMainPage/>
+
       </div>
        
     </>
