@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router";
 
 export const MainHeader= ():ReactElement => {

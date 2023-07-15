@@ -1,6 +1,6 @@
 
 
-export const googleAuth = () => {
+export const GoogleAuth = () => {
   return (
    <>
    <div className="px-5 pt-6 pb-5 text-center border border-gray-300 rounded lg:w-2/5">

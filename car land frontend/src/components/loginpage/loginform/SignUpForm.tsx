@@ -1,6 +1,6 @@
 import { ReactElement } from 'react'
 
-export const LoginForm = (): ReactElement => {
+export const SignUp = (): ReactElement => {
     return (
         <>
         
