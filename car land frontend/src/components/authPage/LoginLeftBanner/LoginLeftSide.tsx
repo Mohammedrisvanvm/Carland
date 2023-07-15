@@ -7,7 +7,7 @@ interface IPROPS {
       
     }
 }
-export const LoginLeftSiide: React.FC<IPROPS> = ({ value}) => {
+export const LoginLeftSide: React.FC<IPROPS> = ({ value}) => {
     const AuthComponent = value.Auth;
 
 

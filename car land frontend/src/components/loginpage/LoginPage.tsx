@@ -1,31 +1,13 @@
 import { ReactElement } from "react";
-import { GoogleAuth } from "../authPage/googleAuth/googleAuth";
-import { Otp } from "../authPage/otp/Otp";
-import { SignUp } from "../authPage/signUp/SignUpForm";
 import { SignIn } from "../authPage/login/signIn";
-import { LoginLeftSiide } from "../authPage/LoginLeftBanner/LoginLeftSiide";
+import { LoginLeftSide } from "../authPage/LoginLeftBanner/LoginLeftSide";
 
-export const LoginPage = (): ReactElement => {
- 
-
-  
+ const LoginPage = (): ReactElement => {
   return (
-
-
     <>
-
-<LoginLeftSiide value={{ Auth:   <SignIn />}} />
-
-
-
-      <GoogleAuth />
-
-
-
-
-      <Otp />
-      <SignUp />
-      <SignIn />
+<LoginLeftSide value={{ Auth:   <SignIn />}} />
     </>
   );
 };
+
+export default LoginPage
