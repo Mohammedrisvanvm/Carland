@@ -1,4 +1,4 @@
-export const HAI = () => {
+export const SignIn = () => {
     return (
  
         <div className="relative  bg-opacity-75">
