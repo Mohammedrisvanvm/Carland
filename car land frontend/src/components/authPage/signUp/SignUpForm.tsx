@@ -1,6 +1,16 @@
-import { ReactElement } from 'react'
+import { useNavigate } from "react-router";
 
-export const SignUp = (): ReactElement => {
+
+
+export const SignUp = () => {
+   
+const Navigate=useNavigate()
+    const handleSubmit=(e:React.FormEvent<HTMLFormElement>):void=>{
+        e.preventDefault()
+
+      
+        Navigate('/UserOtp')
+    }
     return (
         <>
         
@@ -9,7 +19,7 @@ export const SignUp = (): ReactElement => {
                     <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                         Sign Up
                     </h3>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="firstName"

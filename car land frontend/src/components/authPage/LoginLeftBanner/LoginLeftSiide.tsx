@@ -1,13 +1,14 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, } from 'react'
 
 
 interface IPROPS {
     value: {
-        GoogleAuth: ReactElement;
+        Auth: ReactElement;
+      
     }
 }
-export const LoginLeftSiide: React.FC<IPROPS> = ({ value }) => {
-    const GoogleAuthComponent = value.GoogleAuth;
+export const LoginLeftSiide: React.FC<IPROPS> = ({ value}) => {
+    const AuthComponent = value.Auth;
 
 
 
@@ -47,7 +48,7 @@ export const LoginLeftSiide: React.FC<IPROPS> = ({ value }) => {
                             </a>
                         </div>
 
-                        {GoogleAuthComponent}
+                        {AuthComponent}
 
 
                     </div>
