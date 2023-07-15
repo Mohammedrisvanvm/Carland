@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router";
 
 
 export const GoogleAuth = () => {
+    const Navigate=useNavigate()
   return (
    <>
    <div className="px-5 pt-6 pb-5 text-center border border-gray-300 rounded lg:w-2/5">
@@ -36,7 +38,7 @@ export const GoogleAuth = () => {
             </div>
             <button
               onClick={() => {
-                console.log("hai");
+               Navigate('/userLogin')
 
               }}
               className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold transition duration-200 bg-white border border-gray-300 rounded md:w-auto hover:bg-gray-100 focus:shadow-outline focus:outline-none"
@@ -45,7 +47,7 @@ export const GoogleAuth = () => {
             </button>
             <button
               onClick={() => {
-                console.log("hai");
+                Navigate('/userSignUp')
 
               }}
               className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold transition duration-200 bg-white border border-gray-300 rounded md:w-auto hover:bg-gray-100 focus:shadow-outline focus:outline-none"
