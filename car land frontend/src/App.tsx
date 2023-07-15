@@ -6,7 +6,8 @@ import { HAI } from "./components/loginpage/loginform/HAI"
 import { LoginForm } from "./components/loginpage/loginform/LoginForm"
 import { Otp } from "./components/loginpage/loginform/Otp"
 import { ServiceSelection } from "./components/serviceSelectionBoxes/serviceSelection"
-import { MainHeader } from "./components/userHeader/MainHeader/MainHeader"
+import UserHomePage from "./components/HomePage/UserHomePage"
+
 
 
 
@@ -21,8 +22,8 @@ function App() {
     <>
 <BrowserRouter>
 <Routes>
-<Route path="/" element={<MainHeader/>}/>
-<Route path=""/>
+<Route path="/" element={<UserHomePage/>}/>
+<Route path="/login" element={<LoginMainPage/>}/>
 
 
 
@@ -41,7 +42,6 @@ function App() {
 <HAI/>
 <Otp/>
 <Content/>
-<ServiceSelection/>
 
       </div>
        

@@ -1,8 +1,9 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
 export const MainHeader= ():ReactElement => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+    const navigate=useNavigate()
     return (
       <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
         <div className="relative flex items-center justify-between">
@@ -83,14 +84,14 @@ export const MainHeader= ():ReactElement => {
               </a>
             </li> */}
             <li>
-              <a
-                href="/"
+              <button
+                onClick={()=>{navigate('/login')}}
                 className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white  transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
                 aria-label="Sign up"
                 title="Sign up"
               >
                 Sign up
-              </a>
+              </button>
             </li>
           </ul>
           <div className="lg:hidden">
