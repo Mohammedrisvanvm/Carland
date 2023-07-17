@@ -1,5 +1,6 @@
 import {  useFormik} from "formik";
 import { useNavigate } from "react-router";
+import { SignupSchema } from "../../../validationSchemas/validationSchema";
 
 
 interface MyFormValues {
@@ -32,9 +33,10 @@ export const SignUp = () => {
     initialErrors: {},
     initialTouched: {},
     validateOnMount: true,
+    validationSchema:SignupSchema
   });
     // Navigate('/UserOtp')
-    console.log(formik);
+    console.log(formik.errors);
     
  
     return (
