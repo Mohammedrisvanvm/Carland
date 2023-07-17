@@ -21,13 +21,13 @@ export const SignUp = () => {
     confirmPassword: '',
   };
 
-  const handleSubmit = (values:any) => {
-    
-    console.log(values);
+  const handleSubmit = async (values:{},actions:any) => {
+    await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
+   actions.resetform()
     // Navigate('/UserOtp');
   };
 
-  const {handleChange,handleBlur,values,errors,touched} = useFormik({
+  const {handleChange,handleBlur,values,errors,touched,isSubmitting} = useFormik({
     initialValues,
     onSubmit: handleSubmit,
     initialErrors: {},
@@ -140,6 +140,7 @@ export const SignUp = () => {
                                 Login
                             </button> */}
                             <button
+                            disabled={isSubmitting}
                                 type="submit"
                                 className="inline-flex items-center justify-center w-full h-12 px-4 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
                             >
