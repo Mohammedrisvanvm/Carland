@@ -1,7 +1,12 @@
 import { ReactElement } from "react";
 
 export const Banner = ():ReactElement  => {
-    
+  function scrollDown() {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: 'smooth',
+    });
+  }
     return (
       <div className="relative flex flex-col-reverse py-16 lg:pt-0 lg:flex-col lg:pb-0">
         <div className="inset-y-0 top-0 right-0 z-0 w-full max-w-xl px-4 mx-auto md:px-0 lg:pr-0 lg:mb-0 lg:mx-0 lg:w-7/12 lg:max-w-full lg:absolute xl:px-0">
@@ -39,7 +44,7 @@ export const Banner = ():ReactElement  => {
             </p>
             <div className="flex items-center">
               <button
-                
+                onClick={scrollDown}
                 className="inline-flex items-center bg-black justify-center h-12 px-6 mr-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
               >
                 Get started

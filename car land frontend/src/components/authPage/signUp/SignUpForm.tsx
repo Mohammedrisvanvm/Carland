@@ -1,19 +1,44 @@
+import { FormikConfig, useFormik } from "formik";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 
 
+interface MyFormValues {
+    name: string,
+    email: string,
+    password: string,
+    confirmPassword: string
+}
+const initialValues: MyFormValues = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
 
+}
 export const SignUp = () => {
-   
-const Navigate=useNavigate()
-    const handleSubmit=(e:React.FormEvent<HTMLFormElement>):void=>{
-        e.preventDefault()
+    const [name, setName] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [confirmpassword, setConfirmPassword] = useState('')
 
-      
+    const Navigate = useNavigate()
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+        e.preventDefault()
+        console.log(name, email, password, confirmpassword);
+
+        const formikconfig:FormikConfig<MyFormValues> = {
+            initialValues: initialValues,
+            onSubmit:(values)=>{
+                console.log(values);
+                
+            }
+        }
         Navigate('/UserOtp')
     }
     return (
         <>
-        
+
             <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
                 <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
                     <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
@@ -33,10 +58,11 @@ const Navigate=useNavigate()
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="firstName"
+                                onChange={(e) => setName(e.target.value)}
                                 name="firstName"
                             />
                         </div>
-                     
+
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="email"
@@ -50,6 +76,7 @@ const Navigate=useNavigate()
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="email"
+                                onChange={(e) => setEmail(e.target.value)}
                                 name="email"
                             />
                         </div>
@@ -66,6 +93,7 @@ const Navigate=useNavigate()
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="Password"
+                                onChange={(e) => setPassword(e.target.value)}
                                 name="Password"
                             />
                         </div>
@@ -77,11 +105,12 @@ const Navigate=useNavigate()
                                 Confirm Password
                             </label>
                             <input
-                                  placeholder="********"
+                                placeholder="********"
                                 required
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="Password"
+                                onChange={(e) => setConfirmPassword(e.target.value)}
                                 name="Password"
                             />
                         </div>
@@ -106,7 +135,7 @@ const Navigate=useNavigate()
                     </form>
                 </div>
             </div>
-            
+
         </>
     )
 }
