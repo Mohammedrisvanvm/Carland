@@ -61,7 +61,7 @@ export const SignUp = () => {
                                 id="name"
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
-                                onBlur={}
+                                onBlur={formik.handleBlur}
                                 name="name"
                             />
                         </div>
@@ -81,6 +81,7 @@ export const SignUp = () => {
                                 id="email"
                                 value={formik.values.email}
                                 onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                                 name="email"
                             />
                         </div>
@@ -99,6 +100,7 @@ export const SignUp = () => {
                                 id="password"
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                                 name="password"
                             />
                         </div>
@@ -117,6 +119,7 @@ export const SignUp = () => {
                                 id="confirmPassword"
                                 value={formik.values.confirmPassword}
                                 onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
                                 name="confirmPassword"
                             />
                         </div>
