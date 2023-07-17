@@ -1,4 +1,4 @@
-import { useFormik ,Form} from "formik";
+import { useFormik, Form } from "formik";
 import { Navigate, useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
@@ -23,22 +23,22 @@ export const SignUp = () => {
     const Navigate = useNavigate();
 
 
-    const submitForm:any =async(values: {}, actions: any) => {
+    const submitForm: any = async (values: {}, actions: any) => {
         console.log(values);
         console.log(actions);
-    
-    
-            await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
-           actions.resetform()
+
+
+        await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000))
+        actions.resetform()
         console.log("submitted");
 
         // Navigate('/UserOtp');
     };
 
 
-    const { handleChange, handleBlur, values, errors, touched, isSubmitting,handleSubmit } = useFormik({
+    const { handleChange, handleBlur, values, errors, touched, isSubmitting, handleSubmit } = useFormik({
         initialValues,
-        onSubmit:submitForm,
+        onSubmit: submitForm,
         initialErrors: {},
         initialTouched: {},
         validateOnMount: true,
@@ -56,7 +56,7 @@ export const SignUp = () => {
                     <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                         Sign Up
                     </h3>
-            <form onSubmit={handleSubmit}>
+                    <form onSubmit={handleSubmit}>
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="name"
@@ -158,8 +158,8 @@ export const SignUp = () => {
                         <p className="text-xs text-gray-600 sm:text-sm">
                             We respect your privacy. Unsubscribe at any time.
                         </p>
-                        </form>
-                
+                    </form>
+
                 </div>
             </div>
 
