@@ -1,4 +1,4 @@
-import {  useFormik} from "formik";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
@@ -9,36 +9,45 @@ interface MyFormValues {
     password: string,
     confirmPassword: string
 }
+const initialValues: MyFormValues = {
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+};
+
+const onSubmit:any = (values: {}, actions: any) => {
+    console.log(values);
+    console.log(actions);
+
+
+    //     await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
+    //    actions.resetform()
+    console.log("submitted");
+
+    // Navigate('/UserOtp');
+};
 
 export const SignUp = () => {
 
     const Navigate = useNavigate();
 
-  const initialValues:MyFormValues = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-  };
 
-  const handleSubmit = async (values:{},actions:any) => {
-    await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
-   actions.resetform()
-    // Navigate('/UserOtp');
-  };
 
-  const {handleChange,handleBlur,values,errors,touched,isSubmitting} = useFormik({
-    initialValues,
-    onSubmit: handleSubmit,
-    initialErrors: {},
-    initialTouched: {},
-    validateOnMount: true,
-    validationSchema:SignupSchema
-  });
+
+
+    const { handleChange, handleBlur, values, errors, touched, isSubmitting } = useFormik({
+        initialValues,
+        onSubmit,
+        initialErrors: {},
+        initialTouched: {},
+        validateOnMount: true,
+        validationSchema: SignupSchema
+    });
     // Navigate('/UserOtp')
-    console.log(errors);
-    
- 
+    console.log(values);
+
+
     return (
         <>
 
@@ -47,7 +56,7 @@ export const SignUp = () => {
                     <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                         Sign Up
                     </h3>
-                    <form >
+                    <form onSubmit={onSubmit}>
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="name"
@@ -81,15 +90,15 @@ export const SignUp = () => {
                                 placeholder="john.doe@example.org"
                                 required
                                 type="text"
-                                className={`${errors.email  && touched.email ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                                className={`${errors.email && touched.email ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="email"
                                 value={values.email}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="email"
-                                
+
                             />
-                              {errors.email && touched.email && <p className="border-red-500 text-red-500">{errors.email}</p>}
+                            {errors.email && touched.email && <p className="border-red-500 text-red-500">{errors.email}</p>}
                         </div>
                         <div className="mb-1 sm:mb-2">
                             <label
@@ -102,19 +111,19 @@ export const SignUp = () => {
                                 placeholder="********"
                                 required
                                 type="password"
-                                className={`${errors.password  && touched.password? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                                className={`${errors.password && touched.password ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="password"
                                 value={values.password}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="password"
                             />
-                              {errors.password && touched.password && <p className="border-red-500 text-red-500">{errors.password}</p>}
+                            {errors.password && touched.password && <p className="border-red-500 text-red-500">{errors.password}</p>}
                         </div>
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="confirmPassword"
-                                 className="inline-block mb-1 font-medium"
+                                className="inline-block mb-1 font-medium"
                             >
                                 Confirm Password
                             </label>
@@ -122,15 +131,15 @@ export const SignUp = () => {
                                 placeholder="********"
                                 required
                                 type="password"
-                                className={`${errors.confirmPassword  && touched.confirmPassword ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-                             
+                                className={`${errors.confirmPassword && touched.confirmPassword ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+
                                 id="confirmPassword"
                                 value={values.confirmPassword}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="confirmPassword"
                             />
-                              {errors.confirmPassword && touched.confirmPassword && <p className="border-red-500 text-red-500">{errors.confirmPassword}</p>}
+                            {errors.confirmPassword && touched.confirmPassword && <p className="border-red-500 text-red-500">{errors.confirmPassword}</p>}
                         </div>
                         <div className="mt-4 mb-2 sm:mb-4">
                             {/* <button
@@ -140,7 +149,7 @@ export const SignUp = () => {
                                 Login
                             </button> */}
                             <button
-                            disabled={isSubmitting}
+                                disabled={isSubmitting}
                                 type="submit"
                                 className="inline-flex items-center justify-center w-full h-12 px-4 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
                             >

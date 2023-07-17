@@ -53,6 +53,8 @@ export const GoogleAuth = () => {
             >
               Sign In with Email
             </button>
+{'      n;'}
+
             <button
               onClick={() => {
                 Navigate('/userSignUp')
