@@ -1,4 +1,4 @@
-import { useFormik } from "formik";
+import { useFormik ,Form} from "formik";
 import { useNavigate } from "react-router";
 import { LoginSchema } from "../../../validationSchemas/validationSchema";
 
@@ -15,28 +15,35 @@ const initialValues:MyFormValues={
 
 export const SignIn = () => {
 
-  const onSubmit:any = (values: {}, actions: any) => {
-    console.log(values);
-    console.log(actions);
-
-
-    //     await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
-    //    actions.resetform()
+  const Navigate=useNavigate()
+  const submitForm:any = async (values: {}, actions: any) => {
+  
+    try {
+      await new Promise<void>((resolve, reject) => setTimeout(reject,1000))
+      actions.resetForm()
+    } catch (error) {
+      console.log("not submitted",error);
+      
+    //   actions.setErrors(error)
+    // console.log(actions);
+    
+    
+    }
+     
     console.log("submitted");
 
-    Navigate('/UserOtp');
+    // Navigate('/UserOtp');
 };
 
-  const {handleChange,handleBlur,values,errors}=useFormik({
+  const {handleChange,handleBlur,values,errors,isSubmitting,handleSubmit}=useFormik({
     initialValues,
-    onSubmit,
+    onSubmit:submitForm,
     initialErrors:{},
     validateOnMount:true,
     validationSchema:LoginSchema
   })
   console.log(values,errors);
-  
-  const Navigate=useNavigate()
+
     return (
  
               <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
@@ -44,7 +51,7 @@ export const SignIn = () => {
                   <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                     Login
                   </h3>
-                  <form>
+                  <form onSubmit={handleSubmit}>
                     <div className="mb-1 sm:mb-2">
                       <label
                         htmlFor="userName"
@@ -107,7 +114,7 @@ export const SignIn = () => {
                     </div>
                     <div className="mt-4 mb-2 sm:mb-4">
                       <button
-                  
+                  disabled={isSubmitting}
                         type="submit"
                         className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
                       >
@@ -117,7 +124,7 @@ export const SignIn = () => {
                     <p className="text-xs text-gray-600 sm:text-sm">
                       We respect your privacy. Unsubscribe at any time.
                     </p>
-                  </form>
+                    </form>
                 </div>
               </div>
         
