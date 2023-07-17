@@ -1,5 +1,6 @@
 import { ReactElement, useState } from "react";
 import { useNavigate } from "react-router";
+import LoginPage from "../../loginpage/LoginPage";
 
 export const MainHeader= ():ReactElement => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -73,16 +74,9 @@ export const MainHeader= ():ReactElement => {
                 About us
               </a>
             </li>
-            {/* <li>
-              <a
-                href="/"
-                className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide  transition duration-200 rounded shadow-md bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
-                aria-label="Sign up"
-                title="Sign up"
-              >
-                login
-              </a>
-            </li> */}
+            <li>
+             <LoginPage/>
+            </li>
             <li>
               <button
                 onClick={()=>{navigate('/UserAuth')}}

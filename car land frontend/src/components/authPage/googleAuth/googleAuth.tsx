@@ -1,8 +1,16 @@
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 
+interface RootState{
+  User:string
+}
+
 export const GoogleAuth = () => {
     const Navigate=useNavigate()
+    const User:{}=useSelector((state:RootState)=>state.User)
+    console.log(User)
+    
   return (
    <>
    <div className="px-5 pt-6 pb-5 text-center border border-gray-300 rounded lg:w-2/5">
