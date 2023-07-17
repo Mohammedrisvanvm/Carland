@@ -1,7 +1,7 @@
 import {  useFormik} from "formik";
 import { useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
-
+import './SignUpForm.css'
 
 interface MyFormValues {
     name: string,
@@ -27,7 +27,7 @@ export const SignUp = () => {
     // Navigate('/UserOtp');
   };
 
-  const formik = useFormik({
+  const {handleChange,handleBlur,values,errors,touched} = useFormik({
     initialValues,
     onSubmit: handleSubmit,
     initialErrors: {},
@@ -36,7 +36,7 @@ export const SignUp = () => {
     validationSchema:SignupSchema
   });
     // Navigate('/UserOtp')
-    console.log(formik.errors);
+    console.log(errors);
     
  
     return (
@@ -59,13 +59,15 @@ export const SignUp = () => {
                                 placeholder="John"
                                 required
                                 type="text"
-                                className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                                className={`${errors.name && touched.name ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="name"
-                                value={formik.values.name}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.name}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 name="name"
+
                             />
+                            {errors.name && touched.name && <p className="border-red-500 text-red-500">{errors.name}</p>}
                         </div>
 
                         <div className="mb-1 sm:mb-2">
@@ -79,13 +81,15 @@ export const SignUp = () => {
                                 placeholder="john.doe@example.org"
                                 required
                                 type="text"
-                                className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                                className={`${errors.email  && touched.email ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="email"
-                                value={formik.values.email}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.email}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 name="email"
+                                
                             />
+                              {errors.email && touched.email && <p className="border-red-500 text-red-500">{errors.email}</p>}
                         </div>
                         <div className="mb-1 sm:mb-2">
                             <label
@@ -98,18 +102,19 @@ export const SignUp = () => {
                                 placeholder="********"
                                 required
                                 type="password"
-                                className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                                className={`${errors.password  && touched.password? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="password"
-                                value={formik.values.password}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 name="password"
                             />
+                              {errors.password && touched.password && <p className="border-red-500 text-red-500">{errors.password}</p>}
                         </div>
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="confirmPassword"
-                                className="inline-block mb-1 font-medium"
+                                 className="inline-block mb-1 font-medium"
                             >
                                 Confirm Password
                             </label>
@@ -117,13 +122,15 @@ export const SignUp = () => {
                                 placeholder="********"
                                 required
                                 type="password"
-                                className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                                className={`${errors.confirmPassword  && touched.confirmPassword ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                             
                                 id="confirmPassword"
-                                value={formik.values.confirmPassword}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur}
+                                value={values.confirmPassword}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
                                 name="confirmPassword"
                             />
+                              {errors.confirmPassword && touched.confirmPassword && <p className="border-red-500 text-red-500">{errors.confirmPassword}</p>}
                         </div>
                         <div className="mt-4 mb-2 sm:mb-4">
                             {/* <button
