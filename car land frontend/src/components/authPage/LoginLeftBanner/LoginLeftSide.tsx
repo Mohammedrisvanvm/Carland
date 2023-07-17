@@ -15,7 +15,7 @@ export const LoginLeftSide: React.FC<IPROPS> = ({ value}) => {
 
     return (
         <>
-            <div className="relative  bg-opacity-75">
+            <div className="relative overflow-x-hidden bg-opacity-75">
                 <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
                     <div className="flex flex-col items-center justify-between xl:flex-row">
                         <div className="w-full max-w-xl mb-12 xl:mb-0 xl:pr-16 xl:w-7/12">

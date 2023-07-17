@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
-
 interface RootState{
   User:string
 }
+
 
 export const GoogleAuth = () => {
     const Navigate=useNavigate()
