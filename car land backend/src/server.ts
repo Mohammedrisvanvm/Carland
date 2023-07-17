@@ -1,6 +1,7 @@
 import express,{Request,Response} from 'express'
 import { DBconnect } from './config/mongoDB'
 import cors from 'cors'
+import { config } from './config/config'
 
 
 
@@ -21,4 +22,4 @@ app.get('/',(req:Request,res:Response):void=>{
 })
 
 
-app.listen(3131, () => console.log('server connected @3131'))
+app.listen(config.server.port, () => console.log('server connected @3131'))
