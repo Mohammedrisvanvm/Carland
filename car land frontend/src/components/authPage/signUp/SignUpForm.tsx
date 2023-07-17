@@ -21,8 +21,9 @@ export const SignUp = () => {
   };
 
   const handleSubmit = (values:any) => {
+    
     console.log(values);
-    Navigate('/UserOtp');
+    // Navigate('/UserOtp');
   };
 
   const formik = useFormik({
@@ -32,7 +33,9 @@ export const SignUp = () => {
     initialTouched: {},
     validateOnMount: true,
   });
-    Navigate('/UserOtp')
+    // Navigate('/UserOtp')
+    console.log(formik);
+    
  
     return (
         <>
@@ -45,7 +48,7 @@ export const SignUp = () => {
                     <form >
                         <div className="mb-1 sm:mb-2">
                             <label
-                                htmlFor="firstName"
+                                htmlFor="name"
                                 className="inline-block mb-1 font-medium"
                             >
                                 User Name
@@ -55,10 +58,11 @@ export const SignUp = () => {
                                 required
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                                id="firstName"
+                                id="name"
                                 value={formik.values.name}
                                 onChange={formik.handleChange}
-                                name="firstName"
+                                onBlur={}
+                                name="name"
                             />
                         </div>
 
@@ -90,17 +94,17 @@ export const SignUp = () => {
                             <input
                                 placeholder="********"
                                 required
-                                type="text"
+                                type="password"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                                id="Password"
+                                id="password"
                                 value={formik.values.password}
                                 onChange={formik.handleChange}
-                                name="Password"
+                                name="password"
                             />
                         </div>
                         <div className="mb-1 sm:mb-2">
                             <label
-                                htmlFor="Password"
+                                htmlFor="confirmPassword"
                                 className="inline-block mb-1 font-medium"
                             >
                                 Confirm Password
@@ -108,12 +112,12 @@ export const SignUp = () => {
                             <input
                                 placeholder="********"
                                 required
-                                type="text"
+                                type="password"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                                id="Password"
+                                id="confirmPassword"
                                 value={formik.values.confirmPassword}
                                 onChange={formik.handleChange}
-                                name="Password"
+                                name="confirmPassword"
                             />
                         </div>
                         <div className="mt-4 mb-2 sm:mb-4">

@@ -27,7 +27,7 @@ function App() {
       </BrowserRouter>
 
 
-<Basic/>
+{/* <Basic/> */}
 
 
         <Content />
