@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom'
 import LoginPage from '../components/loginpage/LoginPage'
 import UserHomePage from '../components/HomePage/UserHomePage'
-import { Otp } from '../components/authPage/otp/Otp'
 import SignUpPage from '../components/signupPage/signUpPage'
 import GoogleAuthPage from '../components/googleAuthPage/GoogleAuthPage'
+import OtpPage from '../components/OtpPage/OtpPage'
 
 const UserRoutes = () => {
     return (
@@ -13,7 +13,7 @@ const UserRoutes = () => {
                 <Route path='/UserAuth' element={<GoogleAuthPage/>}/>
                 <Route path='/UserLogin' element={<LoginPage/>}/>
                 <Route path='/UserSignUp' element={<SignUpPage/>}/>
-                <Route path='/UserOtp' element={<Otp/>}/>
+                <Route path='/UserOtp' element={<OtpPage/>}/>
                
             </Routes>
         </>
