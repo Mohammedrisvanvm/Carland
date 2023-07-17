@@ -1,39 +1,39 @@
 import { useFormik } from "formik";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
 
 interface MyFormValues {
-    name: string,
+    userName: string,
     email: string,
     password: string,
     confirmPassword: string
 }
 const initialValues: MyFormValues = {
-    name: '',
+    userName: '',
     email: '',
     password: '',
     confirmPassword: '',
 };
 
-const onSubmit:any = (values: {}, actions: any) => {
-    console.log(values);
-    console.log(actions);
 
-
-    //     await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
-    //    actions.resetform()
-    console.log("submitted");
-
-    // Navigate('/UserOtp');
-};
 
 export const SignUp = () => {
 
     const Navigate = useNavigate();
 
 
+    const onSubmit:any = (values: {}, actions: any) => {
+        console.log(values);
+        console.log(actions);
+    
+    
+        //     await new Promise<void>((resolve, reject) => setTimeout(resolve,1000))
+        //    actions.resetform()
+        console.log("submitted");
 
+        Navigate('/UserOtp');
+    };
 
 
     const { handleChange, handleBlur, values, errors, touched, isSubmitting } = useFormik({
@@ -68,15 +68,15 @@ export const SignUp = () => {
                                 placeholder="John"
                                 required
                                 type="text"
-                                className={`${errors.name && touched.name ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                                className={`${errors.userName && touched.userName ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
                                 id="name"
-                                value={values.name}
+                                value={values.userName}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                                 name="name"
 
                             />
-                            {errors.name && touched.name && <p className="border-red-500 text-red-500">{errors.name}</p>}
+                            {errors.userName && touched.userName && <p className="border-red-500 text-red-500">{errors.name}</p>}
                         </div>
 
                         <div className="mb-1 sm:mb-2">
