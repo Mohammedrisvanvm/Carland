@@ -1,5 +1,4 @@
-import { FormikConfig, useFormik } from "formik";
-import { useState } from "react";
+import {  useFormik} from "formik";
 import { useNavigate } from "react-router";
 
 
@@ -9,33 +8,32 @@ interface MyFormValues {
     password: string,
     confirmPassword: string
 }
-const initialValues: MyFormValues = {
+
+export const SignUp = () => {
+
+    const Navigate = useNavigate();
+
+  const initialValues:MyFormValues = {
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
+  };
 
-}
-export const SignUp = () => {
-    const [name, setName] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [confirmpassword, setConfirmPassword] = useState('')
+  const handleSubmit = (values:any) => {
+    console.log(values);
+    Navigate('/UserOtp');
+  };
 
-    const Navigate = useNavigate()
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
-        e.preventDefault()
-        console.log(name, email, password, confirmpassword);
-
-        const formikconfig:FormikConfig<MyFormValues> = {
-            initialValues: initialValues,
-            onSubmit:(values)=>{
-                console.log(values);
-                
-            }
-        }
-        Navigate('/UserOtp')
-    }
+  const formik = useFormik({
+    initialValues,
+    onSubmit: handleSubmit,
+    initialErrors: {},
+    initialTouched: {},
+    validateOnMount: true,
+  });
+    Navigate('/UserOtp')
+ 
     return (
         <>
 
@@ -44,7 +42,7 @@ export const SignUp = () => {
                     <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                         Sign Up
                     </h3>
-                    <form onSubmit={handleSubmit}>
+                    <form >
                         <div className="mb-1 sm:mb-2">
                             <label
                                 htmlFor="firstName"
@@ -58,7 +56,8 @@ export const SignUp = () => {
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="firstName"
-                                onChange={(e) => setName(e.target.value)}
+                                value={formik.values.name}
+                                onChange={formik.handleChange}
                                 name="firstName"
                             />
                         </div>
@@ -76,7 +75,8 @@ export const SignUp = () => {
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="email"
-                                onChange={(e) => setEmail(e.target.value)}
+                                value={formik.values.email}
+                                onChange={formik.handleChange}
                                 name="email"
                             />
                         </div>
@@ -93,7 +93,8 @@ export const SignUp = () => {
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="Password"
-                                onChange={(e) => setPassword(e.target.value)}
+                                value={formik.values.password}
+                                onChange={formik.handleChange}
                                 name="Password"
                             />
                         </div>
@@ -110,7 +111,8 @@ export const SignUp = () => {
                                 type="text"
                                 className="flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                                 id="Password"
-                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                value={formik.values.confirmPassword}
+                                onChange={formik.handleChange}
                                 name="Password"
                             />
                         </div>
