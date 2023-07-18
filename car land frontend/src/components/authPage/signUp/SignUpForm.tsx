@@ -2,6 +2,7 @@ import { useFormik, Form } from "formik";
 import { Navigate, useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
+import axios, { AxiosResponse } from "axios";
 
 interface MyFormValues {
     userName: string,
@@ -26,10 +27,14 @@ export const SignUp = () => {
     const submitForm: any = async (values: {}, actions: any) => {
         console.log(values);
         console.log(actions);
+axios.post('user/auth/Signup',{values:{}}).then((response: AxiosResponse<any, any>): any=>{
+console.log("hai");
 
+}
+)
 
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000))
-        actions.resetform()
+        actions.resetForm()
         console.log("submitted");
 
         // Navigate('/UserOtp');
@@ -59,7 +64,7 @@ export const SignUp = () => {
                     <form onSubmit={handleSubmit}>
                         <div className="mb-1 sm:mb-2">
                             <label
-                                htmlFor="name"
+                                htmlFor="userName"
                                 className="inline-block mb-1 font-medium"
                             >
                                 User Name
@@ -69,11 +74,11 @@ export const SignUp = () => {
                                 required
                                 type="text"
                                 className={`${errors.userName && touched.userName ? 'input-error' : ''} flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-                                id="name"
+                                id="userName"
                                 value={values.userName}
                                 onChange={handleChange}
                                 onBlur={handleBlur}
-                                name="name"
+                                name="userName"
                             />
                             {errors.userName && touched.userName && <p className="border-red-500 text-red-500">{errors.userName}</p>}
                         </div>

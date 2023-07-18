@@ -17,6 +17,8 @@ app.use(cors(
         origin:"http://localhost:3000"
     }
 ))
+
+app.use('/users',)
 app.get('/',(req:Request,res:Response):void=>{
     res.send("hai")
 })
