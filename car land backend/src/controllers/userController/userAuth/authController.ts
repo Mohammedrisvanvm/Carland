@@ -1,5 +1,6 @@
 import { Express, Request, Response } from "express";
-import userModel, { IUser } from "../../../models/userSchema";
+import userModel from "../../../models/userSchema";
+import { IUser } from "../../../interfaces/userInterface";
 
 
 
