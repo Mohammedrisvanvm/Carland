@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { userSignUp } from "./userAuthRouters/UserAuthRouters";
+import userRouers from "./userAuthRouters/UserAuthRouters";
 
 let router=Router()
 
 
-router.use('/auth',userSignUp)
+router.use('/auth',userRouers)
 
 
 

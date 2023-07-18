@@ -1,10 +1,11 @@
 import mongoose, { Schema, model,Document } from "mongoose";
 import bcrypt from 'bcrypt'
 
-interface Iuser extends Document {
+export interface IUser extends Document {
     userName: String,
     email: String,
     password: String,
+    matchPassword:any
 
 }
 
@@ -32,10 +33,10 @@ userSchema.pre('save',async function(next){
     const salt=await bcrypt.genSalt(10)
     this.password=await bcrypt.hash(this.password,salt)
     } )
-    
-    
-    userSchema.methods.matchPassword=async function(enteredPassword:string){
-    return await bcrypt.compare(enteredPassword,this.password )
+    userSchema.methods.matchPassword=async function (enteredPassword:string){
+        return await bcrypt.compare(enteredPassword,this.password)
     }
-const userModel = model<Iuser>('user',userSchema)
+    
+ 
+const userModel = model<IUser>('user',userSchema)
 export default userModel
