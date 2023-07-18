@@ -2,6 +2,7 @@ import express,{Request,Response} from 'express'
 import { DBconnect } from './config/mongoDB'
 import cors from 'cors'
 import { config } from './config/config'
+import userRouers from './routers/userRouers'
 
 
 
@@ -18,7 +19,7 @@ app.use(cors(
     }
 ))
 
-app.use('/users',)
+app.use('/users',userRouers)
 app.get('/',(req:Request,res:Response):void=>{
     res.send("hai")
 })
