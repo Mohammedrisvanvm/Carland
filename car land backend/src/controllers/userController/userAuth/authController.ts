@@ -32,7 +32,10 @@ export const userSignUpController = async (req: Request, res: Response): Promise
     }
 }
 export const userLoginController = async (req: Request, res: Response): Promise<void> => {
-    const { email, password } = req.body;
+    // const { email, password } = req.body
+    const { email, password } = req.body.value;
+    console.log(email,password);
+    
     const userExist: IUser | null = await userModel.findOne({ email });
 
     if (userExist && (await userExist.matchPassword(password))) {
