@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router";
 import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
 import axios, { AxiosResponse } from "axios";
+import { userSignUp } from "../../../services/apis/userApi/userApi";
 
 interface MyFormValues {
     userName: string,
@@ -28,10 +29,8 @@ export const SignUp = () => {
         console.log(values);
         console.log(actions);
         try {
-            axios.post('http://localhost:3131/users/auth/userSignUp',{value:values}).then((response: AxiosResponse<any, any>): any=>{
-                console.log("hai");   
-            }
-            )  
+         const res:{}  = await userSignUp(values) 
+            
         } catch (error:any) {
             console.log(error);
             
