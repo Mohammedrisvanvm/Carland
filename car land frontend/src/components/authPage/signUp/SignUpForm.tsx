@@ -29,31 +29,31 @@ export const SignUp = () => {
     const submitForm: any = async (values: {}, actions: any) => {
         console.log(values);
         console.log(actions);
-        try {
-         const res:any = userSignUp(values) 
-         if(res.data.error){
-            toast.error(res.data.message)
-           
-            
-         }else{
+      
+            const res: any =await userSignUp(values)
             console.log(res);
-            Navigate('/UserOtp');
-         }
-
-        } catch (error:any) {
-            console.log(error);
             
-        }
+            if (res.data.error) {
+                toast.error(res.data.message)
+
+
+            } else {
+                console.log("submitted");
+              
+                Navigate('/UserOtp');
+
+                await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000))
+                actions.resetForm()
+            }
 
 
 
 
-        await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000))
-        actions.resetForm()
-        console.log("submitted");
+     
 
-       
     };
+
+   
 
 
     const { handleChange, handleBlur, values, errors, touched, isSubmitting, handleSubmit } = useFormik({

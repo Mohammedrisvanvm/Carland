@@ -4,6 +4,7 @@ import { Content } from "./components/content/content"
 
 import UserRoutes from "./routes/userRoutes"
 import Basic from "./test/test"
+import 'react-toastify/dist/ReactToastify.css';
 import { ToastContainer } from "react-toastify"
 
 
@@ -11,31 +12,34 @@ function App() {
 
 
   return (
-    <>
-   <ToastContainer/>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/*" element={<UserRoutes />} />
+  
+      <div>
+
+
+        <ToastContainer />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/*" element={<UserRoutes />} />
 
 
 
 
 
-        </Routes>
+          </Routes>
 
 
 
-      </BrowserRouter>
+        </BrowserRouter>
 
 
-{/* <Basic/> */}
+        {/* <Basic/> */}
 
 
         <Content />
 
-  
-      
-    </>
+
+      </div>
+
   )
 }
 

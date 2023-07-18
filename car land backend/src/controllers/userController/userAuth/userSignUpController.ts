@@ -6,6 +6,8 @@ export const userSignUpController = async (req: Request, res: Response): Promise
 
     const { userName, email, password } = req.body.value
     // const { email, password } = req.body
+    console.log(userName, email, password );
+    
     const userExist: any = await userModel.findOne({ email })
 
     if (userExist) {
