@@ -27,11 +27,18 @@ export const SignUp = () => {
     const submitForm: any = async (values: {}, actions: any) => {
         console.log(values);
         console.log(actions);
-axios.post('user/auth/Signup',{values:{}}).then((response: AxiosResponse<any, any>): any=>{
-console.log("hai");
+        try {
+            axios.post('http://localhost:3131/users/auth/userSignUp',{value:values}).then((response: AxiosResponse<any, any>): any=>{
+                console.log("hai");   
+            }
+            )  
+        } catch (error:any) {
+            console.log(error);
+            
+        }
 
-}
-)
+
+
 
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000))
         actions.resetForm()

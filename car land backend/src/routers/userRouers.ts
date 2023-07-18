@@ -4,7 +4,7 @@ import { userSignUp } from "./userAuthRouters/UserAuthRouters";
 let router=Router()
 
 
-router.post('/auth',userSignUp)
+router.use('/auth',userSignUp)
 
 
 

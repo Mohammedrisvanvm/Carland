@@ -11,7 +11,8 @@ import userRouers from './routers/userRouers'
 
 const app = express()
 DBconnect()
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cors(
     {
