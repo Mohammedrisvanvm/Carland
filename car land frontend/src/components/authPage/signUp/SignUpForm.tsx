@@ -30,6 +30,7 @@ export const SignUp = () => {
         console.log(actions);
         try {
          const res:{}  = await userSignUp(values) 
+            console.log(res);
             
         } catch (error:any) {
             console.log(error);
