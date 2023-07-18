@@ -4,6 +4,7 @@ import { SignupSchema } from "../../../validationSchemas/validationSchema";
 import './SignUpForm.css'
 import axios, { AxiosResponse } from "axios";
 import { userSignUp } from "../../../services/apis/userApi/userApi";
+import { toast } from "react-toastify";
 
 interface MyFormValues {
     userName: string,
@@ -29,9 +30,16 @@ export const SignUp = () => {
         console.log(values);
         console.log(actions);
         try {
-         const res:{}  = await userSignUp(values) 
-            console.log(res);
+         const res:any = userSignUp(values) 
+         if(res.data.error){
+            toast.error(res.data.message)
+           
             
+         }else{
+            console.log(res);
+            Navigate('/UserOtp');
+         }
+
         } catch (error:any) {
             console.log(error);
             
@@ -44,7 +52,7 @@ export const SignUp = () => {
         actions.resetForm()
         console.log("submitted");
 
-        // Navigate('/UserOtp');
+       
     };
 
 

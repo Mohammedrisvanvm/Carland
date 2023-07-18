@@ -4,24 +4,27 @@ import userModel from "../../../models/userSchema";
 
 export const userSignUpController = async (req: Request, res: Response): Promise<void> => {
 
-    // const { userName, email, password } = req.body.value
-    const { email, password } = req.body
+    const { userName, email, password } = req.body.value
+    // const { email, password } = req.body
     const userExist: any = await userModel.findOne({ email })
 
     if (userExist) {
-        res.status(409).json({
+        res.status(200).json({
             error: true,
             message: "email is not available"
         })
+
+    }else{
+        const user: {} = await userModel.create({
+            userName,
+            email,
+            password
+        })
+    
+    
+    
+        res.status(201).json({ user })
+    }
     }
 
-    const user: {} = await userModel.create({
-        userName: 'risvan',
-        email,
-        password
-    })
-
-
-
-    res.status(200).json({user})
-}
+  
