@@ -2,6 +2,7 @@ import {  Request, Response } from "express";
 import userModel from "../../../models/userSchema";
 import { IUser } from "../../../interfaces/userInterface";
 import AsyncHandler from "express-async-handler";
+import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
 
 
 
@@ -35,7 +36,12 @@ export const userLoginController = AsyncHandler(async (req: Request, res: Respon
     
     const userExist: IUser | null = await userModel.findOne({ email });
 
+
     if (userExist && (await userExist.matchPassword(password))) {
+console.log("hai");
+
+        const accesstoken= await jwtSign({id:userExist._id,name:userExist.userName,email:userExist.email},'1hr')
+        console.log(accesstoken);
         res.status(200).json({ user:userExist });
     } else {
       throw new Error ('Invalid email or password')
