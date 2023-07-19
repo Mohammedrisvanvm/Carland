@@ -15,7 +15,7 @@ export const userSignUpController = AsyncHandler(async(req: Request, res: Respon
     const userExist: any = await userModel.findOne({ email })
 
     if (userExist) {
-      throw new Error ('email is not available')
+      throw new Error ('User Already Exists')
     } else {
         const user: {} = await userModel.create({
             userName,
