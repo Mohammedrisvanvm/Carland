@@ -1,4 +1,4 @@
-import { Express, Request, Response } from "express";
+import {  Request, Response } from "express";
 import userModel from "../../../models/userSchema";
 import { IUser } from "../../../interfaces/userInterface";
 
