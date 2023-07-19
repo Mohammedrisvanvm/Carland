@@ -3,6 +3,7 @@ import { DBconnect } from './config/mongoDB'
 import cors from 'cors'
 import { config } from './config/config'
 import userRouers from './routers/userRouers'
+import { errorHandler, notFound } from './middlewares/errorHandler/errorHandlingMiddleware'
 
 
 
@@ -11,6 +12,8 @@ import userRouers from './routers/userRouers'
 
 const app = express()
 DBconnect()
+app.use(notFound)
+app.use(errorHandler)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
