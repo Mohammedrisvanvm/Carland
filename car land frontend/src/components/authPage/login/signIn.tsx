@@ -19,22 +19,13 @@ const initialValues: MyFormValue = {
 export const SignIn = () => {
   const Navigate = useNavigate();
   const submitForm: any = async (values: {}, actions: any) => {
-   
-    
     try {
-      const res: any = await userLogin(values);
-      console.log(res);
-      if (res.data.error){
-        toast.error(res.data.message)
-      }
+      const res: any = await userLogin(values)
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
     } catch (error:any) {
-      console.log(error);
-      
       toast.error(error.response.data.message)
-      //   actions.setErrors(error)
-      // console.log(actions);
+   
     }
 
     console.log("submitted");

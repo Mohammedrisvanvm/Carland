@@ -12,8 +12,7 @@ import { errorHandler, notFound } from './middlewares/errorHandler/errorHandling
 
 const app = express()
 DBconnect()
-app.use(notFound)
-app.use(errorHandler)
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -27,6 +26,7 @@ app.use('/users',userRouers)
 app.get('/',(req:Request,res:Response):void=>{
     res.send("hai")
 })
-
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(config.server.port, () => console.log('server connected @3131'))

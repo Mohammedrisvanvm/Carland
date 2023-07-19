@@ -23,20 +23,18 @@ export const SignUp = () => {
   const Navigate = useNavigate();
 
   const submitForm: any = async (values: {}, actions: any) => {
-    console.log(values);
-    console.log(actions);
+ try {
+  const res: any = await userSignUp(values);
+    await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
+    actions.resetForm();
+    Navigate("/UserOtp");
+  
+ } catch (error:any) {
+  toast.error(error.response.data.message);
+  
+ }
 
-    const res: any = await userSignUp(values);
-    console.log(res);
-
-    if (res.data.error) {
-      toast.error(res.data.message);
-    } else {
-      console.log("submitted");
-      await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
-      actions.resetForm();
-      Navigate("/UserOtp");
-    }
+   
   };
 
   const {
