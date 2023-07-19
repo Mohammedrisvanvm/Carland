@@ -37,18 +37,17 @@ export const userLoginController = AsyncHandler(
         if (userExist && (await userExist.matchPassword(password))) {
             console.log("hai");
 
-            const session=createSession(email,userExist.userName)
-            console.log(session);
-            
+            const session = createSession(email, userExist.userName)
+
             const accessToken = await jwtSign(
-                { id: userExist._id, name: userExist.userName, email: userExist.email,sessionId:session.sessionId },
+                { id: userExist._id, name: userExist.userName, email: userExist.email, sessionId: session.sessionId },
                 "5s"
             );
             const refreshToken = await jwtSign(
-                { sessionId:session.sessionId },
+                { sessionId: session.sessionId },
                 "1y"
             );
-      
+
             res
                 .status(200)
                 .cookie("accessToken", accessToken, { maxAge: 300000, httpOnly: true })
