@@ -38,6 +38,8 @@ export const userLoginController = AsyncHandler(
             console.log("hai");
 
             const session=createSession(email,userExist.userName)
+            console.log(session);
+            
             const accessToken = await jwtSign(
                 { id: userExist._id, name: userExist.userName, email: userExist.email,sessionId:session.sessionId },
                 "5s"
