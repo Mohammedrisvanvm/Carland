@@ -30,25 +30,20 @@
 // }
 import jwt from 'jsonwebtoken';
 import crypto from 'node:crypto';
+import fs from 'fs'
+import path from 'path'
+const dirname= './././'
+const privateKey = fs.readFileSync(path.join(dirname, 'keys', 'rsa.key'), 'utf8')
+const publicKey = fs.readFileSync(path.join(dirname, 'keys', 'rsa.key.pub'), 'utf8')
 
-const privateKey = `-----BEGIN RSA PRIVATE KEY-----
-MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA75DWT6M1A8B96xW8ovjNqwerty
- -----END RSA PRIVATE KEY-----`;
-
-const publicKey = `-----BEGIN RSA PUBLIC KEY-----
-MIIEpAIBAAKCAQEA75DWTytrewq6M1A8B96xW8ovjN6Q0UUsnKhxh3LPu5FLSuLuvjqbKgytrewq
------END RSA PUBLIC KEY-----`;
-
-const privateKeyObj = crypto.createPrivateKey(privateKey);
-const publicKeyObj = crypto.createPublicKey(publicKey);
 
 export const jwtSign = (payload: object, expiresIn: string | number) => {
-  return jwt.sign(payload, privateKeyObj, { algorithm: 'RS256', expiresIn });
+  return jwt.sign(payload, privateKey, { algorithm: 'RS256', expiresIn });
 };
 
 export const verifyJwt = (token: string) => {
-  try {
-    const decoded = jwt.verify(token, publicKeyObj);
+  try { 
+    const decoded = jwt.verify(token, publicKey);
     return { payload: decoded, expiresIn: false };
   } catch (error: any) {
     return { payload: null, expiresIn: error.message.includes('jwt expired') };

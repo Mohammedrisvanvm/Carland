@@ -23,7 +23,7 @@ export const userSignUpController = AsyncHandler(async(req: Request, res: Respon
             email,
             password
         })
-
+ 
 
 
         res.status(201).json({ user })
