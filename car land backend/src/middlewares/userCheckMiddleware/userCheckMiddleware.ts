@@ -6,7 +6,7 @@ import { getSession } from "../../helpers/sessionController/sessionController"
 export const userCheck = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { accessToken, refreshToken } = req.cookies
     if (!accessToken) {
-        return next()
+       return  next()
     }
 
     const { payload, expired } = verifyJwt(accessToken)
@@ -16,22 +16,24 @@ export const userCheck = (req: AuthenticatedRequest, res: Response, next: NextFu
     }
 
     const { payload : refresh } = expired && refreshToken ? verifyJwt(refreshToken) : { payload: null }
-
     if (!refresh) {
-        return next()
+       return  next()
     }
-    console.log(refresh,111111);
+   
     
     const session:any = getSession(refresh.sessionId)
-    if(session){
-        return next()
+    if(!session){
+       return  next()
     }
+  
 const newAccessToken=jwtSign(session,'5s')
 res.cookie("accessToken", newAccessToken, {
     maxAge: 300000, // 5 minutes
     httpOnly: true,
     });
+   
+    
     req.user=verifyJwt(newAccessToken).payload
-    return next()
+   return next()
 }
 

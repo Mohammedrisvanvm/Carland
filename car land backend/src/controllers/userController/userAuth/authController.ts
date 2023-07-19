@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import userModel from "../../../models/userSchema";
 import { IUser } from "../../../interfaces/userInterface";
 import AsyncHandler from "express-async-handler";
-import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
+import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
 import { createSession } from "../../../helpers/sessionController/sessionController";
 
 export const userSignUpController = AsyncHandler(
@@ -35,8 +35,7 @@ export const userLoginController = AsyncHandler(
         const userExist: IUser | null = await userModel.findOne({ email });
 
         if (userExist && (await userExist.matchPassword(password))) {
-            console.log("hai");
-
+          
             const session = createSession(email, userExist.userName)
 
             const accessToken = await jwtSign(
@@ -51,7 +50,7 @@ export const userLoginController = AsyncHandler(
             res
                 .status(200)
                 .cookie("accessToken", accessToken, { maxAge: 300000, httpOnly: true })
-                .cookie("refreshtoken", refreshToken, { maxAge: 3.154e10, httpOnly: true })
+                .cookie("refreshToken", refreshToken, { maxAge: 3.154e10, httpOnly: true })
                 .json({ user: userExist });
             res.send(session)
         } else {
@@ -59,3 +58,15 @@ export const userLoginController = AsyncHandler(
         }
     }
 );
+
+export const userLogoutController = AsyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+        console.log("hia");
+        
+        res.cookie('accessToken','', { httpOnly: true, maxAge:0 })
+        res
+        .cookie('refreshToken', '', { httpOnly: true, maxAge:0 })
+        .status(200)
+        .json({message:'logout user'})
+
+    })

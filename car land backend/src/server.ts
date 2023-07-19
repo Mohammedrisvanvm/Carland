@@ -13,21 +13,22 @@ import { userCheck } from './middlewares/userCheckMiddleware/userCheckMiddleware
 
 const app = express()
 DBconnect()
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
+app.use(userCheck)
 
 app.use(cors(
     {
         origin:"http://localhost:3000"
     }
 ))
-app.use(userCheck)
+
 app.use('/users',userRouers)
 app.get('/',(req:Request,res:Response):void=>{
     res.send("hai")
 })
+
 app.use(notFound)
 app.use(errorHandler)
 

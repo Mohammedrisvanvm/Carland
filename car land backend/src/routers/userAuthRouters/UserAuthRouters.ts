@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { userLoginController, userSignUpController } from "../../controllers/userController/userAuth/authController";
+import { userLoginController, userLogoutController, userSignUpController } from "../../controllers/userController/userAuth/authController";
 
 const userRouers=Router()
 
-export const userSignUp=userRouers.post('/userSignUp',userSignUpController)
-export const userLogin=userRouers.post('/userLogin',userLoginController)
+userRouers.post('/userSignUp',userSignUpController)
+userRouers.post('/userLogin',userLoginController)
+userRouers.get('/userLogout',userLogoutController)
 
 
 
