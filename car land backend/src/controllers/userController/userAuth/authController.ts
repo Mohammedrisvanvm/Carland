@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import userModel from "../../../models/userSchema";
-import { IUser } from "../../../interfaces/userInterface";
+
 import AsyncHandler from "express-async-handler";
 import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
 import { createSession } from "../../../helpers/sessionController/sessionController";
+import IUser from "../../../interfaces/userInterface";
 
 export const userSignUpController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -27,32 +28,32 @@ export const userSignUpController = AsyncHandler(
     }
 );
 export const userLoginController = AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
-        const { email, password } = req.body;
-        // const { email, password } = req.body.value;
-        console.log(email, password);
+    async (req: Request, res: Response): Promise<any> => {
+        // const { email, password } = req.body;
+        const { email, password } = req.body.value;
+        console.log(email, password, 11);
 
-        const userExist: IUser | null = await userModel.findOne({ email });
+        const userExist: IUser | null = await userModel.findOne({ email: req.body.value.email });
+        console.log(userExist);
 
         if (userExist && (await userExist.matchPassword(password))) {
-          
+
             const session = createSession(email, userExist.userName)
 
-            const accessToken = await jwtSign(
+            const accessToken = jwtSign(
                 { id: userExist._id, name: userExist.userName, email: userExist.email, sessionId: session.sessionId },
                 "5s"
             );
-            const refreshToken = await jwtSign(
+            const refreshToken = jwtSign(
                 { sessionId: session.sessionId },
                 "1y"
             );
 
-            res
-                .status(200)
+             res.status(200)
                 .cookie("accessToken", accessToken, { maxAge: 300000, httpOnly: true })
                 .cookie("refreshToken", refreshToken, { maxAge: 3.154e10, httpOnly: true })
-                .json({ user: userExist });
-            res.send(session)
+                .json({ user: userExist })
+            
         } else {
             throw new Error("Invalid email or password");
         }
@@ -62,11 +63,11 @@ export const userLoginController = AsyncHandler(
 export const userLogoutController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
         console.log("hia");
-        
-        res.cookie('accessToken','', { httpOnly: true, maxAge:0 })
+
+        res.cookie('accessToken', '', { httpOnly: true, maxAge: 0 })
         res
-        .cookie('refreshToken', '', { httpOnly: true, maxAge:0 })
-        .status(200)
-        .json({message:'logout user'})
+            .cookie('refreshToken', '', { httpOnly: true, maxAge: 0 })
+            .status(200)
+            .json({ message: 'logout user' })
 
     })

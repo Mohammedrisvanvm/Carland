@@ -1,8 +1,11 @@
-export interface IUser extends Document {
+ interface IUser extends Document {
     _id:string
     userName: string,
     email: string,
     password: string,
-    matchPassword: any
-
+   
 }
+interface IUser{
+    matchPassword: any
+}
+export default IUser
