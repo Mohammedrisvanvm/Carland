@@ -15,7 +15,6 @@ const userSchema: Schema = new Schema({
     },
     password: {
         type: String,
-        required: true
     },
     googleId: {
         type: String,
@@ -25,6 +24,10 @@ const userSchema: Schema = new Schema({
     },
     verified_email: {
         type: Boolean,
+    },
+    ban: {
+        type: Boolean,
+        default:false
     }
 }, { timestamps: true })
 

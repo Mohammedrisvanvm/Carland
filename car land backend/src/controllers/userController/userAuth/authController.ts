@@ -67,7 +67,6 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
     if (req.body.value.access_token) {
         const access_token: string = req.body.value.access_token
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response) => {
-            console.log(response.data)
             const email: string = response.data.email
             const olduser = await userModel.findOne({ email })
             if (olduser) {

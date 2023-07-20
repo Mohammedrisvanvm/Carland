@@ -2,6 +2,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
+import { log } from "console";
 
 interface RootState {
   User: string;
@@ -12,14 +13,14 @@ export const GoogleAuth = () => {
   const User: {} = useSelector((state: RootState) => state.User);
   console.log(User);
   const login = useGoogleLogin({
-    onSuccess: (response) => {
+    onSuccess: async(response) => {
       console.log(response);
       
 try {
-  userGoogleAuth(response)
-  // .then((response:object)=>{
+  const res= await userGoogleAuth(response)
 
-  // })
+ 
+
 } catch (error) {
   
 }
