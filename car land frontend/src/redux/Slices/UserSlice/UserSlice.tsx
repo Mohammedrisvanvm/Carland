@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../../../services/apis/userApi/userApi";
-
+import { toast } from "react-toastify";
+import axios, { AxiosError } from "axios";
 type User = {
   userName: string;
   id: string;
@@ -11,14 +12,10 @@ export const login: object | number | any = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
-        console.log(formValue);
-        
-      let response: any =await userLogin(formValue);
-      console.log(response,1111);
-      return response.data.user
-    } catch (error) {
-    console.log(error);
-    
+      let response: any = await userLogin(formValue);
+      return response.data.user;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
   }
 );
@@ -27,7 +24,7 @@ const user: User = {
   id: "",
   email: "",
   image: "",
-}
+};
 
 const UserSlice = createSlice({
   name: "User",
