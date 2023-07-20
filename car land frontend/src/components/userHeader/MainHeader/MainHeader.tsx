@@ -5,13 +5,11 @@ import { useSelector } from "react-redux";
 
 
 
-interface RootState {
-  User: any
-}
+
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate()
-  const User= useSelector((state: RootState) => state.User)
+  const User= useSelector((state: any) => state.user)
   console.log(User.token);
  
 

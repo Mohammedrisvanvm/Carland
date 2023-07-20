@@ -2,9 +2,10 @@ import { useFormik } from "formik";
 import { useNavigate } from "react-router";
 import { LoginSchema } from "../../../validationSchemas/validationSchema";
 import "./signIn.css";
-import { userLogin } from "../../../services/apis/userApi/userApi";
+
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import  { login } from "../../../redux/Slices/UserSlice/UserSlice";
 
 interface MyFormValue {
   userName: string;
@@ -20,11 +21,17 @@ const initialValues: MyFormValue = {
 export const SignIn = () => {
   const Navigate = useNavigate();
   const dispatch=useDispatch()
+  const user=useSelector((state:any)=>state.user)
+  console.log(user);
+  
   const submitForm: any = async (values: {}, actions: any) => {
     try {
-      const res: any = await userLogin(values)
+     
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
+      dispatch(login(values))
+console.log(values);
+
 
 
     } catch (error:any) {
