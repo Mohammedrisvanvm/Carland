@@ -1,6 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
 
 interface RootState {
   User: string;
@@ -11,7 +12,19 @@ export const GoogleAuth = () => {
   const User: {} = useSelector((state: RootState) => state.User);
   console.log(User);
   const login = useGoogleLogin({
-    onSuccess: (response) => {},
+    onSuccess: (response) => {
+      console.log(response);
+      
+try {
+  userGoogleAuth(response)
+  // .then((response:object)=>{
+
+  // })
+} catch (error) {
+  
+}
+
+    },
     onError: (error) => {
       throw new Error("login failed");
     },

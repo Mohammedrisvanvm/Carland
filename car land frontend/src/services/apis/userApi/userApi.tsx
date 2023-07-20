@@ -6,3 +6,7 @@ export const userSignUp = (value: {}): {} => {
 export const userLogin=(value:{}):{}=>{
     return axiosBase.post("/users/auth/userLogin",{value})
 }
+
+export const userGoogleAuth=(value:{}):{}=>{
+return axiosBase.post("/users/auth/userGoogleAuth",{value})
+}

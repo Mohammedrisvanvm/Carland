@@ -61,28 +61,31 @@ export const userLoginController = AsyncHandler(
 );
 
 export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const { email, password, name, token, googleId } = req.body.value;
-    const { accessToken, refreshToken } = req.cookies
+
+    console.log(req.body.value);
+    
+    // const { email, password, name, token, googleId } = req.body.value;
+    // const { accessToken, refreshToken } = req.cookies
 
 
-    console.log(email, password, accessToken, refreshToken)
+    // console.log(email, password, accessToken, refreshToken)
 
-    try {
-        const olduser = await userModel.findOne({ email })
-        if (olduser) {
-            const result = { _id: olduser._id.toString(), name, email }
-            return res.status(200).json({ result, token })
-        }
+    // try {
+    //     const olduser = await userModel.findOne({ email })
+    //     if (olduser) {
+    //         const result = { _id: olduser._id.toString(), name, email }
+    //         return res.status(200).json({ result, token })
+    //     }
 
-        const result=await userModel.create({
-            email,
-            name,
-            googleId
-        })
-        return res.status(201).json({user:result,token})
-    } catch (error) {
+    //     const result=await userModel.create({
+    //         email,
+    //         name,
+    //         googleId
+    //     })
+    //     return res.status(201).json({user:result,token})
+    // } catch (error) {
 
-    }
+    // }
 })
 
 
