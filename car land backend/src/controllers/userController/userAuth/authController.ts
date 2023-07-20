@@ -61,7 +61,9 @@ export const userLoginController = AsyncHandler(
 );
 
 export const userGoogleAuth=AsyncHandler(async(req:Request,res:Response):Promise<void>=>{
-    
+    const { email, password } = req.body.value;
+    const {accessToken,refreshToken}=req.cookies
+    console.log(email, password,accessToken,refreshToken);
 })
 
 
