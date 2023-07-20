@@ -60,10 +60,13 @@ export const userLoginController = AsyncHandler(
     }
 );
 
+export const userGoogleAuth=AsyncHandler(async(req:Request,res:Response):Promise<void>=>{
+    
+})
+
+
 export const userLogoutController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-        console.log("hia");
-
         res.cookie('accessToken', '', { httpOnly: true, maxAge: 0 })
         res
             .cookie('refreshToken', '', { httpOnly: true, maxAge: 0 })

@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
-import axios, { AxiosError } from "axios";
+
 type User = {
   userName: string;
   id: string;
