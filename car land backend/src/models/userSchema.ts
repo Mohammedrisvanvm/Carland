@@ -1,6 +1,6 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 import bcrypt from 'bcrypt'
-import  IUser  from "../interfaces/userInterface";
+import IUser from "../interfaces/userInterface";
 
 
 const userSchema: Schema = new Schema({
@@ -16,6 +16,15 @@ const userSchema: Schema = new Schema({
     password: {
         type: String,
         required: true
+    },
+    googleId: {
+        type: String,
+    },
+    image: {
+        type: String,
+    },
+    verified_email: {
+        type: Boolean,
     }
 }, { timestamps: true })
 
