@@ -11,3 +11,7 @@ export const userLogin=(value:{}):{}=>{
 export const userGoogleAuth=(value:{}):Promise<AxiosResponse<any>>=>{
 return axiosBase.post("/users/auth/userGoogleAuth",{value})
 }
+
+export const userCheck=():Promise<AxiosResponse<any>>=>{
+return axiosBase.get("/users/auth/userCheck")
+}

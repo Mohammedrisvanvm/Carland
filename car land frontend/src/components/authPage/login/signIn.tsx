@@ -29,11 +29,11 @@ export const SignIn = () => {
      
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-      dispatch(login(values))
-console.log(values);
-
-
-
+    
+    
+     
+     await dispatch(login(values))
+Navigate('/')
     } catch (error:any) {
       toast.error(error.response.data.message)
    
@@ -41,7 +41,7 @@ console.log(values);
 
     console.log("submitted");
 
-    // Navigate('/UserOtp');
+  //  Navigate('/UserOtp');
   };
 
   const {

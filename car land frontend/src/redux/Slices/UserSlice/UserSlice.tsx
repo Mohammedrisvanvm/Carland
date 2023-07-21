@@ -12,13 +12,14 @@ export const login: object | number | any = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
-      console.log(formValue);
+
 
       let response: any = await userLogin(formValue);
+     
       return response.data.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
-      toast.error("pre");
+     
     }
   }
 );

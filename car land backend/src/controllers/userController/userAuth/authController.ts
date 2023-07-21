@@ -2,7 +2,7 @@ import { Request, Response, response } from "express";
 import userModel from "../../../models/userSchema";
 
 import AsyncHandler from "express-async-handler";
-import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
+import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { createSession } from "../../../helpers/sessionController/sessionController";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
@@ -29,7 +29,7 @@ export const userSignUpController = AsyncHandler(
     }
 );
 export const userLoginController = AsyncHandler(
-    async (req: Request, res: Response): Promise<any> => {
+    async (req: Request, res: Response): Promise<void> => {
         // const { email, password } = req.body;
         const { email, password } = req.body.value;
         console.log(email, password, 11);
@@ -39,22 +39,26 @@ export const userLoginController = AsyncHandler(
 
         if (userExist && (await userExist.matchPassword(password))) {
 
-            const session = createSession(email, userExist.userName)
+
 
             const accessToken = jwtSign(
-                { id: userExist._id, name: userExist.userName, email: userExist.email, sessionId: session.sessionId },
-                "5s"
+                { id: userExist._id, name: userExist.userName, email: userExist.email },
+                "1d"
             );
             const refreshToken = jwtSign(
-                { sessionId: session.sessionId },
-                "1y"
+                { id: userExist._id, email: userExist.email },
+                "7d"
             );
 
-            res.status(200)
-                .cookie("accessToken", accessToken, { maxAge: 300000, httpOnly: true })
-                .cookie("refreshToken", refreshToken, { maxAge: 3.154e10, httpOnly: true })
-                .json({ user: userExist })
+            res.status(200).cookie("accessToken", accessToken, {
+                maxAge: 300000,
+                httpOnly: true,
+            });
 
+            res.cookie("refreshToken", refreshToken, {
+                maxAge: 3.154e10,
+                httpOnly: true,
+            }).json({ user: userExist })
         } else {
             throw new Error("Invalid email or password");
         }
@@ -66,12 +70,24 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
     console.log(req.body.value);
     if (req.body.value.access_token) {
         const access_token: string = req.body.value.access_token
-        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response) => {
+        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response: any) => {
             const email: string = response.data.email
-            const olduser:any = await userModel.findOne({ email })
-            const session = createSession(email, olduser.userName)
+            const olduser: any = await userModel.findOne({ email })
+            let data: {} = response.data
+            console.log(response);
+
 
             if (olduser) {
+               const log= await userModel.findByIdAndUpdate(olduser._id, {
+                    $set: {
+                      email: response.data.email,
+                      googleId: response.data.id,
+                      image: response.data.picture,
+                      verified_email: response.data.verified_email
+                    }
+                  });
+                 
+                  console.log(log);   
                 return res.status(200).json({ olduser, message: `welcome back ${olduser.userName} ` })
             }
             const user = await userModel.create({
@@ -81,6 +97,24 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 image: response.data.picture,
                 verified_email: response.data.verified_email
             })
+            const accessToken = jwtSign(
+                { id: user._id, name: user.userName, email: user.email },
+                "1d"
+            );
+            const refreshToken = jwtSign(
+                { id: user._id, email: user.email },
+                "7d"
+            );
+
+            res.status(200).cookie("accessToken", accessToken, {
+                maxAge: 300000,
+                httpOnly: true,
+            });
+
+            res.cookie("refreshToken", refreshToken, {
+                maxAge: 3.154e10,
+                httpOnly: true,
+            }).json({ user })
             return res.status(200).json({ olduser, message: 'created' })
         })
     }
@@ -96,3 +130,28 @@ export const userLogoutController = AsyncHandler(
             .json({ message: 'logout user' })
 
     })
+export const userCheck = AsyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+
+        // const token = req.cookies.refreshToken;
+        const token = req.cookies.accessToken;
+
+        if (!token) {
+
+            throw new Error("not token")
+        } else {
+
+            const verifiedJWT = verifyJwt(token)
+
+            if (verifiedJWT) {
+
+                const user = await userModel.findById(verifiedJWT.payload.id, { password: 0 });
+
+                if (!user) {
+                    res.json({ loggedIn: false, message: 'user not exist' });
+                }
+                res.json({ user, loggedIn: true });
+            }
+        }
+    }
+);
