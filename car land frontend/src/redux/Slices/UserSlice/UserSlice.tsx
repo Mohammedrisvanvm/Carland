@@ -12,10 +12,13 @@ export const login: object | number | any = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
+      console.log(formValue);
+
       let response: any = await userLogin(formValue);
       return response.data.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
+      toast.error("pre");
     }
   }
 );
@@ -32,7 +35,11 @@ const UserSlice = createSlice({
     user,
     loading: false,
   },
-  reducers: {},
+  reducers: {
+    setGoogleAuth: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: {
     [login.pending]: (state: any, action: any) => {
       state.loading = true;
@@ -47,6 +54,6 @@ const UserSlice = createSlice({
   },
 });
 
-// export const { setUserDetails } = UserSlice.actions;
+export const { setGoogleAuth } = UserSlice.actions;
 
 export default UserSlice.reducer;

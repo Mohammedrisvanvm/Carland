@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { toast } from "react-toastify";
-import { login } from "../../../redux/Slices/UserSlice/UserSlice";
+import { login, setGoogleAuth } from "../../../redux/Slices/UserSlice/UserSlice";
 
 
 interface RootState {
@@ -28,7 +28,7 @@ export const GoogleAuth = () => {
 try {
   const res:AxiosResponse<UserData>= await userGoogleAuth(response)
   toast.success(res.data.message)
-dispatch(login(res.data.olduser))
+dispatch(setGoogleAuth(res.data.olduser))
 Navigate('/')
 } catch (error) {
   console.log("error");
