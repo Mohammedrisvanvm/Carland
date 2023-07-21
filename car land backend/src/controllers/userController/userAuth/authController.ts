@@ -65,57 +65,72 @@ export const userLoginController = AsyncHandler(
     }
 );
 
-export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<any> => {
+export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
-    console.log(req.body.value);
+
     if (req.body.value.access_token) {
         const access_token: string = req.body.value.access_token
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response: any) => {
             const email: string = response.data.email
-            const olduser: any = await userModel.findOne({ email })
-            let data: {} = response.data
-            console.log(response);
-
-
+            let olduser: any = await userModel.findOne({ email })
             if (olduser) {
-               const log= await userModel.findByIdAndUpdate(olduser._id, {
+                await userModel.findByIdAndUpdate(olduser._id, {
                     $set: {
-                      email: response.data.email,
-                      googleId: response.data.id,
-                      image: response.data.picture,
-                      verified_email: response.data.verified_email
+                        email: response.data.email,
+                        googleId: response.data.id,
+                        image: response.data.picture,
+                        verified_email: response.data.verified_email
                     }
-                  });
-                 
-                  console.log(log);   
-                return res.status(200).json({ olduser, message: `welcome back ${olduser.userName} ` })
+                });
+
+                olduser = await userModel.findOne({ email })
+                const accessToken = jwtSign(
+                    { id: olduser._id, name: olduser.userName, email: olduser.email },
+                    "1d"
+                );
+                const refreshToken = jwtSign(
+                    { id: olduser._id, email: olduser.email },
+                    "7d"
+                );
+
+                res.status(200).cookie("accessToken", accessToken, {
+                    maxAge: 300000,
+                    httpOnly: true,
+                });
+
+                res.cookie("refreshToken", refreshToken, {
+                    maxAge: 3.154e10,
+                    httpOnly: true,
+                }).json({ olduser, message: `welcome back ${olduser.userName} ` })
+
+            } else {
+                const user = await userModel.create({
+                    userName: response.data.name,
+                    email: response.data.email,
+                    googleId: response.data.id,
+                    image: response.data.picture,
+                    verified_email: response.data.verified_email
+                })
+                const accessToken = jwtSign(
+                    { id: user._id, name: user.userName, email: user.email },
+                    "1d"
+                );
+                const refreshToken = jwtSign(
+                    { id: user._id, email: user.email },
+                    "7d"
+                );
+
+                res.status(200).cookie("accessToken", accessToken, {
+                    maxAge: 300000,
+                    httpOnly: true,
+                });
+
+                res.cookie("refreshToken", refreshToken, {
+                    maxAge: 3.154e10,
+                    httpOnly: true,
+                }).json({ user, message: 'created' })
             }
-            const user = await userModel.create({
-                userName: response.data.name,
-                email: response.data.email,
-                googleId: response.data.id,
-                image: response.data.picture,
-                verified_email: response.data.verified_email
-            })
-            const accessToken = jwtSign(
-                { id: user._id, name: user.userName, email: user.email },
-                "1d"
-            );
-            const refreshToken = jwtSign(
-                { id: user._id, email: user.email },
-                "7d"
-            );
 
-            res.status(200).cookie("accessToken", accessToken, {
-                maxAge: 300000,
-                httpOnly: true,
-            });
-
-            res.cookie("refreshToken", refreshToken, {
-                maxAge: 3.154e10,
-                httpOnly: true,
-            }).json({ user })
-            return res.status(200).json({ olduser, message: 'created' })
         })
     }
 })
