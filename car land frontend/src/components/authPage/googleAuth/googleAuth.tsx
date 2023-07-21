@@ -1,32 +1,43 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
-import { log } from "console";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { toast } from "react-toastify";
+import { login } from "../../../redux/Slices/UserSlice/UserSlice";
+
 
 interface RootState {
   User: string;
 }
+interface UserData {
+  message:string,
+  user?:object,
+  olduser?:string
+}
 
 export const GoogleAuth = () => {
   const Navigate = useNavigate();
+  const dispatch=useDispatch()
   const User: {} = useSelector((state: RootState) => state.User);
   console.log(User);
-  const login = useGoogleLogin({
+  const authLogin = useGoogleLogin({
     onSuccess: async(response) => {
-      console.log(response);
+     
       
 try {
-  const res= await userGoogleAuth(response)
-
- 
-
+  const res:AxiosResponse<UserData>= await userGoogleAuth(response)
+  toast.success(res.data.message)
+dispatch(login(res.data.olduser))
+Navigate('/')
 } catch (error) {
+  console.log("error");
   
 }
-
     },
     onError: (error) => {
+      console.log(error);
+      
       throw new Error("login failed");
     },
   });
@@ -38,7 +49,7 @@ try {
         <div className="flex justify-center w-full mb-3">
           <button
             onClick={(event: React.MouseEvent<HTMLElement>) => 
-              login()
+              authLogin()
             }
             className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md md:w-auto bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
           >

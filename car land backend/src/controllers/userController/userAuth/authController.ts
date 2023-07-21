@@ -68,7 +68,9 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
         const access_token: string = req.body.value.access_token
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response) => {
             const email: string = response.data.email
-            const olduser = await userModel.findOne({ email })
+            const olduser:any = await userModel.findOne({ email })
+            const session = createSession(email, olduser.userName)
+
             if (olduser) {
                 return res.status(200).json({ olduser, message: `welcome back ${olduser.userName} ` })
             }
@@ -80,7 +82,6 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 verified_email: response.data.verified_email
             })
             return res.status(200).json({ olduser, message: 'created' })
-        
         })
     }
 })

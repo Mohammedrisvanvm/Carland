@@ -1,3 +1,4 @@
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { axiosBase } from "../../axios/axiosInstance";
 
 export const userSignUp = (value: {}): {} => {
@@ -7,6 +8,6 @@ export const userLogin=(value:{}):{}=>{
     return axiosBase.post("/users/auth/userLogin",{value})
 }
 
-export const userGoogleAuth=(value:{}):{}=>{
+export const userGoogleAuth=(value:{}):Promise<AxiosResponse<any>>=>{
 return axiosBase.post("/users/auth/userGoogleAuth",{value})
 }
