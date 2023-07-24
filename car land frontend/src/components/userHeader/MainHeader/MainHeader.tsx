@@ -3,17 +3,13 @@ import { useNavigate } from "react-router";
 import { LoginHeader } from "../loginHeader/loginHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { userCheck } from "../../../services/apis/userApi/userApi";
-import { AxiosError } from "axios";
-import { login, setUser } from "../../../redux/Slices/UserSlice/UserSlice";
+import {setUser } from "../../../redux/Slices/UserSlice/UserSlice";
 import { Authcheck } from "../../../interfaces/userAuth";
 
 interface RootState {
   user: string;
 }
-interface User {
-  _id: string;
-  email: string;
-}
+
 
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -111,8 +107,7 @@ export const MainHeader = (): ReactElement => {
           </li>
 
           {
-            //@ts-ignore
-            User.id ? (
+            User ? (
               <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
                 Risvan{" "}
                 <span className="ml-1">

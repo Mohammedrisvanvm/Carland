@@ -7,6 +7,10 @@ export const LoginHeader = () => {
         setIsToggled(!isToggled);
     };
 
+    const UserLogout=()=>{
+        
+    }
+
     return (
         <>
 
@@ -92,12 +96,12 @@ export const LoginHeader = () => {
                         </a>
                     </li>
                     <li>
-                        <a
-                            href="#"
+                        <button
+                            onClick={UserLogout}
                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                         >
                             Sign out
-                        </a>
+                        </button>
                     </li>
                 </ul>
             </div>
