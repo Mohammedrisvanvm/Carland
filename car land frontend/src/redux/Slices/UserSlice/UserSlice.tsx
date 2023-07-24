@@ -40,6 +40,9 @@ const UserSlice = createSlice({
     setGoogleAuth: (state, action) => {
       state.user = action.payload;
     },
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: {
     [login.pending]: (state: any, action: any) => {
@@ -55,6 +58,6 @@ const UserSlice = createSlice({
   },
 });
 
-export const { setGoogleAuth } = UserSlice.actions;
+export const { setGoogleAuth,setUser } = UserSlice.actions;
 
 export default UserSlice.reducer;

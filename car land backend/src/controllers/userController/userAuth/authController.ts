@@ -149,9 +149,7 @@ export const userLogoutController = AsyncHandler(
     })
 export const userCheck = AsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-        console.log('hoi');
 
-        // const token = req.cookies.refreshToken;
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
 

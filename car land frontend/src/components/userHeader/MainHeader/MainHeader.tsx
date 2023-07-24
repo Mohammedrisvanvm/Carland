@@ -1,39 +1,44 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LoginHeader } from "../loginHeader/loginHeader";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { userCheck } from "../../../services/apis/userApi/userApi";
 import { AxiosError } from "axios";
+import { login, setUser } from "../../../redux/Slices/UserSlice/UserSlice";
+import { Authcheck } from "../../../interfaces/userAuth";
 
 interface RootState {
   user: string;
 }
 interface User {
-  user: {
-    email: string;
-    id: string;
-  };
+  _id: string;
+  email: string;
 }
 
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const User: string | any = useSelector((state: RootState) => state.user);
-
-  console.log(User.id);
+  const dispatch = useDispatch();
+  const User: Authcheck | string = useSelector(
+    (state: RootState) => state.user
+  );
   useEffect(() => {
     (async () => {
       try {
-        let c :{}= await userCheck();
-        console.log(c,"fghj");
+        let check: Authcheck | null = await userCheck();
+        if (check && check.data && check.data.user) {
+          dispatch(setUser(check.data.user));
+        } else {
+          console.error(
+            "User data is undefined or not in the expected format."
+          );
+        }
       } catch (error: any) {
         console.log(error);
-        
-        // console.log(error.response.data.message);
       }
     })();
   }, []);
- // @ts-ignore
+
 
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
