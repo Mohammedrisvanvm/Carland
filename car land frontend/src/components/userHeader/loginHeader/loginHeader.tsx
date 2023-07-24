@@ -1,14 +1,18 @@
 import { useState } from 'react';
+import { userLogout } from '../../../services/apis/userApi/userApi';
+import { useNavigate } from 'react-router';
 
 export const LoginHeader = () => {
+    const Navigate=useNavigate()
     const [isToggled, setIsToggled] = useState(false);
 
     const handleClick = () => {
         setIsToggled(!isToggled);
     };
 
-    const UserLogout=()=>{
-        
+    const UserLogout=async()=>{
+       await userLogout() 
+       Navigate('/')
     }
 
     return (
