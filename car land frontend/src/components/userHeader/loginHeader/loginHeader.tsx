@@ -12,6 +12,7 @@ export const LoginHeader = () => {
 
     const UserLogout=async()=>{
        await userLogout() 
+       handleClick()
        Navigate('/')
     }
 

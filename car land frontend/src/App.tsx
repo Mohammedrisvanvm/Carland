@@ -20,11 +20,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<UserRoutes />} />
-
-
-
-
-
+            <Route path="/rent/*" element={<rentRoutes />} />
+            <Route path="/cab/*" element={<UserRoutes />} />
+            <Route path="/admin" element={<UserRoutes />} />
           </Routes>
 
 

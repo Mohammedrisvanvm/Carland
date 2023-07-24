@@ -140,7 +140,6 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
 
 export const userLogoutController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-        console.log('logout');
         
         res.cookie('accessToken', '', { httpOnly: true, maxAge: 0 })
         res
