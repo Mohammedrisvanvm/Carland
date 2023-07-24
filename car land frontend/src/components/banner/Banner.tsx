@@ -38,9 +38,10 @@ export const Banner = ():ReactElement  => {
               </span>
             </h2>
             <p className="pr-5 mb-5 text-base text-gray-700 md:text-lg">
-              Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-              accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-              quae. explicabo.
+            we are committed to providing exceptional car rental
+              and cab services to our customers. With a diverse fleet of
+              vehicles and a team of experienced drivers, we aim to make your
+              travel experience comfortable and convenient. 
             </p>
             <div className="flex items-center">
               <button

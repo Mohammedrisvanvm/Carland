@@ -1,0 +1,719 @@
+.box {
+    background-color: transparent;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    }
+    .box .div-sort-container-wrapper {
+    border: 0px none;
+    height: 960px;
+    position: relative;
+    width: 360px;
+    }
+    .box .div-sort-container {
+    background-color: #ffffff;
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    box-shadow: 0px 0px 1px 1px #e0e0e0;
+    height: 960px;
+    left: 0;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 360px;
+    }
+    .box .div-filter-ctr {
+    height: 215px;
+    left: 11px;
+    position: absolute;
+    top: 26px;
+    width: 338px;
+    }
+    .box .div-sort-by-filter {
+    align-items: flex-start;
+    display: inline-flex;
+    gap: 233.31px;
+    left: 0;
+    padding: 0px 3.81e-6px 0px 0px;
+    position: absolute;
+    top: 0;
+    }
+    .box .text-wrapper {
+    color: #1f1f1f;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+    }
+    .box .button {
+    align-items: flex-start;
+    background-color: #ffffff;
+    display: inline-flex;
+    flex: 0 0 auto;
+    padding: 1px 5.69px 1px 6px;
+    position: relative;
+    }
+    .box .div {
+    color: #10a310;
+    font-family: "Arial-Bold", Helvetica;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+    }
+    .box .div-list-items {
+    height: 170px;
+    left: 0;
+    position: absolute;
+    top: 28px;
+    width: 338px;
+    }
+    .box .div-list {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 6px;
+    position: absolute;
+    top: 4px;
+    width: 78px;
+    }
+    .box .icon {
+    height: 24px;
+    left: 27px;
+    position: absolute;
+    top: 17px;
+    width: 24px;
+    }
+    .box .text-wrapper-2 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 11px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-2 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 88px;
+    position: absolute;
+    top: 4px;
+    width: 78px;
+    }
+    .box .text-wrapper-3 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 8px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-3 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 171px;
+    position: absolute;
+    top: 4px;
+    width: 78px;
+    }
+    .box .div-list-4 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 254px;
+    position: absolute;
+    top: 4px;
+    width: 78px;
+    }
+    .box .text-wrapper-4 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 10px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-5 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 6px;
+    position: absolute;
+    top: 85px;
+    width: 78px;
+    }
+    .box .text-wrapper-5 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 16px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-6 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 88px;
+    position: absolute;
+    top: 85px;
+    width: 78px;
+    }
+    .box .text-wrapper-6 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 19px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-7 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 171px;
+    position: absolute;
+    top: 85px;
+    width: 78px;
+    }
+    .box .div-list-8 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 254px;
+    position: absolute;
+    top: 85px;
+    width: 78px;
+    }
+    .box .text-wrapper-7 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 12px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-filter-divider {
+    background-color: #e0e0e0;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 214px;
+    width: 338px;
+    }
+    .box .div-filter-ctr-2 {
+    height: 119px;
+    left: 11px;
+    position: absolute;
+    top: 267px;
+    width: 338px;
+    }
+    .box .div-filter-item {
+    height: 94px;
+    left: 4px;
+    position: absolute;
+    top: 4px;
+    width: 330px;
+    }
+    .box .img {
+    height: 24px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 24px;
+    }
+    .box .div-2 {
+    height: 94px;
+    left: 32px;
+    position: absolute;
+    top: 0;
+    width: 298px;
+    }
+    .box .text-wrapper-8 {
+    color: #1f1f1f;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 14px;
+    font-weight: 400;
+    height: 18px;
+    left: 0;
+    letter-spacing: 0;
+    line-height: normal;
+    position: absolute;
+    top: -1px;
+    }
+    .box .div-sub-text {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    left: 0;
+    padding: 0px 40px 0px 0px;
+    position: absolute;
+    top: 18px;
+    }
+    .box .p {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+    }
+    .box .text-wrapper-9 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    width: fit-content;
+    }
+    .box .div-search-input {
+    height: 36px;
+    left: 0;
+    position: absolute;
+    top: 58px;
+    width: 298px;
+    }
+    .box .overlap-group {
+    border-radius: 4px;
+    height: 36px;
+    position: relative;
+    }
+    .box .input {
+    align-items: flex-start;
+    background-color: #ffffff;
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    display: inline-flex;
+    left: 0;
+    padding: 11px;
+    position: absolute;
+    top: 0;
+    }
+    .box .div-placeholder {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    padding: 0px 171px 0px 0px;
+    position: relative;
+    }
+    .box .try-search-honda {
+    color: #666666;
+    font-family: "Arial-Narrow", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: normal;
+    margin-top: -1px;
+    position: relative;
+    white-space: nowrap;
+    width: fit-content;
+    }
+    .box .icons-search-svg {
+    height: 16px;
+    left: 272px;
+    position: absolute;
+    top: 10px;
+    width: 16px;
+    }
+    .box .div-filter-divider-2 {
+    background-color: #e0e0e0;
+    height: 1px;
+    left: 0;
+    position: absolute;
+    top: 118px;
+    width: 338px;
+    }
+    .box .div-filter-ctr-3 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    left: 11px;
+    position: absolute;
+    top: 412px;
+    }
+    .box .div-list-items-2 {
+    height: 170px;
+    position: relative;
+    width: 338px;
+    }
+    .box .div-wrapper {
+    align-items: flex-start;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    display: inline-flex;
+    left: 6px;
+    min-width: 72px;
+    padding: 10px 31.34px 10px 32.16px;
+    position: absolute;
+    top: 23px;
+    }
+    .box .text-wrapper-10 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0;
+    line-height: 18px;
+    margin-top: -1px;
+    position: relative;
+    text-align: center;
+    white-space: nowrap;
+    width: fit-content;
+    }
+    .box .text-wrapper-11 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 9px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .text-wrapper-12 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 21px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .text-wrapper-13 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 24px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-9 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    left: 6px;
+    position: absolute;
+    top: 85px;
+    width: 161px;
+    }
+    .box .icon-2 {
+    height: 24px;
+    left: 68px;
+    position: absolute;
+    top: 17px;
+    width: 24px;
+    }
+    .box .text-wrapper-14 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 69px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-10 {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    height: 74px;
+    left: 171px;
+    position: absolute;
+    top: 86px;
+    width: 161px;
+    }
+    .box .icon-3 {
+    height: 24px;
+    left: 68px;
+    position: absolute;
+    top: 16px;
+    width: 24px;
+    }
+    .box .text-wrapper-15 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 62px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 45px;
+    white-space: nowrap;
+    }
+    .box .div-filter-ctr-4 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    left: 11px;
+    position: absolute;
+    top: 636px;
+    }
+    .box .div-list-items-3 {
+    align-items: center;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 4px 0px;
+    padding: 4px 6px 9px;
+    position: relative;
+    }
+    .box .div-list-11 {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    height: 74px;
+    position: relative;
+    width: 106px;
+    }
+    .box .icon-4 {
+    height: 24px;
+    left: 41px;
+    position: absolute;
+    top: 16px;
+    width: 24px;
+    }
+    .box .text-wrapper-16 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 29px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 45px;
+    white-space: nowrap;
+    }
+    .box .div-list-12 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    position: relative;
+    width: 106px;
+    }
+    .box .icon-5 {
+    height: 24px;
+    left: 41px;
+    position: absolute;
+    top: 17px;
+    width: 24px;
+    }
+    .box .text-wrapper-17 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 29px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-filter-ctr-5 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    left: 11px;
+    position: absolute;
+    top: 779px;
+    }
+    .box .div-list-13 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    position: relative;
+    width: 78.5px;
+    }
+    .box .text-wrapper-18 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 23px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .text-wrapper-19 {
+    color: #000000;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 22px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 46px;
+    white-space: nowrap;
+    }
+    .box .div-list-14 {
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    height: 74px;
+    position: relative;
+    width: 78.5px;
+    }
+    .box .icon-6 {
+    height: 24px;
+    left: 27px;
+    position: absolute;
+    top: 16px;
+    width: 24px;
+    }
+    .box .text-wrapper-20 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 27px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 45px;
+    white-space: nowrap;
+    }
+    .box .text-wrapper-21 {
+    color: #a8a8a8;
+    font-family: "IBM Plex Sans-Regular", Helvetica;
+    font-size: 12px;
+    font-weight: 400;
+    height: 18px;
+    left: 19px;
+    letter-spacing: 0;
+    line-height: 18px;
+    position: absolute;
+    text-align: center;
+    top: 45px;
+    white-space: nowrap;
+    }
+    .box .div-filter-ctr-6 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 10px;
+    left: 11px;
+    position: absolute;
+    top: 922px;
+    }
+    .box .div-list-items-4 {
+    align-items: flex-start;
+    display: inline-flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    gap: 4px 0px;
+    padding: 4px 6px 9px;
+    position: relative;
+    }
+    .box .div-list-15 {
+    border: 1px solid;
+    border-color: #e0e0e0;
+    border-radius: 4px;
+    height: 76px;
+    position: relative;
+    width: 161px;
+    }
+    

@@ -35,12 +35,13 @@ export const ServiceSelection = () => {
              of a thousand miles begins with a single step
           </h2>
           <p className="text-base text-gray-700 md:text-lg">
-          The journey of a thousand miles begins with a single step
+          The journey of a thousand miles
+           begins with a single step
           </p>
         </div>
         
         
-        <div className="flex justify-center">
+        <div className="flex justify-evenly">
            
           <div className="sm:text-center">
             <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
@@ -49,10 +50,11 @@ export const ServiceSelection = () => {
             </div>
             <h6 className="mb-2 font-semibold leading-5">Pick your Rent Cars</h6>
             <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto">
-            Rent a car and explore the city at your own pace
+            Rent a car and explore 
+            <br />the city at your own pace
             </p>
             <button
-             onClick={()=>Navigate('/rent')}
+             onClick={()=>Navigate('/rent/renthome')}
               aria-label=""
               className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
             >
@@ -64,11 +66,11 @@ export const ServiceSelection = () => {
            
               <img src="https://resize.indiatvnews.com/en/resize/newbucket/730_-/2017/06/cab-1497595760.jpg" alt="" />
             </div>
-            <h6 className="mb-2 font-semibold leading-5">Cab Booking</h6>
+            <h6 className="mb-2 font-semibold leading-5">Pick your Cab Cars</h6>
             <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto">
             Cabs are a great way to meet new people            </p>
             <button
-            onClick={()=>Navigate('/cab')}
+            onClick={()=>Navigate('/cab/cabhome')}
               aria-label=""
               className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
             >

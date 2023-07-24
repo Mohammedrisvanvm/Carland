@@ -107,7 +107,8 @@ export const MainHeader = (): ReactElement => {
           </li>
 
           {
-            User ? (
+            //@ts-ignore
+            User.name ? (
               <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
                 Risvan{" "}
                 <span className="ml-1">
