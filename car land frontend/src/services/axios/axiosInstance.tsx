@@ -5,6 +5,9 @@ import axios from "axios";
     timeout:5000,
     headers: {
         "Content-Type": "application/json",
+        
       },
-      withCredentials:true
+      withCredentials:true,
+      
+  
  })

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { userCheck, userGoogleAuth, userLoginController, userLogoutController, userSignUpController } from "../../controllers/userController/userAuth/authController";
+// import { userCheck } from "../../middlewares/userCheckMiddleware/userCheckMiddleware";
 
 const userRouers=Router()
 

@@ -1,4 +1,8 @@
+import { Button } from "flowbite-react";
+import { useNavigate } from "react-router";
+
 export const ServiceSelection = () => {
+  const Navigate=useNavigate()
     return (
       <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
@@ -26,13 +30,12 @@ export const ServiceSelection = () => {
                   height="24"
                 />
               </svg>
-              <span className="relative">The</span>
+              <span className="relative">The journey</span>
             </span>{' '}
-            quick, brown fox jumps over a lazy dog
+             of a thousand miles begins with a single step
           </h2>
           <p className="text-base text-gray-700 md:text-lg">
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-            accusantium doloremque rem aperiam, eaque ipsa quae.
+          The journey of a thousand miles begins with a single step
           </p>
         </div>
         
@@ -41,61 +44,36 @@ export const ServiceSelection = () => {
            
           <div className="sm:text-center">
             <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-              <svg
-                className="w-12 h-12 text-deep-purple-accent-400 sm:w-20 sm:h-20"
-                stroke="currentColor"
-                viewBox="0 0 52 52"
-              >
-                <polygon
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                  points="29 13 14 29 25 29 23 39 38 23 27 23"
-                />
-              </svg>
+         
+              <img src="https://i0.wp.com/www.afcarrental.com.my/wp-content/uploads/2021/11/fortuner-afcarrental.jpg?fit=640%2C400&ssl=1" alt="" />
             </div>
-            <h6 className="mb-2 font-semibold leading-5">Chainsaw foal hay</h6>
+            <h6 className="mb-2 font-semibold leading-5">Pick your Rent Cars</h6>
             <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto">
-              Satoshi Nakamoto launched lots of decentralisation when Litecoin
-              required
+            Rent a car and explore the city at your own pace
             </p>
-            <a
-              href="/"
+            <button
+             onClick={()=>Navigate('/rent')}
               aria-label=""
               className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
             >
               Learn more
-            </a>
+            </button>
           </div>
           <div className="sm:text-center">
             <div className="flex items-center justify-center w-16 h-16 mb-4 rounded-full bg-indigo-50 sm:mx-auto sm:w-24 sm:h-24">
-              <svg
-                className="w-12 h-12 text-deep-purple-accent-400 sm:w-20 sm:h-20"
-                stroke="currentColor"
-                viewBox="0 0 52 52"
-              >
-                <polygon
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  fill="none"
-                  points="29 13 14 29 25 29 23 39 38 23 27 23"
-                />
-              </svg>
+           
+              <img src="https://resize.indiatvnews.com/en/resize/newbucket/730_-/2017/06/cab-1497595760.jpg" alt="" />
             </div>
-            <h6 className="mb-2 font-semibold leading-5">Pick up truck</h6>
+            <h6 className="mb-2 font-semibold leading-5">Cab Booking</h6>
             <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto">
-              Bavaria ipsum dolor sit amet Radler Schneid vui huift vui ognudelt i
-              mechad
-            </p>
-            <a
-              href="/"
+            Cabs are a great way to meet new people            </p>
+            <button
+            onClick={()=>Navigate('/cab')}
               aria-label=""
               className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
             >
               Learn more
-            </a>
+            </button>
           </div>
         </div>
         </div>

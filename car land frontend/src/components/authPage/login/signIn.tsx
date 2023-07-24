@@ -29,9 +29,6 @@ export const SignIn = () => {
      
         await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-    
-    
-     
      await dispatch(login(values))
 Navigate('/')
     } catch (error:any) {

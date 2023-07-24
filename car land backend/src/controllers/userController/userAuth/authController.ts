@@ -6,6 +6,7 @@ import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { createSession } from "../../../helpers/sessionController/sessionController";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
+import { MongooseOptions } from "mongoose";
 
 export const userSignUpController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
@@ -30,6 +31,7 @@ export const userSignUpController = AsyncHandler(
 );
 export const userLoginController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+        console.log('hoi1');
         // const { email, password } = req.body;
         const { email, password } = req.body.value;
         console.log(email, password, 11);
@@ -43,10 +45,10 @@ export const userLoginController = AsyncHandler(
 
             const accessToken = jwtSign(
                 { id: userExist._id, name: userExist.userName, email: userExist.email },
-                "1d"
+                "5s"
             );
             const refreshToken = jwtSign(
-                { id: userExist._id, email: userExist.email },
+                { email: userExist.email },
                 "7d"
             );
 
@@ -56,7 +58,7 @@ export const userLoginController = AsyncHandler(
             });
 
             res.cookie("refreshToken", refreshToken, {
-                maxAge: 3.154e10,
+                maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
             }).json({ user: userExist })
         } else {
@@ -67,7 +69,7 @@ export const userLoginController = AsyncHandler(
 
 export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
-
+    console.log('hoi2');
     if (req.body.value.access_token) {
         const access_token: string = req.body.value.access_token
         axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response: any) => {
@@ -86,10 +88,10 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 olduser = await userModel.findOne({ email })
                 const accessToken = jwtSign(
                     { id: olduser._id, name: olduser.userName, email: olduser.email },
-                    "1d"
+                    "5s"
                 );
                 const refreshToken = jwtSign(
-                    { id: olduser._id, email: olduser.email },
+                    { email: olduser.email },
                     "7d"
                 );
 
@@ -99,7 +101,7 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 });
 
                 res.cookie("refreshToken", refreshToken, {
-                    maxAge: 3.154e10,
+                    maxAge: 7 * 24 * 60 * 60,
                     httpOnly: true,
                 }).json({ olduser, message: `welcome back ${olduser.userName} ` })
 
@@ -113,10 +115,10 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 })
                 const accessToken = jwtSign(
                     { id: user._id, name: user.userName, email: user.email },
-                    "1d"
+                    "5s"
                 );
                 const refreshToken = jwtSign(
-                    { id: user._id, email: user.email },
+                    { email: user.email },
                     "7d"
                 );
 
@@ -126,7 +128,7 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 });
 
                 res.cookie("refreshToken", refreshToken, {
-                    maxAge: 3.154e10,
+                    maxAge: 7 * 24 * 60 * 60,
                     httpOnly: true,
                 }).json({ user, message: 'created' })
             }
@@ -146,27 +148,43 @@ export const userLogoutController = AsyncHandler(
 
     })
 export const userCheck = AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
+    async (req: Request, res: Response): Promise<any> => {
+        console.log('hoi');
 
         // const token = req.cookies.refreshToken;
-        const token = req.cookies.accessToken;
+        const accessToken = req.cookies.accessToken;
+        const refreshToken = req.cookies.refreshToken;
 
-        if (!token) {
+        if (!accessToken) {
+            const verifiedJWT = verifyJwt(refreshToken)
 
-            throw new Error("not token")
-        } else {
-
-            const verifiedJWT = verifyJwt(token)
 
             if (verifiedJWT) {
 
-                const user = await userModel.findById(verifiedJWT.payload.id, { password: 0 });
+                const user: IUser | null = await userModel.findOne({ email: verifiedJWT.payload.email }, { password: 0 });
+
 
                 if (!user) {
-                    res.json({ loggedIn: false, message: 'user not exist' });
+                    throw new Error('user not exist')
+
                 }
-                res.json({ user, loggedIn: true });
+                const access = await jwtSign({ id: user._id, name: user.userName, email: user.email }, '5s')
+
+
+                const Ref = await jwtSign({ email: user.email }, '7d')
+                res.cookie('accessToken', access, { httpOnly: true, maxAge: 5000 })
+                res.cookie('refreshToken', Ref, { httpOnly: true, maxAge: 7 * 24 * 60 * 60 }).json({ user })
+
+            } else {
+                throw new Error("token is not avialable");
+
             }
+        } else {
+            const verify = verifyJwt(accessToken)
+            const user: IUser | null = await userModel.findOne(verify.payload.email, { password: 0 });
+
+            res.json({ user, message: 'token available' })
         }
     }
+
 );

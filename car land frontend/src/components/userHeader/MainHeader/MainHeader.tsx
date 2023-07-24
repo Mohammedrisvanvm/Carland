@@ -25,13 +25,15 @@ export const MainHeader = (): ReactElement => {
     (async () => {
       try {
         let c :{}= await userCheck();
-        console.log(c);
+        console.log(c,"fghj");
       } catch (error: any) {
-        console.log(error.response.data.message);
+        console.log(error);
+        
+        // console.log(error.response.data.message);
       }
     })();
   }, []);
-  //@ts-ignore
+ // @ts-ignore
 
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
