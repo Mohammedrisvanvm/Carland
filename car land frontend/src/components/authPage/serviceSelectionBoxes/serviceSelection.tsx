@@ -51,7 +51,7 @@ export const ServiceSelection = () => {
             <h6 className="mb-2 font-semibold leading-5">Pick your Rent Cars</h6>
             <p className="max-w-md mb-3 text-sm text-gray-900 sm:mx-auto">
             Rent a car and explore 
-            <br />the city at your own pace
+            the city at your own pace
             </p>
             <button
              onClick={()=>Navigate('/rent/renthome')}
