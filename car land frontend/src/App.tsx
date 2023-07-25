@@ -8,6 +8,7 @@ import { ToastContainer } from "react-toastify";
 import CabRouters from "./routes/cabRouters";
 import { Box } from "./test/test";
 import RentRouters from "./routes/rentRouters";
+import AdminRouters from "./routes/admin";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Route path="/*" element={<UserRoutes />} />
           <Route path="/rent/*" element={<RentRouters />} />
           <Route path="/cab/*" element={<CabRouters />} />
-          <Route path="/admin" element={<UserRoutes />} />
+          <Route path="/admin/*" element={<AdminRouters />} />
         </Routes>
       </BrowserRouter>
 
