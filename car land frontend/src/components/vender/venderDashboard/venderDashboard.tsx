@@ -40,7 +40,7 @@ const VenderDashboard = () => {
                 alt="FlowBite Logo"
               />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                Car Land Admin
+                Car Land Vender
               </span>
             </div>
             <div className="flex items-center">
@@ -62,31 +62,25 @@ const VenderDashboard = () => {
                   </button>
                 </div>
                 <div
-                className={`z-50 ${
+                  className={`z-50 ${
                     dropdown ? "block" : "hidden"
-                  } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600`}
-                  id="dropdown-user"
+                  } my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600 absolute right-0 top-full`}
+                  id="user-dropdown"
                 >
-                  <div className="px-4 py-3" role="none">
-                    <p
-                      className="text-sm text-gray-900 dark:text-white"
-                      role="none"
-                    >
-                      Neil Sims
-                    </p>
-                    <p
-                      className="text-sm font-medium text-gray-900 truncate dark:text-gray-300"
-                      role="none"
-                    >
-                      neil.sims@flowbite.com
-                    </p>
+                  <div className="px-4 py-3">
+                    <span className="block text-sm text-gray-900 dark:text-white">
+                      Bonnie Green
+                    </span>
+                    <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
+                      name@flowbite.com
+                    </span>
                   </div>
-                  <ul className="py-1" role="none">
+
+                  <ul className="py-2" aria-labelledby="user-menu-button">
                     <li>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Dashboard
                       </a>
@@ -94,8 +88,7 @@ const VenderDashboard = () => {
                     <li>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Settings
                       </a>
@@ -103,20 +96,18 @@ const VenderDashboard = () => {
                     <li>
                       <a
                         href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Earnings
                       </a>
                     </li>
                     <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
-                        role="menuitem"
+                      <button
+                        // onClick={UserLogout}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Sign out
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </div>
@@ -131,6 +122,15 @@ const VenderDashboard = () => {
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar"
       >
+        <div className="grid ">
+          <button className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40">
+            <p className="text-2xl text-gray-400 dark:text-gray-500">
+              <h1>Hub Name</h1>
+            </p>
+          </button>
+        </div>
+        <br />
+        <br />
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
@@ -161,11 +161,12 @@ const VenderDashboard = () => {
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  viewBox="0 0 18 18"
+                  height="1em"
+                  viewBox="0 0 640 512"
                 >
-                  <path d="M6.143 0H1.857A1.857 1.857 0 0 0 0 1.857v4.286C0 7.169.831 8 1.857 8h4.286A1.857 1.857 0 0 0 8 6.143V1.857A1.857 1.857 0 0 0 6.143 0Zm10 0h-4.286A1.857 1.857 0 0 0 10 1.857v4.286C10 7.169 10.831 8 11.857 8h4.286A1.857 1.857 0 0 0 18 6.143V1.857A1.857 1.857 0 0 0 16.143 0Zm-10 10H1.857A1.857 1.857 0 0 0 0 11.857v4.286C0 17.169.831 18 1.857 18h4.286A1.857 1.857 0 0 0 8 16.143v-4.286A1.857 1.857 0 0 0 6.143 10Zm10 0h-4.286A1.857 1.857 0 0 0 10 11.857v4.286c0 1.026.831 1.857 1.857 1.857h4.286A1.857 1.857 0 0 0 18 16.143v-4.286A1.857 1.857 0 0 0 16.143 10Z" />
+                  <path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z" />
                 </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Kanban</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Drivers</span>
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   Pro
                 </span>
@@ -218,11 +219,12 @@ const VenderDashboard = () => {
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="currentColor"
-                  viewBox="0 0 18 20"
+                  height="1em"
+                  viewBox="0 0 640 512"
                 >
-                  <path d="M17 5.923A1 1 0 0 0 16 5h-3V4a4 4 0 1 0-8 0v1H2a1 1 0 0 0-1 .923L.086 17.846A2 2 0 0 0 2.08 20h13.84a2 2 0 0 0 1.994-2.153L17 5.923ZM7 9a1 1 0 0 1-2 0V7h2v2Zm0-5a2 2 0 1 1 4 0v1H7V4Zm6 5a1 1 0 1 1-2 0V7h2v2Z" />
+                  <path d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z" />
                 </svg>
-                <span className="flex-1 ml-3 whitespace-nowrap">Products</span>
+                <span className="flex-1 ml-3 whitespace-nowrap">Hub</span>
               </a>
             </li>
             <li>
@@ -274,7 +276,7 @@ const VenderDashboard = () => {
       <div className="p-4 sm:ml-64">
         <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
           <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
               <p className="text-2xl text-gray-400 dark:text-gray-500">
                 <svg
                   className="w-3.5 h-3.5"
@@ -293,7 +295,7 @@ const VenderDashboard = () => {
                 </svg>
               </p>
             </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
               <p className="text-2xl text-gray-400 dark:text-gray-500">
                 <svg
                   className="w-3.5 h-3.5"
@@ -312,7 +314,7 @@ const VenderDashboard = () => {
                 </svg>
               </p>
             </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
+            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
               <p className="text-2xl text-gray-400 dark:text-gray-500">
                 <svg
                   className="w-3.5 h-3.5"

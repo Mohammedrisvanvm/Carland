@@ -1,10 +1,14 @@
 import React from 'react'
+import { Route, Routes } from 'react-router'
+import VenderDashboard from '../components/vender/venderDashboard/venderDashboard'
 
 const VenderRouters = () => {
   return (
-    <div>
-      
-    </div>
+ <>
+ <Routes>
+    <Route path='/venderhome' element={<VenderDashboard/>}/>
+ </Routes>
+ </>
   )
 }
 
