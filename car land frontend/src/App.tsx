@@ -9,7 +9,7 @@ import CabRouters from "./routes/cabRouters";
 import { Box } from "./test/test";
 import RentRouters from "./routes/rentRouters";
 import AdminRouters from "./routes/admin";
-import VenderRouters from "./routes/vender";
+import VenderRouters from "./routes/venderRouters";
 
 function App() {
   return (
