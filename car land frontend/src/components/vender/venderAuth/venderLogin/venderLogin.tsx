@@ -18,8 +18,8 @@ const initialValues: MyFormValue = {
 export const VenderLogin = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user);
-  console.log(user);
+  const vender = useSelector((state: any) => state.vender);
+  console.log(vender);
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {
