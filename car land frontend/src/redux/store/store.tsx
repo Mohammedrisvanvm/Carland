@@ -5,7 +5,8 @@ import UserSlice from "../Slices/UserSlice/UserSlice";
 
 export const Store=configureStore({
     reducer:{
-      user:UserSlice  
+      user:UserSlice ,
+      vender:UserSlice
     }
 }) 
 
