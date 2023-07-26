@@ -1,4 +1,4 @@
-import { Model, Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
 
 const vehicleSchema: Schema = new Schema({
