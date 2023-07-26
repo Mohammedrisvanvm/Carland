@@ -14,7 +14,7 @@ const VenderSchema:Schema=new Schema({
         unique: true,
     },
     hubs:{
-        type:Array
+        type:[]
     }
     ,
     password: {

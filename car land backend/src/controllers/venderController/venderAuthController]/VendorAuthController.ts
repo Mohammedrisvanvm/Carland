@@ -5,13 +5,16 @@ import IVender from "../../../interfaces/venderInterface";
 import VenderModel from "../../../models/venderSchema";
 import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
 
-
+interface body{
+    userName:string
+}
 export const vendorLoginController=AsyncHandler(async (req: Request, res: Response): Promise<void> => {
 
-    const { email, password } = req.body.value;
+    // const { email, password } = req.body.value;
+     const { email, password } = req.body
     console.log(email, password, 11);
 
-    const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.value.email });
+    const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.email });
     console.log(venderExist);
 
     if (venderExist && (await venderExist.matchPassword(password))) {
@@ -42,3 +45,26 @@ export const vendorLoginController=AsyncHandler(async (req: Request, res: Respon
 }
 
 )
+export const venderSignUpController=AsyncHandler(async (req: Request, res: Response): Promise<void> =>{
+
+    // const { userName, email, password } = req.body.value;
+    const { userName, email, password } = req.body;
+
+    const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.email });
+
+
+    if (venderExist) {
+        throw new Error("User Already Exists");
+    } else {
+       
+        
+        const user: {} = await VenderModel.create({
+            userName,
+            email,
+            password,
+        });
+      
+        
+        res.status(201).json({ user });
+    }
+})
