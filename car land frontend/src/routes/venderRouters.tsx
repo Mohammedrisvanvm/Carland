@@ -1,10 +1,10 @@
-import React from 'react'
 import { Route, Routes } from 'react-router'
 import { VendorLogin } from '../components/vender/venderAuth/venderLogin/vendorLogin'
 import CarList from '../components/vender/list/carList/carList'
 import VendorHomePage from '../components/vender/venderHome/VenderHomePage'
 import Dashboard from '../components/admin/adminDashboard/tesxt'
-import VendorDashboardPage from '../components/vender/venderDashboard/venderDashboardpage'
+import VenderDashboardPage from '../components/vender/venderDashboard/venderDashboardpage'
+import CarManagementPage from '../components/vender/venderCarManagementPage/carManagementPage'
 
 const VendorRouters = () => {
   return (
@@ -12,10 +12,10 @@ const VendorRouters = () => {
  <Routes>
     <Route path='/vendorhome' element={<VendorHomePage/>}/>
     <Route path='/vendorLogin' element={<VendorLogin/>}/>
-    <Route path='/vendordashboard' element={<VendorDashboardPage/>}/>
-    <Route path='/vendorcars' element={<Dashboard/>}/>
-    <Route path='/vendordrivers' element={<Dashboard/>}/>
-    <Route path='/vendorDas' element={<Dashboard/>}/>
+    <Route path='/vendordashboard' element={<VenderDashboardPage/>}/>
+    <Route path='/vendorcars' element={<CarManagementPage/>}/>
+    <Route path='/vendordrivers' element={<CarList/>}/>
+    <Route path='/vendorhubs' element={<Dashboard/>}/>
     <Route path='/vendorList' element={<CarList/>}/>
  </Routes>
  </>

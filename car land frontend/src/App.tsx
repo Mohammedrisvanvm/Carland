@@ -6,7 +6,7 @@ import UserRoutes from "./routes/userRoutes";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import CabRouters from "./routes/cabRouters";
-import { Box } from "./test/test";
+
 import RentRouters from "./routes/rentRouters";
 import AdminRouters from "./routes/admin";
 import VendorRouters from "./routes/venderRouters";

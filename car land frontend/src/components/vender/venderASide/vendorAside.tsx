@@ -1,17 +1,23 @@
-import React from 'react'
-import { useNavigate } from 'react-router'
-
-const VendorAside = () => {
-    const Navigate=useNavigate()
+import React, { ReactElement, } from 'react'
+import { useNavigate } from "react-router";
+interface IPROPS {
+  value: {
+    Component: ReactElement;
+    
+  }
+}
+const VendorAside:React.FC<IPROPS> = ({ value}) => {
+  const Navigate = useNavigate();
+  const Component = value.Component;
   return (
-   <>
-       <aside
+    <>
+      <aside
         id="logo-sidebar"
         className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar"
       >
         <div className="grid ">
-          <button className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40">
+          <button className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40" onClick={()=>Navigate('/vendor/vendorhome')}>
             <p className="text-2xl text-gray-400 dark:text-gray-500">
               <h1>Hub Name</h1>
             </p>
@@ -23,7 +29,9 @@ const VendorAside = () => {
           <ul className="space-y-2 font-medium">
             <li>
               <div
-                onClick={()=>{Navigate('/vendor/vendordashboard')}}
+                onClick={() => {
+                  Navigate("/vendor/vendordashboard");
+                }}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -58,8 +66,8 @@ const VendorAside = () => {
               </a>
             </li>
             <li>
-              <a
-                href="#"
+              <div
+                onClick={()=>Navigate('/vendor/vendordrivers')}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -77,12 +85,12 @@ const VendorAside = () => {
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   Pro
                 </span>
-              </a>
+              </div>
             </li>
 
             <li>
-              <a
-                href="#"
+              <div
+               onClick={()=>Navigate('/vendor/vendorcars')}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -99,7 +107,7 @@ const VendorAside = () => {
                 <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   Pro
                 </span>
-              </a>
+              </div>
             </li>
             <li>
               <a
@@ -178,8 +186,16 @@ const VendorAside = () => {
             </li>
           </ul>
         </div>
-      </aside></>
-  )
-}
+      </aside>
+      <div className="sm:ml-64">
+     
+      {Component}
+      </div>
+     
+   
 
-export default VendorAside
+    </>
+  );
+};
+
+export default VendorAside;
