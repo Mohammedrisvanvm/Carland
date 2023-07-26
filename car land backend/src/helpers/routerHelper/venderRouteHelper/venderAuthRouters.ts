@@ -1,8 +1,9 @@
 import { Router } from "express";
-const venderAuthRouters=Router()
+import { vendorLoginController } from "../../../controllers/venderController/venderAuthController]/VendorAuthController";
+const vendorAuthRouters=Router()
+
+vendorAuthRouters.get('/vendorLogin',vendorLoginController)
 
 
 
-
-
-export default venderAuthRouters
+export default vendorAuthRouters

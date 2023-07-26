@@ -3,7 +3,7 @@ import { DBconnect } from './config/mongoDB'
 import cors from 'cors'
 import { config } from './config/config'
 import userRouters from './routers/userRouers'
-import venderRouters from './routers/VenderRouters'
+import vendorRouters from './routers/VenderRouters'
 import { errorHandler, notFound } from './middlewares/errorHandler/errorHandlingMiddleware'
 import cookieParser from 'cookie-parser'
 import { userCheck } from './middlewares/userCheckMiddleware/userCheckMiddleware'
@@ -23,13 +23,11 @@ app.use(cors(
     {
         origin: "http://localhost:3000",
         credentials: true,
-        
-     
     }
 ))
 
 app.use('/users', userRouters)
-app.use('/venders', venderRouters)
+app.use('/vendors', vendorRouters)
 app.get('/', (req: Request, res: Response): void => {
     res.send("hai")
 })

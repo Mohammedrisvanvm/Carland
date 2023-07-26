@@ -1,9 +1,7 @@
-import { Request, Response, response } from "express";
+import { Request, Response,  } from "express";
 import userModel from "../../../models/userSchema";
-
 import AsyncHandler from "express-async-handler";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
-import { createSession } from "../../../helpers/sessionController/sessionController";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
 import { MongooseOptions } from "mongoose";
