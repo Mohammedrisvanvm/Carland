@@ -3,6 +3,8 @@ interface IVender extends Document {
     userName: string;
     email: string;
     password?: string;
+    cabhub:Array<string>
+    renthub:Array<string>
     googleId?: string;
     image?: string;
     verified_email?: boolean;

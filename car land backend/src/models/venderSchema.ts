@@ -13,8 +13,11 @@ const VenderSchema:Schema=new Schema({
         required: true,
         unique: true,
     },
-    hubs:{
-        type:[]
+    cabhubs:{
+        type:Array
+    },
+    renthubs:{
+        type:Array
     }
     ,
     password: {
