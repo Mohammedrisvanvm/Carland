@@ -13,7 +13,7 @@ export const userSignUpController = AsyncHandler(
 
         console.log(userName, email, password);
 
-        const userExist: any = await userModel.findOne({ email });
+        const userExist: IUser|null = await userModel.findOne({ email });
 
         if (userExist) {
             throw new Error("User Already Exists");
@@ -29,7 +29,7 @@ export const userSignUpController = AsyncHandler(
 );
 export const userLoginController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-        console.log('hoi1');
+       
         // const { email, password } = req.body;
         const { email, password } = req.body.value;
         console.log(email, password, 11);

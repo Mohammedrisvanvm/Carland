@@ -12,6 +12,6 @@ interface IVender extends Document {
    
 }
 interface IVender{
-    IVender: any
+    matchPassword: Function
 }
 export default IVender
