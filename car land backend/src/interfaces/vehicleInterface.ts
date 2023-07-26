@@ -1,12 +1,13 @@
-interface IVehicle {
-    carName: String,
+interface IVehicle extends Document{
+    carName: string,
     carNumber: Number,
-    serviceType: String,
+    serviceType: string,
+    type:string
     image: Array<string>,
-    colour: String,
-    fuel: String,
+    colour: string,
+    fuel: string,
     numofseats: Number,
-    hubName: String,
+    hubName: string,
     mileage: Number,
     fairPrice: Number,
     fairKm: Number,
@@ -15,3 +16,5 @@ interface IVehicle {
     vehicleValidate: Date,
     documents: Array<string>,
 }
+
+export default IVehicle

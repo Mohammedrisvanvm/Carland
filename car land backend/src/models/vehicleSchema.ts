@@ -1,6 +1,7 @@
-import { Schema } from "mongoose";
+import { Model, Schema, model } from "mongoose";
+import IVehicle from "../interfaces/vehicleInterface";
 
-const carSchema: Schema = new Schema({
+const vehicleSchema: Schema = new Schema({
     carName: {
         type: String,
         required: true
@@ -61,3 +62,7 @@ const carSchema: Schema = new Schema({
     }
 
 }, { timestamps: true })
+
+
+const vehicleModel=model<IVehicle>('vehicle',vehicleSchema)
+export default vehicleModel
