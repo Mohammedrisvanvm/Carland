@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const venderNavBar = () => {
+const VenderNavBar = () => {
     const [dropdown, setdropdown] = useState(false);
     const dropdownHandler = () => {
       setdropdown(!dropdown);
@@ -120,4 +120,4 @@ const venderNavBar = () => {
   )
 }
 
-export default venderNavBar
+export default VenderNavBar

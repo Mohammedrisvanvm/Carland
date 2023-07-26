@@ -9,7 +9,7 @@ import CabRouters from "./routes/cabRouters";
 import { Box } from "./test/test";
 import RentRouters from "./routes/rentRouters";
 import AdminRouters from "./routes/admin";
-import VenderRouters from "./routes/venderRouters";
+import VendorRouters from "./routes/venderRouters";
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
           <Route path="/rent/*" element={<RentRouters />} />
           <Route path="/cab/*" element={<CabRouters />} />
           <Route path="/admin/*" element={<AdminRouters />} />
-          <Route path="/vender/*" element={<VenderRouters />} />
+          <Route path="/vendor/*" element={<VendorRouters />} />
         </Routes>
       </BrowserRouter>
 

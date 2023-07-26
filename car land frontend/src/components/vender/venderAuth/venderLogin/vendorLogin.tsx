@@ -15,7 +15,7 @@ const initialValues: MyFormValue = {
     email: "",
     password: "",
   };
-export const VenderLogin = () => {
+export const VendorLogin = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const vender = useSelector((state: any) => state.vender);
