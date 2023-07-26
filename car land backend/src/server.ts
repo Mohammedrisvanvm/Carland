@@ -2,7 +2,8 @@ import express, { Request, Response } from 'express'
 import { DBconnect } from './config/mongoDB'
 import cors from 'cors'
 import { config } from './config/config'
-import userRouers from './routers/userRouers'
+import userRouters from './routers/userRouers'
+import venderRouters from './routers/VenderRouters'
 import { errorHandler, notFound } from './middlewares/errorHandler/errorHandlingMiddleware'
 import cookieParser from 'cookie-parser'
 import { userCheck } from './middlewares/userCheckMiddleware/userCheckMiddleware'
@@ -27,7 +28,8 @@ app.use(cors(
     }
 ))
 
-app.use('/users', userRouers)
+app.use('/users', userRouters)
+app.use('/venders', venderRouters)
 app.get('/', (req: Request, res: Response): void => {
     res.send("hai")
 })

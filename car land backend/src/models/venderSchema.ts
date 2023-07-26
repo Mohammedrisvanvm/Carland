@@ -1,6 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
 import bcrypt from 'bcrypt'
-import IUser from "../interfaces/userInterface";
 import IVender from "../interfaces/venderInterface";
 
 
