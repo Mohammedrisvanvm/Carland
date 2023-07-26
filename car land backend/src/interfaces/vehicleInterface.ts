@@ -1,0 +1,17 @@
+interface IVehicle {
+    carName: String,
+    carNumber: Number,
+    serviceType: String,
+    image: Array<string>,
+    colour: String,
+    fuel: String,
+    numofseats: Number,
+    hubName: String,
+    mileage: Number,
+    fairPrice: Number,
+    fairKm: Number,
+    status: Boolean,
+    specification: Array<string>,
+    vehicleValidate: Date,
+    documents: Array<string>,
+}

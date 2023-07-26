@@ -23,6 +23,7 @@ export const GoogleAuth = () => {
   console.log(User);
   const authLogin = useGoogleLogin({
     onSuccess: async(response) => {
+     console.log(response);
      
       
 try {
