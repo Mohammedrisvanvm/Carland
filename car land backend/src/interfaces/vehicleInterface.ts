@@ -1,8 +1,8 @@
-interface IVehicle extends Document{
-    carName: string,
-    carNumber: Number,
+interface IVehicle extends Document {
+    vehicleName: string,
+    vehicleNumber: string,
     serviceType: string,
-    type:string
+    type: string
     image: Array<string>,
     colour: string,
     fuel: string,

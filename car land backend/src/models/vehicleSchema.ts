@@ -2,12 +2,12 @@ import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
 
 const vehicleSchema: Schema = new Schema({
-    carName: {
+    vehicleName: {
         type: String,
         required: true
     },
-    carNumber: {
-        type: Number,
+    vehicleNumber: {
+        type: String,
         required: true
     },
     serviceType: {
@@ -32,7 +32,7 @@ const vehicleSchema: Schema = new Schema({
     },
     hubName: {
         type: String,
-        required: true
+        // required: true
     },
     mileage: {
         type: Number,
