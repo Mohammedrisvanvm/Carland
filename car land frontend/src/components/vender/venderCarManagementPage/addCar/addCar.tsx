@@ -2,26 +2,51 @@ import { useFormik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router";
 import { AxiosError } from "axios";
+import { date, string } from "yup";
+import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 
 const AddCar = () => {
-const Navigate=useNavigate()
-const submitForm=async (values:{},actions:{}) => {
-  try {
-    console.log(values);
-    
-  } catch (error:AxiosError<Object>) {
-    
-  }  
-}
+  const Navigate = useNavigate();
+  const initialValues: IAddcar = {
+    vehicleName: "",
+    vehicleNumber: "",
+    serviceType: "",
+    type: "",
+    image: [],
+    colour: "",
+    fuel: "",
+    numofseats: 0,
+    hubName: "",
+    mileage: 0,
+    fairPrice: 0,
+    fairKm: 0,
+    specification: [],
+    vehicleValidityDate: "",
+    documents: [],
+  };
 
-const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=useFormik({
+  const submitForm: void | any = async (values: {}, actions: {}) => {
+    try {
+      console.log(values);
+    } catch (error: any) {}
+  };
+
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+  } = useFormik({
     initialValues,
-    onSubmit:submitForm,
-    initialErrors:{},
-    initialTouched:{},
-    validateOnMount:true,
-    validationSchema:
-})
+    onSubmit: submitForm,
+    initialErrors: {},
+    initialTouched: {},
+    validateOnMount: true,
+    validationSchema: AddCarSchema,
+  });
 
   return (
     <>
@@ -39,7 +64,9 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <input
                   type="text"
                   className={`${
-                    errors.vehicleName && touched.vehicleName ? "input-error" : ""
+                    errors.vehicleName && touched.vehicleName
+                      ? "input-error"
+                      : ""
                   } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                   placeholder=" "
                   value={values.vehicleName}
@@ -61,7 +88,9 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                   name="vehicleNumber"
                   id="floating_repeat_password"
                   className={`${
-                    errors.vehicleNumber && touched.vehicleNumber ? "input-error" : ""
+                    errors.vehicleNumber && touched.vehicleNumber
+                      ? "input-error"
+                      : ""
                   } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                   placeholder=" "
                   required
@@ -79,7 +108,9 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                   name="serviceType"
                   id="floating_repeat_password"
                   className={`${
-                    errors.serviceType && touched.serviceType ? "input-error" : ""
+                    errors.serviceType && touched.serviceType
+                      ? "input-error"
+                      : ""
                   } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                   placeholder=" "
                   required
@@ -98,9 +129,9 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                     name="colour"
                     id="floating_first_name"
                     className={`${
-                        errors.colour && touched.colour ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.colour && touched.colour ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -110,16 +141,15 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                   
                     value={values.fuel}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     name="fuel"
                     id="floating_last_name"
                     className={`${
-                        errors.fuel && touched.fuel ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.fuel && touched.fuel ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -131,16 +161,17 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="number"
-                  
-                      
                     value={values.numofseats}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="numofseats"                   id="floating_phone"
+                    name="numofseats"
+                    id="floating_phone"
                     className={`${
-                        errors.numofseats && touched.numofseats ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.numofseats && touched.numofseats
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -150,16 +181,15 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
-                      
                     value={values.hubName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     name="hubName"
                     id="floating_company"
                     className={`${
-                        errors.hubName && touched.hubName ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.hubName && touched.hubName ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -171,15 +201,15 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="number"
-                   
                     value={values.mileage}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="mileage"                   id="floating_phone"
+                    name="mileage"
+                    id="floating_phone"
                     className={`${
-                        errors.mileage && touched.mileage ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.mileage && touched.mileage ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -189,16 +219,15 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="number"
-                      
                     value={values.fairPrice}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     name="fairPrice"
                     id="floating_company"
                     className={`${
-                        errors.fairPrice && touched.fairPrice ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.fairPrice && touched.fairPrice ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -210,15 +239,15 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="number"
-                   
                     value={values.fairKm}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="fairKm"                   id="floating_phone"
+                    name="fairKm"
+                    id="floating_phone"
                     className={`${
-                        errors.fairKm && touched.fairKm ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.fairKm && touched.fairKm ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -234,9 +263,11 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                     name="specification"
                     id="floating_company"
                     className={`${
-                        errors.specification && touched.specification ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.specification && touched.specification
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -252,11 +283,14 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                     value={values.vehicleValidityDate}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="vehicleValidityDate"                   id="floating_phone"
+                    name="vehicleValidityDate"
+                    id="floating_phone"
                     className={`${
-                        errors.vehicleValidityDate && touched.vehicleValidityDate ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.vehicleValidityDate && touched.vehicleValidityDate
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -272,9 +306,9 @@ const {values,errors,touched,isSubmitting,handleSubmit,handleBlur,handleChange}=
                     name="documents"
                     id="floating_company"
                     className={`${
-                        errors.documents && touched.documents ? "input-error" : ""
-                      } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
+                      errors.documents && touched.documents ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
                     required
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">

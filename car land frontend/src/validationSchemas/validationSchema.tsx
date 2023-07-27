@@ -13,6 +13,7 @@ export const LoginSchema=yup.object().shape({
     email: yup.string().email('enter a valid email eg:risvan@gmail.com').required(),
     password: yup.string().trim().min(6).matches(password, { message: 'please enter password Atleast 6 characters eg:Huat5@' }).required(),
 })
+export const AddCarSchema=""
 
 
 
