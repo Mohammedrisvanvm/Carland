@@ -5,6 +5,18 @@ import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 import { promises } from "dns";
 import { addCar } from "../../../../services/apis/vendorApi/venderApi";
 
+const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result as string);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
+};
 const AddCar = () => {
   const Navigate = useNavigate();
   const initialValues: IAddcar = {
@@ -31,8 +43,6 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-      console.log(values.vehiclemultipleimage,values.vehiclesingleimage);
-      
       const res = await addCar(values);
       console.log(res);
     } catch (error: any) {
@@ -57,29 +67,41 @@ const AddCar = () => {
     validateOnMount: true,
     validationSchema: AddCarSchema,
   });
-  const convertToBase64 = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result as string);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
 
-  const handleImageChange = async(e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      let filesArray = [];
-      for (let i = 0; i < files.length; i++) {
-        let Bse = await convertToBase64(files[i]);
 
-        filesArray.push(Bse);
+  const handleImageChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      
+      const files = e.target.files;
+      if (files) {
+        let filesArray : string[] = [];
+        for (let i = 0; i < files.length; i++) {
+          let Bse = await convertToBase64(files[i]);
+  
+          filesArray.push(Bse);
+        }
+        setFieldValue("vehiclemultipleimage", filesArray);
       }
-      setFieldValue("vehiclemultipleimage", filesArray);
+    } catch (error) {
+      console.log(error);
+      
+    }
+  };
+  const handlesingleImageChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      
+      if (e.target.files != null) {
+        const file: File | null = e.target.files[0];
+        const Base = await convertToBase64(file);
+        setFieldValue("vehiclesingleimage", Base);
+      }
+    } catch (error) {
+      console.log(error);
+      
     }
   };
 
@@ -119,6 +141,10 @@ const AddCar = () => {
                   vehicle Name
                 </label>
               </div>
+              <img
+                src={values.vehiclesingleimage ? values.vehiclesingleimage : ""}
+                alt=""
+              />
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
@@ -407,13 +433,7 @@ const AddCar = () => {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     type="file"
                     name="vehiclesingleimage"
-                    onChange={async(e: ChangeEvent<HTMLInputElement>) => {
-                      if (e.target.files != null) {
-                        const file: File | null = e.target.files[0];
-                        const Base =await convertToBase64(file);
-                        setFieldValue("vehiclesingleimage", Base);
-                      }
-                    }}
+                    onChange={handlesingleImageChange}
                     onBlur={handleBlur}
                   />
 
