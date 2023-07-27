@@ -1,9 +1,8 @@
-interface IAddcar{
+interface IAddcar {
     vehicleName: string,
     vehicleNumber: string,
     serviceType: string,
-    type: string
-    image: Array<string>,
+    type: string,
     colour: string,
     fuel: string,
     numofseats: number,
@@ -11,7 +10,9 @@ interface IAddcar{
     mileage: number,
     fairPrice: number,
     fairKm: number,
+    vehiclesingleimage: string,
+    vehiclemultipleimage: string[],
     specification: Array<string>,
-    vehicleValidityDate: string|number,
+    vehicleValidityDate: string | number,
     documents: Array<string>,
 }

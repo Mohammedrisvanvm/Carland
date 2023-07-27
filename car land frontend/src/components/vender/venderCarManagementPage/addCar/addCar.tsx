@@ -1,7 +1,8 @@
-import { useFormik } from "formik";
-
+import { FormikConfig, FormikHelpers, useFormik } from "formik";
+import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
+import { promises } from "dns";
 
 const AddCar = () => {
   const Navigate = useNavigate();
@@ -10,7 +11,6 @@ const AddCar = () => {
     vehicleNumber: "",
     serviceType: "",
     type: "",
-    image: [],
     colour: "",
     fuel: "",
     numofseats: 0,
@@ -18,14 +18,19 @@ const AddCar = () => {
     mileage: 0,
     fairPrice: 0,
     fairKm: 0,
+    vehiclesingleimage: "",
+    vehiclemultipleimage: [],
     specification: [],
     vehicleValidityDate: "",
     documents: [],
   };
 
-  const submitForm: void | any = async (values: {}, actions: {}) => {
+  const submitForm = async (
+    values: IAddcar,
+    actions: FormikHelpers<IAddcar>
+  ): Promise<void> => {
     try {
-      console.log(values);
+      console.log(values, actions, 222);
     } catch (error: any) {}
   };
 
@@ -37,6 +42,7 @@ const AddCar = () => {
     handleSubmit,
     handleBlur,
     handleChange,
+    setFieldValue,
   } = useFormik({
     initialValues,
     onSubmit: submitForm,
@@ -46,6 +52,14 @@ const AddCar = () => {
     validationSchema: AddCarSchema,
   });
 
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const filesArray = Array.from(files);
+      setFieldValue("vehiclemultipleimage", filesArray);
+    }
+  };
+  console.log(values, errors);
   return (
     <>
       {" "}
@@ -57,7 +71,7 @@ const AddCar = () => {
       <div className="flex justify-center">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <form onSubmit={submitForm}>
+            <form onSubmit={handleSubmit}>
               <div className="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
@@ -123,7 +137,7 @@ const AddCar = () => {
                   placeholder=" "
                   required
                 />
-                  {/* {errors.vehicleNumber && touched.vehicleNumber && (
+                {/* {errors.vehicleNumber && touched.vehicleNumber && (
                   <p className="border-red-500 text-sm text-red-500">
                     {errors.vehicleNumber}
                   </p>
@@ -146,11 +160,12 @@ const AddCar = () => {
                     } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                     required
-                  />  {errors.colour && touched.colour && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.colour}
-                  </p>
-                )}
+                  />{" "}
+                  {errors.colour && touched.colour && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.colour}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     colour
                   </label>
@@ -170,10 +185,10 @@ const AddCar = () => {
                     required
                   />
                   {errors.fuel && touched.fuel && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.fuel}
-                  </p>
-                )}
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.fuel}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     fuel
                   </label>
@@ -196,11 +211,11 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
-                      {errors.numofseats && touched.numofseats && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.numofseats}
-                  </p>
-                )}
+                  {errors.numofseats && touched.numofseats && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.numofseats}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     numofseats
                   </label>
@@ -239,11 +254,11 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
-                     {errors.mileage && touched.mileage && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.mileage}
-                  </p>
-                )}
+                  {errors.mileage && touched.mileage && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.mileage}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     mileage
                   </label>
@@ -262,11 +277,11 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
-                     {errors.fairPrice && touched.fairPrice && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.fairPrice}
-                  </p>
-                )}
+                  {errors.fairPrice && touched.fairPrice && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.fairPrice}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     fairPrice
                   </label>
@@ -287,11 +302,11 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
-                       {errors.fairKm && touched.fairKm && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.fairKm}
-                  </p>
-                )}
+                  {errors.fairKm && touched.fairKm && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.fairKm}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     fairKm
                   </label>
@@ -312,11 +327,11 @@ const AddCar = () => {
                     placeholder="optional "
                     required
                   />
-                     {errors.specification && touched.specification && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.specification}
-                  </p>
-                )}
+                  {errors.specification && touched.specification && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.specification}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     specification
                   </label>
@@ -363,8 +378,39 @@ const AddCar = () => {
                   </label>
                 </div>
               </div>
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    type="file"
+                    name="vehiclesingleimage"
+                    onChange={(e:ChangeEvent<HTMLInputElement>)=>setFieldValue('vehiclesingleimage',e.target.files?.[0])}
+                    onBlur={handleBlur}
+                  />
+
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    vehicle Image
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    onBlur={handleBlur}
+                    name="vehiclemultipleimage"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    id="multiple_files"
+                    multiple
+                    required
+                  />
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6X">
+                    mutiple image
+                  </label>
+                </div>
+              </div>
               <div className="flex justify-center">
                 <button
+                  disabled={isSubmitting}
                   type="submit"
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >

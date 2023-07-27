@@ -1,4 +1,6 @@
 import * as yup from "yup";
+
+
 const password: RegExp =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{5,}$/;
 const email: RegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
@@ -52,11 +54,11 @@ export const AddCarSchema = yup.object().shape({
   vehicleNumber: yup
     .string()
     .trim()
-    .min(9)
-    .matches(
-      /^[A-Z\d]{3}\d{2}[A-Z\d]{3}$/,
-      "Number must not contain special characters  eg:kl10a2020"
-    )
+    .min(6)
+    // .matches(
+    //   /^[A-Za-z]{2}\s[0-9]{2}\s[A-Za-z]{2}\s[0-9]{4}$/,
+    //   "number is not valid eg:KL10N2020"
+    // )
     .required(),
   colour: yup
     .string()
@@ -86,8 +88,20 @@ export const AddCarSchema = yup.object().shape({
     .matches(/^\d+$/, "fair km must be number")
     .required(),
   vehicleValidityDate: yup
-    .string()
-    .trim()
-    .matches(/^\d{2}-\d{2}-\d{4}$/, "Invalid date format (dd-mm-yyyy)")
-    .required("Vehicle validity date is required"),
+    .date()
+    .required("Future date is required")
+    .min(new Date(), "Date must be in the future"),
+//   vehiclesingleimage: yup
+//     .mixed()
+//     .test(
+//       "FILE_TYPE",
+//       "Invalid!",
+//       (value: any) => value && ["image/png", "image/jpg"].includes(value.type)
+//     ),
+//     vehiclemultipleimage: yup
+//     .mixed()
+//     .test(
+//       "FILE_TYPE",
+//       "Invalid!",
+//       (value: any) =>value && ["image/png", "image/jpeg"].includes(value.type) )
 });
