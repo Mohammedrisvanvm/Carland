@@ -3,6 +3,7 @@ import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 import { promises } from "dns";
+import { addCar } from "../../../../services/apis/vendorApi/venderApi";
 
 const AddCar = () => {
   const Navigate = useNavigate();
@@ -30,9 +31,13 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
+      console.log(values.vehiclemultipleimage,values.vehiclesingleimage);
       
-const res:await AddCar(values)
-    } catch (error: any) {}
+      const res = await addCar(values);
+      console.log(res);
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   const {
@@ -65,18 +70,19 @@ const res:await AddCar(values)
     });
   };
 
-  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async(e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       let filesArray = [];
       for (let i = 0; i < files.length; i++) {
-        let Bse = convertToBase64(files[i]);
+        let Bse = await convertToBase64(files[i]);
+
         filesArray.push(Bse);
       }
       setFieldValue("vehiclemultipleimage", filesArray);
     }
   };
-  console.log(values, errors);
+
   return (
     <>
       {" "}
@@ -401,10 +407,10 @@ const res:await AddCar(values)
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     type="file"
                     name="vehiclesingleimage"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    onChange={async(e: ChangeEvent<HTMLInputElement>) => {
                       if (e.target.files != null) {
                         const file: File | null = e.target.files[0];
-                        const Base = convertToBase64(file);
+                        const Base =await convertToBase64(file);
                         setFieldValue("vehiclesingleimage", Base);
                       }
                     }}

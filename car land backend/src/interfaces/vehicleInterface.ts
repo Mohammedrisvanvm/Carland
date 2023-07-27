@@ -15,6 +15,9 @@ interface IVehicle extends Document {
     specification: Array<string>,
     vehicleValidate: Date,
     documents: Array<string>,
+    vehiclesingleimage :string,
+    vehiclemultipleimage:Array<string>,
+    vehicleValidityDate:string,
 }
 
 export default IVehicle

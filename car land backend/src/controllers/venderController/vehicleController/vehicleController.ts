@@ -5,61 +5,63 @@ import IVehicle from "../../../interfaces/vehicleInterface";
 
 export const addVehicleController = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { vehicleName,
-        vehicleNumber,
-        serviceType,
-        type,
-        image,
-        colour,
-        fuel,
-        numofseats,
-        hubName,
-        mileage,
-        fairPrice,
-        fairKm,
-        status,
-        specification,
-        vehicleValidate,
-        documents }:IVehicle = req.body
-    console.log(vehicleName,
-        vehicleNumber,
-        serviceType,
-        type,
-        image,
-        colour,
-        fuel,
-        numofseats,
-        hubName,
-        mileage,
-        fairPrice,
-        fairKm,
-        status,
-        specification,
-        vehicleValidate,
-        documents)
-    const vehicle: IVehicle | null = await vehicleModel.findOne({ vehicleNumber })
+    vehicleNumber,
+    serviceType,
+    type,
+    colour,
+    fuel,
+    numofseats,
+    hubName,
+    mileage,
+    fairPrice,
+    fairKm,
+    vehiclesingleimage,
+    vehiclemultipleimage,
+    specification,
+    vehicleValidityDate,
+    documents}: IVehicle = req.body.value
+  console.log(req.body.files);
+  
+    // console.log(vehicleName,
+    //     vehicleNumber,
+    //     serviceType,
+    //     type,
+    //     colour,
+    //     fuel,
+    //     numofseats,
+    //     hubName,
+    //     mileage,
+    //     fairPrice,
+    //     fairKm,
+    //     vehiclesingleimage,
+    //     vehiclemultipleimage,
+    //     specification,
+    //     vehicleValidityDate,
+    //     documents)
+    // const vehicle: IVehicle | null = await vehicleModel.findOne({ vehicleNumber })
 
-    if (!vehicle) {
-        const vehicle: {} = await vehicleModel.create({
-            vehicleName,
-            vehicleNumber,
-            serviceType,
-            type,
-            image,
-            colour,
-            fuel,
-            numofseats,
-            hubName,
-            mileage,
-            fairPrice,
-            fairKm,
-            status,
-            specification,
-            vehicleValidate,
-            documents
-        })
-        res.status(201).json({ vehicle })
-    } else {
-        throw new Error('vehicle already exist')
-    }
-
+    // if (!vehicle) {
+    //     const vehicle: {} = await vehicleModel.create({
+    //         vehicleName,
+    //         vehicleNumber,
+    //         serviceType,
+    //         type,
+    //         image,
+    //         colour,
+    //         fuel,
+    //         numofseats,
+    //         hubName,
+    //         mileage,
+    //         fairPrice,
+    //         fairKm,
+    //         status,
+    //         specification,
+    //         vehicleValidate,
+    //         documents
+    //     })
+    //     res.status(201).json({ vehicle })
+    // } else {
+    //     throw new Error('vehicle already exist')
+    // }
+    res.status(200).json({message:"getted"})
 })
