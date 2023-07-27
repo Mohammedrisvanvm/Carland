@@ -157,7 +157,7 @@ const CarList = () => {
         </div>
         <div className="flex justify-end relative right-10">
           <button onClick={()=>{
-        Navigate('/vendor/vendorcars/addcar')
+        Navigate('/vendor/vendorcar/addcar')
           }} className="flex items-center justify-center text-blue-600 dark:text-blue-500 mb-6 h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40">
             <svg
               className="w-3.5 h-3.5"
