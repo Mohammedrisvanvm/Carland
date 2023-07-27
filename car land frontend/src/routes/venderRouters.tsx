@@ -5,6 +5,7 @@ import VendorHomePage from '../components/vender/venderHome/VenderHomePage'
 import Dashboard from '../components/admin/adminDashboard/tesxt'
 import VenderDashboardPage from '../components/vender/venderDashboard/venderDashboardpage'
 import CarManagementPage from '../components/vender/venderCarManagementPage/carManagementPage'
+import AddCarPage from '../components/vender/venderCarManagementPage/addCar/addCarPage'
 
 const VendorRouters = () => {
   return (
@@ -14,6 +15,7 @@ const VendorRouters = () => {
     <Route path='/vendorLogin' element={<VendorLogin/>}/>
     <Route path='/vendordashboard' element={<VenderDashboardPage/>}/>
     <Route path='/vendorcars' element={<CarManagementPage/>}/>
+    <Route path='/vendorcar/addcar' element={<AddCarPage/>}/>
     <Route path='/vendordrivers' element={<CarList/>}/>
     <Route path='/vendorhubs' element={<Dashboard/>}/>
     <Route path='/vendorList' element={<CarList/>}/>
