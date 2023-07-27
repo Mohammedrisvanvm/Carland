@@ -22,7 +22,7 @@ const initialValues: MyFormValues = {
 export const SignUp = () => {
   const Navigate = useNavigate();
 
-  const submitForm: any = async (values: {}, actions: any) => {
+  const submitForm: {}|any = async (values: {}, actions: any) => {
  try {
   const res: any = await userSignUp(values);
     await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
