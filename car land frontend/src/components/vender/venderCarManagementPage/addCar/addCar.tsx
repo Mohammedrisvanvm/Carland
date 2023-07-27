@@ -30,7 +30,8 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-      console.log(values, actions, 222);
+      
+const res:await AddCar(values)
     } catch (error: any) {}
   };
 
