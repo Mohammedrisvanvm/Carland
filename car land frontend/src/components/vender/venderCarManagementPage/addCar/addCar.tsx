@@ -51,11 +51,27 @@ const AddCar = () => {
     validateOnMount: true,
     validationSchema: AddCarSchema,
   });
+  const convertToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result as string);
+      };
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
-      const filesArray = Array.from(files);
+      let filesArray = [];
+      for (let i = 0; i < files.length; i++) {
+        let Bse = convertToBase64(files[i]);
+        filesArray.push(Bse);
+      }
       setFieldValue("vehiclemultipleimage", filesArray);
     }
   };
@@ -384,7 +400,13 @@ const AddCar = () => {
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     type="file"
                     name="vehiclesingleimage"
-                    onChange={(e:ChangeEvent<HTMLInputElement>)=>setFieldValue('vehiclesingleimage',e.target.files?.[0])}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                      if (e.target.files != null) {
+                        const file: File | null = e.target.files[0];
+                        const Base = convertToBase64(file);
+                        setFieldValue("vehiclesingleimage", Base);
+                      }
+                    }}
                     onBlur={handleBlur}
                   />
 
