@@ -15,6 +15,7 @@ export const LoginSchema=yup.object().shape({
 })
 export const AddCarSchema=yup.object().shape({
     vehicleName: yup.string().trim().min(3).matches(/^[a-zA-Z0-9\s]+$/, 'Name must not contain special characters').required(),
+    vehicleNumber: yup.string().trim().min(3).matches(/^[a-zA-Z0-9\s]+$/, 'Name must not contain special characters').required(),
 
 })
 

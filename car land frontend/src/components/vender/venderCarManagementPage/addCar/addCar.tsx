@@ -75,6 +75,9 @@ const AddCar = () => {
                   name="vehicleName"
                   required
                 />
+                  {errors.vehicleName && touched.vehicleName && (
+                <p className="border-red-500 text-sm text-red-500">{errors.vehicleName}</p>
+              )}
                 <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                   vehicle Name
                 </label>
@@ -95,6 +98,9 @@ const AddCar = () => {
                   placeholder=" "
                   required
                 />
+                   {errors.vehicleNumber && touched.vehicleNumber && (
+                <p className="border-red-500 text-sm text-red-500">{errors.vehicleNumber}</p>
+              )}
                 <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                   vehicle Number
                 </label>
