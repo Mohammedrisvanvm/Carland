@@ -31,8 +31,8 @@ try {
   toast.success(res.data.message)
 dispatch(setGoogleAuth(res.data.olduser))
 Navigate('/')
-} catch (error) {
-  console.log("error");
+} catch (error:any) {
+  console.log(error);
   
 }
     },

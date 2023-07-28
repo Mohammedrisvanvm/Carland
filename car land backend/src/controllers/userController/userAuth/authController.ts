@@ -31,11 +31,11 @@ export const userLoginController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
 
         // const { email, password } = req.body;
-        interface data{
-            email?:string,
-            password?:string
+        interface data {
+            email?: string,
+            password?: string
         }
-      const data:data = req.body.value;
+        const data: data = req.body.value;
         console.log(req.body.value, 11);
 
         const userExist: IUser | null = await userModel.findOne({ email: data.email });
@@ -70,24 +70,36 @@ export const userLoginController = AsyncHandler(
 );
 
 export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
-
+    interface Token {
+        access_token?: string
+    }
+    const Token: Token = req.body.value
     console.log('hoi2');
-    if (req.body.value.access_token) {
-        const access_token: string = req.body.value.access_token
-        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${access_token}`).then(async (response: any) => {
-         
-            const olduser: IUser|null = await userModel.findOne({ email:response.data.email })
+    if (Token) {
+        interface Email {
+            data: {
+                name: string
+                email: string
+                id: string,
+                picture: string,
+                verified_email: boolean
+            } | undefined
+        }
+        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${Token}`).then(async (response: Email) => {
+
+
+            const olduser: IUser | null = await userModel.findOne({ email: response.data?.email })
             if (olduser) {
                 await userModel.findByIdAndUpdate(olduser._id, {
                     $set: {
-                        email: response.data.email,
-                        googleId: response.data.id,
-                        image: response.data.picture,
-                        verified_email: response.data.verified_email
+                        email: response.data?.email,
+                        googleId: response.data?.id,
+                        image: response.data?.picture,
+                        verified_email: response.data?.verified_email
                     }
                 });
 
-                const newUser:IUser|null = await userModel.findOne({ email:response.data.email })
+                const newUser: IUser | null = await userModel.findOne({ email: response.data?.email })
                 const accessToken = jwtSign(
                     { id: newUser?._id, name: newUser?.userName, email: newUser?.email },
                     "5s"
@@ -108,12 +120,12 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 }).json({ newUser, message: `welcome back ${newUser?.userName} ` })
 
             } else {
-                const user = await userModel.create({
-                    userName: response.data.name,
-                    email: response.data.email,
-                    googleId: response.data.id,
-                    image: response.data.picture,
-                    verified_email: response.data.verified_email
+                const user: IUser | null = await userModel.create({
+                    userName: response.data?.name,
+                    email: response.data?.email,
+                    googleId: response.data?.id,
+                    image: response.data?.picture,
+                    verified_email: response.data?.verified_email
                 })
                 const accessToken = jwtSign(
                     { id: user._id, name: user.userName, email: user.email },
@@ -153,9 +165,7 @@ export const userLogoutController = AsyncHandler(
     })
 
 interface IVerifyjwt {
-    payload: {
-        email: string |null
-    },
+    payload:any,
     expired: boolean,
 }
 export const userCheck = AsyncHandler(
@@ -166,8 +176,8 @@ export const userCheck = AsyncHandler(
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken) {
-            const verifiedJWT: any = verifyJwt(refreshToken)
-console.log(verifiedJWT);
+            const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken)
+            console.log(verifiedJWT);
 
 
             if (verifiedJWT) {
@@ -191,10 +201,10 @@ console.log(verifiedJWT);
 
             }
         } else {
-            const verify = verifyJwt(accessToken)
-            const user: IUser | null = await userModel.findOne({ email: verify.payload.email }, { password: 0 });
+            const verify:IVerifyjwt = verifyJwt(accessToken)
+            const data: IUser | null = await userModel.findOne({ email: verify.payload?.email }, { password: 0 });
 
-            res.json({ user, message: 'token available' })
+            res.json({ user:data, message: 'token available' })
         }
     }
 
