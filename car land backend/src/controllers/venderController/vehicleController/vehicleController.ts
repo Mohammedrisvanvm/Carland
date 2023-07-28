@@ -71,3 +71,10 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
   }
 
 })
+
+export const getVehiclesController= AsyncHandler(async (req: Request, res: Response): Promise<void> => {
+
+  const vehicles:IVehicle[]=await vehicleModel.find()
+
+  res.status(200).json({vehicles})
+})

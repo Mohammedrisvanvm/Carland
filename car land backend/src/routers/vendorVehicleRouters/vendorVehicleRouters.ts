@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { addVehicleController } from "../../controllers/venderController/vehicleController/vehicleController";
+import { addVehicleController, getVehiclesController } from "../../controllers/venderController/vehicleController/vehicleController";
 
 const vendorVehicleRouters=Router()
 
 
 vendorVehicleRouters.post('/addvehicle',addVehicleController)
+vendorVehicleRouters.get('/getvehicles',getVehiclesController)
 
 
 
