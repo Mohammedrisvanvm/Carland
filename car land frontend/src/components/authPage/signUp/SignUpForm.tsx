@@ -27,7 +27,7 @@ export const SignUp = () => {
   const res: any = await userSignUp(values);
     await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
     actions.resetForm();
-    Navigate("/UserOtp");
+    Navigate("/UserLogin");
   
  } catch (error:any) {
   toast.error(error.response.data.message);

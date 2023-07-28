@@ -4,18 +4,15 @@ import { LoginHeader } from "../loginHeader/loginHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { userCheck } from "../../../services/apis/userApi/userApi";
 import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
-import { Authcheck, Redux, RootState } from "../../../interfaces/userAuth";
-interface Verpy{
-user:any
-loading:boolean
-}
+import { Authcheck, RootState } from "../../../interfaces/userAuth";
+
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const User:any = useSelector((state:RootState) => state.user); 
-   console.log(User.user.email);
-  console.log(User.user.email);
+  const User:any = useSelector((state: RootState) => state.user);
+//  console.log(User);
+ 
 
   useEffect(() => {
     (async () => {
@@ -106,7 +103,7 @@ export const MainHeader = (): ReactElement => {
             </a>
           </li>
 
-          {User.user.email ? (
+          {User?.user?.email ? (
             <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
               Risvan{" "}
               <span className="ml-1">

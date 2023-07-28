@@ -13,7 +13,7 @@ export interface Authcheck {
   }
 }
 export interface RootState {
-  user: {
+  user?: {
     _id?: string,
     userName?: string,
     email?: string,

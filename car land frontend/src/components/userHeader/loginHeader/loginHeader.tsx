@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { userLogout } from "../../../services/apis/userApi/userApi";
 import { useNavigate } from "react-router";
+import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
+import { useDispatch } from "react-redux";
 
 export const LoginHeader = () => {
+  const dispatch =useDispatch()
   const Navigate = useNavigate();
   const [isToggled, setIsToggled] = useState(false);
 
@@ -12,6 +15,7 @@ export const LoginHeader = () => {
 
   const UserLogout = async () => {
     await userLogout();
+   dispatch(setUser(""))
     handleClick();
     Navigate("/");
   };

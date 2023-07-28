@@ -5,7 +5,7 @@ import "./signIn.css";
 
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import  { login } from "../../../redux/Slices/UserSlice/UserSlice";
+import { login } from "../../../redux/Slices/UserSlice/UserSlice";
 
 interface MyFormValue {
   userName: string;
@@ -20,25 +20,23 @@ const initialValues: MyFormValue = {
 
 export const SignIn = () => {
   const Navigate = useNavigate();
-  const dispatch=useDispatch()
-  const user=useSelector((state:any)=>state.user)
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.user);
   console.log(user);
-  
+
   const submitForm: any = async (values: {}, actions: any) => {
     try {
-     
-        await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
+      await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-     await dispatch(login(values))
-Navigate('/')
-    } catch (error:any) {
-      toast.error(error.response.data.message)
-   
+      await dispatch(login(values));
+      Navigate("/");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
     }
 
     console.log("submitted");
 
-  //  Navigate('/UserOtp');
+    //  Navigate('/UserOtp');
   };
 
   const {
