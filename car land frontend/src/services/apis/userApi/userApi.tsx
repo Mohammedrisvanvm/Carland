@@ -10,7 +10,7 @@ export const userLogin=(value:{}):{}=>{
 }
 
 export const userGoogleAuth=(value:{}):Promise<AxiosResponse<any>>=>{
-return axiosBase.post("/users/auth/userGoogleAuth",{value},{ headers: {'Content-Type': 'multipart/form-data' }})
+return axiosBase.post("/users/auth/userGoogleAuth",{value})
 }
 
 export const userCheck=():Promise<AxiosResponse<any>>=>{

@@ -8,20 +8,27 @@ import { MongooseOptions } from "mongoose";
 
 export const userSignUpController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-        const { userName, email, password } = req.body.value;
-        // const { userName, email, password } = req.body
+        interface iSign{
+   
+        email:string
+        userName:string,
+         password:string
+    
+        }
+        const data:iSign= req.body.value;
+      
 
-        console.log(userName, email, password);
+     
 
-        const userExist: IUser | null = await userModel.findOne({ email });
+        const userExist: IUser | null = await userModel.findOne({ email:data.email});
 
         if (userExist) {
             throw new Error("User Already Exists");
         } else {
             const user: {} = await userModel.create({
-                userName,
-                email,
-                password,
+                userName:data.userName,
+                email:data.email,
+                password:data.password,
             });
             res.status(201).json({ user });
         }
@@ -29,17 +36,15 @@ export const userSignUpController = AsyncHandler(
 );
 export const userLoginController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-
-        // const { email, password } = req.body;
         interface data {
             email?: string,
             password?: string
         }
         const data: data = req.body.value;
-        console.log(req.body.value, 11);
+   
 
         const userExist: IUser | null = await userModel.findOne({ email: data.email });
-        console.log(userExist);
+   
 
         if (userExist && (await userExist.matchPassword(data.password))) {
 
@@ -71,10 +76,11 @@ export const userLoginController = AsyncHandler(
 
 export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
     interface Token {
-        access_token?: string
+        access_token: string
     }
     const Token: Token = req.body.value
-    console.log('hoi2');
+ 
+  
     if (Token) {
         interface Email {
             data: {
@@ -85,7 +91,7 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
                 verified_email: boolean
             } | undefined
         }
-        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${Token}`).then(async (response: Email) => {
+        axios.get(`https://www.googleapis.com/oauth2/v1/userinfo?access_token=${Token.access_token}`).then(async (response: Email) => {
 
 
             const olduser: IUser | null = await userModel.findOne({ email: response.data?.email })
@@ -165,24 +171,27 @@ export const userLogoutController = AsyncHandler(
     })
 
 interface IVerifyjwt {
-    payload:any,
+    payload:{
+        email:string
+    }|null,
     expired: boolean,
 }
 export const userCheck = AsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-        console.log("hai");
+  
+console.log("hiu");
 
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken) {
             const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken)
-            console.log(verifiedJWT);
+          
 
 
             if (verifiedJWT) {
 
-                const user: IUser | null = await userModel.findOne({ email: verifiedJWT.payload.email }, { password: 0 });
+                const user: IUser | null = await userModel.findOne({ email: verifiedJWT.payload?.email }, { password: 0 });
 
 
                 if (!user) {

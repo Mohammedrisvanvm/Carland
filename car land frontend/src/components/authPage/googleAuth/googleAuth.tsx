@@ -22,7 +22,7 @@ export const GoogleAuth = () => {
   const User: {} = useSelector((state: RootState) => state.User);
   console.log(User);
   const authLogin = useGoogleLogin({
-    onSuccess: async(response) => {
+    onSuccess: async(response:any) => {
      console.log(response);
      
       
