@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 import { promises } from "dns";
-import { addCar } from "../../../../services/apis/vendorApi/venderApi";
+import { CarAdd } from "../../../../services/apis/vendorApi/venderApi";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -43,7 +43,9 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-      const res = await addCar(values);
+
+      
+      const res = await CarAdd(values);
       console.log(res);
     } catch (error: any) {
       console.log(error);
@@ -68,32 +70,28 @@ const AddCar = () => {
     validationSchema: AddCarSchema,
   });
 
-
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     try {
-      
       const files = e.target.files;
       if (files) {
-        let filesArray : string[] = [];
+        let filesArray: string[] = [];
         for (let i = 0; i < files.length; i++) {
           let Bse = await convertToBase64(files[i]);
-  
+
           filesArray.push(Bse);
         }
         setFieldValue("vehiclemultipleimage", filesArray);
       }
     } catch (error) {
       console.log(error);
-      
     }
   };
   const handlesingleImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     try {
-      
       if (e.target.files != null) {
         const file: File | null = e.target.files[0];
         const Base = await convertToBase64(file);
@@ -101,7 +99,6 @@ const AddCar = () => {
       }
     } catch (error) {
       console.log(error);
-      
     }
   };
 

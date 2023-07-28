@@ -10,8 +10,10 @@ import CabRouters from "./routes/cabRouters";
 import RentRouters from "./routes/rentRouters";
 import AdminRouters from "./routes/admin";
 import VendorRouters from "./routes/venderRouters";
+import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials=true;
   return (
     <div>
       <ToastContainer />
@@ -28,7 +30,7 @@ function App() {
     
       {/* <Content /> */}
     </div>
-  );
+);
 }
 
 export default App;

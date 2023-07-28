@@ -13,7 +13,17 @@ export interface Authcheck {
   }
 }
 export interface RootState {
-  user: Redux;
+  user: {
+    _id?: string,
+    userName?: string,
+    email?: string,
+    password?: string,
+    googleId?: string,
+    image?: string,
+    ban?: boolean,
+    verified_email?: boolean,
+  }
+  loading: boolean
 }
 
 
@@ -26,6 +36,4 @@ export interface Redux {
   image?: string,
   ban?: boolean,
   verified_email?: boolean,
-
-
 }

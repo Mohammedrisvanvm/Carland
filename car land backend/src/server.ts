@@ -14,14 +14,15 @@ import { userCheck } from './middlewares/userCheckMiddleware/userCheckMiddleware
 
 const app = express()
 DBconnect()
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({limit:"50mb"}));
+app.use(express.urlencoded({ extended: false, limit:"50mb" }));
 app.use(cookieParser())
+
 // app.use(userCheck)
 
 app.use(cors(
     {
-        origin: "http://localhost:3000",
+        origin:"http://localhost:3000",
         credentials: true,
     }
 ))

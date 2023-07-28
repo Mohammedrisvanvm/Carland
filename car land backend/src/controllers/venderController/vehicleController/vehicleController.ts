@@ -4,6 +4,8 @@ import vehicleModel from "../../../models/vehicleSchema";
 import IVehicle from "../../../interfaces/vehicleInterface";
 
 export const addVehicleController = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
+    console.log("ahi",req.body);
+    
     const { vehicleName,
     vehicleNumber,
     serviceType,
@@ -19,7 +21,7 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
     vehiclemultipleimage,
     specification,
     vehicleValidityDate,
-    documents}: IVehicle = req.body.value
+    documents}: IVehicle = req.body.values
     console.log(vehicleName,
         vehicleNumber,
         serviceType,
