@@ -19,3 +19,6 @@ return axiosBase.get("/users/auth/userCheck")
 export const userLogout=():Promise<AxiosResponse>=>{
 return axiosBase.get("/users/auth/userLogout")
 }
+export const kahs=():Promise<AxiosResponse>=>{
+return axiosBase.get("/users/auth/userLogout")
+}
