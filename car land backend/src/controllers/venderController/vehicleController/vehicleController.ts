@@ -22,22 +22,10 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
     specification,
     vehicleValidityDate,
     documents}: IVehicle = req.body.values
-    console.log(vehicleName,
-        vehicleNumber,
-        serviceType,
-        type,
-        colour,
-        fuel,
-        numofseats,
-        hubName,
-        mileage,
-        fairPrice,
-        fairKm,
-        vehiclesingleimage,
-        vehiclemultipleimage,
-        specification,
-        vehicleValidityDate,
-        documents)
+
+
+
+
     // const vehicle: IVehicle | null = await vehicleModel.findOne({ vehicleNumber })
 
     // if (!vehicle) {
