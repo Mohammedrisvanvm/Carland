@@ -61,4 +61,4 @@ const UserSlice = createSlice({
 
 export const { setGoogleAuth, setUser } = UserSlice.actions;
 
-export default UserSlice.reducer;
+export default UserSlice.vreducer;
