@@ -16,6 +16,10 @@ const vehicleSchema: Schema = new Schema(
             type: String,
             required: true,
         },
+        type: {
+            type: String,
+            required: true,
+        },
         colour: {
             type: String,
             required: true,

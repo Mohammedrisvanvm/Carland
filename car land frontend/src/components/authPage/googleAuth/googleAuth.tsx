@@ -19,8 +19,7 @@ interface UserData {
 export const GoogleAuth = () => {
   const Navigate = useNavigate();
   const dispatch=useDispatch()
-  const User: {} = useSelector((state: RootState) => state.User);
-  console.log(User);
+
   const authLogin = useGoogleLogin({
     onSuccess: async(response:any) => {
      console.log(response);

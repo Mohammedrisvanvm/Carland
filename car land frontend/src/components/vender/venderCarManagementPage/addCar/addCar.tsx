@@ -2,8 +2,9 @@ import { FormikConfig, FormikHelpers, useFormik } from "formik";
 import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
-import { promises } from "dns";
+import {toast} from 'react-toastify'
 import { CarAdd } from "../../../../services/apis/vendorApi/venderApi";
+import { AxiosResponse } from "../../../../interfaces/axiosinterface";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -43,10 +44,14 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-
-      
-      const res = await CarAdd(values);
-      console.log(res);
+      interface axios{
+        data:{
+          message:string
+        }
+      }
+      const res:axios= await CarAdd(values);
+      toast.success(res.data.message)
+     Navigate('/vendor/vendorcars')
     } catch (error: any) {
       console.log(error);
     }
@@ -167,30 +172,51 @@ const AddCar = () => {
                   vehicle Number
                 </label>
               </div>
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
-                  value={values.serviceType}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  name="serviceType"
-                  id="floating_repeat_password"
-                  className={`${
-                    errors.serviceType && touched.serviceType
-                      ? "input-error"
-                      : ""
-                  } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                  placeholder=" "
-                  required
-                />
-                {/* {errors.vehicleNumber && touched.vehicleNumber && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.vehicleNumber}
-                  </p>
-                )} */}
-                <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  service Type
-                </label>
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <select
+                    id="serviceType"
+                    value={values.serviceType}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                  >
+                    <option selected>Choose a service Type</option>
+                    <option value="cab">Cab</option>
+                    <option value="rent">Rent</option>
+                  </select>
+
+                  {errors.serviceType && touched.serviceType && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.serviceType}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    service Type
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <select
+                    id="type"
+                    value={values.type}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                  >
+                    <option selected>Choose a Type</option>
+                    <option value="car">Car</option>
+                    <option value="bike">bike</option>
+                  </select>
+
+                  {errors.type && touched.type && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.type}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    Type
+                  </label>
+                </div>
               </div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">
@@ -217,19 +243,19 @@ const AddCar = () => {
                   </label>
                 </div>
                 <div className="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
+                  <select
+                    id="fuel"
                     value={values.fuel}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="fuel"
-                    id="floating_last_name"
-                    className={`${
-                      errors.fuel && touched.fuel ? "input-error" : ""
-                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                    placeholder=" "
-                    required
-                  />
+                    className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
+                  >
+                    <option selected>Choose a fuel</option>
+                    <option value="petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="electric">Electric</option>
+                  </select>
+
                   {errors.fuel && touched.fuel && (
                     <p className="border-red-500 text-sm text-red-500">
                       {errors.fuel}
@@ -401,6 +427,12 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
+                  {errors.vehicleValidityDate &&
+                    touched.vehicleValidityDate && (
+                      <p className="border-red-500 text-sm text-red-500">
+                        {errors.vehicleValidityDate}
+                      </p>
+                    )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     vehicle Validity Date
                   </label>
@@ -419,6 +451,11 @@ const AddCar = () => {
                     placeholder=" "
                     required
                   />
+                  {errors.documents && touched.documents && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.documents}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     documents
                   </label>

@@ -9,7 +9,7 @@ interface CloudinaryResponse {
   url: string
 }
 export const addVehicleController = AsyncHandler(async (req: Request, res: Response): Promise<void> => {
-  console.log("ahi", req.body);
+  
 
   const { vehicleName,
     vehicleNumber,
@@ -53,6 +53,7 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
       serviceType,
       colour,
       fuel,
+      type,
       numofseats,
       hubName,
       mileage,
@@ -64,7 +65,7 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
       vehicleValidityDate,
       documents
     })
-    res.status(201).json({ vehicle })
+    res.status(201).json({ message:`${vehicle.vehicleName}vehicle added` })
   } else {
     throw new Error('vehicle already exist')
   }
