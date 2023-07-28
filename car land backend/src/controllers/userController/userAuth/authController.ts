@@ -1,4 +1,4 @@
-import { Request, Response,  } from "express";
+import { Request, Response, } from "express";
 import userModel from "../../../models/userSchema";
 import AsyncHandler from "express-async-handler";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
@@ -13,7 +13,7 @@ export const userSignUpController = AsyncHandler(
 
         console.log(userName, email, password);
 
-        const userExist: IUser|null = await userModel.findOne({ email });
+        const userExist: IUser | null = await userModel.findOne({ email });
 
         if (userExist) {
             throw new Error("User Already Exists");
@@ -29,7 +29,7 @@ export const userSignUpController = AsyncHandler(
 );
 export const userLoginController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-       
+
         // const { email, password } = req.body;
         const { email, password } = req.body.value;
         console.log(email, password, 11);
@@ -136,9 +136,10 @@ export const userGoogleAuth = AsyncHandler(async (req: Request, res: Response): 
 })
 
 
+
 export const userLogoutController = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-        
+
         res.cookie('accessToken', '', { httpOnly: true, maxAge: 0 })
         res
             .cookie('refreshToken', '', { httpOnly: true, maxAge: 0 })
@@ -146,6 +147,7 @@ export const userLogoutController = AsyncHandler(
             .json({ message: 'logout user' })
 
     })
+
 export const userCheck = AsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
 
@@ -153,12 +155,12 @@ export const userCheck = AsyncHandler(
         const refreshToken = req.cookies.refreshToken;
 
         if (!accessToken) {
-            const verifiedJWT = verifyJwt(refreshToken)
+            const verifiedJWT= verifyJwt(refreshToken)
 
 
             if (verifiedJWT) {
-
-                const user: IUser | null = await userModel.findOne({ email: verifiedJWT.payload.email }, { password: 0 });
+              
+                const user: IUser | null = await userModel.findOne({email:  verifiedJWT.payload.email }, { password: 0 });
 
 
                 if (!user) {
@@ -178,7 +180,7 @@ export const userCheck = AsyncHandler(
             }
         } else {
             const verify = verifyJwt(accessToken)
-            const user: IUser | null = await userModel.findOne(verify.payload.email, { password: 0 });
+            const user: IUser | null = await userModel.findOne({email:verify.payload.email}, { password: 0 });
 
             res.json({ user, message: 'token available' })
         }

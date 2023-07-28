@@ -3,25 +3,23 @@ import { useNavigate } from "react-router";
 import { LoginHeader } from "../loginHeader/loginHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { userCheck } from "../../../services/apis/userApi/userApi";
-import {setUser } from "../../../redux/Slices/UserSlice/UserSlice";
-import { Authcheck } from "../../../interfaces/userAuth";
-
-interface RootState {
-  user: string;
-}
-
+import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
+import { Authcheck, Redux, RootState } from "../../../interfaces/userAuth";
 
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const User: Authcheck | string = useSelector(
-    (state: RootState) => state.user
-  );
+  const User: Redux = useSelector<RootState, Redux>((state) => state.user);
+  console.log(User?.email);
+  console.log(User);
+
   useEffect(() => {
     (async () => {
       try {
         let check: Authcheck | null = await userCheck();
+        console.log(check);
+
         if (check && check.data && check.data.user) {
           dispatch(setUser(check.data.user));
         } else {
@@ -34,7 +32,6 @@ export const MainHeader = (): ReactElement => {
       }
     })();
   }, []);
-
 
   return (
     <div className="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
@@ -106,30 +103,27 @@ export const MainHeader = (): ReactElement => {
             </a>
           </li>
 
-          {
-            //@ts-ignore
-            User.name ? (
-              <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
-                Risvan{" "}
-                <span className="ml-1">
-                  <LoginHeader />
-                </span>
-              </li>
-            ) : (
-              <li>
-                <button
-                  onClick={() => {
-                    navigate("/UserAuth");
-                  }}
-                  className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white  transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
-                  aria-label="Sign up"
-                  title="Sign up"
-                >
-                  Sign up
-                </button>
-              </li>
-            )
-          }
+          {User?.email ? (
+            <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
+              Risvan{" "}
+              <span className="ml-1">
+                <LoginHeader />
+              </span>
+            </li>
+          ) : (
+            <li>
+              <button
+                onClick={() => {
+                  navigate("/UserAuth");
+                }}
+                className="inline-flex items-center justify-center h-12 px-6 font-medium tracking-wide text-white  transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
+                aria-label="Sign up"
+                title="Sign up"
+              >
+                Sign up
+              </button>
+            </li>
+          )}
         </ul>
         <div className="lg:hidden">
           <button
