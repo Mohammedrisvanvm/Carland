@@ -179,10 +179,11 @@ interface IVerifyjwt {
 export const userCheck = AsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
   
-console.log("hiu");
+
 
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
+
 
         if (!accessToken) {
             const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken)
@@ -198,7 +199,7 @@ console.log("hiu");
                     throw new Error('user not exist')
 
                 }
-                const access = await jwtSign({ id: user._id, name: user.userName, email: user.email }, '5s')
+                const access = await jwtSign({ id: user._id, name: user.userName, email: user.email }, '30s')
 
 
                 const Ref = await jwtSign({ email: user.email }, '7d')
@@ -210,8 +211,11 @@ console.log("hiu");
 
             }
         } else {
-            const verify:IVerifyjwt = verifyJwt(accessToken)
+            const verify:IVerifyjwt = verifyJwt(refreshToken)
+          
+            
             const data: IUser | null = await userModel.findOne({ email: verify.payload?.email }, { password: 0 });
+
 
             res.json({ user:data, message: 'token available' })
         }
