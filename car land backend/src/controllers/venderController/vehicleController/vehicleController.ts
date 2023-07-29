@@ -33,6 +33,8 @@ export const addVehicleController = AsyncHandler(async (req: Request, res: Respo
     vehiclemultipleimage.map(async (image, index) => {
       try {
         const response = await cloudinary.uploader.upload(image, { folder: "cars" });
+      
+        
         return response.url;
       } catch (error) {
 

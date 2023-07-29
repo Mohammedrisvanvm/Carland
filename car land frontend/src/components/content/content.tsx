@@ -1,4 +1,26 @@
+import { useNavigate } from "react-router";
+import { userGetVehicle } from "../../services/apis/userApi/userApi";
+import { Vehicles } from "../../interfaces/vehicleInterface";
+import { useEffect, useState } from "react";
+
 export const Content = () => {
+  const [vehicles, setVehicles] = useState<Vehicles[]>([]);
+  const Navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response = await userGetVehicle();
+        console.log(response.data.vehicles);
+        
+        setVehicles(response.data.vehicles);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
   return (
     <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <div className="max-w-xl mb-10 md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
@@ -51,30 +73,37 @@ export const Content = () => {
         </p>
       </div>
       <div className="grid gap-5 row-gap-5 mb-8 lg:grid-cols-4 sm:grid-cols-2">
+        {vehicles ? vehicles.map((item)=>(
         <button
           aria-label="View Item"
           className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
         >
           <div className="flex flex-col h-full">
             <img
-              src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+            src={item.singleImage}
               className="object-cover w-full h-48"
               alt=""
             />
             <div className="flex-grow border border-t-0 rounded-b">
               <div className="p-5">
                 <h6 className="mb-2 font-semibold leading-5">
-                  The doctor said
+                  {item.vehicleName}
                 </h6>
                 <p className="text-sm text-gray-900">
-                  Sportacus andrew weatherall goose Refined gentlemen super
-                  mario des lynam alpha trion zap rowsdower.
+           Colour:{item.colour}
+           <br />
+           Seats:{item.numofseats}
+           <br />
+          Fuel: {item.fuel}
+          <br />
                 </p>
+           
               </div>
             </div>
           </div>
         </button>
-        <a
+            )): "hai"}
+        {/* <a
           href="/"
           aria-label="View Item"
           className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
@@ -237,7 +266,7 @@ export const Content = () => {
               </div>
             </div>
           </div>
-        </a>
+        </a> */}
       </div>
       <div className="text-center">
         <a

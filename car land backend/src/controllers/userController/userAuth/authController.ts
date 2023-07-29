@@ -178,12 +178,13 @@ interface IVerifyjwt {
 }
 export const userCheck = AsyncHandler(
     async (req: Request, res: Response): Promise<any> => {
-  
+        console.log(req.cookies);
 
 
         const accessToken = req.cookies.accessToken;
         const refreshToken = req.cookies.refreshToken;
 
+console.log(accessToken,refreshToken);
 
         if (!accessToken) {
             const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken)

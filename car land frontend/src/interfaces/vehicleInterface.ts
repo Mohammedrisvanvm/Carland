@@ -2,7 +2,7 @@ export interface Vehicles{
     vehicleName: string,
     vehicleNumber: string,
     serviceType: string,
-    type: string
+    type: string,
     image: Array<string>,
     colour: string,
     fuel: string,
@@ -15,7 +15,7 @@ export interface Vehicles{
     specification: Array<string>,
     vehicleValidate: Date,
     documents: Array<string>,
-    singleimage :string,
-    subimages:Array<string>,
+    singleImage :string,
+    subImages:Array<string>,
     vehicleValidityDate:string,
 }

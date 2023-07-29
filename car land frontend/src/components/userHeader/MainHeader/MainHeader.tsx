@@ -69,7 +69,7 @@ export const MainHeader = (): ReactElement => {
               title="Our product"
               className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
             >
-              Product
+              Home
             </a>
           </li>
           <li>
@@ -79,7 +79,7 @@ export const MainHeader = (): ReactElement => {
               title="Our product"
               className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
             >
-              Features
+              Rent
             </a>
           </li>
           <li>
@@ -89,7 +89,7 @@ export const MainHeader = (): ReactElement => {
               title="Product pricing"
               className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
             >
-              Pricing
+              Cab
             </a>
           </li>
           <li>

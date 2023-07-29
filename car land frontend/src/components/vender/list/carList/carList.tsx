@@ -248,7 +248,7 @@ const CarList = () => {
               <td className="w-4 p-4">
                {index+1}
               </td>
-              <td className="px-6 py-4"> <img src={item.singleimage} alt=""/></td>
+              <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td>
               <td
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -261,7 +261,9 @@ const CarList = () => {
               <td className="px-6 py-4">  {item.fuel}</td>
               <td className="px-6 py-4">  {item.numofseats}</td>
               <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4">  {item.status}</td>
+              <td className="px-6 py-4"> <button className="bg-black">
+              {item.status}
+                </button></td>
              
               <td className="px-6 py-4">
                 <a
