@@ -2,8 +2,8 @@ import { Router } from "express";
 import { venderSignUpController, vendorLoginController } from "../../../controllers/venderController/venderAuthController]/VendorAuthController";
 const vendorAuthRouters=Router()
 
-vendorAuthRouters.get('/vendorLogin',vendorLoginController)
-vendorAuthRouters.post('/vendorSignup',venderSignUpController)
+vendorAuthRouters.get('/vendorlogin',vendorLoginController)
+vendorAuthRouters.post('/vendorsignup',venderSignUpController)
 
 
 

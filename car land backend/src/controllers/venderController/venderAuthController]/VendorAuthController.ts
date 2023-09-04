@@ -9,18 +9,16 @@ interface body{
     userName:string
 }
 export const vendorLoginController=AsyncHandler(async (req: Request, res: Response): Promise<void> => {
+console.log(req.body);
 
-    // const { email, password } = req.body.value;
-     const { email, password } = req.body
-    console.log(email, password, 11);
+    
+     const { email, number ,userName } = req.body.value
+    console.log(email, number ,userName, 11);
 
     const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.email });
     console.log(venderExist);
 
-    if (venderExist && (await venderExist.matchPassword(password))) {
-
-
-
+    if (venderExist ) {
         const accessToken = jwtSign(
             { id: venderExist._id, name: venderExist.userName, email: venderExist.email },
             "5s"
@@ -47,8 +45,14 @@ export const vendorLoginController=AsyncHandler(async (req: Request, res: Respon
 )
 export const venderSignUpController=AsyncHandler(async (req: Request, res: Response): Promise<void> =>{
 
-    // const { userName, email, password } = req.body.value;
-    const { userName, email, password } = req.body;
+    interface iSign {
+        email: string;
+        userName: string;
+        number: number;
+      }
+    
+    const data:iSign = req.body.value
+console.log(data);
 
     const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.email });
 
@@ -58,13 +62,13 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
     } else {
        
         
-        const user: {} = await VenderModel.create({
-            userName,
-            email,
-            password,
-        });
+        // const user: {} = await VenderModel.create({
+        //     userName,
+        //     email,
+        //     number,
+        // });
       
         
-        res.status(201).json({ user });
+        // res.status(201).json({ user });
     }
 })

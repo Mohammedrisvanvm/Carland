@@ -1,10 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userLogin } from "../../../services/apis/userApi/userApi";
 import {toast} from 'react-toastify'
+import { VendorAuth } from "../../../services/apis/vendorApi/venderApi";
 
 export const venderLogin :object | number | any =createAsyncThunk("Vender/venderLogin",async(formValue:object):Promise<any>=>{
     try {
-        let response: any = await userLogin(formValue);
+        console.log(formValue);
+        
+        let response: any = await VendorAuth(formValue);
      
       return response.data.user; 
     } catch (error:any) {
@@ -45,4 +47,4 @@ const VenderSlice=createSlice({
     }
 })
 
-export default VenderSlice.reducer
+export default VenderSlice.vreducer

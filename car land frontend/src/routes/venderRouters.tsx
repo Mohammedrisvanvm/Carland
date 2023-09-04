@@ -11,8 +11,8 @@ const VendorRouters = () => {
   return (
  <>
  <Routes>
+    <Route path='/*' element={<VendorLogin/>}/>
     <Route path='/vendorhome' element={<VendorHomePage/>}/>
-    <Route path='/vendorLogin' element={<VendorLogin/>}/>
     <Route path='/vendordashboard' element={<VenderDashboardPage/>}/>
     <Route path='/vendorcars' element={<CarManagementPage/>}/>
     <Route path='/vendorcar/addcar' element={<AddCarPage/>}/>

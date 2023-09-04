@@ -4,6 +4,7 @@ import * as yup from "yup";
 const password: RegExp =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{5,}$/;
 const email: RegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
+const phone:RegExp= /^[0-9]{10}$|^[0][0-9]{10}$/;
 
 export const SignupSchema = yup.object().shape({
   userName: yup
@@ -104,4 +105,25 @@ export const AddCarSchema = yup.object().shape({
 //       "FILE_TYPE",
 //       "Invalid!",
 //       (value: any) =>value && ["image/png", "image/jpeg"].includes(value.type) )
+});
+export const vendorLogin = yup.object().shape({
+  userName: yup
+    .string()
+    .trim()
+    .min(3)
+    .matches(/^[a-zA-Z0-9\s]+$/, "Enter a Name")
+    .required(),
+  email: yup
+    .string()
+    .email("enter a valid email eg:risvan@gmail.com")
+    .required(),
+  number: yup
+    .string()
+    .trim()
+    .min(10)
+    .max(10)
+    .matches(phone, {
+      message: "please enter 10 valid number eg:1234567890",
+    })
+    .required(),
 });

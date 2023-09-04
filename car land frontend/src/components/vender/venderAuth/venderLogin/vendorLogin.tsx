@@ -2,22 +2,27 @@ import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-import { LoginSchema } from "../../../../validationSchemas/validationSchema";
-
+import {
+  LoginSchema,
+  vendorLogin,
+} from "../../../../validationSchemas/validationSchema";
+import { useState } from "react";
+import { venderLogin } from "../../../../redux/Slices/UserSlice/VenderSlice";
 
 interface MyFormValue {
-    userName: string;
-    email: string;
-    password: string;
-  }
+  userName?: string ;
+  email: string;
+  number: number;
+}
 const initialValues: MyFormValue = {
-    userName: "",
-    email: "",
-    password: "",
-  };
+  userName: "" ,
+  email: "",
+  number: 0,
+};
 export const VendorLogin = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
+  const [auth, selectAuth] = useState(true);
   const vender = useSelector((state: any) => state.vender);
   console.log(vender);
 
@@ -25,8 +30,10 @@ export const VendorLogin = () => {
     try {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-    //   await dispatch(login(values));
-    //   Navigate("/");
+      
+      
+        await dispatch(venderLogin(values));
+      //   Navigate("/");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
@@ -49,93 +56,197 @@ export const VendorLogin = () => {
     initialErrors: {},
     initialTouched: {},
     validateOnMount: true,
-    validationSchema: LoginSchema,
+    validationSchema: vendorLogin,
   });
-  console.log(errors.email, errors.password, errors.userName);
+  console.log(errors.email, errors.number, errors.userName);
 
   return (
-    <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
-      <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
-        <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
-          Login
-        </h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-1 sm:mb-2">
-            <label htmlFor="userName" className="inline-block mb-1 font-medium">
-              User Name
-            </label>
-            <input
-              placeholder="John"
-              required
-              type="text"
-              value={values.userName}
-              className={`${
-                errors.userName && touched.userName ? "input-error" : ""
-              } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-              id="userName"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="userName"
-            />
-            {errors.userName && touched.userName && (
-              <p className="border-red-500 text-red-500">{errors.userName}</p>
-            )}
-          </div>
-          <div className="mb-1 sm:mb-2">
-            <label htmlFor="email" className="inline-block mb-1 font-medium">
-              Email
-            </label>
-            <input
-              placeholder="john.doe@example.org"
-              required
-              type="email"
-              value={values.email}
-              className={`${
-                errors.email && touched.email ? "input-error" : ""
-              } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-              id="email"
-              name="email"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.email && touched.email && (
-              <p className="border-red-500 text-red-500">{errors.email}</p>
-            )}
-          </div>
-          <div className="mb-1 sm:mb-2">
-            <label htmlFor="password" className="inline-block mb-1 font-medium">
-              Password
-            </label>
-            <input
-              placeholder="********"
-              required
-              type="password"
-              value={values.password}
-              className={`${
-                errors.password && touched.password ? "input-error" : ""
-              } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-              id="password"
-              name="password"
-              onChange={handleChange}
-              onBlur={handleBlur}
-            />
-            {errors.password && touched.password && (
-              <p className="border-red-500 text-red-500">{errors.password}</p>
-            )}
-          </div>
-          <div className="mt-4 mb-2 sm:mb-4">
-            <button
-              disabled={isSubmitting}
-              type="submit"
-              className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
-            >
-              Login
+    <div className="flex justify-end">
+      <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
+        <div className="bg-white rounded shadow-2xl p-7 sm:p-10 ">
+          {auth ? (
+            <>
+              {" "}
+              <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
+               vender Login
+              </h3>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="email"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    Email
+                  </label>
+                  <input
+                    placeholder="john.doe@example.org"
+                    required
+                    type="email"
+                    value={values.email}
+                    className={`${
+                      errors.email && touched.email ? "input-error" : ""
+                    } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                    id="email"
+                    name="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.email && touched.email && (
+                    <p className="border-red-500 text-red-500">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="number"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    phone Number
+                  </label>
+                  <input
+                    placeholder="1234567890"
+                    required
+                    type="number"
+                    value={values.number}
+                    className={`${
+                      errors.number && touched.number ? "input-error" : ""
+                    } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                    id="number"
+                    name="number"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.number && touched.number && (
+                    <p className="border-red-500 text-red-500">
+                      {errors.number}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-4 mb-2 sm:mb-4">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
+                  >
+                    Login
+                  </button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <>
+              {" "}
+              <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
+                vender signup
+              </h3>
+              <form onSubmit={handleSubmit}>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="userName"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    User Name
+                  </label>
+                  <input
+                    placeholder="johny"
+                    required
+                    type="text"
+                    value={values.userName}
+                    className={`${
+                      errors.userName && touched.userName ? "input-error" : ""
+                    } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                    id="userName"
+                    name="userName"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.userName && touched.userName && (
+                    <p className="border-red-500 text-red-500">
+                      {errors.userName}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="email"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    Email
+                  </label>
+                  <input
+                    placeholder="john.doe@example.org"
+                    required
+                    type="email"
+                    value={values.email}
+                    className={`${
+                      errors.email && touched.email ? "input-error" : ""
+                    } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                    id="email"
+                    name="email"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.email && touched.email && (
+                    <p className="border-red-500 text-red-500">
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="number"
+                    className="inline-block mb-1 font-medium"
+                  >
+                    phone Number
+                  </label>
+                  <input
+                    placeholder="1234567890"
+                    required
+                    type="number"
+                    value={values.number}
+                    className={`${
+                      errors.number && touched.number ? "input-error" : ""
+                    } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
+                    id="number"
+                    name="number"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                  />
+                  {errors.number && touched.number && (
+                    <p className="border-red-500 text-red-500">
+                      {errors.number}
+                    </p>
+                  )}
+                </div>
+                <div className="mt-4 mb-2 sm:mb-4">
+                  <button
+                    disabled={isSubmitting}
+                    type="submit"
+                    className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
+                  >
+                    Signup
+                  </button>
+                </div>
+              </form>
+            </>
+          )}
+
+      
+          <div className="flex justify-center text-xs text-gray-600 sm:text-sm">
+            <button onClick={() => selectAuth(!auth)}>
+              {" "}
+              {auth ? "signup" : "login"}
             </button>
+            
           </div>
-          <p className="text-xs text-gray-600 sm:text-sm">
+          <div className="text-center">
+          <p className="text-xs text-gray-600 sm:text-sm mt-6">
             We respect your privacy. Unsubscribe at any time.
           </p>
-        </form>
+          </div>
+        
+        </div>
       </div>
     </div>
   );

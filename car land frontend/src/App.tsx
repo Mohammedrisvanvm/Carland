@@ -22,7 +22,6 @@ function App() {
         <Routes>
           <Route path="/*" element={<UserRoutes />} />
           <Route path="/rent/*" element={<RentRouters />} />
-          <Route path="/cab/*" element={<CabRouters />} />
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
         </Routes>
