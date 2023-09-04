@@ -62,13 +62,11 @@ console.log(data);
     } else {
        
         
-        // const user: {} = await VenderModel.create({
-        //     userName,
-        //     email,
-        //     number,
-        // });
+        const user: {} = await VenderModel.create({
+          data
+        });
       
         
-        // res.status(201).json({ user });
+        res.status(201).json({ user });
     }
 })
