@@ -2,11 +2,13 @@ import { useState } from "react";
 import { userLogout } from "../../../services/apis/userApi/userApi";
 import { useNavigate } from "react-router";
 import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../interfaces/userAuth";
 
 export const LoginHeader = () => {
   const dispatch =useDispatch()
   const Navigate = useNavigate();
+  const User:any = useSelector((state: RootState) => state.user);
   const [isToggled, setIsToggled] = useState(false);
 
   const handleClick = () => {
@@ -32,11 +34,11 @@ export const LoginHeader = () => {
           data-dropdown-toggle="user-dropdown"
           data-dropdown-placement="bottom"
         >
-          <span className="sr-only">Open user menu</span>
+          {/* <span className="sr-only">Open user menu</span> */}
           <img
             className="w-8 h-8 rounded-full"
-            src="/docs/images/people/profile-picture-3.jpg"
-            alt="user photo"
+            src={User?.user?.image}
+            alt=""
           />
         </button>
 
@@ -47,7 +49,7 @@ export const LoginHeader = () => {
           aria-controls="navbar-user"
           aria-expanded="false"
         >
-          <span className="sr-only">Open main menu</span>
+          {/* <span className="sr-only">Open main menu</span> */}
           <svg
             className="w-5 h-5"
             aria-hidden="true"
@@ -73,10 +75,10 @@ export const LoginHeader = () => {
       >
         <div className="px-4 py-3">
           <span className="block text-sm text-gray-900 dark:text-white">
-            Bonnie Green
+            {User?.user?.userName}
           </span>
           <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-            name@flowbite.com
+          {User?.user?.email}
           </span>
         </div>
         <ul className="py-2" aria-labelledby="user-menu-button">
@@ -85,10 +87,10 @@ export const LoginHeader = () => {
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
-              Dashboard
+              Profile
             </a>
           </li>
-          <li>
+          {/* <li>
             <a
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
@@ -103,7 +105,7 @@ export const LoginHeader = () => {
             >
               Earnings
             </a>
-          </li>
+          </li> */}
           <li>
             <button
               onClick={UserLogout}

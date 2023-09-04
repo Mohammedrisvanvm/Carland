@@ -1,39 +1,52 @@
-import { Request, Response, NextFunction } from "express"
-import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils"
-import { AuthenticatedRequest } from "../../interfaces/authentication.request"
-import { getSession } from "../../helpers/sessionController/sessionController"
+import { Request, Response, NextFunction } from "express";
+import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
+import { AuthenticatedRequest } from "../../interfaces/authentication.request";
+import userModel from "../../models/userSchema";
+import IUser from "../../interfaces/userInterface";
+import AsyncHandler from "express-async-handler";
 
-export const userCheck = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const { accessToken, refreshToken } = req.cookies
-    if (!accessToken) {
-       return  next()
-    }
-
-    const { payload, expired } = verifyJwt(accessToken)
-    if (payload) {
-        req.user = payload
-        return next()
-    }
-
-    const { payload : refresh } = expired && refreshToken ? verifyJwt(refreshToken) : { payload: null }
-    if (!refresh) {
-       return  next()
-    }
-   
-    
-    const session:any = getSession(refresh.sessionId)
-    if(!session){
-       return  next()
-    }
-  
-const newAccessToken=jwtSign(session,'5s')
-res.cookie("accessToken", newAccessToken, {
-    maxAge: 300000, // 5 minutes
-    httpOnly: true,
-    });
-   
-    
-    req.user=verifyJwt(newAccessToken).payload
-   return next()
+interface IVerifyjwt {
+  payload: {
+    email: string;
+  } | null;
+  expired: boolean;
 }
+export const userCheck = AsyncHandler( async (
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const accessToken:string = req.cookies?.accessToken;
+    const refreshToken:string = req.cookies?.refreshToken;
+console.log(accessToken,refreshToken);
 
+if (accessToken && refreshToken) {
+     console.log("hai");
+
+     next()
+  
+  } else if (!accessToken) {
+    const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken);
+
+    if (verifiedJWT) {
+      const user: IUser | null = await userModel.findOne(
+        { email: verifiedJWT.payload?.email },
+        { password: 0 }
+      );
+
+      if (!user) {
+        throw new Error("user not exist");
+      }
+      const access = await jwtSign(
+        { id: user._id, name: user.userName, email: user.email },
+        "30s"
+      );
+
+      const Ref = await jwtSign({ email: user.email }, "7d");
+      res.cookie("accessToken", access, { httpOnly: true, maxAge: 5000 });
+      next()
+      }
+  } else {
+   throw new Error("token is not avialable");
+  }
+})

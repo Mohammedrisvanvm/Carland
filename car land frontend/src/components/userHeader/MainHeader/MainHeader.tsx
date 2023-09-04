@@ -10,9 +10,11 @@ export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
   const User:any = useSelector((state: RootState) => state.user);
-//  console.log(User);
- 
+ console.log(User);
+
+
 
   useEffect(() => {
     (async () => {
@@ -72,26 +74,8 @@ export const MainHeader = (): ReactElement => {
               Home
             </a>
           </li>
-          <li>
-            <a
-              href="/"
-              aria-label="Our product"
-              title="Our product"
-              className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
-            >
-              Rent
-            </a>
-          </li>
-          <li>
-            <a
-              href="/"
-              aria-label="Product pricing"
-              title="Product pricing"
-              className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
-            >
-              Cab
-            </a>
-          </li>
+        
+     
           <li>
             <a
               href="/"
@@ -105,7 +89,7 @@ export const MainHeader = (): ReactElement => {
 
           {User?.user?.email ? (
             <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
-              Risvan{" "}
+              {User?.user?.userName}{" "}
               <span className="ml-1">
                 <LoginHeader />
               </span>
@@ -202,33 +186,22 @@ export const MainHeader = (): ReactElement => {
                     <li>
                       <a
                         href="/"
-                        aria-label="Our product"
-                        title="Our product"
-                        className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
-                      >
-                        Product
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/"
-                        aria-label="Our product"
-                        title="Our product"
-                        className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
-                      >
-                        Features
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="/"
                         aria-label="Product pricing"
                         title="Product pricing"
                         className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
                       >
-                        Pricing
+                      Home
                       </a>
                     </li>
+                    <li>
+            <button
+              aria-label="Our product"
+              title="Our product"
+              className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
+            >
+              {User?.user?.userName}
+            </button>
+          </li>
                     <li>
                       <a
                         href="/"

@@ -13,7 +13,7 @@ export const Content = () => {
         const response = await userGetVehicle();
         console.log(response.data.vehicles);
         
-        setVehicles(response.data.vehicles);
+        setVehicles(response?.data?.vehicles);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }

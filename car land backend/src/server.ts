@@ -18,7 +18,7 @@ app.use(express.json({limit:"50mb"}));
 app.use(express.urlencoded({ extended: false, limit:"50mb" }));
 app.use(cookieParser())
 
-// app.use(userCheck)
+
 
 app.use(cors(
     {
@@ -26,7 +26,7 @@ app.use(cors(
         credentials: true,
     }
 ))
-
+// app.use(userCheck)
 app.use('/users', userRouters)
 app.use('/vendors', vendorRouters)
 app.get('/', (req: Request, res: Response): void => {
