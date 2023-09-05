@@ -26,7 +26,7 @@ app.use(cors(
         credentials: true,
     }
 ))
-// app.use(userCheck)
+app.use(userCheck)
 app.use('/users', userRouters)
 app.use('/vendors', vendorRouters)
 app.get('/', (req: Request, res: Response): void => {
