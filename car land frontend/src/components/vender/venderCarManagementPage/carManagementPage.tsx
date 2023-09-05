@@ -1,5 +1,5 @@
 import React from 'react'
-import VenderNavBar from '../vendorNavbar/venderNavBar'
+import VenderNavBar from '../vendorNavbar/vendorNavBar'
 import VendorAside from '../venderASide/vendorAside'
 import CarList from '../list/carList/carList'
 

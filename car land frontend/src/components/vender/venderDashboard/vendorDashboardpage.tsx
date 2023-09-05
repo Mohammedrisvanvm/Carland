@@ -1,7 +1,7 @@
 
-import VenderNavBar from '../vendorNavbar/venderNavBar'
+import VenderNavBar from '../vendorNavbar/vendorNavBar'
 import VenderAside from '../venderASide/vendorAside'
-import VenderDashboard from "./VenderDashboard";
+import VenderDashboard from "./vendorDashboard";
 const VenderDashboardPage = () => {
  
   return (

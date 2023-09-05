@@ -1,8 +1,8 @@
 import React from 'react'
 import VendorAside from '../venderASide/vendorAside'
 
-import VendorNavBar from '../vendorNavbar/venderNavBar'
-import VenderHubs from '../venderDashboard/VenderDashboard'
+import VendorNavBar from '../vendorNavbar/vendorNavBar'
+import VenderHubs from '../venderDashboard/vendorDashboard'
 
 const VendorHomePage = () => {
   return (

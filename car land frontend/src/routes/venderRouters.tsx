@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router'
-import { VendorLogin } from '../components/vender/venderAuth/venderLogin/vendorLogin'
+import { VendorLogin } from '../components/vender/venderAuth/vendorLogin/vendorLogin'
 import CarList from '../components/vender/list/carList/carList'
-import VendorHomePage from '../components/vender/venderHome/VenderHomePage'
+import VendorHomePage from '../components/vender/venderHome/VendorHomePage'
 import Dashboard from '../components/admin/adminDashboard/tesxt'
-import VenderDashboardPage from '../components/vender/venderDashboard/venderDashboardpage'
+import VenderDashboardPage from '../components/vender/venderDashboard/vendorDashboardpage'
 import CarManagementPage from '../components/vender/venderCarManagementPage/carManagementPage'
 import AddCarPage from '../components/vender/venderCarManagementPage/addCar/addCarPage'
 

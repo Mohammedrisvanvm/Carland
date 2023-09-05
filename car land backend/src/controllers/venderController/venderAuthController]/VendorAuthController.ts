@@ -54,6 +54,7 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
     console.log(req.body);
     
     const data:iSign = req.body.values
+    // const data:iSign = req.body
 
 
     const venderExist: IVender | null = await VenderModel.findOne({ email:data.email });
@@ -71,9 +72,11 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
         // });
       
         let response:any=await sendOtp(data.number)
-        console.log(response,111);
+        console.log(response);
         
-        
-        // res.status(201).json({ user });
+       let Token = jwtSign({token:response},"5min")
+       console.log(Token);
+       
+      res.status(200).cookie("token",Token,{ httpOnly: true,maxAge:300000 }).json({message:"hello"})
     }
 })
