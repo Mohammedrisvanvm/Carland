@@ -4,6 +4,7 @@ import axios from "axios";
 import IVender from "../../../interfaces/venderInterface";
 import VenderModel from "../../../models/venderSchema";
 import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
+import { sendOtp } from "../../../utils/twilio/twilio";
 
 interface body{
     userName:string
@@ -63,13 +64,16 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
     } else {
        
         
-        const user: {} = await VenderModel.create({
-          userName:data.userName,
-          email:data.email,
-          phoneNumber:data.number
-        });
+        // const user: {} = await VenderModel.create({
+        //   userName:data.userName,
+        //   email:data.email,
+        //   phoneNumber:data.number
+        // });
       
+        let response:any=await sendOtp(data.number)
+        console.log(response,111);
         
-        res.status(201).json({ user });
+        
+        // res.status(201).json({ user });
     }
 })

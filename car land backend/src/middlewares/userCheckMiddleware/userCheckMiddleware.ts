@@ -18,6 +18,8 @@ export const userCheck = AsyncHandler(
     if (accessToken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(accessToken);
       if (verifiedJWT) next();
+    }else{
+      next()
     }
   }
 );
