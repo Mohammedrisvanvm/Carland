@@ -50,11 +50,12 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
         userName: string;
         number: number;
       }
+    console.log(req.body);
     
-    const data:iSign = req.body.value
-console.log(data);
+    const data:iSign = req.body.values
 
-    const venderExist: IVender | null = await VenderModel.findOne({ email: req.body.email });
+
+    const venderExist: IVender | null = await VenderModel.findOne({ email:data.email });
 
 
     if (venderExist) {
@@ -63,7 +64,9 @@ console.log(data);
        
         
         const user: {} = await VenderModel.create({
-          data
+          userName:data.userName,
+          email:data.email,
+          phoneNumber:data.number
         });
       
         

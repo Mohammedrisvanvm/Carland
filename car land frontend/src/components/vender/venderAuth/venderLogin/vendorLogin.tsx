@@ -107,7 +107,7 @@ export const VendorLogin = () => {
                   <input
                     placeholder="1234567890"
                     required
-                    type="number"
+                    type="tel"
                     value={values.number}
                     className={`${
                       errors.number && touched.number ? "input-error" : ""

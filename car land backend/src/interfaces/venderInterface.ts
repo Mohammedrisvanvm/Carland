@@ -2,7 +2,7 @@ interface IVender extends Document {
     _id: string;
     userName: string;
     email: string;
-    number?: number;
+    phoneNumber?: number;
     renthubs?:Array<string>
     image?: string;
     verified_number?: boolean;
