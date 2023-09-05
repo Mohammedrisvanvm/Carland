@@ -12,3 +12,6 @@ export const CarAdd = async(values: IAddcar): Promise<AxiosResponse<any>> => {
   export const VendorAuth=async(values:{}):Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/vendors/auth/vendorsignup",{values})
   }
+  export const VendorOtpVerify=async(value:number):Promise<AxiosResponse<any>>=>{
+    return axiosBase.post("/vendors/auth/vendorotpverify",{value})
+  }

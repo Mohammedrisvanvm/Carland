@@ -1,12 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {toast} from 'react-toastify'
-import { VendorAuth } from "../../../services/apis/vendorApi/venderApi";
+import {  VendorOtpVerify } from "../../../services/apis/vendorApi/venderApi";
 
-export const venderLogin :object | number | any =createAsyncThunk("Vender/venderLogin",async(formValue:object):Promise<any>=>{
+export const vendorLogin :object | number | any =createAsyncThunk("Vender/venderLogin",async(formValue:number):Promise<any>=>{
     try {
-        console.log(formValue);
+       console.log(formValue);
+       
         
-        let response: any = await VendorAuth(formValue);
+        let response: any = await VendorOtpVerify(formValue);
+     console.log(response);
      
       return response.data.user; 
     } catch (error:any) {
@@ -31,20 +33,23 @@ const VenderSlice=createSlice({
         loading:false
     },
     reducers:{
-
+vendorLogin(state:any,action:any){
+    state.loading=false
+    state.user = action.payload;
     },
+},
     extraReducers:{
-        [venderLogin.pending]:(state:any,action:any)=>{
+        [vendorLogin.pending]:(state:any,action:any)=>{
             state.loading=true
         },
-        [venderLogin.fullfilled]:(state:any,action:any)=>{
+        [vendorLogin.fullfilled]:(state:any,action:any)=>{
             state.loading=false
             state.user = action.payload;
         },
-        [venderLogin.reject]:(state:any,action:any)=>{
+        [vendorLogin.reject]:(state:any,action:any)=>{
             state.loading=false
         },
     }
 })
 
-export default VenderSlice.vreducer
+export default VenderSlice.caseReducers

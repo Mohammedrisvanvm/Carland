@@ -44,6 +44,9 @@ const UserSlice = createSlice({
     setUser: (state, action) => {
       state.user = action.payload;
     },
+    login:(state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: {
     [login.pending]: (state, action) => {
@@ -61,4 +64,4 @@ const UserSlice = createSlice({
 
 export const { setGoogleAuth, setUser } = UserSlice.actions;
 
-export default UserSlice.reducer;
+export default UserSlice.caseReducers;

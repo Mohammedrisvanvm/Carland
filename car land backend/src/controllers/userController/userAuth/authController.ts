@@ -171,7 +171,7 @@ export const userLogoutController = AsyncHandler(
 
 interface IVerifyjwt {
   payload: {
-    email: string;
+    email?: string;
   } | null;
   expired: boolean;
 }

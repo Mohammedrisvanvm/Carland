@@ -3,7 +3,7 @@ import AsyncHandler from "express-async-handler";
 import axios from "axios";
 import IVender from "../../../interfaces/venderInterface";
 import VenderModel from "../../../models/venderSchema";
-import { jwtSign } from "../../../utils/jwtUtils/jwtutils";
+import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../../utils/twilio/twilio";
 
 interface body{
@@ -70,13 +70,33 @@ export const venderSignUpController=AsyncHandler(async (req: Request, res: Respo
         //   email:data.email,
         //   phoneNumber:data.number
         // });
-      
-        let response:any=await sendOtp(data.number)
+        let response:number=await sendOtp(data.number)
         console.log(response);
         
-       let Token = jwtSign({token:response},"5min")
-       console.log(Token);
-       
-      res.status(200).cookie("token",Token,{ httpOnly: true,maxAge:300000 }).json({message:"hello"})
+       let Token = jwtSign({token:response,user:data.number},"5min")
+      res.status(200).cookie("vendorOtpToken",Token,{ httpOnly: true,maxAge:300000 }).json({message:"hello"})
+    }
+})
+interface VendorJwt{
+    payload:{
+        token?:number,
+        user?:number
+    }|null;
+    expired:boolean
+}
+interface vendorbody{
+value:number
+}
+export const vendorOtpverify=AsyncHandler(async (req: Request, res: Response): Promise<void> =>{
+    const vendorOtpToken:string = req.cookies?.vendorOtpToken;
+    console.log(vendorOtpToken,req.body);
+    const data:vendorbody=req.body
+    if(vendorOtpToken){
+        const verify:VendorJwt=verifyJwt(vendorOtpToken)
+        if(verify?.payload?.token==data.value){
+
+            res.status(201).json({user:"risvan"})
+        }
+        
     }
 })

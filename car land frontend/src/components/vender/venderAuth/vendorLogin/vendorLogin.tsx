@@ -7,7 +7,7 @@ import {
   vendorLogin,
 } from "../../../../validationSchemas/validationSchema";
 import { useState } from "react";
-import { venderLogin } from "../../../../redux/Slices/UserSlice/VenderSlice";
+import { VendorAuth } from "../../../../services/apis/vendorApi/venderApi";
 
 interface MyFormValue {
   userName?: string ;
@@ -32,8 +32,8 @@ export const VendorLogin = () => {
       actions.resetForm();
       
       
-        await dispatch(venderLogin(values));
-      //   Navigate("/");
+        await VendorAuth(values);
+      Navigate('/vendor/otp')
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
