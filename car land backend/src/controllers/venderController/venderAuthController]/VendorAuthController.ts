@@ -1,14 +1,11 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
-import axios from "axios";
 import IVendor from "../../../interfaces/vendorInterface";
 import VenderModel from "../../../models/venderSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../../utils/twilio/twilio";
 
-interface body {
-  userName: string;
-}
+
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const venderExist: IVendor | null = await VenderModel.findOne({
