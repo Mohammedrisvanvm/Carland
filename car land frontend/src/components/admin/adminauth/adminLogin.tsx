@@ -4,6 +4,8 @@ import { AdminAuthSchema } from "../../../validationSchemas/validationSchema";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { adminAuth } from "../../../services/apis/adminApi/adminApi";
+import { useDispatch } from "react-redux";
+import { setAdmin } from "../../../redux/Slices/adminSlice";
 
 interface MyFormValue {
   email: string;
@@ -14,13 +16,14 @@ const initialValues: MyFormValue = {
   password: "",
 };
 const AdminLogin = () => {
+    const dispatch=useDispatch()
   const Navigate = useNavigate();
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       console.log(values);
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-      await adminAuth(values)
+      await dispatch(setAdmin(adminAuth(values))) 
 
       Navigate("/admin/adminHome");
     } catch (error: any) {

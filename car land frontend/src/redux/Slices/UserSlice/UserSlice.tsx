@@ -1,16 +1,19 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
 
-interface Initial {
-  user:{
+
+ type user={
     userName: string;
-    id: string;
+    _id: string;
     email: string;
-    image: string;
-  }
-  loading:boolean
-}
+    image?: string;
+ }
+ type initialState ={
+  loading:boolean,
+  user:user
+ }
+
 export const login: object | number | any = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
@@ -23,10 +26,10 @@ export const login: object | number | any = createAsyncThunk(
     }
   }
 );
-const initialState: Initial = {
+const initialState: initialState = {
   user:{
     userName: "",
-    id: "",
+    _id: "",
     email: "",
     image: "",
   },
@@ -38,13 +41,13 @@ const UserSlice = createSlice({
   name: "User",
   initialState,
   reducers: {
-    setGoogleAuth: (state, action) => {
+    setGoogleAuth: (state, action:PayloadAction<user>) => {
       state.user = action.payload;
     },
-    setUser: (state, action) => {
+    setUser: (state, action:PayloadAction<user>) => {
       state.user = action.payload;
     },
-    login:(state, action) => {
+    login:(state, action:PayloadAction<user>) => {
       state.user = action.payload;
     },
   },
@@ -52,7 +55,7 @@ const UserSlice = createSlice({
     [login.pending]: (state, action) => {
       state.loading = true;
     },
-    [login.fulfilled]: (state, action) => {
+    [login.fulfilled]: (state, action:PayloadAction<user>) => {
       state.loading = false;
       state.user = action.payload;
     },
@@ -64,4 +67,4 @@ const UserSlice = createSlice({
 
 export const { setGoogleAuth, setUser } = UserSlice.actions;
 
-export default UserSlice.caseReducers;
+export default UserSlice.vreducer;

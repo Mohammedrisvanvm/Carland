@@ -12,7 +12,8 @@ export const adminAuth = AsyncHandler(
       password: string;
     }
     try {
-      let data: IADMINB = req.body.values;
+      const data: IADMINB = req.body;
+    //   const data: IADMINB = req.body.values;
 
 
       const response: IAdmin | null = await adminModel.findOne({
@@ -26,13 +27,13 @@ export const adminAuth = AsyncHandler(
           );
           const refreshToken = jwtSign({ email: response.email }, "7d");
     
-          res.status(200).cookie("accessToken", accessToken, {
+          res.status(200).cookie("accessTokenAdmin", accessToken, {
             maxAge: 300000,
             httpOnly: true,
           });
     
           res
-            .cookie("refreshToken", refreshToken, {
+            .cookie("refreshTokenAdmin", refreshToken, {
               maxAge: 7 * 24 * 60 * 60,
               httpOnly: true,
             })

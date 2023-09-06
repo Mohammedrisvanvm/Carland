@@ -1,20 +1,19 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LoginHeader } from "../loginHeader/loginHeader";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import { userCheck } from "../../../services/apis/userApi/userApi";
 import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
-import { Authcheck, RootState } from "../../../interfaces/userAuth";
+import { Authcheck } from "../../../interfaces/userAuth";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
 
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  
-  const User:any = useSelector((state: RootState) => state.user);
- console.log(User);
+  const dispatch = useAppDispatch();
 
-
+  const User: any = useAppSelector((state) => state.user);
+  console.log(User);
 
   useEffect(() => {
     (async () => {
@@ -74,8 +73,7 @@ export const MainHeader = (): ReactElement => {
               Home
             </a>
           </li>
-        
-     
+
           <li>
             <a
               href="/"
@@ -190,18 +188,18 @@ export const MainHeader = (): ReactElement => {
                         title="Product pricing"
                         className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
                       >
-                      Home
+                        Home
                       </a>
                     </li>
                     <li>
-            <button
-              aria-label="Our product"
-              title="Our product"
-              className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
-            >
-              {User?.user?.userName}
-            </button>
-          </li>
+                      <button
+                        aria-label="Our product"
+                        title="Our product"
+                        className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
+                      >
+                        {User?.user?.userName}
+                      </button>
+                    </li>
                     <li>
                       <a
                         href="/"
