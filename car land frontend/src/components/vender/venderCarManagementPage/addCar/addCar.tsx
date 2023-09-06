@@ -3,7 +3,7 @@ import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 import {toast} from 'react-toastify'
-import { CarAdd } from "../../../../services/apis/vendorApi/venderApi";
+import { CarAdd } from "../../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../../interfaces/axiosinterface";
 
 const convertToBase64 = (file: File): Promise<string> => {

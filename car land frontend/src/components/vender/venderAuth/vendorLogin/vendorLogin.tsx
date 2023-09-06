@@ -3,7 +3,7 @@ import { vendorLoginSchema } from "../../../../validationSchemas/validationSchem
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
-import { VendorAuthLogin } from "../../../../services/apis/vendorApi/venderApi";
+import { VendorAuthLogin } from "../../../../services/apis/vendorApi/vendorApi";
 interface MyFormValue {
   userName?: string;
   email: string;

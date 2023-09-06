@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getVehicle } from "../../../../services/apis/vendorApi/venderApi";
+import { getVehicle } from "../../../../services/apis/vendorApi/vendorApi";
 import { Vehicles } from "../../../../interfaces/vehicleInterface";
 
 const CarList = () => {

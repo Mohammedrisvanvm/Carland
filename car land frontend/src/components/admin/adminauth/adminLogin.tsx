@@ -1,34 +1,33 @@
-import { useFormik } from 'formik';
-import React from 'react'
-import { AdminAuthSchema } from '../../../validationSchemas/validationSchema';
-import { useNavigate } from 'react-router';
+import { useFormik } from "formik";
+import React from "react";
+import { AdminAuthSchema } from "../../../validationSchemas/validationSchema";
+import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
-
+import { adminAuth } from "../../../services/apis/adminApi/adminApi";
 
 interface MyFormValue {
-    email: string;
-    password: string;
-  }
-  const initialValues: MyFormValue = {
-    email: "",
-    password:"",
-  };
+  email: string;
+  password: string;
+}
+const initialValues: MyFormValue = {
+  email: "",
+  password: "",
+};
 const AdminLogin = () => {
-    const Navigate = useNavigate();
-const submitForm:any=async (values: {}, actions: any) => {
+  const Navigate = useNavigate();
+  const submitForm: any = async (values: {}, actions: any) => {
     try {
       console.log(values);
-
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
+      await adminAuth(values)
 
-      await adminAuth(values);
       Navigate("/admin/adminHome");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
-}
-   const {
+  };
+  const {
     handleChange,
     handleBlur,
     values,
@@ -46,58 +45,82 @@ const submitForm:any=async (values: {}, actions: any) => {
   });
 
   return (
-  <>
+    <>
+      <div className="relative h-screen ">
+        <img
+          src="https://images.pexels.com/photos/3747463/pexels-photo-3747463.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
+          className="absolute inset-0 object-cover w-full h-full"
+          alt=""
+        />
+        <div className="relative bg-gray-900 h-screen bg-opacity-75">
+          <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div className="flex items-center justify-end xl:flex-row">
+              <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
+                <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
+                  <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
+                    Admin Login
+                  </h3>
+                  <form className="mt-4" onSubmit={handleSubmit}>
+                    <div className="mb-3">
+                      <label className="mb-2 block text-xs font-semibold">
+                        Email
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        value={values.email}
+                        placeholder="Enter your email"
+                        className={`${
+                            errors.email && touched.email ? "input-error" : ""
+                          } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}                      />
+                      {errors.email && touched.email && (
+                        <p className="border-red-500 text-red-500">
+                          {errors.email}
+                        </p>
+                      )}
+                    </div>
 
-  
+                    <div className="mb-3">
+                      <label className="mb-2 block text-xs font-semibold">
+                        Password
+                      </label>
+                      <input
+                        id="password"
+                        type="password"
+                        onBlur={handleBlur}
+                        onChange={handleChange}
+                        value={values.password}
+                        placeholder="*****"
+                        className={`${
+                            errors.password && touched.password ? "input-error" : ""
+                          } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}                      />
+                      {errors.password && touched.password && (
+                        <p className="border-red-500 text-red-500">
+                          {errors.password}
+                        </p>
+                      )}
+                    </div>
 
-  <div className="flex shadow-md">
-   
-    <div className="flex flex-wrap content-center justify-center rounded-l-md bg-white" style={{width: "24rem", height:" 32rem"}}>
-      <div className="w-72">
-       
-        <h1 className="text-xl font-semibold">Welcome back Admin</h1>
-        <small className="text-gray-400">Welcome back! Please enter your details</small>
-
-       
-        <form className="mt-4" onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="mb-2 block text-xs font-semibold">Email</label>
-            <input type="email" onChange={handleChange} onBlur={handleBlur} value={values.email} placeholder="Enter your email" className="block w-full rounded-md border border-gray-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-            {errors.email && touched.email && (
-                    <p className="border-red-500 text-red-500">
-                      {errors.email}
-                    </p>
-                  )}
+                    <div className="mb-3">
+                      <button
+                        disabled={isSubmitting}
+                        type="submit"
+                        className="mb-1.5 block w-full text-center text-white bg-black hover:bg-white hover:text-black hover:rounded-md hover:border-2 px-2 py-1.5 rounded-md"
+                      >
+                        Sign in
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div className="mb-3">
-            <label className="mb-2 block text-xs font-semibold">Password</label>
-            <input type="password" onBlur={handleBlur} value={values.password} placeholder="*****" className="block w-full rounded-md border border-gray-300 focus:border-black focus:outline-none focus:ring-1 focus:ring-purple-700 py-1 px-1.5 text-gray-500" />
-            {errors.password && touched.password && (
-                    <p className="border-red-500 text-red-500">
-                      {errors.email}
-                    </p>
-                  )}
-          </div>
-
-
-          <div className="mb-3">
-            <button  disabled={isSubmitting} className="mb-1.5 block w-full text-center text-white bg-black hover:bg-white hover:text-black hover:rounded-md hover:border-2 px-2 py-1.5 rounded-md">Sign in</button>
-          </div>
-        </form>
-
+        </div>
       </div>
-    </div>
+    </>
+  );
+};
 
-   
-    <div className="flex flex-wrap content-center justify-center rounded-r-md" style={{width: "24rem",height: "32rem"}}>
-      <img className="w-full h-full bg-center bg-no-repeat bg-cover rounded-r-md" src="https://i.imgur.com/9l1A4OS.jpeg" />
-    </div>
-
-  </div>
-
-  </>
-  )
-}
-
-export default AdminLogin
+export default AdminLogin;

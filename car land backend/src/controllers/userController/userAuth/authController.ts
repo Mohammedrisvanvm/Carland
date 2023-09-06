@@ -4,7 +4,6 @@ import AsyncHandler from "express-async-handler";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
-import { MongooseOptions } from "mongoose";
 
 export const userSignUpController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -46,7 +45,7 @@ export const userLoginController = AsyncHandler(
     if (userExist && (await userExist.matchPassword(data.password))) {
       const accessToken = jwtSign(
         { id: userExist._id, name: userExist.userName, email: userExist.email },
-        "5s"
+        "15m"
       );
       const refreshToken = jwtSign({ email: userExist.email }, "7d");
 
@@ -176,18 +175,18 @@ interface IVerifyjwt {
   expired: boolean;
 }
 export const userCheck = AsyncHandler(
-  async (req: Request, res: Response ): Promise<any> => {
+  async (req: Request, res: Response): Promise<any> => {
     console.log(req.cookies);
-console.log("hai");
+    console.log("hai");
 
-    const accessToken:string = req.cookies?.accessToken;
-    const refreshToken:string = req.cookies?.refreshToken;
+    const accessToken: string = req.cookies?.accessToken;
+    const refreshToken: string = req.cookies?.refreshToken;
 
     console.log(accessToken, refreshToken);
 
     if (!accessToken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken);
-console.log(verifiedJWT);
+      console.log(verifiedJWT);
 
       if (verifiedJWT) {
         const user: IUser | null = await userModel.findOne(

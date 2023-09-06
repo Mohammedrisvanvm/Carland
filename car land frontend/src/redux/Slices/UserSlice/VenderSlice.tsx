@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {toast} from 'react-toastify'
-import {  VendorOtpVerify } from "../../../services/apis/vendorApi/venderApi";
+import {  VendorOtpVerify } from "../../../services/apis/vendorApi/vendorApi";
 
 export const vendorLogin :object | number | any =createAsyncThunk("Vender/venderLogin",async(formValue:number):Promise<any>=>{
     try {

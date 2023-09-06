@@ -1,5 +1,6 @@
 import { Schema, model } from "mongoose";
 import IAdmin from "../interfaces/adminInterface";
+import bcrypt from 'bcrypt'
 
 
 
@@ -13,5 +14,8 @@ const adminSchema:Schema=new Schema({
         type: String,
     },
 })
-const adminModel = model<IAdmin>('user', adminSchema)
+adminSchema.methods.matchPassword = async function (enteredPassword: string) {
+    return await bcrypt.compare(enteredPassword, this.password)
+}
+const adminModel = model<IAdmin>('admin', adminSchema)
 export default adminModel

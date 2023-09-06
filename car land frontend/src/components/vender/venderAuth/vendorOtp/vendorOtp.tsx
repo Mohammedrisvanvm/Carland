@@ -1,5 +1,5 @@
 import { useState, ChangeEvent } from "react";
-import { VendorOtpVerify } from "../../../../services/apis/vendorApi/venderApi";
+import { VendorOtpVerify } from "../../../../services/apis/vendorApi/vendorApi";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { vendorLogin } from "../../../../redux/Slices/UserSlice/VenderSlice";

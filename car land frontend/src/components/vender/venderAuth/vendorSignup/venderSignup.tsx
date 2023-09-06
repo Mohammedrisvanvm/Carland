@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import {  vendorSignUpSchema } from "../../../../validationSchemas/validationSchema";
-import {  VendorAuthSignUp } from "../../../../services/apis/vendorApi/venderApi";
+import {  VendorAuthSignUp } from "../../../../services/apis/vendorApi/vendorApi";
 
 interface MyFormValue {
   userName?: string;
