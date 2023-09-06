@@ -6,6 +6,21 @@ const password: RegExp =
 const email: RegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
 const phone:RegExp= /^[0-9]{10}$|^[0][0-9]{10}$/;
 
+
+export const AdminAuthSchema= yup.object().shape({
+  email: yup
+    .string()
+    .email("enter a valid email eg:risvan@gmail.com")
+    .required(),
+  password: yup
+    .string()
+    .trim()
+    .min(6)
+    .matches(password, {
+      message: "please enter password Atleast 6 characters eg:Huat5@",
+    })
+    .required(),
+  })
 export const SignupSchema = yup.object().shape({
   userName: yup
     .string()
@@ -142,3 +157,4 @@ export const vendorLoginSchema= yup.object().shape({
     })
     .required(),
 });
+
