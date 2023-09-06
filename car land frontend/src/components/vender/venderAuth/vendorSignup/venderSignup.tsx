@@ -143,7 +143,7 @@ export const VendorSignUp = () => {
             </div>
           </form>
           <div className="flex justify-center text-xs text-gray-600 sm:text-sm">
-            <button onClick={() => Navigate("/vendor/vendorLogin")}>Login</button>
+            <button onClick={() => Navigate("/vendor/login")}>Login</button>
           </div>
           <div className="text-center">
             <p className="text-xs text-gray-600 sm:text-sm mt-6">

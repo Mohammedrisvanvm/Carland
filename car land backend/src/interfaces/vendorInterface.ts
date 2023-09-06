@@ -1,4 +1,4 @@
-interface IVender extends Document {
+interface IVendor extends Document {
     _id: string;
     userName: string;
     email: string;
@@ -12,4 +12,4 @@ interface IVender extends Document {
    
 }
 
-export default IVender
+export default IVendor

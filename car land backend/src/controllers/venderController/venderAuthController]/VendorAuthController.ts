@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import axios from "axios";
-import IVender from "../../../interfaces/venderInterface";
+import IVendor from "../../../interfaces/vendorInterface";
 import VenderModel from "../../../models/venderSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../../utils/twilio/twilio";
@@ -11,40 +11,25 @@ interface body {
 }
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body);
-
-    const { email, number, userName } = req.body.value;
-    console.log(email, number, userName, 11);
-
-    const venderExist: IVender | null = await VenderModel.findOne({
-      email: req.body.email,
+    const venderExist: IVendor | null = await VenderModel.findOne({
+      phoneNumber: req.body.values.number,
     });
     console.log(venderExist);
 
     if (venderExist) {
-      const accessToken = jwtSign(
-        {
-          id: venderExist._id,
-          name: venderExist.userName,
-          email: venderExist.email,
-        },
-        "5s"
+      let response: number = await sendOtp(req.body.values.number);
+      let Token = jwtSign(
+        { token: response, user: req.body.values },
+        "5min"
       );
-      const refreshToken = jwtSign({ email: venderExist.email }, "7d");
-
-      res.status(200).cookie("accessTokenVender", accessToken, {
-        maxAge: 300000,
-        httpOnly: true,
-      });
+      console.log(response);
 
       res
-        .cookie("refreshTokenVender", refreshToken, {
-          maxAge: 7 * 24 * 60 * 60,
-          httpOnly: true,
-        })
-        .json({ vender: venderExist });
+        .status(200)
+        .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
+        .json({ message: "hello" });
     } else {
-      throw new Error("Invalid email or password");
+      throw new Error("Invalid phone number or email");
     }
   }
 );
@@ -59,7 +44,7 @@ export const venderSignUpController = AsyncHandler(
     const data: iSign = req.body.values;
     // const data:iSign = req.body
 
-    const venderExist: IVender | null = await VenderModel.findOne({
+    const venderExist: IVendor | null = await VenderModel.findOne({
       email: data.email,
     });
 
@@ -100,12 +85,49 @@ export const vendorOtpverify = AsyncHandler(
       if (vendorOtpToken) {
         const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
         if (payload?.token == data.value) {
-          const user: {} = await VenderModel.create({
-            userName: payload.user?.userName,
-            email: payload.user?.email,
+          let vendorExist: IVendor | null = await VenderModel.findOne({
             phoneNumber: payload.user?.number,
           });
-          res.status(201).json({ user: user });
+        
+          
+          
+          if (!vendorExist) {
+        
+            
+            const user: IVendor = await VenderModel.create({
+              userName: payload.user?.userName,
+              email: payload.user?.email,
+              phoneNumber: payload.user?.number,
+            });
+           vendorExist=user
+          }
+
+
+          const accessToken = jwtSign(
+            {
+              id: vendorExist?._id,
+              name: vendorExist?.userName,
+              email: vendorExist?.email,
+              number: vendorExist?.phoneNumber,
+            },
+            "15min"
+          );
+          const refreshToken = jwtSign(
+            { number: vendorExist?.phoneNumber },
+            "7d"
+          );
+
+          res.status(200).cookie("accessTokenvendor", accessToken, {
+            maxAge: 900000,
+            httpOnly: true,
+          });
+
+          res
+            .cookie("refreshTokenvendor", refreshToken, {
+              maxAge: 7 * 24 * 60 * 60,
+              httpOnly: true,
+            })
+            .json({ vendor: vendorExist });
         }
       }
     } catch (error: any) {
