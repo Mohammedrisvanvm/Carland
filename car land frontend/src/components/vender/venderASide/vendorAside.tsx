@@ -1,12 +1,11 @@
-import React, { ReactElement, } from 'react'
+import React, { ReactElement } from "react";
 import { useNavigate } from "react-router";
 interface IPROPS {
   value: {
     Component: ReactElement;
-    
-  }
+  };
 }
-const VendorAside:React.FC<IPROPS> = ({ value}) => {
+const VendorAside: React.FC<IPROPS> = ({ value }) => {
   const Navigate = useNavigate();
   const Component = value.Component;
   return (
@@ -17,7 +16,10 @@ const VendorAside:React.FC<IPROPS> = ({ value}) => {
         aria-label="Sidebar"
       >
         <div className="grid ">
-          <button className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40" onClick={()=>Navigate('/vendor/vendorhome')}>
+          <button
+            className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40"
+            onClick={() => Navigate("/vendor/vendorhome")}
+          >
             <p className="text-2xl text-gray-400 dark:text-gray-500">
               <h1>Hub Name</h1>
             </p>
@@ -67,7 +69,7 @@ const VendorAside:React.FC<IPROPS> = ({ value}) => {
             </li>
             <li>
               <div
-                onClick={()=>Navigate('/vendor/vendordrivers')}
+                onClick={() => Navigate("/vendor/vendordrivers")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -90,7 +92,7 @@ const VendorAside:React.FC<IPROPS> = ({ value}) => {
 
             <li>
               <div
-               onClick={()=>Navigate('/vendor/vendorcars')}
+                onClick={() => Navigate("/vendor/vendorcars")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -187,13 +189,7 @@ const VendorAside:React.FC<IPROPS> = ({ value}) => {
           </ul>
         </div>
       </aside>
-      <div className="sm:ml-64">
-     
-      {Component}
-      </div>
-     
-   
-
+      <div className="sm:ml-64">{Component}</div>
     </>
   );
 };

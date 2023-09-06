@@ -106,13 +106,28 @@ export const AddCarSchema = yup.object().shape({
 //       "Invalid!",
 //       (value: any) =>value && ["image/png", "image/jpeg"].includes(value.type) )
 });
-export const vendorLogin = yup.object().shape({
+export const vendorSignUpSchema= yup.object().shape({
   userName: yup
     .string()
     .trim()
     .min(3)
     .matches(/^[a-zA-Z0-9\s]+$/, "Enter a Name")
     .required(),
+  email: yup
+    .string()
+    .email("enter a valid email eg:risvan@gmail.com")
+    .required(),
+  number: yup
+    .string()
+    .trim()
+    .min(10)
+    .max(10)
+    .matches(phone, {
+      message: "please enter 10 valid number eg:1234567890",
+    })
+    .required(),
+});
+export const vendorLoginSchema= yup.object().shape({
   email: yup
     .string()
     .email("enter a valid email eg:risvan@gmail.com")

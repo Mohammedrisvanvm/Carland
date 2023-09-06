@@ -1,5 +1,4 @@
 import { Route, Routes } from 'react-router'
-import { VendorLogin } from '../components/vender/venderAuth/vendorLogin/vendorLogin'
 import CarList from '../components/vender/list/carList/carList'
 import VendorHomePage from '../components/vender/venderHome/VendorHomePage'
 import Dashboard from '../components/admin/adminDashboard/tesxt'
@@ -7,12 +6,15 @@ import VenderDashboardPage from '../components/vender/venderDashboard/vendorDash
 import CarManagementPage from '../components/vender/venderCarManagementPage/carManagementPage'
 import AddCarPage from '../components/vender/venderCarManagementPage/addCar/addCarPage'
 import { VendorOtp } from '../components/vender/venderAuth/vendorOtp/vendorOtp'
+import VendorSignUp from '../components/vender/venderAuth/vendorSignup/venderSignup'
+import VenderLogin from '../components/vender/venderAuth/vendorLogin/vendorLogin'
 
 const VendorRouters = () => {
   return (
  <>
  <Routes>
-    <Route path='/*' element={<VendorLogin/>}/>
+    <Route path='/login' element={<VenderLogin/>}/>
+    <Route path='/signup' element={<VendorSignUp/>}/>
     <Route path='/otp' element={<VendorOtp/>}/>
     <Route path='/vendorhome' element={<VendorHomePage/>}/>
     <Route path='/vendordashboard' element={<VenderDashboardPage/>}/>
