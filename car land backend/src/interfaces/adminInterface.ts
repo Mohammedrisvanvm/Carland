@@ -2,7 +2,7 @@
     _id:string,
     email:string,
     password:string,
-    matchPassword:Function
+    matchPassword:any
 }
 
 export default IAdmin

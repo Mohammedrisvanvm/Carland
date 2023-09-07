@@ -5,7 +5,9 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { adminAuth } from "../../../services/apis/adminApi/adminApi";
 import { useDispatch } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
 import { setAdmin } from "../../../redux/Slices/adminSlice";
+
 
 interface MyFormValue {
   email: string;
@@ -15,18 +17,34 @@ const initialValues: MyFormValue = {
   email: "",
   password: "",
 };
+interface axiosresponse{
+  data:{
+    admin:{
+      id:string,
+      email:string,
+    }
+  }
+}
 const AdminLogin = () => {
-    const dispatch=useDispatch()
+    const dispatch=useAppDispatch()
   const Navigate = useNavigate();
+  const admin=useAppSelector((state)=>state.admin)
+  console.log(admin);
+  
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       console.log(values);
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-      await dispatch(setAdmin(adminAuth(values))) 
+     const response:axiosresponse=await adminAuth(values)
+     console.log(response.data.admin);
+     
+       dispatch(setAdmin(response.data.admin)) 
 
       Navigate("/admin/adminHome");
     } catch (error: any) {
+      console.log(error);
+      
       toast.error(error.response.data.message);
     }
   };

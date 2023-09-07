@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { adminAuth } from "../controllers/adminController/adminAuth";
+import { adminAuth, adminCheck } from "../controllers/adminController/adminAuth";
 
 
 let router=Router()
 
 
 router.post('/auth',adminAuth)
+router.get('/adminCheck',adminCheck)
 
 
 

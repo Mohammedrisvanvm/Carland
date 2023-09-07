@@ -4,8 +4,9 @@ import { LoginSchema } from "../../../validationSchemas/validationSchema";
 import "./signIn.css";
 
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
-import { login } from "../../../redux/Slices/UserSlice/UserSlice";
+import { userLoginThunk } from "../../../redux/Slices/UserSlice/UserSlice";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
+
 
 interface MyFormValue {
   userName: string;
@@ -20,15 +21,15 @@ const initialValues: MyFormValue = {
 
 export const SignIn = () => {
   const Navigate = useNavigate();
-  const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user);
-  console.log(user);
+  const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.user);
+
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-      await dispatch(login(values));
+      await dispatch(userLoginThunk(values));
       Navigate("/");
     } catch (error: any) {
       toast.error(error.response.data.message);

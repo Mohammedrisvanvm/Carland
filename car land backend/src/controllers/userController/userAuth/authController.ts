@@ -126,7 +126,7 @@ export const userGoogleAuth = AsyncHandler(
                 maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
               })
-              .json({ newUser, message: `welcome back ${newUser?.userName} ` });
+              .json({ user:newUser, message: `welcome back ${newUser?.userName} ` });
           } else {
             const user: IUser | null = await userModel.create({
               userName: response.data?.name,

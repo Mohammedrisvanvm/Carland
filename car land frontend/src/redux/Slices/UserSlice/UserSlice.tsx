@@ -1,16 +1,17 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { userLogin } from "../../../services/apis/userApi/userApi";
+import {
+  userGoogleAuth,
+  userLogin,
+} from "../../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
-import { user } from "../../../interfaces/userAuth";
+import { Authcheck, user } from "../../../interfaces/userAuth";
 
+type UserState = {
+  loading: boolean;
+  user: user | null;
+};
 
- 
- type initialState ={
-  loading:boolean,
-  user:user
- }
-
-export const login: object | number | any = createAsyncThunk(
+export const userLoginThunk = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
@@ -22,51 +23,69 @@ export const login: object | number | any = createAsyncThunk(
     }
   }
 );
-const initialState: initialState = {
-  user:{
-    _id: '',
-    userName: '',
-    email: '',
-    password: '',
-    googleId: '',
-    image: '',
+
+export const userGoogleThunk = createAsyncThunk(
+  "User/googleAuth",
+  async (formValue: object): Promise<any> => {
+    try {
+      let response: Authcheck | null = await userGoogleAuth(formValue);
+      console.log(response.data.user);
+
+      toast.success(response.data.message);
+      return response.data.user;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
+  }
+);
+
+const initialUserState: UserState = {
+  user: {
+    _id: "",
+    userName: "",
+    email: "",
+    password: "",
+    googleId: "",
+    image: "",
     ban: false,
     verified_email: false,
   },
-  loading:false
- 
+  loading: false,
 };
-
-const UserSlice = createSlice({
+const userReducer = createSlice({
   name: "User",
-  initialState,
+  initialState: initialUserState,
   reducers: {
-    setGoogleAuth: (state, action:PayloadAction<user>) => {
+    signout: (state) => {
+      state.user = null;
+    },
+    setGoogleAuth: (state, action: PayloadAction<user>) => {
       state.user = action.payload;
     },
-    setUser: (state, action:PayloadAction<user>) => {
-      state.user = action.payload;
-    state.loading=false
+    setUser: (state, action: PayloadAction<user>) => {
+      state.user = action.payload;      state.loading = false;
     },
-    login:(state, action:PayloadAction<user>) => {
-      state.user = action.payload;
-      state.loading=false
+    login: (state, action: PayloadAction<user>) => {
+      state.user = action.payload
+           state.loading = false;
     },
   },
-  extraReducers: {
-    [login.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [login.fulfilled]: (state, action:PayloadAction<user>) => {
-      state.loading = false;
-      state.user = action.payload;
-    },
-    [login.reject]: (state, action) => {
-      state.loading = false;
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(userGoogleThunk.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(
+        userGoogleThunk.fulfilled,
+        (state, action: PayloadAction<user>) => {
+          state.loading = false;
+          state.user = action.payload;        }
+      )
+      .addCase(userGoogleThunk.rejected, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 
-export const { setGoogleAuth, setUser } = UserSlice.actions;
-
-export default UserSlice.vreducer;
+export default userReducer.vreducer;
+export const { setGoogleAuth, setUser } = userReducer.actions;

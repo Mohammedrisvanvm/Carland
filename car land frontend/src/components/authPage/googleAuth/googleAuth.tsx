@@ -1,43 +1,28 @@
 import { useGoogleLogin } from "@react-oauth/google";
-import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
-import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { toast } from "react-toastify";
-import { login, setGoogleAuth } from "../../../redux/Slices/UserSlice/UserSlice";
-
-
-interface RootState {
-  User: string;
-}
-interface UserData {
-  message:string,
-  user?:object,
-  olduser?:string
-}
+import { userGoogleThunk, userLoginThunk } from "../../../redux/Slices/UserSlice/UserSlice";
+import { Authcheck } from "../../../interfaces/userAuth";
+import { useAppDispatch } from "../../../redux/store/hook";
 
 export const GoogleAuth = () => {
   const Navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useAppDispatch();
 
   const authLogin = useGoogleLogin({
-    onSuccess: async(response:any) => {
-     console.log(response);
-     
-      
-try {
-  const res:AxiosResponse<UserData>= await userGoogleAuth(response)
-  toast.success(res.data.message)
-dispatch(setGoogleAuth(res.data.olduser))
-Navigate('/')
-} catch (error:any) {
-  console.log(error);
-  
-}
+    onSuccess: async (response: any) => {
+      console.log(response);
+
+      try {
+        dispatch(userGoogleThunk(response));
+        Navigate("/");
+      } catch (error: any) {
+        console.log(error);
+      }
     },
     onError: (error) => {
       console.log(error);
-      
+
       throw new Error("login failed");
     },
   });
@@ -48,9 +33,7 @@ Navigate('/')
         <div className="mb-5 font-semibold">Create an account</div>
         <div className="flex justify-center w-full mb-3">
           <button
-            onClick={(event: React.MouseEvent<HTMLElement>) => 
-              authLogin()
-            }
+            onClick={(event: React.MouseEvent<HTMLElement>) => authLogin()}
             className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md md:w-auto bg-black hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
           >
             <div className="flex items-center">

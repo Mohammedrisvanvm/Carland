@@ -24,13 +24,13 @@ type vendor={
     image?:string,
 }
 
-type initialState={
-    vendor:vendor|null,
+type adminStore={
+    Vendor:vendor|null,
     loading:boolean
 }
 
-const initialState: initialState = {
-    vendor:{
+const initialState: adminStore = {
+    Vendor:{
       userName: "",
       id: "",
       email: "",
@@ -40,12 +40,12 @@ const initialState: initialState = {
    
   };
 
-const VenderSlice=createSlice({
+const vendorReducer=createSlice({
     name:"Vendor",
     initialState,
     reducers:{
-        signout: state => {
-            state.vendor =null
+        signout: (state,action) => {
+            state.Vendor =null
         },
 },
     extraReducers:(builder)=>{
@@ -53,12 +53,12 @@ const VenderSlice=createSlice({
             state.loading=true
         }).addCase(vendorLogin.fullfilled,(state,action:PayloadAction<vendor>)=>{
             state.loading=false,
-            state.vendor=action.payload
+            state.Vendor=action.payload
         }).addCase(vendorLogin.rejected,(state,action)=>{
             state.loading=false
         });
     }
 })
 
-export default VenderSlice.vreducer
-export const {signout}=VenderSlice.actions
+export default vendorReducer.vreducer
+export const {signout}=vendorReducer.actions

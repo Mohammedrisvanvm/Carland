@@ -3,10 +3,10 @@ import storage from "redux-persist/lib/storage";
 import { persistReducer, persistStore } from "redux-persist";
 import rootReducer from "./reducers";
 
+
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["userReducer"],
   expires: 7 * 24 * 60 * 60,
 };
 
@@ -14,6 +14,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const Store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false
+  }),
 });
 
 const persistor = persistStore(Store);
