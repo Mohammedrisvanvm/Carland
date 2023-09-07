@@ -25,7 +25,7 @@ type vendor={
 }
 
 type initialState={
-    vendor:vendor,
+    vendor:vendor|null,
     loading:boolean
 }
 
@@ -44,26 +44,21 @@ const VenderSlice=createSlice({
     name:"Vendor",
     initialState,
     reducers:{
-setVendor(state:any,action:PayloadAction<vendor>){
-    state.loading=false
-    state.vendor = action.payload;
-    },
-  
-
+        signout: state => {
+            state.vendor =null
+        },
 },
-    extraReducers:{
-        [vendorLogin.pending]:(state,action:PayloadAction<vendor>)=>{
+    extraReducers:(builder)=>{
+        builder.addCase(vendorLogin.pending,(state,action)=>{
             state.loading=true
-        },
-        [vendorLogin.fullfilled]:(state,action:PayloadAction<vendor>)=>{
+        }).addCase(vendorLogin.fullfilled,(state,action:PayloadAction<vendor>)=>{
+            state.loading=false,
+            state.vendor=action.payload
+        }).addCase(vendorLogin.rejected,(state,action)=>{
             state.loading=false
-            state.vendor = action.payload;
-        },
-        [vendorLogin.reject]:(state,action:PayloadAction<vendor>)=>{
-            state.loading=false
-        },
+        });
     }
 })
 
 export default VenderSlice.vreducer
-export const {setVendor}=VenderSlice.actions
+export const {signout}=VenderSlice.actions
