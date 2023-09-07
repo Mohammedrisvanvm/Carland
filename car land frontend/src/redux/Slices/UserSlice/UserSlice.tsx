@@ -1,14 +1,10 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { userLogin } from "../../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
+import { user } from "../../../interfaces/userAuth";
 
 
- type user={
-    userName: string;
-    _id: string;
-    email: string;
-    image?: string;
- }
+ 
  type initialState ={
   loading:boolean,
   user:user
@@ -28,10 +24,14 @@ export const login: object | number | any = createAsyncThunk(
 );
 const initialState: initialState = {
   user:{
-    userName: "",
-    _id: "",
-    email: "",
-    image: "",
+    _id: '',
+    userName: '',
+    email: '',
+    password: '',
+    googleId: '',
+    image: '',
+    ban: false,
+    verified_email: false,
   },
   loading:false
  
@@ -46,9 +46,11 @@ const UserSlice = createSlice({
     },
     setUser: (state, action:PayloadAction<user>) => {
       state.user = action.payload;
+    state.loading=false
     },
     login:(state, action:PayloadAction<user>) => {
       state.user = action.payload;
+      state.loading=false
     },
   },
   extraReducers: {
