@@ -22,3 +22,6 @@ export const VendorOtpVerify = async (
 ): Promise<AxiosResponse<any>> => {
   return axiosBase.post("/vendors/auth/vendorotpverify", { value });
 };
+export const vendorSignOut = async (): Promise<AxiosResponse<any>> => {
+  return axiosBase.get("/vendors/auth/vendorlogout");
+};

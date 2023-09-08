@@ -29,7 +29,7 @@ export const SignIn = () => {
       actions.resetForm();
       console.log(values);
 
-      dispatch(userLoginThunk(values))
+      userLoginThunk(values);
       Navigate("/");
     } catch (error: any) {
       toast.error(error.response.data.message);

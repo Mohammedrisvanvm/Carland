@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { userGoogleAuth, userLogin } from "../../services/apis/userApi/userApi";
 
 interface InitialUser {
+  [x: string]: any;
   userName: string | null;
   email: string | null;
-  accessToken: string | null |undefined;
+  accessToken: string | null | undefined;
   isLoading: boolean;
 }
 
@@ -17,7 +18,7 @@ const initialState: InitialUser = {
   isLoading: false,
 };
 
-export const userGoogleThunk:any = createAsyncThunk(
+export const userGoogleThunk: any = createAsyncThunk(
   "user/googleauth",
   async (formValue: Object) => {
     try {
@@ -28,7 +29,7 @@ export const userGoogleThunk:any = createAsyncThunk(
     }
   }
 );
-export const userLoginThunk:any = createAsyncThunk(
+export const userLoginThunk = createAsyncThunk(
   " user/login",
   async (formValue: Object) => {
     try {
@@ -44,7 +45,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userLogout: (state) => {
+    userLogout: state=> {
       state.userName = null;
       state.email = null;
       state.accessToken = null;
@@ -82,11 +83,13 @@ const userSlice = createSlice({
       })
       .addCase(
         userLoginThunk.fulfilled,
-        (state, action: PayloadAction<user>) => {
-          state.userName = action.payload.userName;
-          state.email = action.payload.email;
-          state.isLoading = false;
-          state.accessToken = action.payload.accessToken 
+        (state, action:PayloadAction<any>) => {
+          if (action.payload) {
+            state.userName = action.payload.userName;
+            state.email = action.payload.email;
+            state.isLoading = false;
+            state.accessToken = action.payload.accessToken;
+          }
         }
       )
       .addCase(userLoginThunk.rejected, (state, action) => {

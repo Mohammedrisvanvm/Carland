@@ -5,7 +5,6 @@ import VenderModel from "../../../models/venderSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../../utils/twilio/twilio";
 
-
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const venderExist: IVendor | null = await VenderModel.findOne({
@@ -15,10 +14,7 @@ export const vendorLoginController = AsyncHandler(
 
     if (venderExist) {
       let response: number = await sendOtp(req.body.values.number);
-      let Token = jwtSign(
-        { token: response, user: req.body.values },
-        "5min"
-      );
+      let Token = jwtSign({ token: response, user: req.body.values }, "5min");
       console.log(response);
 
       res
@@ -85,20 +81,15 @@ export const vendorOtpverify = AsyncHandler(
           let vendorExist: IVendor | null = await VenderModel.findOne({
             phoneNumber: payload.user?.number,
           });
-        
-          
-          
+
           if (!vendorExist) {
-        
-            
             const user: IVendor = await VenderModel.create({
               userName: payload.user?.userName,
               email: payload.user?.email,
               phoneNumber: payload.user?.number,
             });
-           vendorExist=user
+            vendorExist = user;
           }
-
 
           const accessToken = jwtSign(
             {
@@ -130,5 +121,15 @@ export const vendorOtpverify = AsyncHandler(
     } catch (error: any) {
       throw new Error(error);
     }
+  }
+);
+
+export const vendorLogOut = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    res.cookie("accessTokenvendor", "", { httpOnly: true, maxAge: 0 });
+    res
+      .cookie("refreshTokenvendor", "", { httpOnly: true, maxAge: 0 })
+      .status(200)
+      .json({ message: "logout user" });
   }
 );

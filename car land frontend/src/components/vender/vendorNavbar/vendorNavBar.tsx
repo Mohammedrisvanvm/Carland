@@ -1,13 +1,23 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useAppDispatch } from "../../../redux/store/storeHook";
+import { vendorLogout } from "../../../redux/slice/vendorSlice";
+import { vendorSignOut } from "../../../services/apis/vendorApi/vendorApi";
+
 
 const VenderNavBar = () => {
-    const [dropdown, setdropdown] = useState(false);
-    const dropdownHandler = () => {
-      setdropdown(!dropdown);
-    };
+  const dispatch = useAppDispatch();
+  const [dropdown, setdropdown] = useState(false);
+  const dropdownHandler = () => {
+    setdropdown(!dropdown);
+  };
+  const logOutHandle = async() => {
+    await vendorSignOut()
+   dispatch(vendorLogout()) 
+  };
+
   return (
-   <>
-    <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <>
+      <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start">
@@ -69,7 +79,7 @@ const VenderNavBar = () => {
                 >
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                     Risvan
+                      Risvan
                     </span>
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
                       risvan@gmail.com
@@ -103,7 +113,7 @@ const VenderNavBar = () => {
                     </li> */}
                     <li>
                       <button
-                        // onClick={UserLogout}
+                        onClick={logOutHandle}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Sign out
@@ -116,8 +126,8 @@ const VenderNavBar = () => {
           </div>
         </div>
       </nav>
-   </>
-  )
-}
+    </>
+  );
+};
 
-export default VenderNavBar
+export default VenderNavBar;

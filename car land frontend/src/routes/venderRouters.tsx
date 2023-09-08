@@ -17,7 +17,7 @@ const VendorRouters = () => {
         <Route path="/*" element={<VenderLogin />} />
         <Route path="/signup" element={<VendorSignUp />} />
         <Route path="/otp" element={<VendorOtp />} />
-        <Route element={<PrivateRoute role="vendor" route="/vendor" />}>
+        <Route element={<PrivateRoute role="vendor" />}>
           <Route path="/vendorhome" element={<VendorHomePage />} />
           <Route path="/vendordashboard" element={<VenderDashboardPage />} />
           <Route path="/vendorcars" element={<CarManagementPage />} />

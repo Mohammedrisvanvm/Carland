@@ -1,5 +1,5 @@
 import { useFormik } from "formik";
-import React from "react";
+import React, { useEffect } from "react";
 import { AdminAuthSchema } from "../../../validationSchemas/validationSchema";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
@@ -7,6 +7,7 @@ import { adminAuth } from "../../../services/apis/adminApi/adminApi";
 
 import { useAppDispatch,useAppSelector } from "../../../redux/store/storeHook";
 import { setAdmin } from "../../../redux/slice/adminSlice";
+
 
 
 
@@ -33,7 +34,12 @@ const AdminLogin = () => {
   const Navigate = useNavigate();
   const admin=useAppSelector((state)=>state.admin)
   console.log(admin);
-  
+  useEffect(()=>{
+    if(admin.accessToken){
+      Navigate('/admin/adminHome')
+    }
+  }
+  )
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       console.log(values);
@@ -42,7 +48,7 @@ const AdminLogin = () => {
      const response:axiosresponse=await adminAuth(values)
      console.log(response.data.admin);
      
-      dispatch(setAdmin(response.data.admin))
+      setAdmin(response.data.admin)
 
       Navigate("/admin/adminHome");
     } catch (error: any) {

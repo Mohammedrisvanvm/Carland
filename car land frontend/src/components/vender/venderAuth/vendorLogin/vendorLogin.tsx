@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { vendorLoginSchema } from "../../../../validationSchemas/validationSchema";
 import { useFormik } from "formik";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 import { VendorAuthLogin } from "../../../../services/apis/vendorApi/vendorApi";
+import { useAppSelector } from "../../../../redux/store/storeHook";
 interface MyFormValue {
   userName?: string;
   email: string;
@@ -12,9 +13,17 @@ interface MyFormValue {
 const initialValues: MyFormValue = {
   email: "",
   number: 0,
-};
+}; 
+
 const VenderLogin = () => {
   const Navigate = useNavigate();
+  const { vendor } = useAppSelector((state) => state);
+  useEffect(() => {
+    if (vendor.email) {
+      Navigate("/vendor/vendorhome");
+    }
+  },[vendor.email]);
+
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       console.log(values);

@@ -14,7 +14,9 @@ export interface user {
 }
 export interface Authcheck {
   data: {
-    user: user
+    user?: user
+    vendor?:user,
+    admin?:user
    message?:string
   }
 }

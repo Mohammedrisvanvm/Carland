@@ -1,43 +1,49 @@
-import React, { Children, useEffect, useState } from "react";
-import { Outlet, Navigate, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useAppSelector } from "../redux/store/storeHook";
-interface props {
+
+interface Props {
   role: string;
-  route: string;
-  children?: React.ReactNode;
 }
 
-function PrivateRoute(props: props) {
+const PrivateRoute = (props: Props): React.ReactNode => {
   const { user, admin, vendor } = useAppSelector((state) => state);
-  const [auth, setAuth] = useState(false);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (props.role == "user") {
-      if (user.accessToken) {
-        setAuth(true);
-      } else {
-        setAuth(false);
-        navigate("/user");
-      }
-    } else if (props.role == "admin") {
-      if (admin.accessToken) {
-        setAuth(true);
-      } else {
-        setAuth(false);
-        navigate("/admin");
-      }
-    } else if (props.role == "vendor") {
-      console.log("vendor");
+  const [auth, setAuth] = useState<boolean>(false);
+  const location = useLocation();
 
-      if (vendor.email) {
-        setAuth(true);
-      } else {
-        setAuth(false);
-        navigate("/vendor");
-      }
-    }
-  });
-  return <>{auth ? <Outlet /> : <Navigate to={props.route} />}</>;
-}
+  if (props.role === "user" && user.accessToken) {
+    return user.accessToken ? (
+      <Outlet />
+    ) : (
+      <Navigate
+        to="/UserLogin"
+        state={{ from: location.pathname }}
+        replace={true}
+      />
+    );
+  } else if (props.role === "admin" && admin.accessToken) {
+    console.log("HAI");
+    
+    return user.accessToken ? (
+      <Outlet />
+    ) : (
+      <Navigate
+        to="/admin"
+        state={{ from: location.pathname }}
+        replace={true}
+      />
+    );
+  } else if (props.role === "vendor" && vendor.email) {
+    return vendor.email ? (
+      <Outlet />
+    ) : (
+      <Navigate
+        to="/vendor/login"
+        state={{ from: location.pathname }}
+        replace={true}
+      />
+    );
+  }
+};
 
 export default PrivateRoute;
