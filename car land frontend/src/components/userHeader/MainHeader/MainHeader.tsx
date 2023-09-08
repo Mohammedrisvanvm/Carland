@@ -8,8 +8,8 @@ export const MainHeader = (): ReactElement => {
   const Navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const User = useAppSelector((state) =>state.user);
-console.log(User);
+  // const User = useAppSelector((state) =>state.user.loading);
+const User=false
 
 
   // useEffect(() => {
@@ -82,9 +82,10 @@ console.log(User);
             </a>
           </li>
 
-          {User?.user?.email ? (
+          {/* {User?.user?.email ? ( */}
+          {User ? (
             <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
-              {User?.user.ban}{" "}
+              {}{" "}
               <span className="ml-1">
                 <LoginHeader />
               </span>
@@ -194,7 +195,8 @@ console.log(User);
                         title="Our product"
                         className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
                       >
-                        {User?.user?.userName}
+                        {/* {User?.user?.userName} */}
+                        {User}
                       </button>
                     </li>
                     <li>

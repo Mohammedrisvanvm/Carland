@@ -1,13 +1,11 @@
 import * as yup from "yup";
 
-
 const password: RegExp =
   /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{5,}$/;
 const email: RegExp = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/;
-const phone:RegExp= /^[0-9]{10}$|^[0][0-9]{10}$/;
+const phone: RegExp = /^[0-9]{10}$|^[0][0-9]{10}$/;
 
-
-export const AdminAuthSchema= yup.object().shape({
+export const AdminAuthSchema = yup.object().shape({
   email: yup
     .string()
     .email("enter a valid email eg:risvan@gmail.com")
@@ -20,7 +18,7 @@ export const AdminAuthSchema= yup.object().shape({
       message: "please enter password Atleast 6 characters eg:Huat5@",
     })
     .required(),
-  })
+});
 export const SignupSchema = yup.object().shape({
   userName: yup
     .string()
@@ -101,21 +99,21 @@ export const AddCarSchema = yup.object().shape({
     .date()
     .required("Future date is required")
     .min(new Date(), "Date must be in the future"),
-//   vehiclesingleimage: yup
-//     .mixed()
-//     .test(
-//       "FILE_TYPE",
-//       "Invalid!",
-//       (value: any) => value && ["image/png", "image/jpg"].includes(value.type)
-//     ),
-//     vehiclemultipleimage: yup
-//     .mixed()
-//     .test(
-//       "FILE_TYPE",
-//       "Invalid!",
-//       (value: any) =>value && ["image/png", "image/jpeg"].includes(value.type) )
+  //   vehiclesingleimage: yup
+  //     .mixed()
+  //     .test(
+  //       "FILE_TYPE",
+  //       "Invalid!",
+  //       (value: any) => value && ["image/png", "image/jpg"].includes(value.type)
+  //     ),
+  //     vehiclemultipleimage: yup
+  //     .mixed()
+  //     .test(
+  //       "FILE_TYPE",
+  //       "Invalid!",
+  //       (value: any) =>value && ["image/png", "image/jpeg"].includes(value.type) )
 });
-export const vendorSignUpSchema= yup.object().shape({
+export const vendorSignUpSchema = yup.object().shape({
   userName: yup
     .string()
     .trim()
@@ -136,7 +134,7 @@ export const vendorSignUpSchema= yup.object().shape({
     })
     .required(),
 });
-export const vendorLoginSchema= yup.object().shape({
+export const vendorLoginSchema = yup.object().shape({
   email: yup
     .string()
     .email("enter a valid email eg:risvan@gmail.com")
@@ -151,4 +149,3 @@ export const vendorLoginSchema= yup.object().shape({
     })
     .required(),
 });
-

@@ -37,12 +37,16 @@ export const userLoginController = AsyncHandler(
       password?: string;
     }
     const data: data = req.body.value;
+    console.log(data);
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
     });
+    console.log("hai");
 
     if (userExist && (await userExist.matchPassword(data.password))) {
+      console.log("enterd");
+
       const accessToken = jwtSign(
         { id: userExist._id, name: userExist.userName, email: userExist.email },
         "15m"
@@ -126,7 +130,10 @@ export const userGoogleAuth = AsyncHandler(
                 maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
               })
-              .json({ user:newUser, message: `welcome back ${newUser?.userName} ` });
+              .json({
+                user: newUser,
+                message: `welcome back ${newUser?.userName} `,
+              });
           } else {
             const user: IUser | null = await userModel.create({
               userName: response.data?.name,

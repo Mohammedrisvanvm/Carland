@@ -1,8 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import {
-  userGoogleAuth,
-  userLogin,
-} from "../../services/apis/userApi/userApi";
+import { userGoogleAuth, userLogin } from "../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
 import { Authcheck, user } from "../../interfaces/userAuth";
 import { useNavigate } from "react-router";
@@ -11,15 +8,20 @@ type UserState = {
   loading: boolean;
   user: user | null;
 };
-const Navigate=useNavigate()
+
 export const userLoginThunk = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
+      console.log(formValue);
+
       let response: any = await userLogin(formValue);
-Navigate('/')
+      console.log(response);
+
       return response.data.user;
     } catch (error: any) {
+      
+      
       toast.error(error.response.data.message);
     }
   }
@@ -64,11 +66,12 @@ const userReducer = createSlice({
       state.user = action.payload;
     },
     setUser: (state, action: PayloadAction<user>) => {
-      state.user = action.payload;      state.loading = false;
+      state.user = action.payload;
+      state.loading = false;
     },
     login: (state, action: PayloadAction<user>) => {
-      state.user = action.payload
-           state.loading = false;
+      state.user = action.payload;
+      state.loading = false;
     },
   },
   extraReducers: (builder) => {
@@ -80,7 +83,8 @@ const userReducer = createSlice({
         userGoogleThunk.fulfilled,
         (state, action: PayloadAction<user>) => {
           state.loading = false;
-          state.user = action.payload;        }
+          state.user = action.payload;
+        }
       )
       .addCase(userGoogleThunk.rejected, (state, action) => {
         state.loading = false;

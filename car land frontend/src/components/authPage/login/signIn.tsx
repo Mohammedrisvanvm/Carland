@@ -4,9 +4,9 @@ import { LoginSchema } from "../../../validationSchemas/validationSchema";
 import "./signIn.css";
 
 import { toast } from "react-toastify";
-import { userLoginThunk } from "../../../redux/Slices/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
-
+import { userLogin } from "../../../services/apis/userApi/userApi";
+import { userLoginThunk } from "../../../redux/Slices/UserSlice";
 
 interface MyFormValue {
   userName: string;
@@ -24,19 +24,18 @@ export const SignIn = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.user);
 
-
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
+      console.log(values);
+
       await dispatch(userLoginThunk(values));
-      
-    } catch (error: any) {
+      console.log("submitted");
       Navigate("/");
+    } catch (error: any) {
       toast.error(error.response.data.message);
     }
-
-    console.log("submitted");
 
     //  Navigate('/UserOtp');
   };
