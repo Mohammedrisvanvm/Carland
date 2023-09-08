@@ -22,7 +22,7 @@ const userSlice=createSlice({
     name:'user',
     initialState,
     reducers:{
-userlogout:state=>{
+userLogout:state=>{
     state.userName=null
     state.email=null
     state.accessToken=null
@@ -33,4 +33,4 @@ userlogout:state=>{
 })
 
 export default userSlice.reducer
-export const {userlogout}=userSlice.actions
+export const {userLogout}=userSlice.actions
