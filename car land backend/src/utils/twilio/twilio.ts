@@ -4,7 +4,7 @@ const Auth: string | undefined = process.env.AUTH_TOKEN;
 
 const client = Twilio(accountid, Auth);
 
-function getotp() {
+export function getotp() {
     const min = 100000; 
     const max = 999999;
     return Math.floor(Math.random() * (max - min + 1)) + min;

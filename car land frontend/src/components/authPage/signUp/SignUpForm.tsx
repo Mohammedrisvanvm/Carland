@@ -24,10 +24,11 @@ export const SignUp = () => {
 
   const submitForm: {}|any = async (values: {}, actions: any) => {
  try {
-  const res: any = await userSignUp(values);
+  
     await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
     actions.resetForm();
-    Navigate("/UserLogin");
+    await userSignUp(values);
+    Navigate("/UserOtp");
   
  } catch (error:any) {
   toast.error(error.response.data.message);

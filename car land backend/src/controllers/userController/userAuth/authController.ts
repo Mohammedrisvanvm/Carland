@@ -4,6 +4,8 @@ import AsyncHandler from "express-async-handler";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
+import MailService from "../../../utils/nodeMailer/nodeMailer";
+import { getotp } from "../../../utils/twilio/twilio";
 
 export const userSignUpController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -12,7 +14,8 @@ export const userSignUpController = AsyncHandler(
       userName: string;
       password: string;
     }
-    const data: iSign = req.body.value;
+    // const data: iSign = req.body.value;
+    const data: iSign = req.body
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
@@ -21,12 +24,83 @@ export const userSignUpController = AsyncHandler(
     if (userExist) {
       throw new Error("User Already Exists");
     } else {
-      const user: {} = await userModel.create({
-        userName: data.userName,
-        email: data.email,
-        password: data.password,
-      });
-      res.status(201).json({ user });
+      const otp = getotp();
+      MailService(data.email, otp);
+
+      const Token = jwtSign({ token: otp, user: data }, "5min");
+      res
+        .status(200)
+        .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000 })
+        .json({ message: "message otp sented" });
+
+      // const user: {} = await userModel.create({
+      //   userName: data.userName,
+      //   email: data.email,
+      //   password: data.password,
+      // });
+      // res.status(201).json({ user });
+    }
+  }
+);
+interface UserJwt {
+  payload: {
+    token?: number;
+    user?: {
+      userName: string;
+      email: string;
+      number: number;
+    };
+  } | null;
+  expired: boolean;
+}
+export const userOtpverify = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    try {
+      const vendorOtpToken: string = req.cookies?.vendorOtpToken;
+
+      // const data: number = req.body.value;
+      const data: number = req.body
+      if (vendorOtpToken) {
+        const { payload, expired }: UserJwt = verifyJwt(vendorOtpToken);
+        if (payload?.token == data) {
+          let userExist: IUser | null = await userModel.findOne({
+            phoneNumber: payload.user?.number,
+          });
+
+          if (!userExist) {
+            const user: IUser = await userModel.create({
+              userName: payload.user?.userName,
+              email: payload.user?.email,
+              phoneNumber: payload.user?.number,
+            });
+            userExist = user;
+          }
+
+          const accessToken = jwtSign(
+            {
+              id: userExist?._id,
+              name: userExist?.userName,
+              email: userExist?.email,
+            },
+            "15min"
+          );
+          const refreshToken = jwtSign({ id: userExist?._id }, "7d");
+
+          res.status(200).cookie("accessTokenUser", accessToken, {
+            maxAge: 900000,
+            httpOnly: true,
+          });
+
+          res
+            .cookie("refreshTokenvendor", refreshToken, {
+              maxAge: 7 * 24 * 60 * 60,
+              httpOnly: true,
+            })
+            .json({ user: userExist });
+        }
+      }
+    } catch (error: any) {
+      throw new Error(error);
     }
   }
 );
@@ -53,13 +127,13 @@ export const userLoginController = AsyncHandler(
       );
       const refreshToken = jwtSign({ email: userExist.email }, "7d");
 
-      res.status(200).cookie("accessToken", accessToken, {
+      res.status(200).cookie("accessTokenUser", accessToken, {
         maxAge: 300000,
         httpOnly: true,
       });
 
       res
-        .cookie("refreshToken", refreshToken, {
+        .cookie("refreshTokenUser", refreshToken, {
           maxAge: 7 * 24 * 60 * 60,
           httpOnly: true,
         })
@@ -120,13 +194,13 @@ export const userGoogleAuth = AsyncHandler(
             );
             const refreshToken = jwtSign({ email: newUser?.email }, "7d");
 
-            res.status(200).cookie("accessToken", accessToken, {
+            res.status(200).cookie("accessTokenUser", accessToken, {
               maxAge: 300000,
               httpOnly: true,
             });
 
             res
-              .cookie("refreshToken", refreshToken, {
+              .cookie("refreshTokenUser", refreshToken, {
                 maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
               })
@@ -148,13 +222,13 @@ export const userGoogleAuth = AsyncHandler(
             );
             const refreshToken = jwtSign({ email: user.email }, "7d");
 
-            res.status(200).cookie("accessToken", accessToken, {
+            res.status(200).cookie("accessTokenUser", accessToken, {
               maxAge: 300000,
               httpOnly: true,
             });
 
             res
-              .cookie("refreshToken", refreshToken, {
+              .cookie("refreshTokenUser", refreshToken, {
                 maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
               })
@@ -167,9 +241,9 @@ export const userGoogleAuth = AsyncHandler(
 
 export const userLogoutController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessToken", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0 });
     res
-      .cookie("refreshToken", "", { httpOnly: true, maxAge: 0 })
+      .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0 })
       .status(200)
       .json({ message: "logout user" });
   }
@@ -186,8 +260,8 @@ export const userCheck = AsyncHandler(
     console.log(req.cookies);
     console.log("hai");
 
-    const accessToken: string = req.cookies?.accessToken;
-    const refreshToken: string = req.cookies?.refreshToken;
+    const accessToken: string = req.cookies?.accessTokenUser;
+    const refreshToken: string = req.cookies?.refreshTokenUser;
 
     console.log(accessToken, refreshToken);
 
@@ -210,9 +284,9 @@ export const userCheck = AsyncHandler(
         );
 
         const Ref = await jwtSign({ email: user.email }, "7d");
-        res.cookie("accessToken", access, { httpOnly: true, maxAge: 5000 });
+        res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000 });
         res
-          .cookie("refreshToken", Ref, {
+          .cookie("refreshTokenUser", Ref, {
             httpOnly: true,
             maxAge: 7 * 24 * 60 * 60,
           })

@@ -51,7 +51,7 @@ export const venderSignUpController = AsyncHandler(
       res
         .status(200)
         .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
-        .json({ message: "hello" });
+        .json({ message: "message otp sented" });
     }
   }
 );

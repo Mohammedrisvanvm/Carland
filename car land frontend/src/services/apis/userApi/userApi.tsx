@@ -8,6 +8,9 @@ export const userSignUp = (value: {}):Promise<AxiosResponse<any>> => {
 export const userLogin=(value:{}):Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/users/auth/userLogin",{value})
 }
+export const userOtpVerify=(value:number):Promise<AxiosResponse<any>>=>{
+  return axiosBase.post("/users/auth/userOtpcheck",{value})
+}
 
 export const userGoogleAuth=(value:{}):Promise<AxiosResponse<any>>=>{
 return axiosBase.post("/users/auth/userGoogleAuth",{value})

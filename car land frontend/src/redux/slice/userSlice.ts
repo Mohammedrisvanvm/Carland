@@ -1,7 +1,11 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Authcheck, user } from "../../interfaces/userAuth";
 import { toast } from "react-toastify";
-import { userGoogleAuth, userLogin } from "../../services/apis/userApi/userApi";
+import {
+  userGoogleAuth,
+  userLogin,
+  userOtpVerify,
+} from "../../services/apis/userApi/userApi";
 
 interface InitialUser {
   [x: string]: any;
@@ -29,15 +33,12 @@ export const userGoogleThunk: any = createAsyncThunk(
     }
   }
 );
-export const userLoginThunk = createAsyncThunk(
-  " user/login",
-  async (formValue: Object) => {
-    try {
-      const response: Authcheck | null = await userLogin(formValue);
-      return response.data.user;
-    } catch (error: any) {
-      toast.error(error.response.data.message);
-    }
+export const userLoginThunk: any = createAsyncThunk(
+  "vendor/login",
+  async (formValue: number) => {
+    const response: Authcheck = await userOtpVerify(formValue);
+
+    return response.data.user;
   }
 );
 
@@ -45,7 +46,7 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    userLogout: state=> {
+    userLogout: (state) => {
       state.userName = null;
       state.email = null;
       state.accessToken = null;
@@ -83,7 +84,7 @@ const userSlice = createSlice({
       })
       .addCase(
         userLoginThunk.fulfilled,
-        (state, action:PayloadAction<any>) => {
+        (state, action: PayloadAction<any>) => {
           if (action.payload) {
             state.userName = action.payload.userName;
             state.email = action.payload.email;

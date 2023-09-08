@@ -3,21 +3,20 @@ import { VendorOtpVerify } from "../../../../services/apis/vendorApi/vendorApi";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { vendorLogin } from "../../../../redux/slice/vendorSlice";
-
+import { toast } from "react-toastify";
 
 export const VendorOtp = () => {
   const [otp, setOtp] = useState("");
-  const dispatch=useDispatch()
-  const Navigate=useNavigate()
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
 
-  const handleChange = async(): Promise<void> => {
-try {
-       
-    await dispatch(vendorLogin(parseInt(otp)))
-    Navigate('/vendor/vendorhome')
-} catch (error) {
-    
-} 
+  const handleChange = async (): Promise<void> => {
+    try {
+      await dispatch(vendorLogin(parseInt(otp)));
+      Navigate("/vendor/vendorhome");
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
