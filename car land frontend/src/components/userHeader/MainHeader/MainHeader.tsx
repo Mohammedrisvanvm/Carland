@@ -9,7 +9,8 @@ export const MainHeader = (): ReactElement => {
   const dispatch = useAppDispatch();
 
   const User = useAppSelector((state) =>state.user);
-  console.log(User.user);
+console.log(User);
+
 
   // useEffect(() => {
   //   (async () => {

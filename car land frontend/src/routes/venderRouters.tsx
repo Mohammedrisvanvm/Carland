@@ -8,14 +8,16 @@ import AddCarPage from '../components/vender/venderCarManagementPage/addCar/addC
 import { VendorOtp } from '../components/vender/venderAuth/vendorOtp/vendorOtp'
 import VendorSignUp from '../components/vender/venderAuth/vendorSignup/venderSignup'
 import VenderLogin from '../components/vender/venderAuth/vendorLogin/vendorLogin'
+import PrivateRoute from '../utils/PrivateRoute'
 
 const VendorRouters = () => {
   return (
  <>
  <Routes>
-    <Route path='/login' element={<VenderLogin/>}/>
+    <Route path='/*' element={<VenderLogin/>}/>
     <Route path='/signup' element={<VendorSignUp/>}/>
     <Route path='/otp' element={<VendorOtp/>}/>
+    <Route element={<PrivateRoute role='vendor' route='/vendor' />}>
     <Route path='/vendorhome' element={<VendorHomePage/>}/>
     <Route path='/vendordashboard' element={<VenderDashboardPage/>}/>
     <Route path='/vendorcars' element={<CarManagementPage/>}/>
@@ -23,6 +25,7 @@ const VendorRouters = () => {
     <Route path='/vendordrivers' element={<CarList/>}/>
     <Route path='/vendorhubs' element={<Dashboard/>}/>
     <Route path='/vendorList' element={<CarList/>}/>
+    </Route>
  </Routes>
  </>
   )

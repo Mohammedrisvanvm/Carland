@@ -41,12 +41,6 @@ export const SignupSchema = yup.object().shape({
     .required(),
 });
 export const LoginSchema = yup.object().shape({
-  userName: yup
-    .string()
-    .trim()
-    .min(3)
-    .matches(/^[a-zA-Z0-9\s]+$/, "Enter a Name")
-    .required(),
   email: yup
     .string()
     .email("enter a valid email eg:risvan@gmail.com")

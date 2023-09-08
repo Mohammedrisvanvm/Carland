@@ -1,6 +1,6 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {toast} from 'react-toastify'
-import {  VendorOtpVerify } from "../../../services/apis/vendorApi/vendorApi";
+import {  VendorOtpVerify } from "../../services/apis/vendorApi/vendorApi";
 
 export const vendorLogin :object | number | any =createAsyncThunk("Vender/venderLogin",async(formValue:number):Promise<any>=>{
     try {
@@ -24,12 +24,12 @@ type vendor={
     image?:string,
 }
 
-type adminStore={
+type vendorStore={
     Vendor:vendor|null,
     loading:boolean
 }
 
-const initialState: adminStore = {
+const initialState: vendorStore = {
     Vendor:{
       userName: "",
       id: "",
@@ -41,7 +41,7 @@ const initialState: adminStore = {
   };
 
 const vendorReducer=createSlice({
-    name:"Vendor",
+    name:"vendor",
     initialState,
     reducers:{
         signout: (state,action) => {
@@ -60,5 +60,5 @@ const vendorReducer=createSlice({
     }
 })
 
-export default vendorReducer.vreducer
 export const {signout}=vendorReducer.actions
+export default vendorReducer.vreducer

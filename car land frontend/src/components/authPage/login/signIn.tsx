@@ -4,7 +4,7 @@ import { LoginSchema } from "../../../validationSchemas/validationSchema";
 import "./signIn.css";
 
 import { toast } from "react-toastify";
-import { userLoginThunk } from "../../../redux/Slices/UserSlice/UserSlice";
+import { userLoginThunk } from "../../../redux/Slices/UserSlice";
 import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
 
 
@@ -30,8 +30,9 @@ export const SignIn = () => {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
       await dispatch(userLoginThunk(values));
-      Navigate("/");
+      
     } catch (error: any) {
+      Navigate("/");
       toast.error(error.response.data.message);
     }
 
@@ -56,7 +57,7 @@ export const SignIn = () => {
     validateOnMount: true,
     validationSchema: LoginSchema,
   });
-  console.log(errors.email, errors.password, errors.userName);
+  console.log(errors.email, errors.password);
 
   return (
     <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
@@ -65,27 +66,6 @@ export const SignIn = () => {
           Login
         </h3>
         <form onSubmit={handleSubmit}>
-          <div className="mb-1 sm:mb-2">
-            <label htmlFor="userName" className="inline-block mb-1 font-medium">
-              User Name
-            </label>
-            <input
-              placeholder="John"
-              required
-              type="text"
-              value={values.userName}
-              className={`${
-                errors.userName && touched.userName ? "input-error" : ""
-              } flex-grow w-full h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline `}
-              id="userName"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="userName"
-            />
-            {errors.userName && touched.userName && (
-              <p className="border-red-500 text-red-500">{errors.userName}</p>
-            )}
-          </div>
           <div className="mb-1 sm:mb-2">
             <label htmlFor="email" className="inline-block mb-1 font-medium">
               Email

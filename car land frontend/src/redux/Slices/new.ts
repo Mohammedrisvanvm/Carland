@@ -13,7 +13,7 @@ const initialState: Admin = {
 };
 
 const adminReducer = createSlice({
-  name: "admin",
+  name: "Admin",
   initialState,
   reducers: {
     setAdmin(state, action: PayloadAction<Admin>) {
@@ -24,5 +24,5 @@ const adminReducer = createSlice({
   },
 });
 
-export const { setAdmin } = adminReducer.actions;
 export default adminReducer.vreducer;
+export const { setAdmin } = adminReducer.actions;

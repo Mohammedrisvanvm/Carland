@@ -1,13 +1,13 @@
-// rootReducer.js
+
 import { combineReducers } from "redux";
-import userReducer from '../Slices/UserSlice/UserSlice'
-import vendorReducer from '../Slices/UserSlice/VendorSlice'
-import adminReducer from "../Slices/adminSlice";
+import adminReducer from '../Slices/adminSlice'
+import vendorReducer from '../Slices/UserSlice'
+import userReducer from '../Slices/VendorSlice'
+
 
 const rootReducer = combineReducers({
-    user:userReducer,
-    admin: adminReducer, 
-    vendor: vendorReducer, 
+   user: userReducer,
+   admin:adminReducer, 
+   vendor:vendorReducer, 
 });
-
-export default rootReducer;
+export default rootReducer

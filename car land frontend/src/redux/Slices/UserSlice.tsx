@@ -2,21 +2,22 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   userGoogleAuth,
   userLogin,
-} from "../../../services/apis/userApi/userApi";
+} from "../../services/apis/userApi/userApi";
 import { toast } from "react-toastify";
-import { Authcheck, user } from "../../../interfaces/userAuth";
+import { Authcheck, user } from "../../interfaces/userAuth";
+import { useNavigate } from "react-router";
 
 type UserState = {
   loading: boolean;
   user: user | null;
 };
-
+const Navigate=useNavigate()
 export const userLoginThunk = createAsyncThunk(
   "User/login",
   async (formValue: object): Promise<any> => {
     try {
       let response: any = await userLogin(formValue);
-
+Navigate('/')
       return response.data.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -53,7 +54,7 @@ const initialUserState: UserState = {
   loading: false,
 };
 const userReducer = createSlice({
-  name: "User",
+  name: "user",
   initialState: initialUserState,
   reducers: {
     signout: (state) => {
@@ -87,5 +88,5 @@ const userReducer = createSlice({
   },
 });
 
-export default userReducer.vreducer;
 export const { setGoogleAuth, setUser } = userReducer.actions;
+export default userReducer.vreducer;

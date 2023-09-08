@@ -1,7 +1,7 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
-import { userGoogleThunk, userLoginThunk } from "../../../redux/Slices/UserSlice/UserSlice";
+import { userGoogleThunk, userLoginThunk } from "../../../redux/Slices/UserSlice";
 import { Authcheck } from "../../../interfaces/userAuth";
 import { useAppDispatch } from "../../../redux/store/hook";
 

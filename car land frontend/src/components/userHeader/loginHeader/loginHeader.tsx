@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { userLogout } from "../../../services/apis/userApi/userApi";
 import { useNavigate } from "react-router";
-import { setUser } from "../../../redux/Slices/UserSlice/UserSlice";
+import { setUser } from "../../../redux/Slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/userAuth";
-import { signout } from "../../../redux/Slices/UserSlice/VendorSlice";
+import { signout } from "../../../redux/Slices/VendorSlice";
 
 export const LoginHeader = () => {
   const dispatch =useDispatch()
