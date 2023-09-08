@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { userLogout } from "../../../services/apis/userApi/userApi";
+import { userSignOut } from "../../../services/apis/userApi/userApi";
 import { useNavigate } from "react-router";
-import { setUser } from "../../../redux/Slices/UserSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/userAuth";
-import { signout } from "../../../redux/Slices/VendorSlice";
+import { userLogout } from "../../../redux/slice/userSlice"; 
 
 export const LoginHeader = () => {
   const dispatch =useDispatch()
@@ -17,8 +16,8 @@ export const LoginHeader = () => {
   };
 
   const UserLogout = async () => {
-    await userLogout();
-   dispatch(signout(''))
+    await userSignOut();
+   dispatch(userLogout())
     handleClick();
     Navigate("/");
   };

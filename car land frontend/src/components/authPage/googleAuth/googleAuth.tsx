@@ -1,9 +1,9 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
-import { userGoogleAuth } from "../../../services/apis/userApi/userApi";
-import { userGoogleThunk, userLoginThunk } from "../../../redux/Slices/UserSlice";
-import { Authcheck } from "../../../interfaces/userAuth";
-import { useAppDispatch } from "../../../redux/store/hook";
+import { useAppDispatch } from "../../../redux/store/storeHook";
+import { userGoogleThunk } from "../../../redux/slice/userSlice";
+
+
 
 export const GoogleAuth = () => {
   const Navigate = useNavigate();
@@ -11,10 +11,10 @@ export const GoogleAuth = () => {
 
   const authLogin = useGoogleLogin({
     onSuccess: async (response: any) => {
-      console.log(response);
+    
 
       try {
-        dispatch(userGoogleThunk(response));
+      dispatch(userGoogleThunk(response))
         Navigate("/");
       } catch (error: any) {
         console.log(error);

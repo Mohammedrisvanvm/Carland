@@ -1,7 +1,7 @@
 import { ReactElement, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { LoginHeader } from "../loginHeader/loginHeader";
-import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
+import { useAppDispatch,useAppSelector } from "../../../redux/store/storeHook"; 
 
 export const MainHeader = (): ReactElement => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);

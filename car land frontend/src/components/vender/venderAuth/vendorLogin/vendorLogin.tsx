@@ -10,7 +10,6 @@ interface MyFormValue {
   number: number;
 }
 const initialValues: MyFormValue = {
-  userName: "",
   email: "",
   number: 0,
 };
@@ -124,13 +123,15 @@ const VenderLogin = () => {
                 </div>
               </form>
               <div className="flex justify-center text-xs text-gray-600 sm:text-sm">
-            <button onClick={() => Navigate("/vendor/signup")}>Sign UP</button>
-          </div>
-          <div className="text-center">
-            <p className="text-xs text-gray-600 sm:text-sm mt-6">
-              We respect your privacy. Unsubscribe at any time.
-            </p>
-          </div>
+                <button onClick={() => Navigate("/vendor/signup")}>
+                  Sign UP
+                </button>
+              </div>
+              <div className="text-center">
+                <p className="text-xs text-gray-600 sm:text-sm mt-6">
+                  We respect your privacy. Unsubscribe at any time.
+                </p>
+              </div>
             </div>
           </div>
         </div>

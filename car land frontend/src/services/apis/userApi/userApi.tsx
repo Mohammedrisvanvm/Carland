@@ -2,10 +2,10 @@
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { axiosBase } from "../../axios/axiosInstance";
 
-export const userSignUp = (value: {}): {} => {
+export const userSignUp = (value: {}):Promise<AxiosResponse<any>> => {
   return axiosBase.post("/users/auth/userSignUp", { value });
 };
-export const userLogin=(value:{}):{}=>{
+export const userLogin=(value:{}):Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/users/auth/userLogin",{value})
 }
 
@@ -16,7 +16,7 @@ return axiosBase.post("/users/auth/userGoogleAuth",{value})
 export const userCheck=():Promise<AxiosResponse<any>>=>{
 return axiosBase.get("/users/auth/userCheck")
 }
-export const userLogout=():Promise<AxiosResponse>=>{
+export const userSignOut=():Promise<AxiosResponse>=>{
 return axiosBase.get("/users/auth/userLogout")
 }
 export const userGetVehicle = async(): Promise<AxiosResponse<any>> => {

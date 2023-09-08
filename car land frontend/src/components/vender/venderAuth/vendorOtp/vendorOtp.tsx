@@ -2,7 +2,8 @@ import { useState, ChangeEvent } from "react";
 import { VendorOtpVerify } from "../../../../services/apis/vendorApi/vendorApi";
 import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
-import { vendorLogin } from "../../../../redux/Slices/VendorSlice";
+import { vendorLogin } from "../../../../redux/slice/vendorSlice";
+
 
 export const VendorOtp = () => {
   const [otp, setOtp] = useState("");

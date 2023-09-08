@@ -4,9 +4,10 @@ import { AdminAuthSchema } from "../../../validationSchemas/validationSchema";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { adminAuth } from "../../../services/apis/adminApi/adminApi";
-import { useDispatch } from "react-redux";
-import { useAppDispatch, useAppSelector } from "../../../redux/store/hook";
-import { setAdmin } from "../../../redux/Slices/adminSlice";
+
+import { useAppDispatch,useAppSelector } from "../../../redux/store/storeHook";
+import { setAdmin } from "../../../redux/slice/adminSlice";
+
 
 
 interface MyFormValue {
@@ -20,8 +21,10 @@ const initialValues: MyFormValue = {
 interface axiosresponse{
   data:{
     admin:{
-      id:string,
-      email:string,
+      userName:string|null,
+      email:string|null,
+      accessToken:string|null
+      
     }
   }
 }
@@ -39,7 +42,7 @@ const AdminLogin = () => {
      const response:axiosresponse=await adminAuth(values)
      console.log(response.data.admin);
      
-       dispatch(setAdmin(response.data.admin)) 
+      dispatch(setAdmin(response.data.admin))
 
       Navigate("/admin/adminHome");
     } catch (error: any) {

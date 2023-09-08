@@ -1,13 +1,15 @@
-export interface user{
-    _id: string,
-    userName: string,
-    email: string|null
-    password?: string,
-    googleId?: string,
-    image?: string,
-    ban?: boolean,
-    verified_email?: boolean,
-    loading?:boolean
+
+export interface user {
+  _id?: string;
+  userName: string|null;
+  email: string | null;
+  password?: string;
+  googleId?: string;
+  image?: string;
+  ban?: boolean;
+  verified_email?: boolean;
+  loading?: boolean;
+  accessToken?: string|null;
   
 }
 export interface Authcheck {
