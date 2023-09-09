@@ -1,4 +1,5 @@
  interface IUser extends Document {
+    save(): unknown;
     _id: string;
     userName: string;
     email: string;

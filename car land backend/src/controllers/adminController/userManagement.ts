@@ -5,18 +5,22 @@ import userModel from "../../models/userSchema";
 export const getAllUser = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const users: IUser[] = await userModel.find();
-  
-    res.status(200).json({users});
+
+    res.status(200).json({ users });
   }
 );
 
-export const banUser= AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
-      const id:string=req.body.value
-        console.log(id);
-        
-      await userModel.findByIdAndUpdate({});
-   
-      res.status(200).json({message:'success'});
+export const banUser = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const id: string = req.body.value;
+
+    const user: IUser | null = await userModel.findById(id);
+
+    if (user) {
+      user.ban = !user.ban;
+      await user.save();
     }
-  );
+
+    res.status(200).json({ message: "success" });
+  }
+);
