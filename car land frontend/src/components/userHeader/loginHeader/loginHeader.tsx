@@ -4,11 +4,12 @@ import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../interfaces/userAuth";
 import { userLogout } from "../../../redux/slice/userSlice"; 
+import { useAppSelector } from "../../../redux/store/storeHook";
 
 export const LoginHeader = () => {
   const dispatch =useDispatch()
   const Navigate = useNavigate();
-  const User:any = useSelector((state: RootState) => state.user);
+  const User = useAppSelector((state) => state.user);
   const [isToggled, setIsToggled] = useState(false);
 
   const handleClick = () => {

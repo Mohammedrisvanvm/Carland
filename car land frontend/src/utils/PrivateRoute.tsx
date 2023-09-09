@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../redux/store/storeHook";
 
 interface Props {
@@ -29,7 +29,7 @@ const PrivateRoute = (props: Props): React.ReactNode => {
     ) : (
       <Navigate
         to="/admin"
-        state={{ from: location.pathname }}
+       
         replace={true}
       />
     );
@@ -38,8 +38,8 @@ const PrivateRoute = (props: Props): React.ReactNode => {
       <Outlet />
     ) : (
       <Navigate
-        to="/vendor/login"
-        state={{ from: location.pathname }}
+        to="/vendor"
+       
         replace={true}
       />
     );

@@ -1,7 +1,7 @@
 interface IVendor extends Document {
     _id: string;
-    userName: string;
-    email: string;
+    userName?: string;
+    email?: string;
     phoneNumber?: number;
     renthubs?:Array<string>
     image?: string;

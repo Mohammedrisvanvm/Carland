@@ -22,7 +22,7 @@ const VenderLogin = () => {
     if (vendor.email) {
       Navigate("/vendor/vendorhome");
     }
-  },[vendor.email]);
+  },[]);
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {

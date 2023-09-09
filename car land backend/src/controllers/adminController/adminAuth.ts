@@ -5,7 +5,7 @@ import IAdmin from "../../interfaces/adminInterface";
 import adminModel from "../../models/adminSchema";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 
-export const adminAuth = AsyncHandler(
+export const adminLogin= AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     interface IADMINB {
       email: string;

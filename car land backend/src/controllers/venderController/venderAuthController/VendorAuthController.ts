@@ -7,8 +7,15 @@ import { sendOtp } from "../../../utils/twilio/twilio";
 
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const venderExist: IVendor | null = await VenderModel.findOne({
-      phoneNumber: req.body.values.number,
+    interface iSign {
+      email: string;
+      number: number;
+    }
+    const data: iSign = req.body.values;
+    console.log(data);
+    
+    const venderExist: IVendor |null = await VenderModel.findOne({
+      phoneNumber: data.number,
     });
     console.log(venderExist);
 

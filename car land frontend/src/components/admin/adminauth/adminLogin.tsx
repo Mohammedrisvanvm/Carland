@@ -7,6 +7,7 @@ import { adminAuth } from "../../../services/apis/adminApi/adminApi";
 
 import { useAppDispatch,useAppSelector } from "../../../redux/store/storeHook";
 import { setAdmin } from "../../../redux/slice/adminSlice";
+import { useDispatch } from "react-redux";
 
 
 
@@ -30,15 +31,15 @@ interface axiosresponse{
   }
 }
 const AdminLogin = () => {
-    const dispatch=useAppDispatch()
+    const dispatch=useDispatch()
   const Navigate = useNavigate();
   const admin=useAppSelector((state)=>state.admin)
   console.log(admin);
   useEffect(()=>{
-    if(admin.accessToken){
-      Navigate('/admin/adminHome')
+    if(admin.email){
+      Navigate('/admin/adminhome')
     }
-  }
+  },[admin.email]
   )
   const submitForm: any = async (values: {}, actions: any) => {
     try {
@@ -48,7 +49,7 @@ const AdminLogin = () => {
      const response:axiosresponse=await adminAuth(values)
      console.log(response.data.admin);
      
-      setAdmin(response.data.admin)
+      dispatch(setAdmin(response.data.admin))
 
       Navigate("/admin/adminHome");
     } catch (error: any) {

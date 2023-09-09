@@ -2,10 +2,13 @@ import { useState } from "react";
 import { useAppDispatch } from "../../../redux/store/storeHook";
 import { vendorLogout } from "../../../redux/slice/vendorSlice";
 import { vendorSignOut } from "../../../services/apis/vendorApi/vendorApi";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 
 const VenderNavBar = () => {
-  const dispatch = useAppDispatch();
+  const Navigate=useNavigate()
+  const dispatch = useDispatch();
   const [dropdown, setdropdown] = useState(false);
   const dropdownHandler = () => {
     setdropdown(!dropdown);
@@ -13,6 +16,7 @@ const VenderNavBar = () => {
   const logOutHandle = async() => {
     await vendorSignOut()
    dispatch(vendorLogout()) 
+ Navigate('/vendor')
   };
 
   return (

@@ -24,6 +24,10 @@ const userSchema: Schema = new Schema(
     },
     verified_email: {
       type: Boolean,
+      default:true
+    },
+    verified_phonenumber:{
+      type:Boolean
     },
     ban: {
       type: Boolean,

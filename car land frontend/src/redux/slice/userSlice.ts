@@ -34,7 +34,7 @@ export const userGoogleThunk: any = createAsyncThunk(
   }
 );
 export const userLoginThunk: any = createAsyncThunk(
-  "vendor/login",
+  "user/login",
   async (formValue: number) => {
     const response: Authcheck = await userOtpVerify(formValue);
 

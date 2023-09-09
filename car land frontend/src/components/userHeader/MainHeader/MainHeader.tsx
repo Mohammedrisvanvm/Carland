@@ -8,8 +8,8 @@ export const MainHeader = (): ReactElement => {
   const Navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  // const User = useAppSelector((state) =>state.user.loading);
-const User=false
+  const User = useAppSelector((state) =>state.user);
+
 
 
   // useEffect(() => {
@@ -82,10 +82,10 @@ const User=false
             </a>
           </li>
 
-          {/* {User?.user?.email ? ( */}
-          {User ? (
+          {User?.email ? (
+        
             <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
-              {}{" "}
+              {User.userName}{" "}
               <span className="ml-1">
                 <LoginHeader />
               </span>
@@ -195,8 +195,8 @@ const User=false
                         title="Our product"
                         className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
                       >
-                        {/* {User?.user?.userName} */}
-                        {User}
+                        {User?.user?.userName}
+                       
                       </button>
                     </li>
                     <li>

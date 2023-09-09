@@ -14,8 +14,8 @@ export const userSignUpController = AsyncHandler(
       userName: string;
       password: string;
     }
-    // const data: iSign = req.body.value;
-    const data: iSign = req.body;
+    const data: iSign = req.body.value;
+    // const data: iSign = req.body;
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
@@ -33,12 +33,7 @@ export const userSignUpController = AsyncHandler(
         .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000 })
         .json({ message: "message otp sented" });
 
-      // const user: {} = await userModel.create({
-      //   userName: data.userName,
-      //   email: data.email,
-      //   password: data.password,
-      // });
-      // res.status(201).json({ user });
+
     }
   }
 );
@@ -59,8 +54,8 @@ export const userOtpverify = AsyncHandler(
     try {
       const UserOtpToken: string = req.cookies?.UserOtpToken;
 
-      // const data: number = req.body.value;
-      const data: number = req.body.otp;
+      const data: number = req.body.value;
+      // const data: number = req.body.otp;
       console.log(data);
 
       if (UserOtpToken) {
@@ -118,8 +113,8 @@ export const userLoginController = AsyncHandler(
       password?: string;
     }
 
-    const data: data = req.body;
-    // const data: data = req.body.value;
+    // const data: data = req.body;
+    const data: data = req.body.value;
     console.log(data);
 
     const userExist: IUser | null = await userModel.findOne({

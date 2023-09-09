@@ -1,9 +1,19 @@
 import React, { useState } from "react";
+import { adminLogout } from "../../../redux/slice/adminSlice";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 
 const AdminDashboard = () => {
   const [dropdown, setdropdown] = useState(false);
+  const Navigate = useNavigate();
   const dropdownHandler = () => {
     setdropdown(!dropdown);
+  };
+  const dispatch = useDispatch();
+
+  const adminSignOut = () => {
+    dispatch(adminLogout());
+  Navigate('/admin')
   };
   return (
     <div>
@@ -102,7 +112,7 @@ const AdminDashboard = () => {
                     </li>
                     <li>
                       <button
-                        // onClick={UserLogout}
+                        onClick={adminSignOut}
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                       >
                         Sign out

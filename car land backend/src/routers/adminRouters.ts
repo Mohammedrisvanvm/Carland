@@ -1,12 +1,13 @@
 import { Router } from "express";
-import { adminAuth, adminCheck } from "../controllers/adminController/adminAuth";
-
+import userRouters from "./userAuthRouters/UserAuthRouters";
+import adminAuth from "./adminRoutes/adminAuth";
+import adminUser from "./adminRoutes/adminUser";
 
 let router=Router()
 
 
-router.post('/auth',adminAuth)
-router.get('/adminCheck',adminCheck)
+router.use('/auth',adminAuth)
+router.use('/usermanagement',adminUser)
 
 
 
