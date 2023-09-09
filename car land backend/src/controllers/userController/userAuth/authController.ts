@@ -15,7 +15,7 @@ export const userSignUpController = AsyncHandler(
       password: string;
     }
     // const data: iSign = req.body.value;
-    const data: iSign = req.body
+    const data: iSign = req.body;
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
@@ -48,7 +48,8 @@ interface UserJwt {
     user?: {
       userName: string;
       email: string;
-      number: number;
+      number?: number | null;
+      password?: string;
     };
   } | null;
   expired: boolean;
@@ -56,22 +57,28 @@ interface UserJwt {
 export const userOtpverify = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     try {
-      const vendorOtpToken: string = req.cookies?.vendorOtpToken;
+      const UserOtpToken: string = req.cookies?.UserOtpToken;
 
       // const data: number = req.body.value;
-      const data: number = req.body
-      if (vendorOtpToken) {
-        const { payload, expired }: UserJwt = verifyJwt(vendorOtpToken);
+      const data: number = req.body.otp;
+      console.log(data);
+
+      if (UserOtpToken) {
+        const { payload, expired }: UserJwt = verifyJwt(UserOtpToken);
+        console.log(payload);
+
         if (payload?.token == data) {
           let userExist: IUser | null = await userModel.findOne({
-            phoneNumber: payload.user?.number,
+            email: payload.user?.email,
           });
+          console.log(userExist);
 
           if (!userExist) {
             const user: IUser = await userModel.create({
               userName: payload.user?.userName,
               email: payload.user?.email,
               phoneNumber: payload.user?.number,
+              password: payload.user?.password,
             });
             userExist = user;
           }
@@ -92,7 +99,7 @@ export const userOtpverify = AsyncHandler(
           });
 
           res
-            .cookie("refreshTokenvendor", refreshToken, {
+            .cookie("refreshTokenUser", refreshToken, {
               maxAge: 7 * 24 * 60 * 60,
               httpOnly: true,
             })
@@ -110,36 +117,42 @@ export const userLoginController = AsyncHandler(
       email?: string;
       password?: string;
     }
-    const data: data = req.body.value;
+
+    const data: data = req.body;
+    // const data: data = req.body.value;
     console.log(data);
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
     });
-    console.log("hai");
+    console.log("hai", userExist);
+    if (userExist) {
+      if (userExist && (await userExist.matchPassword(data.password))) {
+        console.log("enterd");
 
-    if (userExist && (await userExist.matchPassword(data.password))) {
-      console.log("enterd");
-
-      const accessToken = jwtSign(
-        { id: userExist._id, name: userExist.userName, email: userExist.email },
-        "15m"
-      );
-      const refreshToken = jwtSign({ email: userExist.email }, "7d");
-
-      res.status(200).cookie("accessTokenUser", accessToken, {
-        maxAge: 300000,
-        httpOnly: true,
-      });
-
-      res
-        .cookie("refreshTokenUser", refreshToken, {
-          maxAge: 7 * 24 * 60 * 60,
-          httpOnly: true,
-        })
-        .json({ user: userExist });
+        const token: number = getotp();
+        const userOtpToken = jwtSign(
+          {
+            token: token,
+            user: {
+              email: userExist.email,
+            },
+          },
+          "5min"
+        );
+        MailService(userExist.email, token);
+        res
+          .status(200)
+          .cookie("UserOtpToken", userOtpToken, {
+            maxAge: 300000,
+            httpOnly: true,
+          })
+          .json({ message: "user otp sented" });
+      } else {
+        throw new Error("invalid user name or password");
+      }
     } else {
-      throw new Error("Invalid email or password");
+      throw new Error("user not exist");
     }
   }
 );

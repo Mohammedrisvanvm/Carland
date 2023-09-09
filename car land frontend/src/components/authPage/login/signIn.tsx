@@ -6,36 +6,32 @@ import "./signIn.css";
 import { toast } from "react-toastify";
 import { useAppSelector, useAppDispatch } from "../../../redux/store/storeHook";
 import { userLoginThunk } from "../../../redux/slice/userSlice";
+import { useDispatch } from "react-redux";
+import { userLogin } from "../../../services/apis/userApi/userApi";
 
 interface MyFormValue {
-  userName: string;
   email: string;
   password: string;
 }
 const initialValues: MyFormValue = {
-  userName: "",
   email: "",
   password: "",
 };
 
 export const SignIn = () => {
   const Navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
   const user = useAppSelector((state) => state.user);
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
-      console.log(values);
-
-      userLoginThunk(values);
-      Navigate("/");
+      await userLogin(values);
+      Navigate("/UserOtp");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
-
-    //  Navigate('/UserOtp');
   };
 
   const {

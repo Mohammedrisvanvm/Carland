@@ -5,7 +5,7 @@ import { userCheck, userGoogleAuth, userLoginController, userLogoutController, u
 const userRouters=Router()
 
 userRouters.post('/userSignUp',userSignUpController)
-userRouters.post('/userOtpcheck',userOtpverify)
+userRouters.post('/userotpcheck',userOtpverify)
 userRouters.post('/userLogin',userLoginController)
 userRouters.get('/userLogout',userLogoutController)
 userRouters.post('/userGoogleAuth',userGoogleAuth)
