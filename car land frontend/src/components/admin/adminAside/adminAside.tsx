@@ -5,7 +5,7 @@ interface IPROPS {
     Component: ReactElement;
   };
 }
-const VendorAside: React.FC<IPROPS> = ({ value }) => {
+const AdminAside: React.FC<IPROPS> = ({ value }) => {
   const Navigate = useNavigate();
   const Component = value.Component;
   return (
@@ -277,4 +277,4 @@ const VendorAside: React.FC<IPROPS> = ({ value }) => {
   );
 };
 
-export default VendorAside;
+export default AdminAside;

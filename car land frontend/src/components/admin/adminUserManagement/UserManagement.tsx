@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { user } from "../../../../interfaces/userAuth";
+import { user } from "../../../interfaces/userAuth";
 import {
   banUser,
   getAllUser,
-} from "../../../../services/apis/adminApi/adminApi";
-import { AxiosResponse } from "../../../../interfaces/axiosinterface";
+} from "../../../services/apis/adminApi/adminApi";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const UserManagement = () => {
   const [users, setUser] = useState<user[]>([]);
