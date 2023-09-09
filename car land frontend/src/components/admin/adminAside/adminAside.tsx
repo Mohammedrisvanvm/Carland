@@ -19,8 +19,8 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
           <ul className="space-y-2 font-medium">
             <li>
-              <a
-                href="#"
+              <div
+                 onClick={()=>Navigate('/admin/admindashboard')}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -34,7 +34,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                   <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
                 </svg>
                 <span className="ml-3">Dashboard</span>
-              </a>
+              </div>
             </li>
             <li>
               <a
@@ -55,8 +55,8 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
               </a>
             </li>
             <li>
-              <a
-                href="#"
+              <div
+              onClick={()=>Navigate('/admin/usermanagement')}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -69,7 +69,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                   <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Users</span>
-              </a>
+              </div>
             </li>
             <li>
               <a
@@ -87,12 +87,12 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                   <path d="M171.3 96H224v96H111.3l30.4-75.9C146.5 104 158.2 96 171.3 96zM272 192V96h81.2c9.7 0 18.9 4.4 25 12l67.2 84H272zm256.2 1L428.2 68c-18.2-22.8-45.8-36-75-36H171.3c-39.3 0-74.6 23.9-89.1 60.3L40.6 196.4C16.8 205.8 0 228.9 0 256V368c0 17.7 14.3 32 32 32H65.3c7.6 45.4 47.1 80 94.7 80s87.1-34.6 94.7-80H385.3c7.6 45.4 47.1 80 94.7 80s87.1-34.6 94.7-80H608c17.7 0 32-14.3 32-32V320c0-65.2-48.8-119-111.8-127zM434.7 368a48 48 0 1 1 90.5 32 48 48 0 1 1 -90.5-32zM160 336a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Cars</span>
-                <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
+                {/* <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
                   Pro
-                </span>
+                </span> */}
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -113,7 +113,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                   Pro
                 </span>
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"
@@ -153,7 +153,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
               </a>
             </li>
 
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -169,7 +169,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Products</span>
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"
@@ -188,7 +188,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                 <span className="flex-1 ml-3 whitespace-nowrap">Bookings</span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <a
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
@@ -206,7 +206,7 @@ const AdminAside: React.FC<IPROPS> = ({ value }) => {
                   Cab Management
                 </span>
               </a>
-            </li>
+            </li> */}
             <li>
               <a
                 href="#"

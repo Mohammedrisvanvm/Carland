@@ -11,6 +11,8 @@ const AdminNavBar = () => {
     setdropdown(!dropdown);
   };
   const logOutHandle = async () => {
+  
+    
     await adminSignOut();
     dispatch(adminLogout());
     Navigate("/admin");

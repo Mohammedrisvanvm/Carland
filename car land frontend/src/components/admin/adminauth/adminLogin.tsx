@@ -37,7 +37,7 @@ const AdminLogin = () => {
   console.log(admin);
   useEffect(()=>{
     if(admin.email){
-      Navigate('/admin/adminhome')
+      Navigate('/admin/admindashboard')
     }
   },[admin.email]
   )
@@ -51,7 +51,7 @@ const AdminLogin = () => {
      
       dispatch(setAdmin(response.data.admin))
 
-      Navigate("/admin/adminHome");
+      Navigate("/admin/admindashboard");
     } catch (error: any) {
       console.log(error);
       

@@ -1,13 +1,12 @@
 import AdminNavBar from "../adminNav/adminNav";
 import AdminAside from "../adminAside/adminAside";
+import VendorManagement from "./vendorManagement";
 
-import UserManagement from "./UserManagement";
 const AdminUserManagementPage = () => {
   return (
     <>
       <AdminNavBar />
-      <AdminAside value={{ Component: <UserManagement /> }} />
-    
+      <AdminAside value={{ Component: <VendorManagement /> }} />
     </>
   );
 };

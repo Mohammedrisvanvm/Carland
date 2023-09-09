@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import CarList from "../components/vender/list/carList/carList";
 import VendorHomePage from "../components/vender/venderHome/VendorHomePage";
-import Dashboard from "../components/admin/adminDashboard/tesxt";
+
 import VenderDashboardPage from "../components/vender/venderDashboard/vendorDashboardpage";
 import CarManagementPage from "../components/vender/venderCarManagementPage/carManagementPage";
 import AddCarPage from "../components/vender/venderCarManagementPage/addCar/addCarPage";
@@ -23,7 +23,7 @@ const VendorRouters = () => {
           <Route path="/vendorcars" element={<CarManagementPage />} />
           <Route path="/vendorcar/addcar" element={<AddCarPage />} />
           <Route path="/vendordrivers" element={<CarList />} />
-          <Route path="/vendorhubs" element={<Dashboard />} />
+          {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}
           <Route path="/vendorList" element={<CarList />} />
         </Route>
       </Routes>
