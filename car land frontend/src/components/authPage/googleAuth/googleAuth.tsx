@@ -1,16 +1,16 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
-import { useAppDispatch } from "../../../redux/store/storeHook";
 import { userGoogleThunk } from "../../../redux/slice/userSlice";
+import { useDispatch } from "react-redux";
 
 export const GoogleAuth = () => {
   const Navigate = useNavigate();
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   const authLogin = useGoogleLogin({
     onSuccess: async (response: any) => {
       try {
-        await userGoogleThunk(response);
+        await dispatch(userGoogleThunk(response));
         Navigate("/");
       } catch (error: any) {
         console.log(error);

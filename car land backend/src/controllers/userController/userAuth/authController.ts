@@ -32,8 +32,6 @@ export const userSignUpController = AsyncHandler(
         .status(200)
         .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000 })
         .json({ message: "message otp sented" });
-
-
     }
   }
 );
@@ -119,6 +117,7 @@ export const userLoginController = AsyncHandler(
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
+      ban: false,
     });
     console.log("hai", userExist);
     if (userExist) {
@@ -147,7 +146,7 @@ export const userLoginController = AsyncHandler(
         throw new Error("invalid user name or password");
       }
     } else {
-      throw new Error("user not exist");
+      throw new Error("user not exist or banned");
     }
   }
 );

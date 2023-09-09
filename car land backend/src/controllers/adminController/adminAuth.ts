@@ -78,3 +78,11 @@ export const adminCheck = AsyncHandler(
     }
   }
 );
+
+
+export const adminLogout= AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+
+    res.cookie('accessTokenAdmin','', { httpOnly: true, maxAge: 0 })
+    res.cookie('refreshTokenAdmin','', { httpOnly: true, maxAge: 0 }).json({message:"admin Logouted"})
+  })
