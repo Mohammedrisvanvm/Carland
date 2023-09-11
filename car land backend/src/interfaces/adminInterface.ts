@@ -2,7 +2,8 @@
     _id:string,
     email:string,
     password:string,
-    matchPassword:any
+    matchPassword:any,
+    accessToken?:string|null
 }
 
 export default IAdmin

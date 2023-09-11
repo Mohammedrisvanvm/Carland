@@ -1,7 +1,6 @@
-
 export interface user {
   _id?: string;
-  userName: string|null;
+  userName?: string | null;
   email: string | null;
   password?: string;
   googleId?: string;
@@ -9,39 +8,38 @@ export interface user {
   ban?: boolean;
   verified_email?: boolean;
   loading?: boolean;
-  accessToken?: string|null;
-  
+  accessToken?: string | undefined;
 }
 export interface Authcheck {
   data: {
-    user?: user
-    vendor?:user,
-    admin?:user
-   message?:string
-  }
+    user?: user;
+    vendor?: user;
+    admin?: user;
+    accessToken?: string;
+    message?: string;
+  };
 }
 export interface RootState {
   user?: {
-    _id?: string,
-    userName?: string,
-    email?: string,
-    password?: string,
-    googleId?: string,
-    image?: string,
-    ban?: boolean,
-    verified_email?: boolean,
-  }
-  loading: boolean
+    _id?: string;
+    userName?: string;
+    email?: string;
+    password?: string;
+    googleId?: string;
+    image?: string;
+    ban?: boolean;
+    verified_email?: boolean;
+  };
+  loading: boolean;
 }
 
-
 export interface Redux {
-  _id: string,
-  userName: string,
-  email: string,
-  password?: string,
-  googleId?: string,
-  image?: string,
-  ban?: boolean,
-  verified_email?: boolean,
+  _id: string;
+  userName: string;
+  email: string;
+  password?: string;
+  googleId?: string;
+  image?: string;
+  ban?: boolean;
+  verified_email?: boolean;
 }

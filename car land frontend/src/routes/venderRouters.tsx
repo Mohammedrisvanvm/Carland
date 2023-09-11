@@ -14,18 +14,19 @@ const VendorRouters = () => {
   return (
     <>
       <Routes>
-        <Route path="/*" element={<VenderLogin />} />
-        <Route path="/signup" element={<VendorSignUp />} />
-        <Route path="/otp" element={<VendorOtp />} />
-        <Route element={<PrivateRoute role="vendor" />}>
-          <Route path="/vendorhome" element={<VendorHomePage />} />
-          <Route path="/vendordashboard" element={<VenderDashboardPage />} />
-          <Route path="/vendorcars" element={<CarManagementPage />} />
-          <Route path="/vendorcar/addcar" element={<AddCarPage />} />
-          <Route path="/vendordrivers" element={<CarList />} />
+        <Route path="/login" element={<PrivateRoute role="vendor"> <VenderLogin /></PrivateRoute>} />
+        <Route path="/signup" element={<PrivateRoute role="vendor"><VendorSignUp /></PrivateRoute>} />
+        <Route path="/otp" element={<PrivateRoute role="vendor"><VendorOtp /></PrivateRoute>} />
+        {/* <Route path="/" element={<AdminProtectRoute> <Home /> </AdminProtectRoute>}></Route> */}
+        {/* <Route element={<PrivateRoute role="vendor" />}> */}
+          <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} />
+          <Route path="/vendordashboard" element={<PrivateRoute role="vendor"> <VenderDashboardPage /></PrivateRoute>} />
+          <Route path="/vendorcars" element={<PrivateRoute role="vendor"> <CarManagementPage /></PrivateRoute>} />
+          <Route path="/vendorcar/addcar" element={<PrivateRoute role="vendor"> <AddCarPage /></PrivateRoute>} />
+          <Route path="/vendordrivers" element={<PrivateRoute role="vendor"> <CarList /></PrivateRoute>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}
-          <Route path="/vendorList" element={<CarList />} />
-        </Route>
+          <Route path="/vendorList" element={<PrivateRoute role="vendor"> <CarList /></PrivateRoute>} />
+        {/* </Route> */}
       </Routes>
     </>
   );

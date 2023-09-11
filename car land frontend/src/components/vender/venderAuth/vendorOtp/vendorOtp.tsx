@@ -13,9 +13,11 @@ export const VendorOtp = () => {
   const handleChange = async (): Promise<void> => {
     try {
       await dispatch(vendorLogin(parseInt(otp)));
-      Navigate("/vendor/vendorhome");
+      Navigate("/vendor");
     } catch (error: any) {
-      toast.error(error.response.data.message);
+      console.log(error);
+      
+      // toast.error(error.response.data.message);
     }
   };
   return (

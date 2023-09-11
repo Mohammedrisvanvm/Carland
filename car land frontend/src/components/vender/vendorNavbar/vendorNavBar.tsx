@@ -16,7 +16,7 @@ const VenderNavBar = () => {
   const logOutHandle = async() => {
     await vendorSignOut()
    dispatch(vendorLogout()) 
- Navigate('/vendor')
+ Navigate('/vendor/login')
   };
 
   return (

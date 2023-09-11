@@ -12,24 +12,21 @@ export const vendorLoginController = AsyncHandler(
       number: number;
     }
     const data: iSign = req.body.values;
-    console.log(data);
-    
-    const venderExist: IVendor |null = await VenderModel.findOne({
-      phoneNumber: data.number,
+
+    const venderExist: IVendor | null = await VenderModel.findOne({
+      phoneNumber: data.number,ban:false
     });
-    console.log(venderExist);
 
     if (venderExist) {
       let response: number = await sendOtp(req.body.values.number);
       let Token = jwtSign({ token: response, user: req.body.values }, "5min");
-      console.log(response);
 
       res
         .status(200)
         .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
         .json({ message: "hello" });
     } else {
-      throw new Error("Invalid phone number or email");
+      throw new Error("Invalid data or banned");
     }
   }
 );
@@ -63,7 +60,7 @@ export const venderSignUpController = AsyncHandler(
   }
 );
 interface VendorJwt {
-  payload: {
+  payload?: {
     token?: number;
     user?: {
       userName: string;
@@ -78,55 +75,53 @@ interface vendorbody {
 }
 export const vendorOtpverify = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    try {
-      const vendorOtpToken: string = req.cookies?.vendorOtpToken;
+    const vendorOtpToken: string = req.cookies?.vendorOtpToken;
 
-      const data: vendorbody = req.body;
-      if (vendorOtpToken) {
-        const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
-        if (payload?.token == data.value) {
-          let vendorExist: IVendor | null = await VenderModel.findOne({
+    const data: vendorbody = req.body;
+    if (vendorOtpToken) {
+      const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
+      if (payload?.token == data.value) {
+        let vendorExist: IVendor | null = await VenderModel.findOne({
+          phoneNumber: payload.user?.number,
+        });
+
+        if (!vendorExist) {
+          const user: IVendor = await VenderModel.create({
+            userName: payload.user?.userName,
+            email: payload.user?.email,
             phoneNumber: payload.user?.number,
           });
-
-          if (!vendorExist) {
-            const user: IVendor = await VenderModel.create({
-              userName: payload.user?.userName,
-              email: payload.user?.email,
-              phoneNumber: payload.user?.number,
-            });
-            vendorExist = user;
-          }
-
-          const accessToken = jwtSign(
-            {
-              id: vendorExist?._id,
-              name: vendorExist?.userName,
-              email: vendorExist?.email,
-              number: vendorExist?.phoneNumber,
-            },
-            "15min"
-          );
-          const refreshToken = jwtSign(
-            { number: vendorExist?.phoneNumber },
-            "7d"
-          );
-
-          res.status(200).cookie("accessTokenvendor", accessToken, {
-            maxAge: 900000,
-            httpOnly: true,
-          });
-
-          res
-            .cookie("refreshTokenvendor", refreshToken, {
-              maxAge: 7 * 24 * 60 * 60,
-              httpOnly: true,
-            })
-            .json({ vendor: vendorExist });
+          vendorExist = user;
         }
+
+        const accessToken = jwtSign(
+          {
+            id: vendorExist?._id,
+            name: vendorExist?.userName,
+            email: vendorExist?.email,
+            number: vendorExist?.phoneNumber,
+          },
+          "15min"
+        );
+        const refreshToken = jwtSign(
+          { number: vendorExist?.phoneNumber },
+          "7d"
+        );
+
+        res.status(200).cookie("accessTokenvendor", accessToken, {
+          maxAge: 900000,
+          httpOnly: true,
+        });
+
+        res
+          .cookie("refreshTokenvendor", refreshToken, {
+            maxAge: 7 * 24 * 60 * 60,
+            httpOnly: true,
+          })
+          .json({ vendor: vendorExist, accessToken });
+      } else {
+        throw new Error("invalid otp");
       }
-    } catch (error: any) {
-      throw new Error(error);
     }
   }
 );

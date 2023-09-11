@@ -7,9 +7,9 @@ exports.DBconnect = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = require("./config");
 const DBconnect = () => {
-    console.log("hai");
-    mongoose_1.default.connect(config_1.config.mongo.url).then(() => console.log("db connected")).catch((error) => {
+    mongoose_1.default.connect(config_1.config.mongo.url, { retryWrites: true, w: 'majority' }).then(() => console.log("db connected")).catch((error) => {
         console.log(error);
     });
 };
 exports.DBconnect = DBconnect;
+//# sourceMappingURL=mongoDB.js.map

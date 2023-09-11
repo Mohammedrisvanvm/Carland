@@ -26,8 +26,8 @@ interface axiosresponse{
       userName:string|null,
       email:string|null,
       accessToken:string|null
-      
-    }
+    },
+    accessToken:string|null
   }
 }
 const AdminLogin = () => {
@@ -36,7 +36,7 @@ const AdminLogin = () => {
   const admin=useAppSelector((state)=>state.admin)
   console.log(admin);
   useEffect(()=>{
-    if(admin.email){
+    if(admin.accessToken){
       Navigate('/admin/admindashboard')
     }
   },[admin.email]
@@ -47,8 +47,8 @@ const AdminLogin = () => {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
      const response:axiosresponse=await adminAuth(values)
-     console.log(response.data.admin);
-     
+     console.log(response.data);
+     response.data.admin.accessToken=response.data.accessToken
       dispatch(setAdmin(response.data.admin))
 
       Navigate("/admin/admindashboard");

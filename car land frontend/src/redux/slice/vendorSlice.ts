@@ -5,9 +5,10 @@ import {
   vendorSignOut,
 } from "../../services/apis/vendorApi/vendorApi";
 import { Authcheck, user } from "../../interfaces/userAuth";
+import { toast } from "react-toastify";
 
 interface InitialVendor {
-  userName: string | null;
+  userName?: string | null;
   email: string | null;
   accessToken: string | null | undefined;
   isLoading: boolean;
@@ -22,16 +23,21 @@ const initialState: InitialVendor = {
 export const vendorLogin: any = createAsyncThunk(
   "vendor/login",
   async (formValue: number) => {
-    const response: Authcheck = await VendorOtpVerify(formValue);
-    console.log(response);
+    try {
+      const { data }: Authcheck = await VendorOtpVerify(formValue);
+      if (data.vendor) {
+        data.vendor.accessToken = data.accessToken;
+      }
 
-    return response.data.vendor;
+      return data.vendor;
+    } catch (error: any) {
+      toast.error(error.response.data.message);
+    }
   }
 );
 // export const vendorLogout = createAsyncThunk("vendor/logout", async (hai:string) => {
 //     console.log(hai);
-    
-    
+
 //   const response: Authcheck = await vendorSignOut();
 //   return response?.data.message;
 // });
@@ -39,13 +45,11 @@ const vendorSlice = createSlice({
   name: "vendor",
   initialState,
   reducers: {
-    vendorLogout:state=>{
-state.accessToken=null,
-state.email=null
-state.isLoading=false,
-state.userName=null
-  }
-},
+    vendorLogout: (state) => {
+      (state.accessToken = null), (state.email = null);
+      (state.isLoading = false), (state.userName = null);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(vendorLogin.pending, (state, action) => {
@@ -65,7 +69,7 @@ state.userName=null
         state.email = null;
         state.accessToken = null;
         state.isLoading = false;
-      })
+      });
     //   .addCase(vendorLogout.pending, (state, action) => {
     //     state.userName = null;
     //     state.email = null;
@@ -87,4 +91,4 @@ state.userName=null
   },
 });
 export default vendorSlice.reducer;
-export const {vendorLogout} = vendorSlice.actions;
+export const { vendorLogout } = vendorSlice.actions;

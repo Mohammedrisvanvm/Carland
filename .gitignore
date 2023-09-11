@@ -1,4 +1,6 @@
 /car land frontend/node_modules
+/car land frontend/dist
 /car land backend/node_modules
 /car land backend/.env
 /car land backend/keys
+/car land backend/build

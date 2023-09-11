@@ -18,11 +18,7 @@ const initialValues: MyFormValue = {
 const VenderLogin = () => {
   const Navigate = useNavigate();
   const { vendor } = useAppSelector((state) => state);
-  useEffect(() => {
-    if (vendor.email) {
-      Navigate("/vendor/vendorhome");
-    }
-  }, []);
+
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {

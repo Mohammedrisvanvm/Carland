@@ -1,12 +1,21 @@
 {
   "compilerOptions": {
-      "target": "es2016",
-      "module": "commonjs",
-      "outDir": "./build",
-      "esModuleInterop": true,
-      "forceConsistentCasingInFileNames": true,
-      "strict": true,
-      "skipLibCheck": true
+    "module": "commonjs",
+    "target": "es2020",
+    "outDir": "./build",
+    "rootDir": "./src",  
+    "baseUrl": ".",  
+    "sourceMap": true,
+    "pretty": true,
+    "allowJs": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*.ts"], 
+  "exclude": [
+    "node_modules"
+  ]
 }

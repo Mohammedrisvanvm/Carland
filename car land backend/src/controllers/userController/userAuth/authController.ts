@@ -36,7 +36,7 @@ export const userSignUpController = AsyncHandler(
   }
 );
 interface UserJwt {
-  payload: {
+  payload?: {
     token?: number;
     user?: {
       userName: string;
@@ -257,7 +257,7 @@ export const userLogoutController = AsyncHandler(
 );
 
 interface IVerifyjwt {
-  payload: {
+  payload?: {
     email?: string;
   } | null;
   expired: boolean;

@@ -6,9 +6,9 @@ import IUser from "../../interfaces/userInterface";
 import AsyncHandler from "express-async-handler";
 
 interface IVerifyjwt {
-  payload: {
+  payload?: {
     email: string;
-  } | null;
+  } ;
   expired: boolean;
 }
 export const userCheck = AsyncHandler(
