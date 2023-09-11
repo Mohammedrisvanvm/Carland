@@ -9,6 +9,7 @@ import { VendorOtp } from "../components/vender/venderAuth/vendorOtp/vendorOtp";
 import VendorSignUp from "../components/vender/venderAuth/vendorSignup/venderSignup";
 import VenderLogin from "../components/vender/venderAuth/vendorLogin/vendorLogin";
 import PrivateRoute from "../utils/PrivateRoute";
+import { Content } from "../test/test";
 
 const VendorRouters = () => {
   return (
@@ -20,6 +21,7 @@ const VendorRouters = () => {
         {/* <Route path="/" element={<AdminProtectRoute> <Home /> </AdminProtectRoute>}></Route> */}
         {/* <Route element={<PrivateRoute role="vendor" />}> */}
           <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} />
+          {/* <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} /> */}
           <Route path="/vendordashboard" element={<PrivateRoute role="vendor"> <VenderDashboardPage /></PrivateRoute>} />
           <Route path="/vendorcars" element={<PrivateRoute role="vendor"> <CarManagementPage /></PrivateRoute>} />
           <Route path="/vendorcar/addcar" element={<PrivateRoute role="vendor"> <AddCarPage /></PrivateRoute>} />
