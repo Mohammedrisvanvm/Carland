@@ -9,7 +9,7 @@ import { VendorOtp } from "../components/vender/venderAuth/vendorOtp/vendorOtp";
 import VendorSignUp from "../components/vender/venderAuth/vendorSignup/venderSignup";
 import VenderLogin from "../components/vender/venderAuth/vendorLogin/vendorLogin";
 import PrivateRoute from "../utils/PrivateRoute";
-import { Content } from "../test/test";
+
 
 const VendorRouters = () => {
   return (

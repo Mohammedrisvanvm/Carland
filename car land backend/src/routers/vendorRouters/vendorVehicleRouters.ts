@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addVehicleController, getVehiclesController } from "../../controllers/venderController/vehicleController/vehicleController";
+import { addVehicleController, getVehiclesController } from "../../controllers/venderController/vehicleController";
 
 const vendorVehicleRouters=Router()
 

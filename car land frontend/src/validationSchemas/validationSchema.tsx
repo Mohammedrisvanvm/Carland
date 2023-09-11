@@ -149,3 +149,28 @@ export const vendorLoginSchema = yup.object().shape({
     })
     .required(),
 });
+export const vendorHubSchema = yup.object().shape({
+  hubName: yup
+    .string()
+    .trim()
+    .min(3)
+    .matches(/^[a-zA-Z0-9\s]+$/, "Enter a Name")
+    .required(),
+  place: yup
+    .string()
+    .trim()
+    .min(3)
+    .matches(/^[a-zA-Z0-9\s]+$/, "Enter a place")
+    .required(),
+  pincode: yup
+    .string()
+    .trim()
+    .min(6, "pincode must be 6 number")
+    .matches(/^\d+$/, "pincode must be number")
+    .max(6, "pincode must be 6 number")
+    .required(),
+    hubValidityDate: yup
+    .date()
+    .required("Future date is required")
+    .min(new Date(), "Date must be in the future"),
+});

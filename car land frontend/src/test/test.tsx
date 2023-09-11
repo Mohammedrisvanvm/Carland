@@ -1,151 +1,310 @@
-import React from "react";
-import "./test.css";
-export const Box = (): JSX.Element => {
-return (
-<div className="box">
-<div className="div-sort-container-wrapper">
-<div className="div-sort-container">
-<div className="div-filter-ctr">
-<div className="div-sort-by-filter">
-<div className="text-wrapper">Sort By</div>
-<div className="button">
-<div className="div">RESET</div>
-</div>
-</div>
-<div className="div-list-items">
-<div className="div-list">
-<img className="icon" alt="Icon" src="icon-12.svg" />
-<div className="text-wrapper-2">Relevance</div>
-</div>
-<div className="div-list-2">
-<img className="icon" alt="Icon" src="icon-13.svg" />
-<div className="text-wrapper-3">Low to High</div>
-</div>
-<div className="div-list-3">
-<img className="icon" alt="Icon" src="icon-14.svg" />
-<div className="text-wrapper-3">High to Low</div>
-</div>
-<div className="div-list-4">
-<img className="icon" alt="Icon" src="icon-15.svg" />
-<div className="text-wrapper-4">Best rated</div>
-</div>
-<div className="div-list-5">
-<img className="icon" alt="Icon" src="icon-16.svg" />
-<div className="text-wrapper-5">Distance</div>
-</div>
-<div className="div-list-6">
-<img className="icon" alt="Icon" src="icon-17.svg" />
-<div className="text-wrapper-6">Car age</div>
-</div>
-<div className="div-list-7">
-<img className="icon" alt="Icon" src="icon-18.svg" />
-<div className="text-wrapper-3">Kms Driven</div>
-</div>
-<div className="div-list-8">
-<img className="icon" alt="Icon" src="icon-19.svg" />
-<div className="text-wrapper-7">Popularity</div>
-</div>
-</div>
-<div className="div-filter-divider" />
-</div>
-<div className="div-filter-ctr-2">
-<div className="div-filter-item">
-<img className="img" alt="Icon" src="icon-20.svg" />
-<div className="div-2">
-<div className="text-wrapper-8">Include specific cars</div>
-<div className="div-sub-text">
-<p className="p">Any specific model in mind? Find it here. We will</p>
-<div className="text-wrapper-9">include them to search</div>
-</div>
-<div className="div-search-input">
-<div className="overlap-group">
-<div className="input">
-<div className="div-placeholder">
-<div className="try-search-honda">Try search &#34;Honda City&#34;</div>
-</div>
-</div>
-<img className="icons-search-svg" alt="Icons search svg" src="icons-search-svg.svg" />
-</div>
-</div>
-</div>
-</div>
-<div className="div-filter-divider-2" />
-</div>
-<div className="div-filter-ctr-3">
-<div className="text-wrapper">Car type</div>
-<div className="div-list-items-2">
-<div className="div-wrapper">
-<div className="text-wrapper-10">EV</div>
-</div>
-<div className="div-list-2">
-<img className="icon" alt="Icon" src="icon.svg" />
-<div className="text-wrapper-11">Hatchback</div>
-</div>
-<div className="div-list-3">
-<img className="icon" alt="Icon" src="image.svg" />
-<div className="text-wrapper-12">Sedan</div>
-</div>
-<div className="div-list-4">
-<img className="icon" alt="Icon" src="icon-2.svg" />
-<div className="text-wrapper-13">CSUV</div>
-</div>
-<div className="div-list-9">
-<img className="icon-2" alt="Icon" src="icon-3.svg" />
-<div className="text-wrapper-14">SUV</div>
-</div>
-<div className="div-list-10">
-<img className="icon-3" alt="Icon" src="icon-4.svg" />
-<div className="text-wrapper-15">Luxury</div>
-</div>
-</div>
-</div>
-<div className="div-filter-ctr-4">
-<div className="text-wrapper">Seats</div>
-<div className="div-list-items-3">
-<div className="div-list-11">
-<img className="icon-4" alt="Icon" src="icon-5.svg" />
-<div className="text-wrapper-16">4 Seater</div>
-</div>
-<div className="div-list-12">
-<img className="icon-5" alt="Icon" src="icon-6.svg" />
-<div className="text-wrapper-17">5 Seater</div>
-</div>
-<div className="div-list-12">
-<img className="icon-5" alt="Icon" src="icon-7.svg" />
-<div className="text-wrapper-17">7 Seater</div>
-</div>
-</div>
-</div>
-<div className="div-filter-ctr-5">
-<div className="text-wrapper">Fuel type</div>
-<div className="div-list-items-3">
-<div className="div-list-13">
-<img className="icon" alt="Icon" src="icon-8.svg" />
-<div className="text-wrapper-18">Petrol</div>
-</div>
-<div className="div-list-13">
-<img className="icon" alt="Icon" src="icon-9.svg" />
-<div className="text-wrapper-19">Diesel</div>
-</div>
-<div className="div-list-14">
-<img className="icon-6" alt="Icon" src="icon-10.svg" />
-<div className="text-wrapper-20">CNG</div>
-</div>
-<div className="div-list-14">
-<img className="icon-6" alt="Icon" src="icon-11.svg" />
-<div className="text-wrapper-21">Electric</div>
-</div>
-</div>
-</div>
-<div className="div-filter-ctr-6">
-<div className="text-wrapper">Transmission</div>
-<div className="div-list-items-4">
-<div className="div-list-15" />
-<div className="div-list-15" />
-</div>
-</div>
-</div>
-</div>
-</div>
-);
+import { FormikConfig, FormikHelpers, useFormik } from "formik";
+import { ChangeEvent } from "react";
+import { useNavigate } from "react-router";
+import {toast} from 'react-toastify'
+import { HubAdd } from "../services/apis/vendorApi/vendorApi";
+import { vendorHubSchema } from "../validationSchemas/validationSchema";
+
+
+
+const convertToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result as string);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 };
+export interface IHub{
+    hubName:string,
+    place:string,
+    pincode:string,
+    hubsingleimage:string,
+    hubmultipleimage:Array<string>,
+    hubValidityDate:string
+    document:string
+}
+export const Content = () => {
+  const Navigate = useNavigate();
+ 
+  const initialValues: IHub = {
+    hubName: "",
+    place: "",
+    pincode: "",
+    hubsingleimage: "",
+    hubmultipleimage: [],
+    hubValidityDate: "",
+    document: "",
+  };
+
+  const submitForm = async (
+    values: IHub,
+    actions: FormikHelpers<IHub>
+  ): Promise<void> => {
+    try {
+      interface axios{
+        data:{
+          message:string
+        }
+      }
+      const res:axios= await HubAdd(values);
+      toast.success(res.data.message)
+     Navigate('/vendor')
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    setFieldValue,
+  } = useFormik({
+    initialValues,
+    onSubmit: submitForm,
+    initialErrors: {},
+    initialTouched: {},
+    validateOnMount: true,
+    validationSchema: vendorHubSchema,
+  });
+
+  const handleImageChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      const files = e.target.files;
+      if (files) {
+        let filesArray: string[] = [];
+        for (let i = 0; i < files.length; i++) {
+          let Bse = await convertToBase64(files[i]);
+
+          filesArray.push(Bse);
+        }
+        setFieldValue("hubmultipleimage", filesArray);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handlesingleImageChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      if (e.target.files != null) {
+        const file: File | null = e.target.files[0];
+        const Base = await convertToBase64(file);
+        setFieldValue("hubsingleimage", Base);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+}
+  const handledocumentImageChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      if (e.target.files != null) {
+        const file: File | null = e.target.files[0];
+        const Base = await convertToBase64(file);
+        setFieldValue("document", Base);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+  return (
+    <>
+      {" "}
+      <div className="flex justify-center overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8 ">
+        <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
+          Add Hub
+        </span>
+      </div>
+      <div className="flex justify-center">
+        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
+          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
+            <form onSubmit={handleSubmit}>
+              <div className="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  className={`${
+                    errors.hubName && touched.hubName
+                      ? "input-error"
+                      : ""
+                  } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                  placeholder=" "
+                  value={values.hubName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="hubName"
+                  required
+                />
+                {errors.hubName && touched.hubName && (
+                  <p className="border-red-500 text-sm text-red-500">
+                    {errors.hubName}
+                  </p>
+                )}
+                <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                hub Name
+                </label>
+              </div>
+              <img
+                src={values.hubsingleimage ? values.hubsingleimage : ""}
+                alt=""
+              />
+             
+                
+              <div className="grid md:grid-cols-2 md:gap-6">
+              <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    value={values.place}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="place"
+                    id="floating_company"
+                    className={`${
+                      errors.place && touched.place ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
+                    required
+                  />
+                   {errors.place && touched.place && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.place}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    place
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    value={values.pincode}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="pincode"
+                    id="floating_phone"
+                    className={`${
+                      errors.pincode && touched.pincode
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
+                    required
+                  />
+                  {errors.pincode && touched.pincode && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.pincode}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    pincode
+                  </label>
+                </div>
+                
+              </div>
+            
+             
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="Date"
+                    pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                    value={values.hubValidityDate}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="hubValidityDate"
+                    id="floating_phone"
+                    className={`${
+                      errors.hubValidityDate && touched.hubValidityDate
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
+                    required
+                  />
+                  {errors.hubValidityDate &&
+                    touched.hubValidityDate && (
+                      <p className="border-red-500 text-sm text-red-500">
+                        {errors.hubValidityDate}
+                      </p>
+                    )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    Hub Validity Date
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    type="file"
+                    name="document"
+                    onChange={handledocumentImageChange}
+                    onBlur={handleBlur}
+                  />
+
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                   licence Image
+                  </label>
+                </div>
+              </div>
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    type="file"
+                    name="hubsingleimage"
+                    onChange={handlesingleImageChange}
+                    onBlur={handleBlur}
+                  />
+
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    hub Image
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="file"
+                    onChange={handleImageChange}
+                    onBlur={handleBlur}
+                    name="hubmultipleimages"
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    id="multiple_files"
+                    multiple
+                    required
+                  />
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6X">
+                    mutiple image
+                  </label>
+                </div>
+              </div>
+              <div className="flex justify-center">
+                <button
+                  disabled={isSubmitting}
+                  type="submit"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+

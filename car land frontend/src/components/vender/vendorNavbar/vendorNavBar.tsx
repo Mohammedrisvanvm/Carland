@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 
 
-const VenderNavBar = () => {
+const VendorNavBar = () => {
   const Navigate=useNavigate()
   const dispatch = useDispatch();
   const [dropdown, setdropdown] = useState(false);
@@ -134,4 +134,4 @@ const VenderNavBar = () => {
   );
 };
 
-export default VenderNavBar;
+export default VendorNavBar;

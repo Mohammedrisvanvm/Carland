@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
-import IVendor from "../../../interfaces/vendorInterface";
-import VenderModel from "../../../models/venderSchema";
-import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
-import { sendOtp } from "../../../utils/twilio/twilio";
+import IVendor from "../../interfaces/vendorInterface";
+import VenderModel from "../../models/venderSchema";
+import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
+import { sendOtp } from "../../utils/twilio/twilio";
 
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {

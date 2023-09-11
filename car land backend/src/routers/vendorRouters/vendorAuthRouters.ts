@@ -1,10 +1,6 @@
 import { Router } from "express";
-import {
-  venderSignUpController,
-  vendorLogOut,
-  vendorLoginController,
-  vendorOtpverify,
-} from "../../../controllers/venderController/venderAuthController/VendorAuthController";
+import { venderSignUpController, vendorLogOut, vendorLoginController, vendorOtpverify } from "../../controllers/venderController/VendorAuthController";
+
 const vendorAuthRouters = Router();
 
 vendorAuthRouters.post("/vendorlogin", vendorLoginController);

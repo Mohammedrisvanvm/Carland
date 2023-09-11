@@ -1,8 +1,8 @@
 import AsyncHandler from "express-async-handler";
-import { Request, Response, response, } from "express";
-import vehicleModel from "../../../models/vehicleSchema";
-import IVehicle from "../../../interfaces/vehicleInterface";
-import cloudinary from "../../../config/cloudinary";
+import { Request, Response } from "express";
+import vehicleModel from "../../models/vehicleSchema";
+import IVehicle from "../../interfaces/vehicleInterface";
+import cloudinary from "../../config/cloudinary";
 interface CloudinaryResponse {
   public_id: string;
   secure_url: string;
