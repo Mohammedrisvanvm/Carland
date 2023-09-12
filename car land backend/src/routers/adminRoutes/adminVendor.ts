@@ -4,6 +4,6 @@ import { banVendor, getAllVendors } from "../../controllers/adminController/vend
 const adminvendor=Router()
 
 adminvendor.get('/allvendors',getAllVendors)
-adminvendor.get('/banvendor',banVendor)
+adminvendor.post('/banvendor',banVendor)
 
 export default adminvendor

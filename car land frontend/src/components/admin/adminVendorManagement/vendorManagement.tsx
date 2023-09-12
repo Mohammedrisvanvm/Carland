@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { user } from "../../../interfaces/userAuth";
 import {
   banUser,
+  banVendor,
   getAllUser,
   getAllVendors,
 } from "../../../services/apis/adminApi/adminApi";
@@ -27,7 +28,7 @@ const VendorManagement = () => {
   }, [loading]);
   console.log(vendors);
   const banHandle = async (value: string | undefined) => {
-    await banUser(value);
+    await banVendor(value);
     setLoading(!loading);
   };
   return (
