@@ -1,11 +1,9 @@
 import { FormikConfig, FormikHelpers, useFormik } from "formik";
 import { ChangeEvent } from "react";
 import { useNavigate } from "react-router";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import { HubAdd } from "../services/apis/vendorApi/vendorApi";
 import { vendorHubSchema } from "../validationSchemas/validationSchema";
-
-
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -19,26 +17,26 @@ const convertToBase64 = (file: File): Promise<string> => {
     };
   });
 };
-export interface IHub{
-    hubName:string,
-    place:string,
-    pincode:string,
-    hubsingleimage:string,
-    hubmultipleimage:Array<string>,
-    hubValidityDate:string
-    document:string
+export interface IHub {
+  hubName: string;
+  place: string;
+  pincode: string;
+  hubImage: string;
+  hubMultiImage: Array<string>;
+  validityDate: string;
+  license: string;
 }
 export const Content = () => {
   const Navigate = useNavigate();
- 
+
   const initialValues: IHub = {
     hubName: "",
     place: "",
     pincode: "",
-    hubsingleimage: "",
-    hubmultipleimage: [],
-    hubValidityDate: "",
-    document: "",
+    hubImage: "",
+    hubMultiImage: [],
+    validityDate: "",
+    license: "",
   };
 
   const submitForm = async (
@@ -46,14 +44,18 @@ export const Content = () => {
     actions: FormikHelpers<IHub>
   ): Promise<void> => {
     try {
-      interface axios{
-        data:{
-          message:string
-        }
+      console.log("jai");
+
+      interface axios {
+        data: {
+          message: string;
+        };
       }
-      const res:axios= await HubAdd(values);
-      toast.success(res.data.message)
-     Navigate('/vendor')
+
+      const res: axios = await HubAdd(values);
+
+      toast.success(res.data.message);
+      Navigate("/vendor");
     } catch (error: any) {
       console.log(error);
     }
@@ -89,39 +91,38 @@ export const Content = () => {
 
           filesArray.push(Bse);
         }
-        setFieldValue("hubmultipleimage", filesArray);
+        setFieldValue("hubMultiImage", filesArray);
       }
     } catch (error) {
       console.log(error);
     }
   };
-  const handlesingleImageChange = async (
+  const handlehubImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     try {
       if (e.target.files != null) {
         const file: File | null = e.target.files[0];
         const Base = await convertToBase64(file);
-        setFieldValue("hubsingleimage", Base);
+        setFieldValue("hubImage", Base);
       }
     } catch (error) {
       console.log(error);
     }
-}
-  const handledocumentImageChange = async (
+  };
+  const handlelicenseImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     try {
       if (e.target.files != null) {
         const file: File | null = e.target.files[0];
         const Base = await convertToBase64(file);
-        setFieldValue("document", Base);
+        setFieldValue("license", Base);
       }
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <>
@@ -139,9 +140,7 @@ export const Content = () => {
                 <input
                   type="text"
                   className={`${
-                    errors.hubName && touched.hubName
-                      ? "input-error"
-                      : ""
+                    errors.hubName && touched.hubName ? "input-error" : ""
                   } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                   placeholder=" "
                   value={values.hubName}
@@ -156,17 +155,13 @@ export const Content = () => {
                   </p>
                 )}
                 <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                hub Name
+                  hub Name
                 </label>
               </div>
-              <img
-                src={values.hubsingleimage ? values.hubsingleimage : ""}
-                alt=""
-              />
-             
-                
+              <img src={values.hubImage ? values.hubImage : ""} alt="" />
+
               <div className="grid md:grid-cols-2 md:gap-6">
-              <div className="relative z-0 w-full mb-6 group">
+                <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
                     value={values.place}
@@ -180,7 +175,7 @@ export const Content = () => {
                     placeholder=" "
                     required
                   />
-                   {errors.place && touched.place && (
+                  {errors.place && touched.place && (
                     <p className="border-red-500 text-sm text-red-500">
                       {errors.place}
                     </p>
@@ -198,9 +193,7 @@ export const Content = () => {
                     name="pincode"
                     id="floating_phone"
                     className={`${
-                      errors.pincode && touched.pincode
-                        ? "input-error"
-                        : ""
+                      errors.pincode && touched.pincode ? "input-error" : ""
                     } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                     required
@@ -214,34 +207,31 @@ export const Content = () => {
                     pincode
                   </label>
                 </div>
-                
               </div>
-            
-             
+
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="Date"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    value={values.hubValidityDate}
+                    value={values.validityDate}
                     onChange={handleChange}
                     onBlur={handleBlur}
-                    name="hubValidityDate"
+                    name="validityDate"
                     id="floating_phone"
                     className={`${
-                      errors.hubValidityDate && touched.hubValidityDate
+                      errors.validityDate && touched.validityDate
                         ? "input-error"
                         : ""
                     } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
                     placeholder=" "
                     required
                   />
-                  {errors.hubValidityDate &&
-                    touched.hubValidityDate && (
-                      <p className="border-red-500 text-sm text-red-500">
-                        {errors.hubValidityDate}
-                      </p>
-                    )}
+                  {errors.validityDate && touched.validityDate && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.validityDate}
+                    </p>
+                  )}
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     Hub Validity Date
                   </label>
@@ -250,13 +240,14 @@ export const Content = () => {
                   <input
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     type="file"
-                    name="document"
-                    onChange={handledocumentImageChange}
+                    name="license"
+                    onChange={handlelicenseImageChange}
                     onBlur={handleBlur}
+                    required
                   />
 
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                   licence Image
+                    license Image
                   </label>
                 </div>
               </div>
@@ -265,9 +256,10 @@ export const Content = () => {
                   <input
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     type="file"
-                    name="hubsingleimage"
-                    onChange={handlesingleImageChange}
+                    name="hubImage"
+                    onChange={handlehubImageChange}
                     onBlur={handleBlur}
+                    required
                   />
 
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -279,7 +271,7 @@ export const Content = () => {
                     type="file"
                     onChange={handleImageChange}
                     onBlur={handleBlur}
-                    name="hubmultipleimages"
+                    name="hubMultiImages"
                     className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     id="multiple_files"
                     multiple
@@ -306,5 +298,3 @@ export const Content = () => {
     </>
   );
 };
-
-

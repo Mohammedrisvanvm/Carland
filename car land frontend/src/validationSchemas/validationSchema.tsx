@@ -169,7 +169,7 @@ export const vendorHubSchema = yup.object().shape({
     .matches(/^\d+$/, "pincode must be number")
     .max(6, "pincode must be 6 number")
     .required(),
-    hubValidityDate: yup
+    validityDate: yup
     .date()
     .required("Future date is required")
     .min(new Date(), "Date must be in the future"),

@@ -8,6 +8,9 @@ export const CarAdd = async (values: IAddcar): Promise<AxiosResponse<any>> => {
 export const HubAdd = async (values: IHub): Promise<AxiosResponse<any>> => {
   return axiosBase.post("/vendors/hub/addhub", { values });
 };
+export const getHub = async (): Promise<AxiosResponse<any>> => {
+  return axiosBase.get("/vendors/hub/gethubs");
+};
 export const getVehicle = async (): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/vendors/vehicle/getvehicles");
 };

@@ -1,12 +1,31 @@
-
-import VendorNavBar from '../vendorNavbar/vendorNavBar'
-import { useNavigate } from 'react-router'
+import { useEffect, useState } from "react";
+import VendorNavBar from "../vendorNavbar/vendorNavBar";
+import { useNavigate } from "react-router";
+import { IHub } from "../../../test/test";
+import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 
 const VendorHomePage = () => {
+  const [hubs, setHubs] = useState<IHub[]>([]);
   const Navigate = useNavigate();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response:any = await getHub();
+        console.log(response.data.hubs);
+
+        setHubs(response.data.hubs);
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+  console.log(hubs);
+  
   return (
     <div className="bg-gray-200">
-      <VendorNavBar/>
+      <VendorNavBar />
       <div className="relative px-4 h-screen py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <span className="self-center flex justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
           HUBS
@@ -61,11 +80,19 @@ const VendorHomePage = () => {
               />
             </svg>
           </div>
-
-          <div className="flex flex-col justify-between h-48 overflow-hidden text-left transition-shadow h-48 duration-200 bg-white rounded shadow-xl group hover:shadow-2xl">
-            <div className="w-full h-1 ml-auto duration-300 origin-left transform scale-x-0 bg-deep-purple-accent-400 group-hover:scale-x-100" />
-          </div>
-
+          {hubs ? hubs.map((item)=>(
+       <div
+       onClick={() => Navigate("/vendor/addHub")}
+       className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
+     >
+      {item.hubName}
+     </div>
+          ) ): null}
+               <div className="flex flex-col justify-between h-48 overflow-hidden text-left transition-shadow h-48 duration-200 bg-white rounded shadow-xl group hover:shadow-2xl">
+              <div className="w-full h-1 ml-auto duration-300 origin-left transform scale-x-0 bg-deep-purple-accent-400 group-hover:scale-x-100" />
+           
+            </div>
+ 
           <div className="flex flex-col h-48 justify-between overflow-hidden text-left transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl">
             <div className="p-5">
               <div className="flex items-center justify-center w-10 h-10 mb-4 rounded-full bg-indigo-50">
@@ -89,6 +116,6 @@ const VendorHomePage = () => {
       </div>
     </div>
   );
-}
+};
 
-export default VendorHomePage
+export default VendorHomePage;

@@ -29,7 +29,7 @@ app.use(cors(
 ))
 app.use(userCheck)
 app.use('/users', userRouters)
-// app.use('/vendors',vendorRouters)
+app.use('/vendors',vendorRouters)
 app.use('/admin',adminRouters)
 app.get('/', (req: Request, res: Response): void => {
     res.send("hai")

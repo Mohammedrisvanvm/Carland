@@ -3,10 +3,11 @@ interface Ihub extends Document {
   isVerified: Boolean;
   ban: Boolean;
   location: Location;
+  place?:string;
   pincode: Number;
   validityDate: Date;
-  licence: String;
-  hubImage: String;
+  license: string;
+  hubImage: string;
   hubMultiImage: Array<string>;
 }
 

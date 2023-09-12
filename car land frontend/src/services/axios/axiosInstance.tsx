@@ -2,9 +2,11 @@ import axios, { AxiosInstance } from "axios";
 // import { userCheck } from "../apis/userApi/userApi";
 // import { Authcheck } from "../../interfaces/userAuth";
 import { useDispatch } from "react-redux";
+import { useAppSelector } from "../../redux/store/storeHook";
+import { userCheck } from "../apis/userApi/userApi";
 // import { setUser } from "../../redux/Slices/UserSlice/UserSlice";
 
-
+// const vendor =useAppSelector((state)=>state.vendor)
 // const dispatch =useDispatch()
 export const axiosBase   = axios.create({
   baseURL: "http://localhost:3131/",
@@ -27,6 +29,10 @@ axiosBase.interceptors.request.use(
     // } catch (error) {
     //   console.log(error);
       
+    // }
+    // if(!config.token){
+
+    //   config.token=vendor.accessToken
     // }
 
       console.info(

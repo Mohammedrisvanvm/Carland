@@ -27,7 +27,7 @@ const hubSchema: Schema = new Schema(
       type: Date,
       required: true,
     },
-    licence: {
+    license: {
       type: String,
       required: true,
     },
