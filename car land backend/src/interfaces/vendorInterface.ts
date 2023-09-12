@@ -1,4 +1,5 @@
 interface IVendor extends Document {
+    save(): unknown;
     _id: string;
     userName?: string;
     email?: string;
