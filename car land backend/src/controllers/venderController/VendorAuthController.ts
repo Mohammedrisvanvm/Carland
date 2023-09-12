@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import IVendor from "../../interfaces/vendorInterface";
-import VenderModel from "../../models/venderSchema";
+import VenderModel from "../../models/vendorSchema";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../utils/twilio/twilio";
 
