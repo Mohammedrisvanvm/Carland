@@ -1,9 +1,12 @@
-
 import AsyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import Ihub from "../../interfaces/hubInterface";
 import hubModel from "../../models/hubSchema";
 import cloudinary from "../../config/cloudinary";
+import { verifyJwt } from "../../utils/jwtUtils/jwtutils";
+
+import VenderModel from "../../models/vendorSchema";
+import IVendor from "src/interfaces/vendorInterface";
 
 export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -34,7 +37,7 @@ export const addhub = AsyncHandler(
         })
       );
 
-      const hub = await hubModel.create({
+      const hub: Ihub = await hubModel.create({
         hubName,
         location: place,
         pincode,
@@ -43,7 +46,24 @@ export const addhub = AsyncHandler(
         hubImage: images[0].url,
         hubMultiImage: multi,
       });
-
+      const accessTokenvendor: string = req.cookies.accessTokenvendor;
+      interface Ipayload {
+        payload?: {
+          id: string;
+          name: string;
+          email: string;
+          number: string;
+        };
+        expired?: boolean;
+      }
+      const value: Ipayload = verifyJwt(accessTokenvendor);
+      if (!value) {
+        throw new Error("accessToken problem");
+      }
+      await VenderModel.findByIdAndUpdate(
+        { _id: value.payload.id },
+        { $addToSet: { renthubs: hub._id } }
+      );
       res.json({ message: `created new hub ${hub.hubName}` });
     } else {
       throw new Error("hub already exist");
@@ -51,12 +71,30 @@ export const addhub = AsyncHandler(
   }
 );
 
-
-
 export const getHubs = AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
+    const accessTokenvendor: string = req.cookies.accessTokenvendor;
+    interface Ipayload {
+      payload?: {
+        id: string;
+        name: string;
+        email: string;
+        number: string;
+      };
+      expired?: boolean;
+    }
+    if (!accessTokenvendor) {
+      throw new Error("accessToken not available");
+    }
+    const jwtdata: Ipayload = verifyJwt(accessTokenvendor);
 
-        const hubs:Ihub[]= await hubModel.find()
-      
-        res.json({hubs})
-    })
+    const dbout: IVendor = await VenderModel.findOne(
+      { _id: jwtdata.payload.id },
+      { renthubs: 1, _id: 0 }
+    );
+
+    const hubs: Ihub[] = await hubModel.find({ _id: { $in: dbout.renthubs } });
+
+    res.json({ hubs });
+  }
+);

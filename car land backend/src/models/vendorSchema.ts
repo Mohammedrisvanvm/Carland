@@ -14,7 +14,8 @@ const VenderSchema:Schema=new Schema({
         unique: true,
     },
     renthubs:{
-        type:Array
+        type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'hub' }]
+      
     }
     ,
     phoneNumber: {

@@ -1,4 +1,5 @@
 interface Ihub extends Document {
+  _id:string,
   hubName: string;
   isVerified: Boolean;
   ban: Boolean;

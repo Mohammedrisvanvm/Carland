@@ -44,8 +44,6 @@ export const Content = () => {
     actions: FormikHelpers<IHub>
   ): Promise<void> => {
     try {
-      console.log("jai");
-
       interface axios {
         data: {
           message: string;

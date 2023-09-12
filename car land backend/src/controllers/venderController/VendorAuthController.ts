@@ -19,6 +19,8 @@ export const vendorLoginController = AsyncHandler(
 
     if (venderExist) {
       let response: number = await sendOtp(req.body.values.number);
+      console.log(response);
+      
       let Token = jwtSign({ token: response, user: req.body.values }, "5min");
 
       res

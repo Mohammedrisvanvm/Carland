@@ -10,7 +10,7 @@ const VendorHomePage = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response:any = await getHub();
+        const response: any = await getHub();
         console.log(response.data.hubs);
 
         setHubs(response.data.hubs);
@@ -22,7 +22,7 @@ const VendorHomePage = () => {
     fetchData();
   }, []);
   console.log(hubs);
-  
+
   return (
     <div className="bg-gray-200">
       <VendorNavBar />
@@ -60,8 +60,22 @@ const VendorHomePage = () => {
         </div>
 
         <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          <div
-            onClick={() => Navigate("/vendor/addHub")}
+       
+          {hubs
+            ? hubs.map((item) => (
+                <div
+                onClick={()=>{
+                  console.log(item.pincode);
+                  
+                }}
+                  className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
+                >
+                  <span className="font-medium "> {item.hubName}</span>
+                </div>
+              ))
+            : null}
+               <div
+            onClick={() => Navigate("/vendor/addhub")}
             className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
           >
             <svg
@@ -80,38 +94,9 @@ const VendorHomePage = () => {
               />
             </svg>
           </div>
-          {hubs ? hubs.map((item)=>(
-       <div
-       onClick={() => Navigate("/vendor/addHub")}
-       className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
-     >
-      {item.hubName}
-     </div>
-          ) ): null}
-               <div className="flex flex-col justify-between h-48 overflow-hidden text-left transition-shadow h-48 duration-200 bg-white rounded shadow-xl group hover:shadow-2xl">
-              <div className="w-full h-1 ml-auto duration-300 origin-left transform scale-x-0 bg-deep-purple-accent-400 group-hover:scale-x-100" />
-           
-            </div>
- 
-          <div className="flex flex-col h-48 justify-between overflow-hidden text-left transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl">
-            <div className="p-5">
-              <div className="flex items-center justify-center w-10 h-10 mb-4 rounded-full bg-indigo-50">
-                <svg
-                  className="w-8 h-8 text-deep-purple-accent-400"
-                  stroke="currentColor"
-                  viewBox="0 0 52 52"
-                >
-                  <polygon
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    fill="none"
-                    points="29 13 14 29 25 29 23 39 38 23 27 23"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+       
+
+        
         </div>
       </div>
     </div>
