@@ -68,7 +68,9 @@ const VendorHomePage = () => {
                   console.log(item.pincode);
                   
                 }}
-                  className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
+                  className="flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl " 
+                  style={{ backgroundImage: `url('${item.hubImage}')` }}
+                  
                 >
                   <span className="font-medium "> {item.hubName}</span>
                 </div>
