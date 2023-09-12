@@ -1,6 +1,7 @@
 import mongoose, { Schema, model, Document } from "mongoose";
 import bcrypt from "bcrypt";
 import IUser from "../interfaces/userInterface";
+import { NextFunction } from "express";
 
 const userSchema: Schema = new Schema(
   {
@@ -37,7 +38,7 @@ const userSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
+userSchema.pre("save", async function (next:NextFunction) {
   if (!this.isModified("password")) {
     next();
   }
