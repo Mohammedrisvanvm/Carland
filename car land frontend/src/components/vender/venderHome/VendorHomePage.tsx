@@ -60,23 +60,25 @@ const VendorHomePage = () => {
         </div>
 
         <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-       
           {hubs
             ? hubs.map((item) => (
                 <div
-                onClick={()=>{
-                  console.log(item.pincode);
-                  
-                }}
-                  className="flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl " 
-                  style={{ backgroundImage: `url('${item.hubImage}')` }}
-                  
+                  onClick={() => {
+                    console.log(item.pincode);
+                  }}
+                  className="flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl "
+                  style={{
+                    backgroundImage: `url('${item.hubImage}')`,
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  }}
                 >
-                  <span className="font-medium "> {item.hubName}</span>
+                  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                    {item.hubName}
+                  </span>
                 </div>
               ))
             : null}
-               <div
+          <div
             onClick={() => Navigate("/vendor/addhub")}
             className="flex justify-center items-center h-48 overflow-hidden transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl"
           >
@@ -96,9 +98,6 @@ const VendorHomePage = () => {
               />
             </svg>
           </div>
-       
-
-        
         </div>
       </div>
     </div>

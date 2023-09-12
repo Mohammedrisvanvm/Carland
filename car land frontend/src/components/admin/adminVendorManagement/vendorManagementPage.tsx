@@ -2,7 +2,7 @@ import AdminNavBar from "../adminNav/adminNav";
 import AdminAside from "../adminAside/adminAside";
 import VendorManagement from "./vendorManagement";
 
-const AdminUserManagementPage = () => {
+const AdminVendorManagementPage = () => {
   return (
     <>
       <AdminNavBar />
@@ -11,4 +11,4 @@ const AdminUserManagementPage = () => {
   );
 };
 
-export default AdminUserManagementPage;
+export default AdminVendorManagementPage;

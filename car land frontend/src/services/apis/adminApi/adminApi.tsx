@@ -10,6 +10,9 @@ export const adminSignOut=async (): Promise<AxiosResponse<any>> => {
 export const getAllUser=async (): Promise<AxiosResponse<any>>=>{
     return axiosBase.get("/admin/usermanagement/allusers")
 }
+export const getAllVendors=async (): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get("/admin/vendormanagement/allvendors")
+}
 export const banUser=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/usermanagement/banuser",{value})
 }

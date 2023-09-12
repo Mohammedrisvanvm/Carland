@@ -3,20 +3,21 @@ import { user } from "../../../interfaces/userAuth";
 import {
   banUser,
   getAllUser,
+  getAllVendors,
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const VendorManagement = () => {
-  const [users, setUser] = useState<user[]>([]);
+  const [vendors, setVendors] = useState<user[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getAllUser();
-        console.log(response.data.users);
+        const response: AxiosResponse = await getAllVendors();
+        console.log(response.data.vendors);
 
-        setUser(response.data.users);
+        setVendors(response.data.vendors);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -24,7 +25,7 @@ const VendorManagement = () => {
 
     fetchData();
   }, [loading]);
-  console.log(users);
+  console.log(vendors);
   const banHandle = async (value: string | undefined) => {
     await banUser(value);
     setLoading(!loading);
@@ -249,8 +250,8 @@ const VendorManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {users
-              ? users.map((item, index) => (
+            {vendors
+              ? vendors.map((item, index) => (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td className="w-4 p-4">{index + 1}</td>
                     {/* <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td> */}

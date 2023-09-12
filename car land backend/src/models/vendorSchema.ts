@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt'
 import IVender from "../interfaces/vendorInterface";
 
 
-const VenderSchema:Schema=new Schema({
+const VendorSchema:Schema=new Schema({
     userName: {
         type: String,
         required: true,
@@ -14,7 +14,7 @@ const VenderSchema:Schema=new Schema({
         unique: true,
     },
     renthubs:{
-        type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'hub' }]
+        type:[{ type: mongoose.Schema.Types.ObjectId }]
       
     }
     ,
@@ -35,7 +35,7 @@ const VenderSchema:Schema=new Schema({
     }
 },{timestamps:true})
 
-VenderSchema.pre('save', async function (next) {
+VendorSchema.pre('save', async function (next) {
     if (!this.isModified('password')) {
         next()
     }
@@ -43,9 +43,9 @@ VenderSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt(10)
     this.password = await bcrypt.hash(this.password, salt)
 })
-VenderSchema.methods.matchPassword=async function (enteredPassword: string) {
+VendorSchema.methods.matchPassword=async function (enteredPassword: string) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
-const VenderModel=model<IVender>('vender',VenderSchema)
-export default VenderModel
+const VendorModel=model<IVender>('vender',VendorSchema)
+export default VendorModel

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import IVendor from "../../interfaces/vendorInterface";
-import VenderModel from "../../models/vendorSchema";
+import vendormodel from "../../models/vendorSchema";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../utils/twilio/twilio";
 
@@ -13,7 +13,7 @@ export const vendorLoginController = AsyncHandler(
     }
     const data: iSign = req.body.values;
 
-    const venderExist: IVendor | null = await VenderModel.findOne({
+    const venderExist: IVendor | null = await vendormodel.findOne({
       phoneNumber: data.number,ban:false
     });
 
@@ -43,7 +43,7 @@ export const venderSignUpController = AsyncHandler(
     const data: iSign = req.body.values;
     // const data:iSign = req.body
 
-    const venderExist: IVendor | null = await VenderModel.findOne({
+    const venderExist: IVendor | null = await vendormodel.findOne({
       email: data.email,
     });
 
@@ -83,12 +83,12 @@ export const vendorOtpverify = AsyncHandler(
     if (vendorOtpToken) {
       const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
       if (payload?.token == data.value) {
-        let vendorExist: IVendor | null = await VenderModel.findOne({
+        let vendorExist: IVendor | null = await vendormodel.findOne({
           phoneNumber: payload.user?.number,
         });
 
         if (!vendorExist) {
-          const user: IVendor = await VenderModel.create({
+          const user: IVendor = await vendormodel.create({
             userName: payload.user?.userName,
             email: payload.user?.email,
             phoneNumber: payload.user?.number,

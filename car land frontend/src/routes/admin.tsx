@@ -6,6 +6,7 @@ import PrivateRoute from "../utils/PrivateRoute";
 import { useAppSelector } from "../redux/store/storeHook";
 import AdminDashboardPage from "../components/admin/adminDashboard/adminDashboardPage";
 import AdminUserManagementPage from "../components/admin/adminUserManagement/UserManagementPage";
+import AdminVendorManagementPage from "../components/admin/adminVendorManagement/vendorManagementPage";
 
 const AdminRouters = () => {
   const { admin } = useAppSelector((state) => state);
@@ -13,13 +14,14 @@ const AdminRouters = () => {
     <Routes>
       {admin.email && (
         <>
-          <Route path="/admindashboard" element={<AdminDashboardPage/>} />
-          <Route path="/usermanagement" element={<AdminUserManagementPage />} />
+          <Route path="/*" element={ <PrivateRoute role="admin"><AdminDashboardPage/></PrivateRoute>} />
+          <Route path="/usermanagement" element={ <PrivateRoute role="admin"><AdminUserManagementPage /></PrivateRoute>} />
+          <Route path="/vendormanagement" element={ <PrivateRoute role="admin"><AdminVendorManagementPage /></PrivateRoute>} />
         </>
       )}
       {admin.email === null && (
         <>
-          <Route path="/*" element={<AdminLogin />} />
+          <Route path="/login" element={ <PrivateRoute role="admin"><AdminLogin /></PrivateRoute>} />
         </>
       )}
 

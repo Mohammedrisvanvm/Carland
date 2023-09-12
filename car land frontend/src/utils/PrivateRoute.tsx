@@ -22,14 +22,18 @@ const PrivateRoute = ({ children, role }: Props): React.ReactNode => {
         replace={true}
       />
     );
-  } else if (role === "admin" && admin.accessToken) {
-    console.log("HAI");
-
-    return user.accessToken ? (
-      <Outlet />
-    ) : (
-      <Navigate to="/admin" replace={true} />
-    );
+  } else if (role === "admin" ) {
+    if (!admin.accessToken) {
+      if (location.pathname !== "/admin/login" ) {
+        return <Navigate to="/admin/login" />;
+      }
+      return <>{children}</>;
+    } else {
+      if (location.pathname === "/admin/login") {
+        return <Navigate to="/admin" />;
+      }
+      return <>{children}</>;
+    }
   } else if (role === "vendor") {
     if (!vendor.accessToken) {
       if (location.pathname !== "/vendor/login" && location.pathname !== "/vendor/signup" && location.pathname !== "/vendor/otp") {

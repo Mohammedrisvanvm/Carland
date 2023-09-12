@@ -57,6 +57,7 @@ export interface IHub {
       toast.success(res.data.message);
       Navigate("/vendor");
     } catch (error: any) {
+      toast.error(error.response.data.message)
       console.log(error);
     }
   };
