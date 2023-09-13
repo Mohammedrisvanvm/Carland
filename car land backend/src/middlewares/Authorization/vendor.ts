@@ -26,6 +26,8 @@ export const vendorAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const accessTokenvendortoken: string = req.cookies.accessTokenvendor;
     const refreshTokenvendor: string = req.cookies.refreshTokenvendor;
+    console.log(refreshTokenvendor,accessTokenvendortoken);
+    
     if (!accessTokenvendortoken && !refreshTokenvendor) {
       throw new Error("Access Denied");
     }
@@ -50,10 +52,10 @@ export const vendorAuthenticate = AsyncHandler(
 
           res.cookie("accessTokenvendor", access, {
             httpOnly: true,
-            maxAge: 900000,
+            maxAge: (15 * 60 * 1000),
           });
           res.cookie("refreshTokenvendor", refreshTokenvendor, {
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: (7 * 24 * 60 * 60),
             httpOnly: true,
           });
 

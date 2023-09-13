@@ -114,13 +114,13 @@ export const vendorOtpverify = AsyncHandler(
         );
 
         res.status(200).cookie("accessTokenvendor", accessToken, {
-          maxAge: 900000,
+          maxAge: (15 * 60 * 1000),
           httpOnly: true,
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
-            maxAge: 7 * 24 * 60 * 60,
+            maxAge: (7 * 24 * 60 * 60),
             httpOnly: true,
           })
           .json({ vendor: vendorExist, accessToken });
