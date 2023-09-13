@@ -9,7 +9,7 @@ interface Props {
 
 const PrivateRoute = ({ children, role }: Props): React.ReactNode => {
   const { user, admin, vendor } = useAppSelector((state) => state);
-  const [auth, setAuth] = useState<boolean>(false);
+
   const location = useLocation();
 
   if (role === "user" && user.accessToken) {
@@ -22,9 +22,9 @@ const PrivateRoute = ({ children, role }: Props): React.ReactNode => {
         replace={true}
       />
     );
-  } else if (role === "admin" ) {
+  } else if (role === "admin") {
     if (!admin.accessToken) {
-      if (location.pathname !== "/admin/login" ) {
+      if (location.pathname !== "/admin/login") {
         return <Navigate to="/admin/login" />;
       }
       return <>{children}</>;
@@ -36,7 +36,11 @@ const PrivateRoute = ({ children, role }: Props): React.ReactNode => {
     }
   } else if (role === "vendor") {
     if (!vendor.accessToken) {
-      if (location.pathname !== "/vendor/login" && location.pathname !== "/vendor/signup" && location.pathname !== "/vendor/otp") {
+      if (
+        location.pathname !== "/vendor/login" &&
+        location.pathname !== "/vendor/signup" &&
+        location.pathname !== "/vendor/otp"
+      ) {
         return <Navigate to="/vendor/login" />;
       }
       return <>{children}</>;

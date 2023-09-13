@@ -18,13 +18,16 @@ const convertToBase64 = (file: File): Promise<string> => {
   });
 };
 export interface IHub {
+  _id?: string;
   hubName: string;
-  place: string;
+  isVerified?: Boolean;
+  ban?: Boolean;
+  place?: string;
   pincode: string;
+  validityDate:string;
+  license: string;
   hubImage: string;
   hubMultiImage: Array<string>;
-  validityDate: string;
-  license: string;
 }
 export const Content = () => {
   const Navigate = useNavigate();

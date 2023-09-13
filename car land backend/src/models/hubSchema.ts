@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import  { Schema, model } from "mongoose";
 import Ihub from "src/interfaces/hubInterface";
 
 const hubSchema: Schema = new Schema(
@@ -26,6 +26,10 @@ const hubSchema: Schema = new Schema(
     validityDate: {
       type: Date,
       required: true,
+    },
+    vehicles:{
+      type:[{ type: Schema.Types.ObjectId }]
+      
     },
     license: {
       type: String,

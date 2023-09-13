@@ -1,4 +1,4 @@
-import mongoose, { Schema, model } from "mongoose";
+import  { Schema, model } from "mongoose";
 import bcrypt from 'bcrypt'
 import IVender from "../interfaces/vendorInterface";
 
@@ -14,7 +14,7 @@ const VendorSchema:Schema=new Schema({
         unique: true,
     },
     renthubs:{
-        type:[{ type: mongoose.Schema.Types.ObjectId }]
+        type:[{ type: Schema.Types.ObjectId }]
       
     }
     ,

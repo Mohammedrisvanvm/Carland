@@ -21,8 +21,7 @@ const VendorHomePage = () => {
 
     fetchData();
   }, []);
-  console.log(hubs);
-
+ 
   return (
     <div className="bg-gray-200">
       <VendorNavBar />
@@ -62,20 +61,25 @@ const VendorHomePage = () => {
         <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {hubs
             ? hubs.map((item) => (
-                <div
-                  onClick={() => {
-                    console.log(item.pincode);
-                  }}
-                  className="flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl "
-                  style={{
-                    backgroundImage: `url('${item.hubImage}')`,
-                    backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  }}
-                >
-                  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                    {item.hubName}
-                  </span>
-                </div>
+              <div
+  onClick={() => {
+    console.log(item.pincode);
+  }}
+  className={`${
+    item.isVerified
+      ? "enabled:hover:border-gray-400"
+      : "opacity-50 pointer-events-none"
+  } flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
+  style={{
+    backgroundImage: `url('${item.hubImage}')`,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+  }}
+>
+  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+    {item.hubName}
+  </span>
+</div>
+
               ))
             : null}
           <div
