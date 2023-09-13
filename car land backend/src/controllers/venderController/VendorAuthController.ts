@@ -14,14 +14,15 @@ export const vendorLoginController = AsyncHandler(
     const data: iSign = req.body.values;
 
     const venderExist: IVendor | null = await vendormodel.findOne({
-      phoneNumber: data.number,ban:false
+      phoneNumber: data.number,
+      ban: false,
     });
 
     if (venderExist) {
       let response: number = await sendOtp(req.body.values.number);
       console.log(response);
-      
-      let Token = jwtSign({ token: response, user: req.body.values }, "5min");
+
+      let Token = jwtSign({ token: response, vendor: req.body.values }, "5min");
 
       res
         .status(200)
@@ -53,7 +54,7 @@ export const venderSignUpController = AsyncHandler(
       let response: number = await sendOtp(data.number);
       console.log(response);
 
-      let Token = jwtSign({ token: response, user: data }, "5min");
+      let Token = jwtSign({ token: response, vendor: data }, "5min");
       res
         .status(200)
         .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
@@ -64,7 +65,7 @@ export const venderSignUpController = AsyncHandler(
 interface VendorJwt {
   payload?: {
     token?: number;
-    user?: {
+    vendor?: {
       userName: string;
       email: string;
       number: number;
@@ -82,18 +83,20 @@ export const vendorOtpverify = AsyncHandler(
     const data: vendorbody = req.body;
     if (vendorOtpToken) {
       const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
+      console.log(payload);
+      
       if (payload?.token == data.value) {
         let vendorExist: IVendor | null = await vendormodel.findOne({
-          phoneNumber: payload.user?.number,
+          phoneNumber: payload.vendor?.number,
         });
 
         if (!vendorExist) {
-          const user: IVendor = await vendormodel.create({
-            userName: payload.user?.userName,
-            email: payload.user?.email,
-            phoneNumber: payload.user?.number,
+          const vendor: IVendor = await vendormodel.create({
+            userName: payload.vendor?.userName,
+            email: payload.vendor?.email,
+            phoneNumber: payload.vendor?.number,
           });
-          vendorExist = user;
+          vendorExist = vendor;
         }
 
         const accessToken = jwtSign(

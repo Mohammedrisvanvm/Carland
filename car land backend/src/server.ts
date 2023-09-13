@@ -7,7 +7,6 @@ import vendorRouters from './routers/VendorRouters'
 import adminRouters from './routers/adminRouters'
 import { errorHandler, notFound } from './middlewares/errorHandler/errorHandlingMiddleware'
 import cookieParser from 'cookie-parser'
-import { userCheck } from './middlewares/userCheckMiddleware/userCheckMiddleware'
 
 
 
@@ -27,7 +26,7 @@ app.use(cors(
         credentials: true,
     }
 ))
-app.use(userCheck)
+
 app.use('/users', userRouters)
 app.use('/vendors',vendorRouters)
 app.use('/admin',adminRouters)

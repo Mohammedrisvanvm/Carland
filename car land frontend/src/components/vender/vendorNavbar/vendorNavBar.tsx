@@ -54,7 +54,7 @@ const VendorNavBar = () => {
                 alt="FlowBite Logo"
               />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-                Car Land Vender
+                Car Land Vendor
               </span>
             </div>
             <div className="flex items-center">
