@@ -280,7 +280,7 @@ const VendorManagement = () => {
                       </button>
                     </td>
                     <td className="px-6 py-4"> {item.verified_email}</td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
+                    <td className="px-6 py-4"> {item.ban}</td>
                     {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
               <td className="px-6 py-4"> <button className="bg-black">
               {item.status}

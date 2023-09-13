@@ -10,6 +10,19 @@ export interface user {
   loading?: boolean;
   accessToken?: string | undefined;
 }
+export interface hub{
+  _id:string,
+  hubName: string;
+  isVerified: boolean;
+  ban: boolean;
+  location: string;
+  place?:string;
+  pincode: string;
+  validityDate: string;
+  license: string;
+  hubImage: string;
+  hubMultiImage: Array<string>;
+}
 export interface Authcheck {
   data: {
     user?: user;

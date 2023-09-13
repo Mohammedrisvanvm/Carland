@@ -1,24 +1,27 @@
 import { useEffect, useState } from "react";
-import { user } from "../../../interfaces/userAuth";
+import { hub, user } from "../../../interfaces/userAuth";
 import {
+  banHub,
   banUser,
   banVendor,
+  getAllHubs,
   getAllUser,
   getAllVendors,
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 
-const VendorManagement = () => {
-  const [vendors, setVendors] = useState<user[]>([]);
+const HubManagement = () => {
+  const [vendors, setVendors] = useState<hub[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getAllVendors();
-        console.log(response.data.vendors);
+        const response: AxiosResponse = await getAllHubs();
+        console.log(response.data.hubs);
 
-        setVendors(response.data.vendors);
+        setVendors(response.data.hubs);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -28,14 +31,16 @@ const VendorManagement = () => {
   }, [loading]);
   console.log(vendors);
   const banHandle = async (value: string | undefined) => {
-    await banVendor(value);
+    console.log(value);
+    
+    await banHub(value);
     setLoading(!loading);
   };
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
-          vendor Details
+          Hub Details
         </span>
         <div className="flex items-center justify-between pb-4">
           <div>
@@ -218,30 +223,29 @@ const VendorManagement = () => {
               <th scope="col" className="px-6 py-3">
                 id
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Vehicle Image
-              </th> */}
+              <th scope="col" className="px-6 py-3">
+                hub Image
+              </th>
               <th scope="col" className="px-6 py-3">
                 Name
               </th>
 
               <th scope="col" className="px-6 py-3">
-                email
+                Location
               </th>
-
+              <th scope="col" className="px-6 py-3">
+                pincode
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Validity Date
+              </th>
+              <th scope="col" className="px-6 py-3">
+                verified
+              </th>
               <th scope="col" className="px-6 py-3">
                 ban
               </th>
 
-              <th scope="col" className="px-6 py-3">
-                verifiedEmail
-              </th>
-              <th scope="col" className="px-6 py-3">
-                verifiedNumber
-              </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Vehicle Validity Date
-              </th> */}
               <th scope="col" className="px-6 py-3">
                 Status
               </th>
@@ -262,25 +266,48 @@ const VendorManagement = () => {
                     >
                       {item._id}
                     </td>
-                    <td className="px-6 py-4"> {item.userName}</td>
-                    <td className="px-6 py-4"> {item.email}</td>
                     <td className="px-6 py-4">
                       {" "}
+                      <img className="cover" src={item.hubImage} alt="" />
+                    </td>
+                    <td className="px-6 py-4"> {item.hubName}</td>
+
+                    <td className="px-6 py-4"> {item.location}</td>
+
+                    <td className="px-6 py-4"> {item.pincode}</td>
+                    <td className="px-6 py-4">
+                      {new Date(item.validityDate).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4">
                       <button
                         onClick={() => banHandle(item._id)}
                         className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
                       >
                         <span
                           className={`${
-                            item.ban ? "text-red-600" : "text-blue-600 "
+                            item.isVerified ? "text-green-600" : "text-red-600 "
+                          }`}
+                        >
+                          {item.isVerified ? "verified" : "not verified"}
+                        </span>
+                      </button>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button
+                        onClick={() => banHandle(item._id)}
+                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
+                      >
+                        <span
+                          className={`${
+                            item.ban ? "text-red-600" : "text-green-600 "
                           }`}
                         >
                           {item.ban ? "banned" : "not banned"}
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
+
                     {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
               <td className="px-6 py-4"> <button className="bg-black">
               {item.status}
@@ -378,4 +405,4 @@ const VendorManagement = () => {
   );
 };
 
-export default VendorManagement;
+export default HubManagement;

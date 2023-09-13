@@ -7,6 +7,7 @@ import { useAppSelector } from "../redux/store/storeHook";
 import AdminDashboardPage from "../components/admin/adminDashboard/adminDashboardPage";
 import AdminUserManagementPage from "../components/admin/adminUserManagement/UserManagementPage";
 import AdminVendorManagementPage from "../components/admin/adminVendorManagement/vendorManagementPage";
+import AdminHubManagementPage from "../components/admin/adminHubManagement/hubManagementPage";
 
 const AdminRouters = () => {
   const { admin } = useAppSelector((state) => state);
@@ -17,6 +18,7 @@ const AdminRouters = () => {
           <Route path="/*" element={ <PrivateRoute role="admin"><AdminDashboardPage/></PrivateRoute>} />
           <Route path="/usermanagement" element={ <PrivateRoute role="admin"><AdminUserManagementPage /></PrivateRoute>} />
           <Route path="/vendormanagement" element={ <PrivateRoute role="admin"><AdminVendorManagementPage /></PrivateRoute>} />
+          <Route path="/hubmanagement" element={ <PrivateRoute role="admin"><AdminHubManagementPage /></PrivateRoute>} />
         </>
       )}
       {admin.email === null && (

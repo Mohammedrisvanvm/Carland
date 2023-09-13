@@ -13,9 +13,15 @@ export const getAllUser=async (): Promise<AxiosResponse<any>>=>{
 export const getAllVendors=async (): Promise<AxiosResponse<any>>=>{
     return axiosBase.get("/admin/vendormanagement/allvendors")
 }
+export const getAllHubs=async (): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get("/admin/hubmanagement/allhubs")
+}
 export const banUser=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/usermanagement/banuser",{value})
 }
 export const banVendor=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/vendormanagement/banvendor",{value})
+}
+export const banHub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
+    return axiosBase.post("/admin/hubmanagement/banhub",{value})
 }
