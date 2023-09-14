@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { hub, user } from "../../../interfaces/userAuth";
 import {
   banHub,
@@ -14,11 +14,12 @@ import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 const HubManagement = () => {
   const [vendors, setVendors] = useState<hub[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getAllHubs();
+        const response: AxiosResponse = await getAllHubs(search);
         console.log(response.data.hubs);
 
         setVendors(response.data.hubs);
@@ -28,11 +29,11 @@ const HubManagement = () => {
     };
 
     fetchData();
-  }, [loading]);
+  }, [loading, search]);
   console.log(vendors);
   const banHandle = async (value: string | undefined) => {
     console.log(value);
-    
+
     await banHub(value);
     setLoading(!loading);
   };
@@ -186,6 +187,9 @@ const HubManagement = () => {
               id="table-search"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for items"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
             />
           </div>
         </div>
@@ -280,10 +284,7 @@ const HubManagement = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      <button
-                        onClick={() => banHandle(item._id)}
-                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
-                      >
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
                             item.isVerified ? "text-green-600" : "text-red-600 "

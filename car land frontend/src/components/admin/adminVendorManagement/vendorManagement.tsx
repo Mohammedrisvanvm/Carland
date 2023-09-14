@@ -9,7 +9,7 @@ import {
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const VendorManagement = () => {
-  const [vendors, setVendors] = useState<user[]>([]);
+  const [vendors, setVendors] = useState<IVendor[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -234,10 +234,10 @@ const VendorManagement = () => {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                verifiedEmail
+                phone Number
               </th>
               <th scope="col" className="px-6 py-3">
-                verifiedNumber
+                hub(count)
               </th>
               {/* <th scope="col" className="px-6 py-3">
                 Vehicle Validity Date
@@ -279,8 +279,9 @@ const VendorManagement = () => {
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
-                    <td className="px-6 py-4"> {item.ban}</td>
+                    <td className="px-6 py-4"> {item.phoneNumber}</td>
+                    <td className="px-6 py-4"> {item.renthubs?.length}</td>
+                 
                     {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
               <td className="px-6 py-4"> <button className="bg-black">
               {item.status}

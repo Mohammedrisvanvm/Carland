@@ -9,7 +9,7 @@ import {
 
 interface InitialUser {
   [x: string]: any;
-  userName: string | null;
+  userName?: string | null;
   email: string | null;
   accessToken: string | null | undefined;
   isLoading: boolean;

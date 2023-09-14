@@ -99,14 +99,3 @@ export const getHubs = AsyncHandler(
   }
 );
 
-export const hubSearch = AsyncHandler(
-  async (req: Request, res: Response): Promise<void> => {
-
-    console.log(req.query);
-    
-    // const hubs: Ihub[] = await hubModel.find({
-    //   hubName: new RegExp(req.query.search, "i"),
-    // });
-    res.json({ hub:'hai' });
-  }
-);
