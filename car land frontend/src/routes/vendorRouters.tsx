@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router";
-import CarList from "../components/vender/list/carList/carList";
 import VendorHomePage from "../components/vender/venderHome/VendorHomePage";
 
 import VenderDashboardPage from "../components/vender/venderDashboard/vendorDashboardpage";
@@ -27,9 +26,7 @@ const VendorRouters = () => {
           <Route path="/vendordashboard" element={<PrivateRoute role="vendor"> <VenderDashboardPage /></PrivateRoute>} />
           <Route path="/vendorcars" element={<PrivateRoute role="vendor"> <CarManagementPage /></PrivateRoute>} />
           <Route path="/vendorcar/addcar" element={<PrivateRoute role="vendor"> <AddCarPage /></PrivateRoute>} />
-          <Route path="/vendordrivers" element={<PrivateRoute role="vendor"> <CarList /></PrivateRoute>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}
-          <Route path="/vendorList" element={<PrivateRoute role="vendor"> <CarList /></PrivateRoute>} />
         {/* </Route> */}
       </Routes>
     </>

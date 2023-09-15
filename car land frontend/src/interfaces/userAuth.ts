@@ -11,6 +11,7 @@ export interface user {
   accessToken?: string | undefined;
 }
 export interface hub{
+ 
   _id:string,
   hubName: string;
   isVerified: boolean;

@@ -3,10 +3,13 @@ import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import { useNavigate } from "react-router";
 import { IHub } from "../../../test/test";
 import { getHub } from "../../../services/apis/vendorApi/vendorApi";
+import { useDispatch } from "react-redux";
+import { addhubId } from "../../../redux/slice/vendorSlice";
 
 const VendorHomePage = () => {
   const [hubs, setHubs] = useState<IHub[]>([]);
   const Navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -21,7 +24,7 @@ const VendorHomePage = () => {
 
     fetchData();
   }, []);
- 
+
   return (
     <div className="bg-gray-200">
       <VendorNavBar />
@@ -61,25 +64,25 @@ const VendorHomePage = () => {
         <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {hubs
             ? hubs.map((item) => (
-              <div
-  onClick={() => {
-    console.log(item.pincode);
-  }}
-  className={`${
-    item.isVerified
-      ? "enabled:hover:border-gray-400"
-      : "opacity-50 pointer-events-none"
-  } flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
-  style={{
-    backgroundImage: `url('${item.hubImage}')`,
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-  }}
->
-  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
-    {item.hubName}
-  </span>
-</div>
-
+                <div
+                  onClick={() => {
+                    dispatch(addhubId(item));
+                    Navigate('/vendor/vendordashboard')
+                  }}
+                  className={`${
+                    item.isVerified
+                      ? "enabled:hover:border-gray-400"
+                      : "opacity-50 pointer-events-none"
+                  } flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
+                  style={{
+                    backgroundImage: `url('${item.hubImage}')`,
+                    backgroundColor: "rgba(255, 255, 255, 0.1)",
+                  }}
+                >
+                  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                    {item.hubName}
+                  </span>
+                </div>
               ))
             : null}
           <div

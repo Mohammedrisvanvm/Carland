@@ -4,22 +4,28 @@ import {
   VendorOtpVerify,
   vendorSignOut,
 } from "../../services/apis/vendorApi/vendorApi";
-import { Authcheck, user } from "../../interfaces/userAuth";
+import { Authcheck, hub, user } from "../../interfaces/userAuth";
 import { toast } from "react-toastify";
+import { IHub } from "../../test/test";
 
 interface InitialVendor {
   userName?: string | null;
   email: string | null;
   accessToken: string | null | undefined;
+  hubId?:string|null
   isLoading: boolean;
 }
 const initialState: InitialVendor = {
   userName: null,
   email: null,
   accessToken: null,
+  hubId:null,
   isLoading: false,
 };
+interface hubId{
+  _id: string  | undefined;
 
+}
 export const vendorLogin: any = createAsyncThunk(
   "vendor/login",
   async (formValue: number) => {
@@ -49,6 +55,12 @@ const vendorSlice = createSlice({
       (state.accessToken = null), (state.email = null);
       (state.isLoading = false), (state.userName = null);
     },
+    addhubId:(state,action:PayloadAction<IHub>)=>{
+      state.hubId=action.payload._id
+    },
+    rmhubId:(state)=>{
+      state.hubId=null
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -91,4 +103,4 @@ const vendorSlice = createSlice({
   },
 });
 export default vendorSlice.reducer;
-export const { vendorLogout } = vendorSlice.actions;
+export const { vendorLogout,addhubId,rmhubId } = vendorSlice.actions;

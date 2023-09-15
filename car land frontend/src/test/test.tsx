@@ -18,7 +18,7 @@ const convertToBase64 = (file: File): Promise<string> => {
   });
 };
 export interface IHub {
-  _id?: string;
+  _id?: string|undefined;
   hubName: string;
   isVerified?: Boolean;
   ban?: Boolean;

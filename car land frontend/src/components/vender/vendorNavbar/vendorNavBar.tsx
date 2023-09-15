@@ -49,8 +49,8 @@ const VendorNavBar = () => {
               </button>
 
               <img
-                src="https://media.istockphoto.com/id/1201498022/vector/machine-car-line-icon-elements-of-wedding-illustration-icons-signs-symbols-can-be-used-for.jpg?s=612x612&w=is&k=20&c=Wmx6mwP9i_p4SPE22k6sakbfkdb7YQymY2Y-0qbOoK4="
-                className="h-8 mr-3"
+                src="/carland-logos_black.png"
+                className="h-14 w-22"
                 alt="FlowBite Logo"
               />
               <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">

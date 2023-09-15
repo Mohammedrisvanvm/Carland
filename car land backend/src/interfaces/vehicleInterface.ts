@@ -18,6 +18,7 @@ interface IVehicle extends Document {
     vehiclesingleimage :string,
     vehiclemultipleimage:Array<string>,
     vehicleValidityDate:string,
+    hubId?:string
 }
 
 export default IVehicle

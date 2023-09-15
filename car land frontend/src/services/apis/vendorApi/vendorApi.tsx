@@ -2,8 +2,8 @@ import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { IHub } from "../../../test/test";
 import { axiosBase } from "../../axios/axiosInstance";
 
-export const CarAdd = async (values: IAddcar): Promise<AxiosResponse<any>> => {
-  return axiosBase.post("/vendors/vehicle/addvehicle", { values });
+export const CarAdd = async (values: IAddcar,id:string|undefined|null): Promise<AxiosResponse<any>> => {
+  return axiosBase.post("/vendors/vehicle/addvehicle", { values,id });
 };
 export const HubAdd = async (values: IHub): Promise<AxiosResponse<any>> => {
   return axiosBase.post("/vendors/hub/addhub", { values });
@@ -11,8 +11,8 @@ export const HubAdd = async (values: IHub): Promise<AxiosResponse<any>> => {
 export const getHub = async (): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/vendors/hub/gethubs");
 };
-export const getVehicle = async (): Promise<AxiosResponse<any>> => {
-  return axiosBase.get("/vendors/vehicle/getvehicles");
+export const getVehicle = async (hubId:string|null|undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/vehicle/getvehicles?hubId=${hubId}`)
 };
 export const VendorAuthSignUp = async (values: {}): Promise<
   AxiosResponse<any>

@@ -32,7 +32,7 @@ const vehicleSchema: Schema = new Schema(
             type: Number,
             required: true,
         },
-        hubName: {
+        hubId: {
             type: String,
             required: true
         },
@@ -50,7 +50,7 @@ const vehicleSchema: Schema = new Schema(
         },
         status: {
             type: Boolean,
-           default:false,
+           default:true,
         },
         singleImage: {
             type: String,

@@ -5,6 +5,7 @@ import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
 import {toast} from 'react-toastify'
 import { CarAdd } from "../../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../../interfaces/axiosinterface";
+import { useAppSelector } from "../../../../redux/store/storeHook";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -19,6 +20,8 @@ const convertToBase64 = (file: File): Promise<string> => {
   });
 };
 const AddCar = () => {
+
+  const hubid=useAppSelector((state)=>state.vendor.hubId)
   const Navigate = useNavigate();
   const initialValues: IAddcar = {
     vehicleName: "",
@@ -49,7 +52,7 @@ const AddCar = () => {
           message:string
         }
       }
-      const res:axios= await CarAdd(values);
+      const res:axios= await CarAdd(values,hubid);
       toast.success(res.data.message)
      Navigate('/vendor/vendorcars')
     } catch (error: any) {

@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getVehicle } from "../../../../services/apis/vendorApi/vendorApi";
-import { Vehicles } from "../../../../interfaces/vehicleInterface";
+import { Vehicles } from "../../../interfaces/vehicleInterface";
+import { getVehicle } from "../../../services/apis/vendorApi/vendorApi";
+import { useAppSelector } from "../../../redux/store/storeHook";
 
 const CarList = () => {
   const [vehicles, setVehicles] = useState<Vehicles[]>([]);
   const Navigate = useNavigate();
-
+const id=useAppSelector((state)=>state.vendor.hubId)
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await getVehicle();
+        const response = await getVehicle(id);
         console.log(response.data.vehicles);
         
         setVehicles(response.data.vehicles);

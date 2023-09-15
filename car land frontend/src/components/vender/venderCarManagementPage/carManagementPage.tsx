@@ -1,7 +1,8 @@
 import React from 'react'
 import VenderNavBar from '../vendorNavbar/vendorNavBar'
 import VendorAside from '../venderASide/vendorAside'
-import CarList from '../list/carList/carList'
+import CarList from './Carlist'
+
 
 const CarManagementPage = () => {
   return (
