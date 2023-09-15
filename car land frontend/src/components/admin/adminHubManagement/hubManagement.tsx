@@ -272,7 +272,7 @@ const HubManagement = () => {
                     </td>
                     <td className="px-6 py-4">
                       {" "}
-                      <img className="cover" src={item.hubImage} alt="" />
+                      <img className="w-16 h-12" src={item.hubImage}  />
                     </td>
                     <td className="px-6 py-4"> {item.hubName}</td>
 
@@ -284,7 +284,8 @@ const HubManagement = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                      
+                      {/* <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
                             item.isVerified ? "text-green-600" : "text-red-600 "
@@ -292,7 +293,10 @@ const HubManagement = () => {
                         >
                           {item.isVerified ? "verified" : "not verified"}
                         </span>
-                      </button>
+                      </button> */}
+                      <button className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"> toggle</button>
+
+                      <div className="fixed inset-0 bg-black">modal</div>
                     </td>
                     <td className="px-6 py-4">
                       <button

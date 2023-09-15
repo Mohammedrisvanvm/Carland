@@ -9,9 +9,13 @@ import VendorSignUp from "../components/vender/venderAuth/vendorSignup/venderSig
 import VenderLogin from "../components/vender/venderAuth/vendorLogin/vendorLogin";
 import PrivateRoute from "../utils/PrivateRoute";
 import AddHub from "../components/vender/vendorHub/AddHub";
+import { useState } from "react";
+import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 
 
 const VendorRouters = () => {
+  const [nav, setNav] = useState(false);
+ 
   return (
     <>
       <Routes>
@@ -19,6 +23,7 @@ const VendorRouters = () => {
         <Route path="/signup" element={<PrivateRoute role="vendor"><VendorSignUp /></PrivateRoute>} />
         <Route path="/otp" element={<PrivateRoute role="vendor"><VendorOtp /></PrivateRoute>} />
         {/* <Route path="/" element={<AdminProtectRoute> <Home /> </AdminProtectRoute>}></Route> */}
+
         {/* <Route element={<PrivateRoute role="vendor" />}> */}
           <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} />
           <Route path="/addhub" element={ <PrivateRoute role="vendor"> <AddHub/> </PrivateRoute>} />

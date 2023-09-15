@@ -249,7 +249,10 @@ const id=useAppSelector((state)=>state.vendor.hubId)
               <td className="w-4 p-4">
                {index+1}
               </td>
-              <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td>
+              <td className="px-6 py-4"> 
+
+              
+              <img src={item.singleImage} className="w-16 h-12"/></td>
               <td
                 scope="row"
                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -261,10 +264,19 @@ const id=useAppSelector((state)=>state.vendor.hubId)
               <td className="px-6 py-4">  {item.colour}</td>
               <td className="px-6 py-4">  {item.fuel}</td>
               <td className="px-6 py-4">  {item.numofseats}</td>
-              <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4"> <button className="bg-black">
-              {item.status}
-                </button></td>
+            
+              <td className="px-6 py-4">  {new Date(item.vehicleValidityDate).toLocaleDateString()}</td>
+              <td className="px-6 py-4">
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                        <span
+                          className={`${
+                            item.status ? "text-green-600" : "text-red-600 "
+                          }`}
+                        >
+                          {item.status ? "active" : "not active"}
+                        </span>
+                      </button>
+                    </td>
              
               <td className="px-6 py-4">
                 <a

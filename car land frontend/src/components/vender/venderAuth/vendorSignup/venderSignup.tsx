@@ -66,10 +66,12 @@ export const VendorSignUp = () => {
       />
       <div className="relative bg-gray-900 h-screen bg-opacity-75">
         <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-          <div className="flex items-center justify-end xl:flex-row">
+        <h1 className="text-xl font-semibold text-white text-center  sm:hidden">vendor signup</h1>
+
+          <div className="flex items-center justify-end xl:flex-row mt-28 sm:mt-0">
             <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
               <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
-                <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
+                <h3 className="mb-4 sm:block hidden text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                   vender signup
                 </h3>
                 <form onSubmit={handleSubmit}>

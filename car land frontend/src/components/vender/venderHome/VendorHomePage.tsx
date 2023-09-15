@@ -26,8 +26,9 @@ const VendorHomePage = () => {
   }, []);
 
   return (
+   
     <div className="bg-gray-200">
-      <VendorNavBar />
+       <VendorNavBar/>
       <div className="relative px-4 h-screen py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <span className="self-center flex justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
           HUBS
