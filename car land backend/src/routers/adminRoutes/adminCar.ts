@@ -11,4 +11,5 @@ adminCar.get("/allcars", getAllCars);
 adminCar.patch("/bancar", banCar);
 
 
+
 export default adminCar

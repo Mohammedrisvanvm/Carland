@@ -2,25 +2,23 @@ import { useEffect, useState, ChangeEvent } from "react";
 import { user } from "../../../interfaces/userAuth";
 import {
   banCar,
-  banUser,
-  banVendor,
   getAllCars,
-  getAllUser,
-  getAllVendors,
+
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { Vehicles } from "../../../interfaces/vehicleInterface";
 
 const CarManagement = () => {
-  const [cars, setCars] = useState<IVendor[] | undefined>([]);
+  const [cars, setCars] = useState<Vehicles[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllCars(search);
-        console.log(response.data?.vendors);
+        console.log(response.data?.vehicles,"vehicles");
 
-        setCars(response.data?.vendors);
+        setCars(response.data?.vehicles);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -268,14 +266,14 @@ const CarManagement = () => {
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {item._id}
+                      {item.vehicleNumber}
                     </td>
-                    <td className="px-6 py-4"> {item.userName}</td>
-                    <td className="px-6 py-4"> {item.email}</td>
+                    <td className="px-6 py-4"> {item.vehicleName}</td>
+                    <td className="px-6 py-4"> {item.colour}</td>
                     <td className="px-6 py-4">
                       {" "}
                       <button
-                        onClick={() => banHandle(item._id)}
+                        onClick={() => banHandle(item.colour)}
                         className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
                       >
                         <span
@@ -287,8 +285,8 @@ const CarManagement = () => {
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.phoneNumber}</td>
-                    <td className="px-6 py-4"> {item.renthubs?.length}</td>
+                    <td className="px-6 py-4"> {item.mileage}</td>
+                    <td className="px-6 py-4"> {item.fuel}</td>
 
                     {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
               <td className="px-6 py-4"> <button className="bg-black">
