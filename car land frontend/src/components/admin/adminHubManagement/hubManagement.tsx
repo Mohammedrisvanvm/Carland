@@ -10,10 +10,12 @@ import {
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { getHub } from "../../../services/apis/vendorApi/vendorApi";
+import HubModal from "./HubModal";
 
 const HubManagement = () => {
   const [vendors, setVendors] = useState<hub[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
   useEffect(() => {
@@ -272,7 +274,7 @@ const HubManagement = () => {
                     </td>
                     <td className="px-6 py-4">
                       {" "}
-                      <img className="w-16 h-12" src={item.hubImage}  />
+                      <img className="w-16 h-12" src={item.hubImage} />
                     </td>
                     <td className="px-6 py-4"> {item.hubName}</td>
 
@@ -284,7 +286,6 @@ const HubManagement = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      
                       {/* <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -294,9 +295,26 @@ const HubManagement = () => {
                           {item.isVerified ? "verified" : "not verified"}
                         </span>
                       </button> */}
-                      <button className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"> toggle</button>
-
-                      <div className="fixed inset-0 bg-black">modal</div>
+                      <button
+                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                        onClick={() => setShowModal(true)}
+                      >
+                        {" "}
+                        toggle
+                      </button>
+                      <div>
+                      <HubModal isVisible={showModal} setVisible={setShowModal}>
+                        <div className="p-6">
+                          <h3 className="text-xl font-semibold mb-5 text-gray-900">
+                            verify
+                          </h3>
+                          <div className="flex flex-col">
+                            <div className="bg-gray-500 h-12 w-10 ">   <img className="w-16 h-12" src={item.hubImage} /></div>
+                            <div className="bg-blue-400 h-12 w-10">   <img className="w-16 h-12" src={item.hubImage} /></div>
+                          </div>
+                        </div>
+                      </HubModal>
+                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <button

@@ -238,6 +238,9 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                 Status
               </th>
               <th scope="col" className="px-6 py-3">
+               verify
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Action
               </th>
             </tr>
@@ -274,6 +277,17 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                           }`}
                         >
                           {item.status ? "active" : "not active"}
+                        </span>
+                      </button>
+                    </td>
+              <td className="px-6 py-4">
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                        <span
+                          className={`${
+                            item.isVerified ? "text-green-600" : "text-red-600 "
+                          }`}
+                        >
+                          {item.isVerified ? "verified" : "not verified"}
                         </span>
                       </button>
                     </td>

@@ -7,7 +7,9 @@ const CarManagementPage = () => {
   return (
     <>
       <VendorNavBar />
-      <VendorAside value={{ Component: <CarList /> }} />
+      <VendorAside  />
+      <div className="sm:ml-64"> <CarList /> </div>
+     
     </>
   );
 };

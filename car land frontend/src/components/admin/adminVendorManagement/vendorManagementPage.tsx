@@ -6,7 +6,10 @@ const AdminVendorManagementPage = () => {
   return (
     <>
       <AdminNavBar />
-      <AdminAside value={{ Component: <VendorManagement /> }} />
+      <div className="flex">
+        <AdminAside />
+        <VendorManagement />
+      </div>
     </>
   );
 };

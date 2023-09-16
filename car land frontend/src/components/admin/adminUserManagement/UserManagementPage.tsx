@@ -6,8 +6,11 @@ const AdminUserManagementPage = () => {
   return (
     <>
       <AdminNavBar />
-      <AdminAside value={{ Component: <UserManagement /> }} />
-    
+      <div className="flex">
+      <AdminAside />
+
+      <UserManagement />
+      </div>
     </>
   );
 };

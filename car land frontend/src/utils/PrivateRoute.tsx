@@ -14,7 +14,6 @@ const PrivateRoute = ({ children, role }: Props): React.ReactNode => {
 
   if (role === "user" && user.accessToken) {
     return user.accessToken ? (
-      
       <Outlet />
     ) : (
       <Navigate

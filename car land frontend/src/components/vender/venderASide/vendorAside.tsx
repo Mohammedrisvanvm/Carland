@@ -2,15 +2,10 @@ import React, { ReactElement, } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { rmhubId } from "../../../redux/slice/vendorSlice";
-interface IPROPS {
-  value: {
-    Component: ReactElement;
-  }
 
-}
-const VendorAside: React.FC<IPROPS> = ({ value }) => {
+const VendorAside = () => {
   const Navigate = useNavigate();
-  const Component = value.Component;
+ 
 const dispatch=useDispatch()
   
   return (
@@ -137,7 +132,7 @@ const dispatch=useDispatch()
           </ul>
         </div>
       </aside>
-      <div className="sm:ml-64">{Component}</div>
+   
     </>
   );
 };

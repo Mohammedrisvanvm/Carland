@@ -5,8 +5,10 @@ const AdminDashboardPage = () => {
   return (
     <>
       <AdminNavBar />
-      <AdminAside value={{ Component: <AdminDashboard /> }} />
-    
+       <div className="flex">
+      <AdminAside />
+      <AdminDashboard />
+      </div>
     </>
   );
 };

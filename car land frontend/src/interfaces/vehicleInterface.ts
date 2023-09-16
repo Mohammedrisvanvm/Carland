@@ -18,4 +18,5 @@ export interface Vehicles{
     singleImage :string,
     subImages:Array<string>,
     vehicleValidityDate:string,
+    isVerified:boolean
 }
