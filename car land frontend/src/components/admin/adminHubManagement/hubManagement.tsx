@@ -1,6 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { hub, user } from "../../../interfaces/userAuth";
 import {
+  Verifyhub,
   banHub,
   banUser,
   banVendor,
@@ -15,7 +16,7 @@ import HubModal from "./HubModal";
 const HubManagement = () => {
   const [hubs, setHubs] = useState<hub[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<hub>(Object);
+  const [modalData, setModalData] = useState<hub|undefined >(Object);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
@@ -34,8 +35,13 @@ const HubManagement = () => {
     fetchData();
   }, [loading, search]);
   console.log(hubs);
-  const banHandle = async (value: string | undefined) => {
-    console.log(value);
+
+  const handleVerify = async (value: string|undefined) => {
+    await Verifyhub(value);
+    setShowModal(false)
+    setLoading(!loading);
+  };
+  const banHandle = async (value: string) => {
 
     await banHub(value);
     setLoading(!loading);
@@ -319,10 +325,9 @@ const HubManagement = () => {
                       <button
                         className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                         onClick={() => {
-                          setModalData(hubs[index])
+                          setModalData(hubs[index]);
 
                           setShowModal(true);
-                         
                         }}
                       >
                         {" "}
@@ -330,11 +335,7 @@ const HubManagement = () => {
                       </button>
                       <div>
                         {showModal ? (
-                          <div
-                            
-                            className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center"
-                          >
-                            
+                          <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
                             <div className="w-3/6 h-4/6 flex flex-col">
                               <button
                                 className="text-white text-xl place-self-end"
@@ -350,26 +351,30 @@ const HubManagement = () => {
                                   <div className="flex flex-row mx-28 justify-between">
                                     <div className="bg-gray-500 h-42 w-56">
                                       {" "}
-                                      <img src={modalData.hubImage} />
+                                      <img src={modalData?.hubImage} />
                                     </div>
                                     <div className="bg-blue-400 h-42 w-56">
                                       {" "}
-                                      <img src={modalData.hubImage} />
+                                      <img src={modalData?.hubImage} />
                                     </div>
                                   </div>
                                   <div className="flex flex-row justify-evenly">
                                     <button
                                       onClick={() => {
-                                        console.log(modalData._id);
+                                        setModalData(undefined);
                                         setShowModal(false);
                                       }}
                                       className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                                     >
                                       cancel
                                     </button>
-                                    <button onClick={()=>console.log(item._id)
-                                    } className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5">
-                                      {modalData.isVerified
+                                    <button
+                                      onClick={() =>
+                                        handleVerify(modalData?._id)
+                                      }
+                                      className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      {modalData?.isVerified
                                         ? "remove verify"
                                         : "verify"}
                                     </button>

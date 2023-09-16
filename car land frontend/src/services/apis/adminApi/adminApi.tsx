@@ -25,3 +25,6 @@ export const banVendor=async (value:string|undefined): Promise<AxiosResponse<any
 export const banHub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/hubmanagement/banhub",{value})
 }
+export const Verifyhub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
+    return axiosBase.patch("/admin/hubmanagement/verifyhub",{value})
+}
