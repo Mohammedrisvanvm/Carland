@@ -16,3 +16,17 @@ export const getAllCars = AsyncHandler(
         res.json({ cars });
       }
     );
+    export const banCar = AsyncHandler(
+        async (req: Request, res: Response): Promise<void> => {
+          const id: string = req.body.value;
+      
+          const car: IVehicle | null = await vehicleModel.findById(id);
+      
+          if (car) {
+            car.ban = !car.ban;
+            await car.save();
+          }
+      
+          res.status(200).json({ message: "success" });
+        }
+      );
