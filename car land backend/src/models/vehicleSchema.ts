@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
-import { string } from "joi";
+import { boolean, string } from "joi";
 
 const vehicleSchema: Schema = new Schema(
   {
@@ -75,6 +75,10 @@ const vehicleSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    ban:{
+        type:Boolean,
+        default:false
+    }
   },
   { timestamps: true }
 );
