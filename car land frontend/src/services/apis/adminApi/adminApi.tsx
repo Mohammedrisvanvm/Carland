@@ -16,15 +16,22 @@ export const getAllVendors=async (): Promise<AxiosResponse<any>>=>{
 export const getAllHubs=async (search:string): Promise<AxiosResponse<any>>=>{
     return axiosBase.get(`/admin/hubmanagement/allhubs?search=${search}`)
 }
+export const getAllCars=async (search:string): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get(`/admin/carmanagement/allcars?search=${search}`)
+}
 export const banUser=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/usermanagement/banuser",{value})
 }
 export const banVendor=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/vendormanagement/banvendor",{value})
 }
+
 export const banHub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/hubmanagement/banhub",{value})
 }
 export const Verifyhub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.patch("/admin/hubmanagement/verifyhub",{value})
+}
+export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
+    return axiosBase.post("/admin/carrmanagement/bancar",{value})
 }

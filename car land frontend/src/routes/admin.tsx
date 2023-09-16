@@ -8,6 +8,7 @@ import AdminDashboardPage from "../components/admin/adminDashboard/adminDashboar
 import AdminUserManagementPage from "../components/admin/adminUserManagement/UserManagementPage";
 import AdminVendorManagementPage from "../components/admin/adminVendorManagement/vendorManagementPage";
 import AdminHubManagementPage from "../components/admin/adminHubManagement/hubManagementPage";
+import AdminCarManagementPage from "../components/admin/adminCarManagement/CarManagementPage";
 
 const AdminRouters = () => {
   const { admin } = useAppSelector((state) => state);
@@ -19,6 +20,7 @@ const AdminRouters = () => {
           <Route path="/usermanagement" element={ <PrivateRoute role="admin"><AdminUserManagementPage /></PrivateRoute>} />
           <Route path="/vendormanagement" element={ <PrivateRoute role="admin"><AdminVendorManagementPage /></PrivateRoute>} />
           <Route path="/hubmanagement" element={ <PrivateRoute role="admin"><AdminHubManagementPage /></PrivateRoute>} />
+          <Route path="/carmanagement" element={ <PrivateRoute role="admin"><AdminCarManagementPage /></PrivateRoute>} />
         </>
       )}
       {admin.email === null && (

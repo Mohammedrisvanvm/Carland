@@ -11,15 +11,15 @@ const VendorHomePage = () => {
   const [hubs, setHubs] = useState<IHub[] | undefined>([]);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
+
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getHub();
         console.log(response.data?.hubs);
-
         setHubs(response.data?.hubs);
       } catch (error) {
-        console.error("Error fetching vehicles:", error);
+        console.log("Error fetching vehicles:", error);
       }
     };
 

@@ -1,13 +1,12 @@
 import React, { ReactElement } from "react";
 import { useNavigate } from "react-router";
 
-const AdminAside: React.FC= () => {
+const AdminAside: React.FC = () => {
   const Navigate = useNavigate();
 
   return (
     <>
-     
-     <aside
+      <aside
         id="logo-sidebar"
         className="hidden sm:block top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
         aria-label="Sidebar"
@@ -16,7 +15,7 @@ const AdminAside: React.FC= () => {
           <ul className="space-y-2 font-medium">
             <li>
               <div
-                 onClick={()=>Navigate('/admin/admindashboard')}
+                onClick={() => Navigate("/admin/admindashboard")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -52,7 +51,7 @@ const AdminAside: React.FC= () => {
             </li>
             <li>
               <div
-              onClick={()=>Navigate('/admin/usermanagement')}
+                onClick={() => Navigate("/admin/usermanagement")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -68,8 +67,8 @@ const AdminAside: React.FC= () => {
               </div>
             </li>
             <li>
-              <a
-                href="#"
+              <div
+                onClick={() => Navigate("/admin/carmanagement")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -83,10 +82,7 @@ const AdminAside: React.FC= () => {
                   <path d="M171.3 96H224v96H111.3l30.4-75.9C146.5 104 158.2 96 171.3 96zM272 192V96h81.2c9.7 0 18.9 4.4 25 12l67.2 84H272zm256.2 1L428.2 68c-18.2-22.8-45.8-36-75-36H171.3c-39.3 0-74.6 23.9-89.1 60.3L40.6 196.4C16.8 205.8 0 228.9 0 256V368c0 17.7 14.3 32 32 32H65.3c7.6 45.4 47.1 80 94.7 80s87.1-34.6 94.7-80H385.3c7.6 45.4 47.1 80 94.7 80s87.1-34.6 94.7-80H608c17.7 0 32-14.3 32-32V320c0-65.2-48.8-119-111.8-127zM434.7 368a48 48 0 1 1 90.5 32 48 48 0 1 1 -90.5-32zM160 336a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
                 </svg>
                 <span className="flex-1 ml-3 whitespace-nowrap">Cars</span>
-                {/* <span className="inline-flex items-center justify-center px-2 ml-3 text-sm font-medium text-gray-800 bg-gray-100 rounded-full dark:bg-gray-700 dark:text-gray-300">
-                  Pro
-                </span> */}
-              </a>
+              </div>
             </li>
             {/* <li>
               <a
@@ -112,8 +108,7 @@ const AdminAside: React.FC= () => {
             </li> */}
             <li>
               <div
-              onClick={()=>Navigate('/admin/vendormanagement')}
-               
+                onClick={() => Navigate("/admin/vendormanagement")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -130,8 +125,8 @@ const AdminAside: React.FC= () => {
               </div>
             </li>
             <li>
-            <div
-              onClick={()=>Navigate('/admin/hubmanagement')}
+              <div
+                onClick={() => Navigate("/admin/hubmanagement")}
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group"
               >
                 <svg
@@ -269,7 +264,6 @@ const AdminAside: React.FC= () => {
           </ul>
         </div>
       </aside>
- 
     </>
   );
 };
