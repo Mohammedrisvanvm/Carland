@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { banVendor } from "../../controllers/adminController/vendorManagement";
 import { banHub, getAllHubs, hubSearch, verifyHub } from "../../controllers/adminController/hubManagement";
 
 const adminHub=Router()

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
-import IVehicle from "src/interfaces/vehicleInterface";
-import vehicleModel from "src/models/vehicleSchema";
+import IVehicle from "../../interfaces/vehicleInterface";
+import vehicleModel from "../../models/vehicleSchema";
 export const getAllCars = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       

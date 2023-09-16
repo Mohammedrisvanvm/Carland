@@ -33,5 +33,5 @@ export const Verifyhub=async (value:string|undefined): Promise<AxiosResponse<any
     return axiosBase.patch("/admin/hubmanagement/verifyhub",{value})
 }
 export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
-    return axiosBase.post("/admin/carrmanagement/bancar",{value})
+    return axiosBase.patch("/admin/carrmanagement/bancar",{value})
 }
