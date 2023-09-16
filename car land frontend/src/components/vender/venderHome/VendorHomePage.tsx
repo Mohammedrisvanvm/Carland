@@ -5,18 +5,19 @@ import { IHub } from "../../../test/test";
 import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 import { useDispatch } from "react-redux";
 import { addhubId } from "../../../redux/slice/vendorSlice";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const VendorHomePage = () => {
-  const [hubs, setHubs] = useState<IHub[]>([]);
+  const [hubs, setHubs] = useState<IHub[] | undefined>([]);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: any = await getHub();
-        console.log(response.data.hubs);
+        const response: AxiosResponse = await getHub();
+        console.log(response.data?.hubs);
 
-        setHubs(response.data.hubs);
+        setHubs(response.data?.hubs);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -26,9 +27,8 @@ const VendorHomePage = () => {
   }, []);
 
   return (
-   
     <div className="bg-gray-200">
-       <VendorNavBar/>
+      <VendorNavBar />
       <div className="relative px-4 h-screen py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
         <span className="self-center flex justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
           HUBS
@@ -64,11 +64,12 @@ const VendorHomePage = () => {
 
         <div className="relative grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {hubs
-            ? hubs.map((item) => (
+            ? hubs.map((item, index) => (
                 <div
+                  key={index}
                   onClick={() => {
                     dispatch(addhubId(item));
-                    Navigate('/vendor/vendordashboard')
+                    Navigate("/vendor/vendordashboard");
                   }}
                   className={`${
                     item.isVerified

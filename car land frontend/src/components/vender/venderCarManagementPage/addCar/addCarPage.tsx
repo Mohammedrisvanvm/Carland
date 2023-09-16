@@ -7,7 +7,9 @@ const AddCarPage = () => {
   return (
     <>
     <VenderNavBar/>
-    <VendorAside value={{Component:<AddCar/>}} />
+    <VendorAside />
+    <div className="sm:ml-64">
+    <AddCar/></div>
     </>
   )
 }

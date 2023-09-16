@@ -14,9 +14,9 @@ import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 import HubModal from "./HubModal";
 
 const HubManagement = () => {
-  const [hubs, setHubs] = useState<hub[]>([]);
+  const [hubs, setHubs] = useState<hub[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [modalData, setModalData] = useState<hub|undefined >(Object);
+  const [modalData, setModalData] = useState<hub | undefined>(Object);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
@@ -24,9 +24,9 @@ const HubManagement = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllHubs(search);
-        console.log(response.data.hubs);
+        console.log(response.data?.hubs);
 
-        setHubs(response.data.hubs);
+        setHubs(response.data?.hubs);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -36,13 +36,12 @@ const HubManagement = () => {
   }, [loading, search]);
   console.log(hubs);
 
-  const handleVerify = async (value: string|undefined) => {
+  const handleVerify = async (value: string | undefined) => {
     await Verifyhub(value);
-    setShowModal(false)
+    setShowModal(false);
     setLoading(!loading);
   };
   const banHandle = async (value: string) => {
-
     await banHub(value);
     setLoading(!loading);
   };
@@ -375,7 +374,7 @@ const HubManagement = () => {
                                       className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                                     >
                                       {modalData?.isVerified
-                                        ? "remove verify"
+                                        ? "remove verification"
                                         : "verify"}
                                     </button>
                                   </div>

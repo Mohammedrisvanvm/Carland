@@ -9,16 +9,16 @@ import {
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const VendorManagement = () => {
-  const [vendors, setVendors] = useState<IVendor[]>([]);
+  const [vendors, setVendors] = useState<IVendor[]|undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllVendors();
-        console.log(response.data.vendors);
+        console.log(response.data?.vendors);
 
-        setVendors(response.data.vendors);
+        setVendors(response.data?.vendors);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }

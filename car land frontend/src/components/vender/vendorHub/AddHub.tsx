@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { HubAdd } from "../../../services/apis/vendorApi/vendorApi";
 import { vendorHubSchema } from "../../../validationSchemas/validationSchema";
 import VendorNavBar from "../vendorNavbar/vendorNavBar";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 
 const convertToBase64 = (file: File): Promise<string> => {
@@ -46,15 +47,11 @@ export interface IHub {
     actions: FormikHelpers<IHub>
   ): Promise<void> => {
     try {
-      interface axios {
-        data: {
-          message: string;
-        };
-      }
+  
 
-      const res: axios = await HubAdd(values);
+      const res: AxiosResponse = await HubAdd(values);
 
-      toast.success(res.data.message);
+      toast.success(res.data?.message);
       Navigate("/vendor");
     } catch (error: any) {
       toast.error(error.response.data.message)

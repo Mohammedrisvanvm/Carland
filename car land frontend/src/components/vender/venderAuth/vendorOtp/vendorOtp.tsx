@@ -31,7 +31,7 @@ export const VendorOtp = () => {
       <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
       <h1 className="text-xl font-semibold text-white text-center block sm:hidden">   OTP VERIFICATION</h1>
 
-        <div className="flex items-center justify-end xl:flex-row mt-36">
+        <div className="flex items-center justify-end xl:flex-row mt-36 sm:mt-0">
           <div className="w-full max-w-xl xl:px-8 xl:w-5/12">
             <div className="bg-white rounded shadow-2xl p-7 sm:p-10">
               <h3 className="mb-4 text-xl font-semibold hidden sm:block sm:text-center sm:mb-6 sm:text-2xl">

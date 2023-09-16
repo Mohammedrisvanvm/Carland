@@ -1,28 +1,49 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
-import { getVehicle } from "../../../services/apis/vendorApi/vendorApi";
+import {
+  getVehicle,
+  vendorSignOut,
+} from "../../../services/apis/vendorApi/vendorApi";
 import { useAppSelector } from "../../../redux/store/storeHook";
+import axios, { AxiosError } from "axios";
+import { vendorLogout } from "../../../redux/slice/vendorSlice";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
 const CarList = () => {
-  const [vehicles, setVehicles] = useState<Vehicles[]>([]);
+  const [vehicles, setVehicles] = useState<Vehicles[]|undefined>([]);
   const Navigate = useNavigate();
-const id=useAppSelector((state)=>state.vendor.hubId)
+  const dispatch = useDispatch();
+  const id = useAppSelector((state) => state.vendor.hubId);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response = await getVehicle(id);
-        console.log(response.data.vehicles);
-        
-        setVehicles(response.data.vehicles);
+        console.log(response.data?.vehicles);
+
+        setVehicles(response.data?.vehicles);
       } catch (error) {
-        console.error("Error fetching vehicles:", error);
+        type Message = {
+          message?: string | unknown;
+        };
+
+        if (axios.isAxiosError(error)) {
+          const err = error as AxiosError;
+          const { message }: any = err.response?.data;
+
+          if (message == "user banned") {
+            toast.error(message);
+            await vendorSignOut();
+            dispatch(vendorLogout());
+          }
+          console.error("Error fetching vehicles:", error);
+        }
       }
     };
 
     fetchData();
   }, []);
-  console.log(vehicles);
 
   return (
     <>
@@ -205,7 +226,7 @@ const id=useAppSelector((state)=>state.vendor.hubId)
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-            <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3">
                 index
               </th>
               <th scope="col" className="px-6 py-3">
@@ -229,7 +250,7 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                 Fuel
               </th>
               <th scope="col" className="px-6 py-3">
-               No.Seats
+                No.Seats
               </th>
               <th scope="col" className="px-6 py-3">
                 Vehicle Validity Date
@@ -238,7 +259,7 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                 Status
               </th>
               <th scope="col" className="px-6 py-3">
-               verify
+                verify
               </th>
               <th scope="col" className="px-6 py-3">
                 Action
@@ -246,30 +267,30 @@ const id=useAppSelector((state)=>state.vendor.hubId)
             </tr>
           </thead>
           <tbody>
-          { vehicles ? vehicles.map((item,index)=>(
-            <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-            
-              <td className="w-4 p-4">
-               {index+1}
-              </td>
-              <td className="px-6 py-4"> 
+            {vehicles
+              ? vehicles.map((item, index) => (
+                  <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td className="w-4 p-4">{index + 1}</td>
+                    <td className="px-6 py-4">
+                      <img src={item.singleImage} className="w-16 h-12" />
+                    </td>
+                    <td
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.vehicleName}
+                    </td>
+                    <td className="px-6 py-4"> {item.vehicleNumber}</td>
+                    <td className="px-6 py-4"> {item.type}</td>
+                    <td className="px-6 py-4"> {item.colour}</td>
+                    <td className="px-6 py-4"> {item.fuel}</td>
+                    <td className="px-6 py-4"> {item.numofseats}</td>
 
-              
-              <img src={item.singleImage} className="w-16 h-12"/></td>
-              <td
-                scope="row"
-                className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-              >
-                {item.vehicleName}
-              </td>
-              <td className="px-6 py-4">  {item.vehicleNumber}</td>
-              <td className="px-6 py-4">  {item.type}</td>
-              <td className="px-6 py-4">  {item.colour}</td>
-              <td className="px-6 py-4">  {item.fuel}</td>
-              <td className="px-6 py-4">  {item.numofseats}</td>
-            
-              <td className="px-6 py-4">  {new Date(item.vehicleValidityDate).toLocaleDateString()}</td>
-              <td className="px-6 py-4">
+                    <td className="px-6 py-4">
+                      {" "}
+                      {new Date(item.vehicleValidityDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4">
                       <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -280,7 +301,7 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                         </span>
                       </button>
                     </td>
-              <td className="px-6 py-4">
+                    <td className="px-6 py-4">
                       <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -291,19 +312,18 @@ const id=useAppSelector((state)=>state.vendor.hubId)
                         </span>
                       </button>
                     </td>
-             
-              <td className="px-6 py-4">
-                <a
-                  href="#"
-                  className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                >
-                  Edit
-                </a>
-              </td>
-            
-            </tr>
-              )):"not one"}
-          
+
+                    <td className="px-6 py-4">
+                      <a
+                        href="#"
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      >
+                        Edit
+                      </a>
+                    </td>
+                  </tr>
+                ))
+              : "not one"}
           </tbody>
         </table>
         <nav

@@ -32,18 +32,31 @@ export const vendorAuthenticate = AsyncHandler(
       throw new Error("Access Denied");
     }
     if (accessTokenvendortoken) {
+      const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenvendor);
+
+      if (verifiedJWT.payload.number) {
+        const vendor: IVendor | null = await VendorModel.findOne(
+          { phoneNumber: verifiedJWT.payload.number,ban:false },
+         
+        );
+
+        if (!vendor) {
+          throw new Error("user banned");
+        } else {
       next();
+        }
+      }
     } else if (!accessTokenvendortoken && refreshTokenvendor) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenvendor);
 
       if (verifiedJWT.payload.number) {
         const vendor: IVendor | null = await VendorModel.findOne(
-          { phoneNumber: verifiedJWT.payload.number },
+          { phoneNumber: verifiedJWT.payload.number,ban:false },
           { password: 0 }
         );
 
         if (!vendor) {
-          throw new Error("user not exist");
+          throw new Error("user not exist or banned");
         } else {
           const access: string = await jwtSign(
             { id: vendor._id, name: vendor.userName, email: vendor.email },

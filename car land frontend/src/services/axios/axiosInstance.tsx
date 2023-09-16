@@ -1,72 +1,44 @@
-import axios, { AxiosInstance } from "axios";
+import axios, {
+  AxiosError,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
+} from "axios";
 // import { userCheck } from "../apis/userApi/userApi";
 // import { Authcheck } from "../../interfaces/userAuth";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/store/storeHook";
 import { userCheck } from "../apis/userApi/userApi";
+import { vendorLogout } from "../../redux/slice/vendorSlice";
 // import { setUser } from "../../redux/Slices/UserSlice/UserSlice";
 
 // const vendor =useAppSelector((state)=>state.vendor)
-// const dispatch =useDispatch()
-export const axiosBase   = axios.create({
+
+export const axiosBase = axios.create({
   baseURL: "http://localhost:3131/",
   timeout: 10000,
   withCredentials: true,
 });
 
-axiosBase.interceptors.request.use(
-  async(config) => {
-    // try {
-    //   let data:Authcheck=await userCheck()
+const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> => {
+  console.info(`[request] [${JSON.stringify(config)}]`);
+  return config;
+};
 
-    //   if (data && data.data && data.data.user) {
-    //     dispatch(setUser(data.data.user));
-    //   } else {
-    //     console.error(
-    //       "User data is undefined or not in the expected format."
-    //     );
-    //   } 
-    // } catch (error) {
-    //   console.log(error);
-      
-    // }
-    // if(!config.token){
+const onRequestError = (error: AxiosError): Promise<AxiosError> => {
+  console.error(`[request error] [${JSON.stringify(error)}]`);
+  return Promise.reject(error);
+};
 
-    //   config.token=vendor.accessToken
-    // }
+const onResponse = (response: AxiosResponse): AxiosResponse => {
+  console.info(`[response] [${JSON.stringify(response)}]`);
+  return response;
+};
 
-      console.info(
-        "Request: \n\n  URL: " + config.url + "\n  Method: " + config.method + "\n  Headers: " + JSON.stringify(
-          config.headers
-        ) + "\n  Data: " + JSON.stringify(config.data)
-      );
-     
-      console.log(config);
-      
-      return config;
-    },
-    (error) => {
-      console.error("Request error: " + error.message);
-      return Promise.reject(error);
-    } 
-  );
+const onResponseError = (error: AxiosError): Promise<AxiosError> => {
+  console.error(`[response error] [${JSON.stringify(error)}]`);
 
-  axiosBase.interceptors.response.use(
-    (response) => {
-      // console.info(
-      //   "Response: \n\n  Status: " + response.status + "\n  Headers: " + JSON.stringify(
-      //     response.headers
-      //   ) + "\n  Data: " + JSON.stringify(response.data)
-        
-      //   );
-      //   console.log(response)
-      return response;
-    },
-    (error) => {
-      console.error("Response error: " + error.message);
-      return Promise.reject(error);
-    }
-  );
+  return Promise.reject(error);
+};
+axiosBase.interceptors.request.use(onRequest, onRequestError);
 
-
-
+axiosBase.interceptors.response.use(onResponse, onResponseError);
