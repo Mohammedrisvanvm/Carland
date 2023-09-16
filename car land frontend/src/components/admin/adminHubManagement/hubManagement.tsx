@@ -13,8 +13,9 @@ import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 import HubModal from "./HubModal";
 
 const HubManagement = () => {
-  const [vendors, setVendors] = useState<hub[]>([]);
+  const [hubs, setHubs] = useState<hub[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [modalData, setModalData] = useState<hub>(Object);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
 
@@ -24,7 +25,7 @@ const HubManagement = () => {
         const response: AxiosResponse = await getAllHubs(search);
         console.log(response.data.hubs);
 
-        setVendors(response.data.hubs);
+        setHubs(response.data.hubs);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -32,7 +33,7 @@ const HubManagement = () => {
 
     fetchData();
   }, [loading, search]);
-  console.log(vendors);
+  console.log(hubs);
   const banHandle = async (value: string | undefined) => {
     console.log(value);
 
@@ -261,8 +262,8 @@ const HubManagement = () => {
             </tr>
           </thead>
           <tbody>
-            {vendors
-              ? vendors.map((item, index) => (
+            {hubs
+              ? hubs.map((item, index) => (
                   <tr
                     key={index}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -318,9 +319,10 @@ const HubManagement = () => {
                       <button
                         className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                         onClick={() => {
-                          console.log(item._id);
+                          setModalData(hubs[index])
 
                           setShowModal(true);
+                         
                         }}
                       >
                         {" "}
@@ -329,9 +331,10 @@ const HubManagement = () => {
                       <div>
                         {showModal ? (
                           <div
-                            key={index}
+                            
                             className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center"
                           >
+                            
                             <div className="w-3/6 h-4/6 flex flex-col">
                               <button
                                 className="text-white text-xl place-self-end"
@@ -347,25 +350,26 @@ const HubManagement = () => {
                                   <div className="flex flex-row mx-28 justify-between">
                                     <div className="bg-gray-500 h-42 w-56">
                                       {" "}
-                                      <img src={item.hubImage} />
+                                      <img src={modalData.hubImage} />
                                     </div>
                                     <div className="bg-blue-400 h-42 w-56">
                                       {" "}
-                                      <img src={item.hubImage} />
+                                      <img src={modalData.hubImage} />
                                     </div>
                                   </div>
                                   <div className="flex flex-row justify-evenly">
                                     <button
                                       onClick={() => {
-                                        console.log(item._id);
+                                        console.log(modalData._id);
                                         setShowModal(false);
                                       }}
                                       className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                                     >
                                       cancel
                                     </button>
-                                    <button className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5">
-                                      {item.isVerified
+                                    <button onClick={()=>console.log(item._id)
+                                    } className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5">
+                                      {modalData.isVerified
                                         ? "remove verify"
                                         : "verify"}
                                     </button>
