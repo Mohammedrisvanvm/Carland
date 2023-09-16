@@ -6,7 +6,7 @@ import hubModel from "../../models/hubSchema";
 export const getAllHubs = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
  
-    console.log(   req.query);
+    console.log(req.query);
     
     type search={
       search?:string

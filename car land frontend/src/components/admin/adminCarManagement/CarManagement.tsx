@@ -26,7 +26,7 @@ const CarManagement = () => {
 
     fetchData();
   }, [loading]);
-  console.log(cars);
+  console.log(search);
   const banHandle = async (value: string | undefined) => {
     await banCar(value);
     setLoading(!loading);
@@ -182,7 +182,7 @@ const CarManagement = () => {
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Cars"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setSearch(e.target.value)
+               setSearch(e.target.value)
               }
             />
           </div>
@@ -221,26 +221,33 @@ const CarManagement = () => {
               <th scope="col" className="px-6 py-3">
                 id
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Vehicle Image
-              </th> */}
+              <th scope="col" className="px-6 py-3">
+                image
+               
+              </th>
               <th scope="col" className="px-6 py-3">
                 Name
               </th>
 
               <th scope="col" className="px-6 py-3">
-                email
+                vehicle Number
               </th>
 
+              <th scope="col" className="px-6 py-3">
+              colour
+              </th>
               <th scope="col" className="px-6 py-3">
                 ban
               </th>
-
               <th scope="col" className="px-6 py-3">
-                phone Number
+              isVerified
               </th>
               <th scope="col" className="px-6 py-3">
-                hub(count)
+                fuel
+              </th>
+
+              <th scope="col" className="px-6 py-3">
+              Vehicle Validity Date
               </th>
               {/* <th scope="col" className="px-6 py-3">
                 Vehicle Validity Date
@@ -261,19 +268,20 @@ const CarManagement = () => {
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     <td className="w-4 p-4">{index + 1}</td>
-                    {/* <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td> */}
+                    <td className="w-4 p-4">{item._id}</td>
+                    <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td>
+                    <td className="px-6 py-4"> {item.vehicleName}</td>
                     <td
                       scope="row"
                       className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {item.vehicleNumber}
                     </td>
-                    <td className="px-6 py-4"> {item.vehicleName}</td>
                     <td className="px-6 py-4"> {item.colour}</td>
                     <td className="px-6 py-4">
                       {" "}
                       <button
-                        onClick={() => banHandle(item.colour)}
+                        onClick={() => banHandle(item._id)}
                         className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
                       >
                         <span
@@ -285,13 +293,25 @@ const CarManagement = () => {
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.mileage}</td>
+                    <td className="px-6 py-4">
+                      {" "}
+                      <button
+                        onClick={() => banHandle(item._id)}
+                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
+                      >
+                        <span
+                          className={`${
+                            item.isVerified ? "text-green-600" : "text-red-600 "
+                          }`}
+                        >
+                          {item.isVerified ? "verified" : "not verified"}
+                        </span>
+                      </button>
+                    </td>
                     <td className="px-6 py-4"> {item.fuel}</td>
+                    <td className="px-6 py-4"> {new Date (item.vehicleValidityDate).toDateString()}</td>
 
-                    {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4"> <button className="bg-black">
-              {item.status}
-                </button></td> */}
+                 
 
                     <td className="px-6 py-4">
                       <a

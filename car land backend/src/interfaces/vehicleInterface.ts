@@ -1,5 +1,6 @@
 interface IVehicle extends Document {
     save(): unknown
+    _id:string
     vehicleName: string,
     vehicleNumber: string,
     serviceType: string,
