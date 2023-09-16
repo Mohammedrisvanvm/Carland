@@ -1,10 +1,6 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { user } from "../../../interfaces/userAuth";
-import {
-  banCar,
-  getAllCars,
-
-} from "../../../services/apis/adminApi/adminApi";
+import { banCar, getAllCars } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 
@@ -16,7 +12,6 @@ const CarManagement = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllCars(search);
-        console.log(response.data?.vehicles,"vehicles");
 
         setCars(response.data?.vehicles);
       } catch (error) {
@@ -25,8 +20,8 @@ const CarManagement = () => {
     };
 
     fetchData();
-  }, [loading]);
-  console.log(search);
+  }, [search, loading]);
+
   const banHandle = async (value: string | undefined) => {
     await banCar(value);
     setLoading(!loading);
@@ -182,7 +177,7 @@ const CarManagement = () => {
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Cars"
               onChange={(e: ChangeEvent<HTMLInputElement>) =>
-               setSearch(e.target.value)
+                setSearch(e.target.value)
               }
             />
           </div>
@@ -223,7 +218,6 @@ const CarManagement = () => {
               </th>
               <th scope="col" className="px-6 py-3">
                 image
-               
               </th>
               <th scope="col" className="px-6 py-3">
                 Name
@@ -234,20 +228,20 @@ const CarManagement = () => {
               </th>
 
               <th scope="col" className="px-6 py-3">
-              colour
+                colour
               </th>
               <th scope="col" className="px-6 py-3">
                 ban
               </th>
               <th scope="col" className="px-6 py-3">
-              isVerified
+                isVerified
               </th>
               <th scope="col" className="px-6 py-3">
                 fuel
               </th>
 
               <th scope="col" className="px-6 py-3">
-              Vehicle Validity Date
+                Vehicle Validity Date
               </th>
               {/* <th scope="col" className="px-6 py-3">
                 Vehicle Validity Date
@@ -269,7 +263,10 @@ const CarManagement = () => {
                   >
                     <td className="w-4 p-4">{index + 1}</td>
                     <td className="w-4 p-4">{item._id}</td>
-                    <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td>
+                    <td className="px-6 py-4">
+                      {" "}
+                      <img src={item.singleImage} alt="" />
+                    </td>
                     <td className="px-6 py-4"> {item.vehicleName}</td>
                     <td
                       scope="row"
@@ -309,9 +306,10 @@ const CarManagement = () => {
                       </button>
                     </td>
                     <td className="px-6 py-4"> {item.fuel}</td>
-                    <td className="px-6 py-4"> {new Date (item.vehicleValidityDate).toDateString()}</td>
-
-                 
+                    <td className="px-6 py-4">
+                      {" "}
+                      {new Date(item.vehicleValidityDate).toDateString()}
+                    </td>
 
                     <td className="px-6 py-4">
                       <a
