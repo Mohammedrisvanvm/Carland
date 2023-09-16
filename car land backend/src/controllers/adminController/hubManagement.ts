@@ -32,6 +32,20 @@ export const banHub = AsyncHandler(
     res.status(200).json({ message: "success" });
   }
 );
+export const verifyHub = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const id: string = req.body.value;
+
+    const hub: Ihub | null = await hubModel.findById(id);
+
+    if (hub) {
+      hub.isVerified = !hub.isVerified;
+      await hub.save();
+    }
+
+    res.status(200).json({ message: "success" });
+  }
+);
 export const hubSearch = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
 
