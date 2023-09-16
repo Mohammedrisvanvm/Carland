@@ -263,7 +263,10 @@ const HubManagement = () => {
           <tbody>
             {vendors
               ? vendors.map((item, index) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                  <tr
+                    key={index}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  >
                     <td className="w-4 p-4">{index + 1}</td>
                     {/* <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td> */}
                     <td
@@ -286,35 +289,15 @@ const HubManagement = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      {/* <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
-                            item.isVerified ? "text-green-600" : "text-red-600 "
+                            item.isVerified ? "text-green-600" : "text-red-600"
                           }`}
                         >
                           {item.isVerified ? "verified" : "not verified"}
                         </span>
-                      </button> */}
-                      <button
-                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                        onClick={() => setShowModal(true)}
-                      >
-                        {" "}
-                        toggle
                       </button>
-                      <div>
-                      <HubModal isVisible={showModal} setVisible={setShowModal}>
-                        <div className="p-6">
-                          <h3 className="text-xl font-semibold mb-5 text-gray-900">
-                            verify
-                          </h3>
-                          <div className="flex flex-col">
-                            <div className="bg-gray-500 h-12 w-10 ">   <img className="w-16 h-12" src={item.hubImage} /></div>
-                            <div className="bg-blue-400 h-12 w-10">   <img className="w-16 h-12" src={item.hubImage} /></div>
-                          </div>
-                        </div>
-                      </HubModal>
-                      </div>
                     </td>
                     <td className="px-6 py-4">
                       <button
@@ -331,18 +314,70 @@ const HubManagement = () => {
                       </button>
                     </td>
 
-                    {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4"> <button className="bg-black">
-              {item.status}
-                </button></td> */}
-
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      <button
+                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                        onClick={() => {
+                          console.log(item._id);
+
+                          setShowModal(true);
+                        }}
                       >
-                        Edit
-                      </a>
+                        {" "}
+                        action
+                      </button>
+                      <div>
+                        {showModal ? (
+                          <div
+                            key={index}
+                            className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center"
+                          >
+                            <div className="w-3/6 h-4/6 flex flex-col">
+                              <button
+                                className="text-white text-xl place-self-end"
+                                onClick={() => setShowModal(false)}
+                              >
+                                x
+                              </button>
+                              <div className="bg-white p-2 rounded">
+                                <div className="p-6">
+                                  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+                                    verify
+                                  </h3>
+                                  <div className="flex flex-row mx-28 justify-between">
+                                    <div className="bg-gray-500 h-42 w-56">
+                                      {" "}
+                                      <img src={item.hubImage} />
+                                    </div>
+                                    <div className="bg-blue-400 h-42 w-56">
+                                      {" "}
+                                      <img src={item.hubImage} />
+                                    </div>
+                                  </div>
+                                  <div className="flex flex-row justify-evenly">
+                                    <button
+                                      onClick={() => {
+                                        console.log(item._id);
+                                        setShowModal(false);
+                                      }}
+                                      className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      cancel
+                                    </button>
+                                    <button className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5">
+                                      {item.isVerified
+                                        ? "remove verify"
+                                        : "verify"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
