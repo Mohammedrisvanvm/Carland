@@ -1,4 +1,5 @@
 interface IVehicle extends Document {
+    save(): unknown
     vehicleName: string,
     vehicleNumber: string,
     serviceType: string,
@@ -19,6 +20,7 @@ interface IVehicle extends Document {
     vehiclemultipleimage:Array<string>,
     vehicleValidityDate:string,
     hubId?:string
+    ban:boolean
 }
 
 export default IVehicle
