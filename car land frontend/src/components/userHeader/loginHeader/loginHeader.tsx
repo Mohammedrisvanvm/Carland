@@ -26,7 +26,7 @@ console.log(user);
 
   return (
     <>
-      <div className="flex items-center ml-auto">
+      <div className="flex items-center ml-auto ">
         <button
           type="button"
           onClick={handleClick}
@@ -83,12 +83,12 @@ console.log(user);
         </div>
         <ul className="py-2" aria-labelledby="user-menu-button">
           <li>
-            <a
-              href="#"
+            <div
+         
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
               Profile
-            </a>
+            </div>
           </li>
           {/* <li>
             <a
@@ -107,12 +107,12 @@ console.log(user);
             </a>
           </li> */}
           <li>
-            <button
+            <div
               onClick={UserLogout}
               className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
             >
               Sign out
-            </button>
+            </div>
           </li>
         </ul>
       </div>

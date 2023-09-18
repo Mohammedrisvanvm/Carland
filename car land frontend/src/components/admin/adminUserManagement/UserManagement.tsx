@@ -7,16 +7,16 @@ import {
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const UserManagement = () => {
-  const [users, setUser] = useState<user[]>([]);
+  const [users, setUser] = useState<user[]|undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllUser();
-        console.log(response.data.users);
+        console.log(response.data?.users);
 
-        setUser(response.data.users);
+        setUser(response.data?.users);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -213,9 +213,7 @@ const UserManagement = () => {
               <th scope="col" className="px-6 py-3">
                 index
               </th>
-              <th scope="col" className="px-6 py-3">
-                id
-              </th>
+             
               {/* <th scope="col" className="px-6 py-3">
                 Vehicle Image
               </th> */}
@@ -253,13 +251,7 @@ const UserManagement = () => {
               ? users.map((item, index) => (
                   <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td className="w-4 p-4">{index + 1}</td>
-                    {/* <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td> */}
-                    <td
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {item._id}
-                    </td>
+                  
                     <td className="px-6 py-4"> {item.userName}</td>
                     <td className="px-6 py-4"> {item.email}</td>
                     <td className="px-6 py-4">

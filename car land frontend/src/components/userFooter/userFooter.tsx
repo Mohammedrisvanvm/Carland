@@ -12,32 +12,13 @@ export const UserFooter = () => {
               title="Company"
               className="inline-flex items-center"
             >
-              <svg
-                className="w-8 text-deep-purple-accent-400"
-                viewBox="0 0 24 24"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeMiterlimit="10"
-                stroke="currentColor"
-                fill="none"
-              >
-                <rect x="3" y="1" width="7" height="12" />
-                <rect x="3" y="17" width="7" height="6" />
-                <rect x="14" y="1" width="7" height="6" />
-                <rect x="14" y="11" width="7" height="12" />
-              </svg>
+           <img src="/carland-logos_black.png" alt=""className="h-20 w-auto contain"/>
               <span className="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">
                 Car Land
               </span>
             </a>
             <div className="mt-6 lg:max-w-sm">
-              <p className="text-sm text-gray-800">
-                At Car Land, we are committed to providing exceptional car
-                rental and cab services to our customers. With a diverse fleet
-                of vehicles and a team of experienced drivers, we aim to make
-                your travel experience comfortable and convenient.
-              </p>
+            
               <p className="mt-4 text-sm text-gray-800">
                 Whether you need a car for a leisurely road trip or a reliable
                 cab for your daily commute, we've got you covered. Our mission

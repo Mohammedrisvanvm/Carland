@@ -23,5 +23,5 @@ export const userSignOut=():Promise<AxiosResponse>=>{
 return axiosBase.get("/users/auth/userLogout")
 }
 export const userGetVehicle = async(): Promise<AxiosResponse<any>> => {
-  return axiosBase.get("/vendors/vehicle/getvehicles")
+  return axiosBase.get("/users/vehicle/getvehicles")
 };

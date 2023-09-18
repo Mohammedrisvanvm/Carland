@@ -162,7 +162,7 @@ export const MainHeader = (): ReactElement => {
                 <nav>
                   <ul className="space-y-4 text-white">
                     <li>
-                      <LoginHeader />
+                      <LoginHeader  />
                     </li>
                     <li>
                       <a

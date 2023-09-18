@@ -1,12 +1,13 @@
 import { AxiosRequestConfig } from "axios";
 import { Vehicles } from "./vehicleInterface";
-import { hub } from "./userAuth";
+import { hub, user } from "./userAuth";
 export interface AxiosResponse<T = any> {
   data?: {
     hubs?: hub[];
     message?: string;
     vehicles?: Vehicles[];
     vendors?:IVendor[]
+    users?:user[]
   };
   status: number;
   statusText: string;
