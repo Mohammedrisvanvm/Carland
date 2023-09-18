@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import userModel from "../../../models/userSchema";
 import AsyncHandler from "express-async-handler";
+import userModel from "../../../models/userSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
