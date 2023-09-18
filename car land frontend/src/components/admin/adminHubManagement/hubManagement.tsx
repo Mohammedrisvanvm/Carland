@@ -232,9 +232,7 @@ const HubManagement = () => {
               <th scope="col" className="px-6 py-3">
                 index
               </th>
-              <th scope="col" className="px-6 py-3">
-                id
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 hub Image
               </th>
@@ -275,12 +273,7 @@ const HubManagement = () => {
                   >
                     <td className="w-4 p-4">{index + 1}</td>
                     {/* <td className="px-6 py-4"> <img src={item.singleImage} alt=""/></td> */}
-                    <td
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {item._id}
-                    </td>
+
                     <td className="px-6 py-4">
                       {" "}
                       <img className="w-16 h-12" src={item.hubImage} />
@@ -343,20 +336,42 @@ const HubManagement = () => {
                                 x
                               </button>
                               <div className="bg-white p-2 rounded">
-                                <div className="p-6">
-                                  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
-                                    verification
-                                  </h3>
-                                  <div className="flex flex-row mx-28 justify-between">
-                                    <div className="bg-gray-500 h-42 w-56">
-                                      {" "}
-                                      <img src={modalData?.hubImage} />
-                                    </div>
-                                    <div className="bg-blue-400 h-42 w-56">
-                                      {" "}
-                                      <img src={modalData?.license} />
-                                    </div>
-                                  </div>
+                              {/* <div className="p-6">
+  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+    verification
+  </h3>
+  <div className="flex flex-row mx-28 flex-wrap justify-between items-center">
+    <div className="flex flex-col">
+      <span className="font-medium">hub image</span>
+      <div className="bg-gray-500 h-42 w-56">
+        <img src={modalData?.hubImage} alt="Hub Image" />
+      </div>
+    </div>
+    <div className="flex flex-col">
+      <span className="font-medium">license</span>
+      <div className="bg-blue-400 h-42 w-56">
+        <img src={modalData?.license} alt="License" />
+      </div>
+    </div>
+  </div> */}<div className="p-6">
+  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+    verification
+  </h3>
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto sm:mx-28">
+    <div className="bg-gray-500 h-42 w-56">
+      <img src={modalData?.hubImage} alt="Hub Image" />
+    </div>
+    <div className="bg-blue-400 h-42 w-56">
+      <img src={modalData?.license} alt="License" />
+    </div>
+    <div className="text-center font-semibold">hub image</div>
+    <div className="text-center font-semibold">license</div>
+  </div>
+
+
+
+
+
                                   <div className="flex flex-row justify-evenly">
                                     <button
                                       onClick={() => {
