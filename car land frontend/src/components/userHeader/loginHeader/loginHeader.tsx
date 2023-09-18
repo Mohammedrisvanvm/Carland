@@ -9,12 +9,13 @@ import { useAppSelector } from "../../../redux/store/storeHook";
 export const LoginHeader = () => {
   const dispatch =useDispatch()
   const Navigate = useNavigate();
-  const User = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.user);
   const [isToggled, setIsToggled] = useState(false);
 
   const handleClick = () => {
     setIsToggled(!isToggled);
   };
+console.log(user);
 
   const UserLogout = async () => {
     await userSignOut();
@@ -29,16 +30,15 @@ export const LoginHeader = () => {
         <button
           type="button"
           onClick={handleClick}
-          className="flex items-center mr-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+          className="flex items-center text-sm rounded-full  hover:focus:ring-4 focus:ring-gray-300"
           id="user-menu-button"
           aria-expanded="false"
           data-dropdown-toggle="user-dropdown"
           data-dropdown-placement="bottom"
         >
-          {/* <span className="sr-only">Open user menu</span> */}
           <img
             className="w-8 h-8 rounded-full"
-            src={User?.user?.image}
+            src="https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg?size=626&ext=jpg"
             alt=""
           />
         </button>
@@ -50,7 +50,6 @@ export const LoginHeader = () => {
           aria-controls="navbar-user"
           aria-expanded="false"
         >
-          {/* <span className="sr-only">Open main menu</span> */}
           <svg
             className="w-5 h-5"
             aria-hidden="true"
@@ -76,10 +75,10 @@ export const LoginHeader = () => {
       >
         <div className="px-4 py-3">
           <span className="block text-sm text-gray-900 dark:text-white">
-            {User?.user?.userName}
+            {user?.userName}
           </span>
           <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-          {User?.user?.email}
+          {user?.email}
           </span>
         </div>
         <ul className="py-2" aria-labelledby="user-menu-button">

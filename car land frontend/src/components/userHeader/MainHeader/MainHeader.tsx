@@ -8,7 +8,7 @@ export const MainHeader = (): ReactElement => {
   const Navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const User = useAppSelector((state) =>state.user);
+  const user = useAppSelector((state) =>state.user);
 
 
 
@@ -40,52 +40,37 @@ export const MainHeader = (): ReactElement => {
           title="Company"
           className="inline-flex items-center"
         >
-          <svg
-            className="w-8 text-deep-purple-accent-400"
-            viewBox="0 0 24 24"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeMiterlimit="10"
-            stroke="currentColor"
-            fill="none"
-          >
-            <rect x="3" y="1" width="7" height="12" />
-            <rect x="3" y="17" width="7" height="6" />
-            <rect x="14" y="1" width="7" height="6" />
-            <rect x="14" y="11" width="7" height="12" />
-          </svg>
+         <img src="/carland-logos_black.png" alt=""className="h-20 w-auto contain"/>
           <span className="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">
             Car Land
           </span>
         </a>
-        <ul className="flex items-center hidden space-x-8 lg:flex">
+        <ul className=" items-center hidden space-x-8 lg:flex">
           <li>
-            <a
-              href="/"
+            <button
+              onClick={()=>Navigate('/')}
               aria-label="Our product"
-              title="Our product"
+              title="home"
               className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
             >
               Home
-            </a>
+            </button>
           </li>
 
           <li>
-            <a
-              href="/"
+            <button
               aria-label="About us"
               title="About us"
               className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
             >
               About us
-            </a>
+            </button>
           </li>
 
-          {User?.email ? (
+          {user?.email ? (
         
             <li className="font-medium tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400 flex">
-              {User.userName}{" "}
+             
               <span className="ml-1">
                 <LoginHeader />
               </span>
@@ -153,7 +138,7 @@ export const MainHeader = (): ReactElement => {
                         <rect x="14" y="1" width="7" height="6" />
                         <rect x="14" y="11" width="7" height="12" />
                       </svg>
-                      <span className="ml-2 text-xl text-white font-bold tracking-wide text-gray-800 uppercase">
+                      <span className="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">
                         Company
                       </span>
                     </a>
@@ -195,7 +180,7 @@ export const MainHeader = (): ReactElement => {
                         title="Our product"
                         className="font-medium tracking-wide  transition-colors duration-200 hover:text-deep-purple-accent-400"
                       >
-                        {User?.user?.userName}
+                        {user?.userName}
                        
                       </button>
                     </li>
