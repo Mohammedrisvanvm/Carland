@@ -66,7 +66,7 @@ export const Content = () => {
             </button>
           </div>
 
-          <h2 className="max-w-lg  m-16 font-sans inline-block font-bold leading-none text-center tracking-tight text-gray-900 text-sm sm:text-4xl md:mx-auto">
+          <h2 className="max-w-lg m-12 -mb-8 sm:m-16 font-sans inline-block font-bold leading-none text-center tracking-tight text-gray-900 text-sm sm:text-4xl md:mx-auto">
             <span className="relative inline-block">
               <span className="relative">The</span>
             </span>{" "}
