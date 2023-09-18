@@ -26,6 +26,7 @@ export const banCar = AsyncHandler(
 
     if (car) {
       car.ban = !car.ban;
+      car.status = !car.status;
       await car.save();
     }
 

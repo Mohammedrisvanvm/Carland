@@ -11,8 +11,8 @@ export const HubAdd = async (values: IHub): Promise<AxiosResponse<any>> => {
 export const getHub = async (): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/vendors/hub/gethubs");
 };
-export const getVehicle = async (hubId:string|null|undefined): Promise<AxiosResponse<any>> => {
-  return axiosBase.get(`/vendors/vehicle/getvehicles?hubId=${hubId}`)
+export const getVehicle = async (hubId:string|null|undefined,search:string): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/vehicle/getvehicles?hubId=${hubId}&search=${search}`)
 };
 export const VendorAuthSignUp = async (values: {}): Promise<
   AxiosResponse<any>

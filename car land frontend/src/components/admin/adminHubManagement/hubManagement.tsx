@@ -345,7 +345,7 @@ const HubManagement = () => {
                               <div className="bg-white p-2 rounded">
                                 <div className="p-6">
                                   <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
-                                    verify
+                                    verification
                                   </h3>
                                   <div className="flex flex-row mx-28 justify-between">
                                     <div className="bg-gray-500 h-42 w-56">
@@ -354,7 +354,7 @@ const HubManagement = () => {
                                     </div>
                                     <div className="bg-blue-400 h-42 w-56">
                                       {" "}
-                                      <img src={modalData?.hubImage} />
+                                      <img src={modalData?.license} />
                                     </div>
                                   </div>
                                   <div className="flex flex-row justify-evenly">

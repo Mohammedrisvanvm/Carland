@@ -81,12 +81,20 @@ export const addVehicleController = AsyncHandler(
 
 export const getVehiclesController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    type hubId={
-      hubId?:string
+    type hubId = {
+      hubId?: string;
+      search?: string;
+    };
+    const { hubId, search }: hubId = req.query;
+    console.log(hubId, search, 11);
+    if (search == "") {
+      var vehicles: IVehicle[] = await vehicleModel.find({ hubId: hubId });
+    } else {
+      var vehicles: IVehicle[] = await vehicleModel.find({
+        vehicleName: new RegExp(search, "i"),
+      });
     }
-    const {hubId}:hubId=req.query
-    console.log(hubId,1111);
-    const vehicles: IVehicle[] = await vehicleModel.find({hubId:hubId});
+    console.log(vehicles, 11);
 
     res.status(200).json({ vehicles });
   }

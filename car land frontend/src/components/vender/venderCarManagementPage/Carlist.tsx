@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 import {
@@ -16,10 +16,11 @@ const CarList = () => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const id = useAppSelector((state) => state.vendor.hubId);
+  const [search ,setSearch]=useState<string>('')
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await getVehicle(id);
+        const response = await getVehicle(id,search);
         console.log(response.data?.vehicles);
 
         setVehicles(response.data?.vehicles);
@@ -43,7 +44,7 @@ const CarList = () => {
     };
 
     fetchData();
-  }, []);
+  }, [search]);
 
   return (
     <>
@@ -195,6 +196,7 @@ const CarList = () => {
               id="table-search"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search for items"
+              onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)}
             />
           </div>
         </div>
@@ -262,7 +264,7 @@ const CarList = () => {
                 verify
               </th>
               <th scope="col" className="px-6 py-3">
-                Action
+                ban
               </th>
             </tr>
           </thead>
@@ -314,12 +316,15 @@ const CarList = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </a>
+                    <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                        <span
+                          className={`${
+                            item.ban ? "text-red-600" : "text-blue-600 "
+                          }`}
+                        >
+                          {item.ban ? "banned" : "not banned"}
+                        </span>
+                      </button>
                     </td>
                   </tr>
                 ))

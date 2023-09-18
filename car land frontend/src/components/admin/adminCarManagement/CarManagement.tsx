@@ -26,6 +26,8 @@ const CarManagement = () => {
     await banCar(value);
     setLoading(!loading);
   };
+  console.log(search);
+  
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">
@@ -247,7 +249,7 @@ const CarManagement = () => {
                 Vehicle Validity Date
               </th> */}
               <th scope="col" className="px-6 py-3">
-                Status
+                edit
               </th>
               {/* <th scope="col" className="px-6 py-3">
                 Action
