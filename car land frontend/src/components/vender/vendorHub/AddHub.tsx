@@ -186,7 +186,7 @@ const AddHub: FC = () => {
                     place
                   </label>
                 </div>
-                <MapboxComponent/>
+                {/* <MapboxComponent/> */}
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"

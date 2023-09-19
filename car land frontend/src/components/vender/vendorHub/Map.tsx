@@ -13,7 +13,12 @@ const MapboxComponent=()=> {
       zoom: 8, 
     });
 
-
+const Marker=new mapboxgl.Marker()
+Marker.setLngLat([76.2711, 10.8505]).addTo(map)
+map.on('click', (e) => {
+    const { lng, lat } = e.lngLat;
+    alert(`Latitude: ${lat}, Longitude: ${lng}`);
+  });
     return () => map.remove();
   }, []);
 
