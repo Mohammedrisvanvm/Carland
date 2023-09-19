@@ -113,7 +113,7 @@ export const Content = () => {
                           </span>
                         </p>
                         <button className="text-gray-800 bg-stone-200 hover:bg-black hover:text-white focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center ">
-                          book
+                          view
                         </button>
                       </div>
                     </div>
