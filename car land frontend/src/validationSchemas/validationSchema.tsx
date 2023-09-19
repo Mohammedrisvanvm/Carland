@@ -156,12 +156,7 @@ export const vendorHubSchema = yup.object().shape({
     .min(3)
     .matches(/^[a-zA-Z0-9\s]+$/, "Enter a Name")
     .required(),
-  place: yup
-    .string()
-    .trim()
-    .min(3)
-    .matches(/^[a-zA-Z0-9\s]+$/, "Enter a place")
-    .required(),
+
   pincode: yup
     .string()
     .trim()

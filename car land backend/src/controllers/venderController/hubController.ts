@@ -6,7 +6,7 @@ import cloudinary from "../../config/cloudinary";
 import { verifyJwt } from "../../utils/jwtUtils/jwtutils";
 
 import VenderModel from "../../models/vendorSchema";
-import IVendor from "src/interfaces/vendorInterface";
+import IVendor from "../../interfaces/vendorInterface";
 
 export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {

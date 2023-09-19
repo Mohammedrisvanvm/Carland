@@ -22,7 +22,7 @@ export interface IHub {
   hubName: string;
   isVerified?: Boolean;
   ban?: Boolean;
-  place?: string;
+  place?: object;
   pincode: string;
   validityDate:string;
   license: string;

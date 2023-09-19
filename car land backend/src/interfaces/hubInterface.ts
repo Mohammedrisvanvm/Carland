@@ -5,7 +5,7 @@ interface Ihub extends Document {
   isVerified: Boolean;
   ban: Boolean;
   location: Location;
-  place?:string;
+  place?:object;
   pincode: Number;
   validityDate: Date;
   license: string;

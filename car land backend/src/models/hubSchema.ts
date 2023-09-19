@@ -16,7 +16,7 @@ const hubSchema: Schema = new Schema(
       default: false,
     },
     location: {
-      type: String,
+      type: Object,
       required: true,
     },
     pincode: {
