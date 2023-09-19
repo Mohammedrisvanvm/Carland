@@ -1,12 +1,13 @@
 import { FormikConfig, FormikHelpers, useFormik } from "formik";
-import { ChangeEvent } from "react";
+import { ChangeEvent, FC, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { HubAdd } from "../../../services/apis/vendorApi/vendorApi";
 import { vendorHubSchema } from "../../../validationSchemas/validationSchema";
 import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-
+import Map from "./Map";
+import MapboxComponent from "./Map";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -29,7 +30,7 @@ export interface IHub {
   validityDate: string;
   license: string;
 }
- const AddHub = () => {
+const AddHub: FC = () => {
   const Navigate = useNavigate();
 
   const initialValues: IHub = {
@@ -47,14 +48,12 @@ export interface IHub {
     actions: FormikHelpers<IHub>
   ): Promise<void> => {
     try {
-  
-
       const res: AxiosResponse = await HubAdd(values);
 
       toast.success(res.data?.message);
       Navigate("/vendor");
     } catch (error: any) {
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
       console.log(error);
     }
   };
@@ -125,14 +124,16 @@ export interface IHub {
   return (
     <>
       {" "}
-     
-      <VendorNavBar/>
+      <VendorNavBar />
       <div className="flex justify-center overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8 ">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
           Add Hub
         </span>
       </div>
+      <div className="h-3 w-3 bg-blue-500">
+        {" "}
       
+      </div>
       <div className="flex justify-center">
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8 ">
@@ -185,6 +186,7 @@ export interface IHub {
                     place
                   </label>
                 </div>
+                <MapboxComponent/>
                 <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
@@ -296,9 +298,8 @@ export interface IHub {
           </div>
         </div>
       </div>
-    
     </>
   );
 };
 
-export default AddHub
+export default AddHub;
