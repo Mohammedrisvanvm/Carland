@@ -16,8 +16,10 @@ export interface hub{
   hubName: string;
   isVerified: boolean;
   ban: boolean;
-  location: string;
-  place?:string;
+  location: {
+    lat:number,lng:number
+  }|undefined;
+  placeName?:string;
   pincode: string;
   validityDate: string;
   license: string;

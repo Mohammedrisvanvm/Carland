@@ -106,7 +106,7 @@ export const vendorOtpverify = AsyncHandler(
             email: vendorExist?.email,
             number: vendorExist?.phoneNumber,
           },
-          "15min"
+          "1d"
         );
         const refreshToken = jwtSign(
           { number: vendorExist?.phoneNumber },
@@ -114,7 +114,7 @@ export const vendorOtpverify = AsyncHandler(
         );
 
         res.status(200).cookie("accessTokenvendor", accessToken, {
-          maxAge: (15 * 60 * 1000),
+          maxAge: (24*60*60),
           httpOnly: true,
         });
 

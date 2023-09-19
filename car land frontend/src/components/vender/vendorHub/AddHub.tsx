@@ -33,7 +33,7 @@ export interface IHub {
 const AddHub: FC = () => {
   const Navigate = useNavigate();
   const [showMap, setShowMap] = useState<boolean>(false);
-  const [location, setLocation] = useState<object>({});
+  const [location, setLocation] = useState<object|null>(null);
   const initialValues: IHub = {
     hubName: "",
     place: {},
@@ -49,11 +49,18 @@ const AddHub: FC = () => {
     actions: FormikHelpers<IHub>
   ): Promise<void> => {
     try {
-      values.place = location;
-      const res: AxiosResponse = await HubAdd(values);
+      console.log(location);
+       
+      if(location){
 
-      toast.success(res.data?.message);
-      Navigate("/vendor");
+        values.place = location;
+        const res: AxiosResponse = await HubAdd(values);
+  
+        toast.success(res.data?.message);
+        Navigate("/vendor");
+      }else{
+        toast.error('add location');
+      }
     } catch (error: any) {
       toast.error(error.response.data.message);
       console.log(error);
@@ -158,7 +165,6 @@ const AddHub: FC = () => {
                   hub Name
                 </label>
               </div>
-              <img src={values.hubImage ? values.hubImage : ""} alt="" />
 
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">

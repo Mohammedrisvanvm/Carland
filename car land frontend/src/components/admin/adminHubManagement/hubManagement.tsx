@@ -12,13 +12,28 @@ import {
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 import HubModal from "./HubModal";
-
+import mapboxgl from "mapbox-gl";
+interface Results extends GeoJSON.FeatureCollection<GeoJSON.Point> {
+  attribution: string;
+  query: string[];
+}
+interface Result extends GeoJSON.Feature<GeoJSON.Point> {
+  bbox: [number, number, number, number];
+  center: number[];
+  place_name: string;
+  place_type: string[];
+  relevance: number;
+  text: string;
+  address: string;
+  context: any[];
+}
 const HubManagement = () => {
   const [hubs, setHubs] = useState<hub[] | undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [modalData, setModalData] = useState<hub | undefined>(Object);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+  const [placeName, setPlaceName] = useState<string>("");
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -26,7 +41,20 @@ const HubManagement = () => {
         const response: AxiosResponse = await getAllHubs(search);
         console.log(response.data?.hubs);
 
-        setHubs(response.data?.hubs);
+        // Use Promise.all to fetch place names for all items
+        const hubsWithPlaceNames: hub[] = await Promise.all(
+          (response.data?.hubs || []).map(async (item) => {
+            if (item.location) {
+              // item.placeName = await fetchPlaceName(
+              //   item.location.lat,
+              //   item.location.lng
+              // );
+            }
+            return item;
+          })
+        );
+
+        setHubs(hubsWithPlaceNames);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -34,7 +62,28 @@ const HubManagement = () => {
 
     fetchData();
   }, [loading, search]);
-  console.log(hubs);
+
+  const fetchPlaceName = async (latitude: number, longitude: number) => {
+    const YOUR_MAPBOX_ACCESS_TOKEN =
+      "pk.eyJ1IjoicmlzdmFuIiwiYSI6ImNsbXB3d2E5czBibXUydG4yeW9lMHViNTkifQ.h-bVA-Aily8lv53fswbr7w";
+    const response = await fetch(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?access_token=${YOUR_MAPBOX_ACCESS_TOKEN}`
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    const data = await response.json();
+
+    if (data.features.length > 0) {
+      const topResult: string = data.features[0].place_name;
+
+      return topResult;
+    } else {
+      return "Location not found";
+    }
+  };
 
   const handleVerify = async (value: string | undefined) => {
     await Verifyhub(value);
@@ -45,6 +94,10 @@ const HubManagement = () => {
     await banHub(value);
     setLoading(!loading);
   };
+  if (hubs) {
+    console.log(hubs[0]?.placeName);
+  }
+
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">
@@ -280,7 +333,7 @@ const HubManagement = () => {
                     </td>
                     <td className="px-6 py-4"> {item.hubName}</td>
 
-                    <td className="px-6 py-4"> {item.location}</td>
+                    <td className="px-6 py-4"> {item.placeName}</td>
 
                     <td className="px-6 py-4"> {item.pincode}</td>
                     <td className="px-6 py-4">

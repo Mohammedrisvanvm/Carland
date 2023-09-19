@@ -60,12 +60,12 @@ export const vendorAuthenticate = AsyncHandler(
         } else {
           const access: string = await jwtSign(
             { id: vendor._id, name: vendor.userName, email: vendor.email },
-            "15min"
+            "1d"
           );
 
           res.cookie("accessTokenvendor", access, {
             httpOnly: true,
-            maxAge: (15 * 60 * 1000),
+            maxAge: (24 * 60 * 60),
           });
           res.cookie("refreshTokenvendor", refreshTokenvendor, {
             maxAge: (7 * 24 * 60 * 60),
