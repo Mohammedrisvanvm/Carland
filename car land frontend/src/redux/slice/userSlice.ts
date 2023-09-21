@@ -26,14 +26,12 @@ export const userGoogleThunk: any = createAsyncThunk(
   "user/googleauth",
   async (formValue: Object) => {
     try {
-      const {data}: Authcheck  = await userGoogleAuth(formValue);
-      
-    if (data?.user) {
-      console.log(data.accessToken);
-      
-      data.user.accessToken = data.accessToken;
-    }
-      
+      const { data }: Authcheck = await userGoogleAuth(formValue);
+
+      if (data?.user) {
+        data.user.accessToken = data.accessToken;
+      }
+
       return data?.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
@@ -44,12 +42,10 @@ export const userLoginThunk: any = createAsyncThunk(
   "user/login",
   async (formValue: number) => {
     const { data }: Authcheck = await userOtpVerify(formValue);
-   
-   
-    
+
     if (data?.user) {
       console.log(data.accessToken);
-      
+
       data.user.accessToken = data.accessToken;
     }
 
