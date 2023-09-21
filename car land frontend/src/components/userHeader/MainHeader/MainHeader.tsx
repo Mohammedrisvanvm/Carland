@@ -22,7 +22,7 @@ export const MainHeader = (): ReactElement => {
 
   return (
     <>
-      <nav className="w-full flex  justify-between items-center navbar ">
+      <nav className="w-full flex justify-between items-center navbar ">
         <img
           src="/carland-logos_black.png"
           alt=""
