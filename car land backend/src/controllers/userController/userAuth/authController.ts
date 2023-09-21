@@ -96,7 +96,7 @@ export const userOtpverify = AsyncHandler(
               maxAge: 7 * 24 * 60 * 60,
               httpOnly: true,
             })
-            .json({ user: userExist });
+            .json({ user: userExist,accessToken });
         }
       }
     } catch (error: any) {
@@ -213,6 +213,7 @@ export const userGoogleAuth = AsyncHandler(
               })
               .json({
                 user: newUser,
+                accessToken,
                 message: `welcome back ${newUser?.userName} `,
               });
           } else {
@@ -239,7 +240,7 @@ export const userGoogleAuth = AsyncHandler(
                 maxAge: 7 * 24 * 60 * 60,
                 httpOnly: true,
               })
-              .json({ user, message: "created" });
+              .json({ user,accessToken, message: "created" });
           }
         });
     }

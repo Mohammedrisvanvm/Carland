@@ -26,8 +26,15 @@ export const userGoogleThunk: any = createAsyncThunk(
   "user/googleauth",
   async (formValue: Object) => {
     try {
-      const response: Authcheck | null = await userGoogleAuth(formValue);
-      return response.data?.user;
+      const {data}: Authcheck  = await userGoogleAuth(formValue);
+      
+    if (data?.user) {
+      console.log(data.accessToken);
+      
+      data.user.accessToken = data.accessToken;
+    }
+      
+      return data?.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
@@ -36,9 +43,17 @@ export const userGoogleThunk: any = createAsyncThunk(
 export const userLoginThunk: any = createAsyncThunk(
   "user/login",
   async (formValue: number) => {
-    const response: Authcheck = await userOtpVerify(formValue);
+    const { data }: Authcheck = await userOtpVerify(formValue);
+   
+   
+    
+    if (data?.user) {
+      console.log(data.accessToken);
+      
+      data.user.accessToken = data.accessToken;
+    }
 
-    return response.data?.user;
+    return data?.user;
   }
 );
 

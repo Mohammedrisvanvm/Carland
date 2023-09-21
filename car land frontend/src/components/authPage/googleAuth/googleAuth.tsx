@@ -61,9 +61,8 @@ export const GoogleAuth = () => {
             </div>
           </button>
         </div>
-        <p className="max-w-md px-5 mb-3 text-xs text-gray-600 sm:text-sm md:mb-5">
-          Sed ut unde omnis iste natus accusantium doloremque laudantium omnis
-          iste.
+        <p className=" capitalize max-w-md px-5 mb-3 text-xs text-gray-600 sm:text-sm md:mb-5">
+          google authentication without otp
         </p>
         <div className="flex items-center w-full mb-5">
           <hr className="flex-1 border-gray-300" />

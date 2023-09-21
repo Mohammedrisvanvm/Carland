@@ -10,7 +10,7 @@ export const LoginHeader = () => {
   const dispatch =useDispatch()
   const Navigate = useNavigate();
   const user = useAppSelector((state) => state.user);
-  const [isToggled, setIsToggled] = useState(false);
+  const [isToggled, setIsToggled] = useState<boolean>(false);
 
   const handleClick = () => {
     setIsToggled(!isToggled);
