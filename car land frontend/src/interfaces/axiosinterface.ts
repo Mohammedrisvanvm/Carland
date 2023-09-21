@@ -8,6 +8,7 @@ export interface AxiosResponse<T = any> {
     vehicles?: Vehicles[];
     vendors?:IVendor[]
     users?:user[]
+    accessToken?: string;
   };
   status: number;
   statusText: string;

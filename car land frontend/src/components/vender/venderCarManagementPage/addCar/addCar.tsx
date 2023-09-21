@@ -52,8 +52,8 @@ const AddCar = () => {
           message:string
         }
       }
-      const res:axios= await CarAdd(values,hubid);
-      toast.success(res.data.message)
+      const res:AxiosResponse= await CarAdd(values,hubid);
+      toast.success(res.data?.message)
      Navigate('/vendor/vendorcars')
     } catch (error: any) {
       console.log(error);

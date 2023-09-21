@@ -27,13 +27,13 @@ export interface hub{
   hubMultiImage: Array<string>;
 }
 export interface Authcheck {
-  data: {
+  data?: {
     user?: user;
     vendor?: user;
     admin?: user;
     accessToken?: string;
     message?: string;
-  };
+  }
 }
 export interface RootState {
   user?: {

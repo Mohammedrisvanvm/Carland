@@ -27,7 +27,7 @@ export const userGoogleThunk: any = createAsyncThunk(
   async (formValue: Object) => {
     try {
       const response: Authcheck | null = await userGoogleAuth(formValue);
-      return response.data.user;
+      return response.data?.user;
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
@@ -38,7 +38,7 @@ export const userLoginThunk: any = createAsyncThunk(
   async (formValue: number) => {
     const response: Authcheck = await userOtpVerify(formValue);
 
-    return response.data.user;
+    return response.data?.user;
   }
 );
 

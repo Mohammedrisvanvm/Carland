@@ -16,7 +16,7 @@ export const GoogleAuth = () => {
         console.log(error);
       }
     },
-    onError: (error) => {
+    onError: (error:any) => {
       console.log(error);
 
       throw new Error("login failed");

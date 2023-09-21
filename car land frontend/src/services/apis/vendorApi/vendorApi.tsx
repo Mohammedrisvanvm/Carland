@@ -1,11 +1,12 @@
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { IHub } from "../../../test/test";
+import { hub } from "../../../interfaces/userAuth";
+
 import { axiosBase } from "../../axios/axiosInstance";
 
 export const CarAdd = async (values: IAddcar,id:string|undefined|null): Promise<AxiosResponse<any>> => {
   return axiosBase.post("/vendors/vehicle/addvehicle", { values,id });
 };
-export const HubAdd = async (values: IHub): Promise<AxiosResponse<any>> => {
+export const HubAdd = async (values: hub): Promise<AxiosResponse<any>> => {
   return axiosBase.post("/vendors/hub/addhub", { values });
 };
 export const getHub = async (): Promise<AxiosResponse<any>> => {

@@ -3,6 +3,7 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
+    // "noImplicitAny": true,
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
     "outDir": "./build",

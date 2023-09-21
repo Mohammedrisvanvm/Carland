@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import { useNavigate } from "react-router";
-import { IHub } from "../../../test/test";
+
 import { getHub } from "../../../services/apis/vendorApi/vendorApi";
 import { useDispatch } from "react-redux";
 import { addhubId } from "../../../redux/slice/vendorSlice";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { hub } from "../../../interfaces/userAuth";
 
 const VendorHomePage = () => {
-  const [hubs, setHubs] = useState<IHub[] | undefined>([]);
+  const [hubs, setHubs] = useState<hub[] | undefined>([]);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
 

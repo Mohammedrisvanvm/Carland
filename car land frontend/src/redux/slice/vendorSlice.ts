@@ -6,7 +6,7 @@ import {
 } from "../../services/apis/vendorApi/vendorApi";
 import { Authcheck, hub, user } from "../../interfaces/userAuth";
 import { toast } from "react-toastify";
-import { IHub } from "../../test/test";
+
 
 interface InitialVendor {
   userName?: string | null;
@@ -30,7 +30,7 @@ export const vendorLogin: any = createAsyncThunk(
   "vendor/login",
   async (formValue: number) => {
     try {
-      const { data }: Authcheck = await VendorOtpVerify(formValue);
+      const { data }: Authcheck|any = await VendorOtpVerify(formValue);
       if (data.vendor) {
         data.vendor.accessToken = data.accessToken;
       }
@@ -55,7 +55,7 @@ const vendorSlice = createSlice({
       (state.accessToken = null), (state.email = null);
       (state.isLoading = false), (state.userName = null);
     },
-    addhubId:(state,action:PayloadAction<IHub>)=>{
+    addhubId:(state,action:PayloadAction<hub>)=>{
       state.hubId=action.payload._id
     },
     rmhubId:(state)=>{
