@@ -9,8 +9,9 @@ import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosError } from "axios";
 import { useDispatch } from "react-redux";
-import { userLogout } from "../../../redux/slice/userSlice";
+import { setVerify, userLogout } from "../../../redux/slice/userSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const MyAccount: FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
@@ -66,6 +67,8 @@ const MyAccount: FC = () => {
         );
         if (data?.message == "verified") {
           setField(!field);
+          toast.success("verified")
+          dispatch(setVerify())
         }
       } else {
         setError("Enter 6 digit otp");
@@ -95,11 +98,12 @@ const MyAccount: FC = () => {
         );
       }
     } catch (error: any) {
-    console.log(error);
-    
+      console.log(error);
+
       if (error.response.data?.message == "Access Denied") {
         dispatch(userLogout());
-        Navigate('/')      }
+        Navigate("/");
+      }
     }
   };
 
@@ -119,54 +123,78 @@ const MyAccount: FC = () => {
           </label>{" "}
           risvanrishuguest0000@gmail.com
         </div>
-
-        {field ? (
+        {!user.verifyPhone ? (
           <>
-            <div className="mb-1 sm:mb-2">
-              <label htmlFor="email" className="inline-block  mb-1 font-medium">
-                phone Number :
-              </label>{" "}
-              <input
-                placeholder="phone number"
-                required
-                type="tel"
-                value={number}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setNumber(e.target.value)
-                }
-                className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                name="otp"
-              />
-              <button onClick={() => verifyNumber()} className="text-blue-600">
-                verify*
-              </button>
-              {error && <p className="text-red-600">{error}</p>}
-            </div>
+            {" "}
+            {field ? (
+              <>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="email"
+                    className="inline-block  mb-1 font-medium"
+                  >
+                    phone Number :
+                  </label>{" "}
+                  <input
+                    placeholder="phone number"
+                    required
+                    type="tel"
+                    value={number}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setNumber(e.target.value)
+                    }
+                    className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                    name="otp"
+                  />
+                  <button
+                    onClick={() => verifyNumber()}
+                    className="text-blue-600"
+                  >
+                    verify*
+                  </button>
+                  {error && <p className="text-red-600">{error}</p>}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="mb-1 sm:mb-2">
+                  <label
+                    htmlFor="email"
+                    className="inline-block  mb-1 font-medium"
+                  >
+                    otp
+                  </label>{" "}
+                  <input
+                    placeholder="otp"
+                    required
+                    type="text"
+                    value={otp}
+                    max={6}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setOtp(e.target.value)
+                    }
+                    className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+                    name="otp"
+                  />
+                  <button onClick={() => verifyOtp()} className="text-blue-600">
+                    verify*
+                  </button>
+                  {error && <p className="text-red-600">{error}</p>}
+                </div>
+              </>
+            )}
           </>
         ) : (
-          <>
-            <div className="mb-1 sm:mb-2">
-              <label htmlFor="email" className="inline-block  mb-1 font-medium">
-                otp
-              </label>{" "}
-              <input
-                placeholder="otp"
-                required
-                type="text"
-                value={otp}
-                max={6}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setOtp(e.target.value)
-                }
-                className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-                name="otp"
-              />
-              <button onClick={() => verifyOtp()} className="text-blue-600">
-                verify*
-              </button>
-              {error && <p className="text-red-600">{error}</p>}
-            </div>
-          </>
+          <li className="flex flex-row justify-center items-center">
+          Mobile Number
+          <span>
+            <img
+              className="h-5 w-5"
+              src="https://cdn-icons-png.flaticon.com/512/7595/7595571.png"
+              alt=""
+            />
+          </span>
+        </li>
         )}
 
         <h5 className="my-8 text-sm text-center font-semibold leading-none sm:text-xl">

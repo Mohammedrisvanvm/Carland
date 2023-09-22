@@ -11,6 +11,8 @@ interface InitialUser {
   [x: string]: any;
   userName?: string | null;
   email: string | null;
+  verifyPhone: boolean | null;
+  gender: string | null;
   accessToken: string | null | undefined;
   isLoading: boolean;
 }
@@ -20,6 +22,8 @@ const initialState: InitialUser = {
   email: null,
   accessToken: null,
   isLoading: false,
+  verifyPhone: null,
+  gender: null,
 };
 
 export const userGoogleThunk: any = createAsyncThunk(
@@ -61,8 +65,13 @@ const userSlice = createSlice({
       state.userName = null;
       state.email = null;
       state.accessToken = null;
+      state.verifyPhone = null;
+      state.accessToken = null;
       state.isLoading = false;
     },
+    setVerify:(state)=>{
+      state.verifyPhone=true
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -78,6 +87,7 @@ const userSlice = createSlice({
           state.userName = action.payload.userName;
           state.email = action.payload.email;
           state.isLoading = false;
+          state.verifyPhone = action.payload.verified_phonenumber;
           state.accessToken = action.payload.accessToken;
         }
       )
@@ -114,4 +124,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-export const { userLogout } = userSlice.actions;
+export const { userLogout,setVerify } = userSlice.actions;

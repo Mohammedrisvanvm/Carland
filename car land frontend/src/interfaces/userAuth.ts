@@ -3,6 +3,7 @@ export interface user {
   userName?: string | null;
   email: string | null;
   password?: string;
+  verified_phonenumber:boolean|null
   googleId?: string;
   image?: string;
   ban?: boolean;

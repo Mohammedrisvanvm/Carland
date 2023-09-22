@@ -1,9 +1,12 @@
 import React, { FC, ReactNode, useState } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 import Pages from "./Pages";
+import { useAppSelector } from "../../../redux/store/storeHook";
 
 const LeftSide: FC = () => {
   const [page, setPage] = useState<string>("Account");
+
+  const user = useAppSelector((state) => state.user);
   return (
     <>
       <MainHeader />
@@ -19,9 +22,9 @@ const LeftSide: FC = () => {
                 />
               </div>
               <div className="flex flex-col  text-center">
-                <p className="text-lg font-bold">John Doe</p>
+                <p className="text-lg font-bold"> {user.userName}</p>
                 <p className="mb-5 text-xs text-gray-800">
-                  risvanguest0000@gmail.com
+                  {user.email}
                 </p>
                 <hr className="mx-6" />
 
@@ -39,13 +42,29 @@ const LeftSide: FC = () => {
 
                   <li className="flex flex-row justify-center items-center">
                     Mobile Number
-                    <span>
-                      <img
-                        className="h-5 w-5"
-                        src="https://cdn-icons-png.flaticon.com/512/7595/7595571.png"
-                        alt=""
-                      />
-                    </span>
+                    {user.verifyPhone ? (
+                      <>
+                        {" "}
+                        <span>
+                          <img
+                            className="h-5 w-5"
+                            src="https://cdn-icons-png.flaticon.com/512/7595/7595571.png"
+                            alt=""
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <span>
+                          <img
+                            className="h-4 w-4"
+                            src="https://static.vecteezy.com/system/resources/previews/018/887/462/original/signs-close-icon-png.png"
+                            alt=""
+                          />
+                        </span>
+                      </>
+                    )}
                   </li>
                 </ul>
 

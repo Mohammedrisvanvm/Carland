@@ -41,14 +41,14 @@ export const verifyOtp = AsyncHandler(
     const token: string = req.headers.authorization;
     const otp: number = req.body.otp;
     const verificationToken: string = req.cookies?.verificationToken;
-    const userjwt: UserJwt = verifyJwt(token);
+    
     const { payload }: UserJwt = verifyJwt(verificationToken);
-    console.log(userjwt, payload, otp);
+
 
     if (otp == payload.token) {
       await userModel.findByIdAndUpdate(
-        { _id: userjwt.payload.user.id },
-        { $set: { phone_number: payload.number } }
+        { _id: token },
+        { $set: { phone_number: payload.number,verified_phonenumber:true } }
       );
       res.status(200).json({ message: "verified" });
     } else {
