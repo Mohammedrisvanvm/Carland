@@ -4,6 +4,9 @@ import UserHomePage from '../components/HomePage/UserHomePage'
 import SignUpPage from '../components/signupPage/signUpPage'
 import GoogleAuthPage from '../components/googleAuthPage/GoogleAuthPage'
 import OtpPage from '../components/OtpPage/OtpPage'
+import AccountPage from '../components/user/profile/Pages'
+import Pages from '../components/user/profile/Pages'
+import LeftSide from '../components/user/profile/LeftSide'
 
 const UserRoutes = () => {
     return (
@@ -14,10 +17,7 @@ const UserRoutes = () => {
                 <Route path='/UserLogin' element={<LoginPage/>}/>
                 <Route path='/UserSignUp' element={<SignUpPage/>}/>
                 <Route path='/UserOtp' element={<OtpPage/>}/>
-            
-
-                
-               
+            <Route path='/profile' element={<LeftSide/>}/> 
             </Routes>
         </>
     )

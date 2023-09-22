@@ -67,7 +67,7 @@ export const MainHeader = (): ReactElement => {
                   <hr className="my-2 bg-black" />
                   <li className="mb-4">
                     <button
-                      onClick={() => Navigate("/")}
+                      onClick={() => Navigate("/profile")}
                       aria-label="Our product"
                       title="home"
                       className="font-medium  tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
