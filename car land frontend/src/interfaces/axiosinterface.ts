@@ -1,4 +1,4 @@
-import { AxiosRequestConfig } from "axios";
+import { AxiosError, AxiosRequestConfig } from "axios";
 import { Vehicles } from "./vehicleInterface";
 import { hub, user } from "./userAuth";
 export interface AxiosResponse<T = any> {
@@ -15,4 +15,5 @@ export interface AxiosResponse<T = any> {
   headers: any;
   config: AxiosRequestConfig;
   request?: any;
+  
 }

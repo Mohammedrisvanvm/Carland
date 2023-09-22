@@ -2,7 +2,7 @@ import express, { Request, Response } from "express";
 import { DBconnect } from "./config/mongoDB";
 import cors from "cors";
 import { config } from "./config/config";
-import userRouters from "./routers/userRouers";
+import userRouters from "./routers/userRouters";
 import vendorRouters from "./routers/VendorRouters";
 import adminRouters from "./routers/adminRouters";
 import {

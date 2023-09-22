@@ -20,6 +20,8 @@ export const axiosBase = axios.create({
 });
 
 const onRequest = (config: InternalAxiosRequestConfig): InternalAxiosRequestConfig | Promise<InternalAxiosRequestConfig> => {
+
+  
   console.info(`[request] [${JSON.stringify(config)}]`);
   return config;
 };

@@ -1,4 +1,5 @@
 
+import { promises } from "dns";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { axiosBase } from "../../axios/axiosInstance";
 
@@ -25,3 +26,9 @@ return axiosBase.get("/users/auth/userLogout")
 export const userGetVehicle = async(): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/users/vehicle/getvehicles")
 };
+export const userVerifyNumber=async(phoneNumber:number):Promise<AxiosResponse>=>{
+  return await axiosBase.post("/users/stuff/verifynumber",{phoneNumber})
+}
+export const userVerifyNumberOtp=async(otp:number):Promise<AxiosResponse>=>{
+  return await axiosBase.post("/users/stuff/verifyotp",{otp})
+}
