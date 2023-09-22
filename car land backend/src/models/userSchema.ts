@@ -23,12 +23,21 @@ const userSchema: Schema = new Schema(
     image: {
       type: String,
     },
+    gender:{
+      type:String,
+      default:null
+    },
+    phone_number: {
+      type: Number,
+      default:null
+    },
     verified_email: {
       type: Boolean,
-      default:true
+      default: true,
     },
-    verified_phonenumber:{
-      type:Boolean
+    verified_phonenumber: {
+      type: Boolean,
+      default: false,
     },
     ban: {
       type: Boolean,
@@ -38,7 +47,7 @@ const userSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next:NextFunction) {
+userSchema.pre("save", async function (next: NextFunction) {
   if (!this.isModified("password")) {
     next();
   }
@@ -47,7 +56,7 @@ userSchema.pre("save", async function (next:NextFunction) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 userSchema.methods.matchPassword = async function (enteredPassword: string) {
-  console.log(enteredPassword,"pass");
+  console.log(enteredPassword, "pass");
 
   return await bcrypt.compare(enteredPassword, this.password);
 };

@@ -44,14 +44,43 @@ export const verifyOtp = AsyncHandler(
     const userjwt: UserJwt = verifyJwt(token);
     const { payload }: UserJwt = verifyJwt(verificationToken);
     console.log(userjwt, payload, otp);
-console.log(userjwt);
 
     if (otp == payload.token) {
-      await userModel.findByIdAndUpdate({_id:userjwt.payload.user.id},{$set:{phone_number:payload.number}});
+      await userModel.findByIdAndUpdate(
+        { _id: userjwt.payload.user.id },
+        { $set: { phone_number: payload.number } }
+      );
       res.status(200).json({ message: "verified" });
-    }else{
-        res.status(401).json({ message: "error otp" });
+    } else {
+      res.status(401).json({ message: "error otp" });
     }
-    
+  }
+);
+
+export const userprofileData = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const token: string = req.headers.authorization;
+    const userjwt: UserJwt = verifyJwt(token);
+    console.log(req.body);
+    type profile = {
+      gender: string;
+      userName: string;
+    };
+    console.log(token);
+
+    const { gender, userName }: profile = req.body;
+    if (userName) {
+      await userModel.findByIdAndUpdate(
+        { _id: token },
+        { $set: { gender: gender, userName: userName } }
+      );
+    } else {
+      await userModel.findByIdAndUpdate(
+        { _id: token },
+        { $set: { gender: gender } }
+      );
+    }
+
+    res.status(204).json({ message: "updated user profile" });
   }
 );

@@ -32,6 +32,6 @@ export const userVerifyNumber=async(phoneNumber:number):Promise<AxiosResponse>=>
 export const userVerifyNumberOtp=async(otp:number):Promise<AxiosResponse>=>{
   return await axiosBase.post("/users/stuff/verifyotp",{otp})
 }
-export const userprofileData=async(gender:string,userName:string|null):Promise<AxiosResponse>=>{
-  return await axiosBase.post("/users/stuff/userprofileData",{gender,userName})
+export const userprofileData=async(gender:string,userName:string | null | undefined):Promise<AxiosResponse>=>{
+  return await axiosBase.patch("/users/stuff/userprofileData",{gender,userName})
 }

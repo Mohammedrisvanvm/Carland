@@ -8,8 +8,12 @@
     image?: string;
     verified_email?: boolean;
     ban?: boolean;
+    phone_number?:number
+    verified_phonenumber?:boolean
+    gender?:string
     createdAt: Date;
     updatedAt: Date;
+
    
 }
 interface IUser{

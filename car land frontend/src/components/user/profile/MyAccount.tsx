@@ -1,23 +1,35 @@
-import { ChangeEvent, FC } from "react";
+import { ChangeEvent, FC, FormEvent } from "react";
 import { useState, useEffect } from "react";
 import {
   userVerifyNumber,
   userVerifyNumberOtp,
+  userprofileData,
 } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { useAppSelector } from "../../../redux/store/storeHook";
+import { AxiosError } from "axios";
+import { useDispatch } from "react-redux";
+import { userLogout } from "../../../redux/slice/userSlice";
+import { Link, useNavigate } from "react-router-dom";
 
 const MyAccount: FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [error1, setError1] = useState<string | null>(null);
   const [number, setNumber] = useState<string>("");
   const [otp, setOtp] = useState<string>("");
+  const [gender, setGender] = useState<string>("");
   const [field, setField] = useState<boolean>(true);
+  const user = useAppSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const Navigate = useNavigate();
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
 
-    if (error) {
+    if (error || error1) {
       timer = setTimeout(() => {
         setError(null);
+        setError1(null);
       }, 3000);
     }
 
@@ -26,7 +38,7 @@ const MyAccount: FC = () => {
         clearTimeout(timer);
       }
     };
-  }, [error]);
+  }, [error, error1]);
   const verifyNumber = async () => {
     try {
       if (number?.trim() && number.length == 10) {
@@ -63,6 +75,34 @@ const MyAccount: FC = () => {
       setError(error.response.data.message);
     }
   };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const trimmedUserName = userName?.trim();
+
+      if (
+        trimmedUserName &&
+        trimmedUserName.length >= 3 &&
+        !/\s/.test(trimmedUserName)
+      ) {
+        await userprofileData(gender, trimmedUserName);
+      } else if (gender) {
+        await userprofileData(gender, user.userName);
+      } else {
+        setError1(
+          "Invalid username. Username must be at least 3 characters long and should not contain spaces."
+        );
+      }
+    } catch (error: any) {
+    console.log(error);
+    
+      if (error.response.data?.message == "Access Denied") {
+        dispatch(userLogout());
+        Navigate('/')      }
+    }
+  };
+
   return (
     <div className="justify-between sm:mt-5">
       <h5 className="sm:m-16 m-10 text-xl text-center font-bold leading-none sm:text-2xl">
@@ -133,37 +173,55 @@ const MyAccount: FC = () => {
           Personal Details
         </h5>
         <hr className="mb-4 mx-6" />
-        <div className="mb-1 sm:mb-2">
-          <label htmlFor="email" className="inline-block mb-1 font-medium">
-            User Name :
-          </label>{" "}
-          <input
-            placeholder="Name"
-            required
-            type="text"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              setUserName(e.target.value)
-            }
-            className="flex-grow text-center  h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
-            name="name"
-          />
-        </div>
-        <div className="mb-1 sm:mb-2">
-          <label htmlFor="email" className="inline-block mb-1 font-medium">
-            gender :
-          </label>{" "}
-          <select className="flex-grow text-center  h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline">
-            <option selected>Choose a gender</option>
-            <option value="male">male</option>
-            <option value="female">female</option>
-          </select>
-        </div>
-        <hr className="mb-4 mx-6" />
-        <div className="m-4">
-          <button className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5">
-            Update
-          </button>
-        </div>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-1 sm:mb-2">
+            <label htmlFor="email" className="inline-block mb-1 font-medium">
+              User Name :
+            </label>{" "}
+            <input
+              placeholder={
+                user?.userName ? user?.userName.toLocaleLowerCase() : ""
+              }
+              value={userName ? userName : ""}
+              type="text"
+              minLength={3}
+              title="Only alphabetic characters are allowed"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setUserName(e.target.value)
+              }
+              className="flex-grow text-center  h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+              name="userName"
+            />
+            {error1 && <p className="text-red-600">{error1}</p>}
+          </div>
+          <div className="mb-1 sm:mb-2">
+            <label htmlFor="email" className="inline-block mb-1 font-medium">
+              gender :
+            </label>{" "}
+            <select
+              onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                setGender(e.target.value)
+              }
+              required
+              className="flex-grow text-center  h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
+            >
+              <option value="" disabled selected>
+                Choose a gender
+              </option>
+              <option value="male">male</option>
+              <option value="female">female</option>
+            </select>
+          </div>
+          <hr className="mb-4 mx-6" />
+          <div className="m-4">
+            <button
+              type="submit"
+              className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+            >
+              Update
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

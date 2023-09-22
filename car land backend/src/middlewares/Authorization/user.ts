@@ -1,8 +1,9 @@
 import { Response, Request, NextFunction } from "express";
-import userModel from "../../models/vendorSchema";
+
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import AsyncHandler from "express-async-handler";
 import IUser from "../../interfaces/userInterface";
+import userModel from "../../models/userSchema";
 
 interface VendorJwt {
   payload?: {
@@ -18,14 +19,17 @@ interface VendorJwt {
 
 interface IVerifyjwt {
   payload?: {
-    number?: string;
-  } | null;
+    id: string;
+  } 
   expired: boolean;
 }
 export const userAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const accessTokenusertoken: string = req.cookies.accessTokenuser;
-    const refreshTokenuser: string = req.cookies.refreshTokenuser;
+
+    console.log(req.headers.authorization);
+    
+    const accessTokenusertoken: string = req.cookies.accessTokenUser;
+    const refreshTokenuser: string = req.cookies.refreshTokenUser;
     console.log(refreshTokenuser,accessTokenusertoken);
     
     if (!accessTokenusertoken && !refreshTokenuser) {
@@ -33,10 +37,11 @@ export const userAuthenticate = AsyncHandler(
     }
     if (accessTokenusertoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenuser);
+req.headers.authorization=verifiedJWT.payload?.id
 
-      if (verifiedJWT.payload.number) {
+      if (verifiedJWT.payload.id) {
         const user: IUser | null = await userModel.findOne(
-          { phoneNumber: verifiedJWT.payload.number,ban:false },
+          { _id: verifiedJWT.payload.id,ban:false },
          
         );
 
@@ -47,14 +52,17 @@ export const userAuthenticate = AsyncHandler(
         }
       }
     } else if (!accessTokenusertoken && refreshTokenuser) {
-      const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenuser);
+      const {payload}: IVerifyjwt = verifyJwt(refreshTokenuser);
 
-      if (verifiedJWT.payload.number) {
-        const user: IUser | null = await userModel.findOne(
-          { phoneNumber: verifiedJWT.payload.number,ban:false },
+
+
+      if (payload?.id) {
+        const user: IUser = await userModel.findOne(
+          { _id: payload.id },
           { password: 0 }
         );
-
+   
+     
         if (!user) {
           throw new Error("user not exist or banned");
         } else {
@@ -63,12 +71,12 @@ export const userAuthenticate = AsyncHandler(
             "15min"
           );
 
-          res.cookie("accessTokenuser", access, {
+          res.cookie("accessTokenUser", access, {
             httpOnly: true,
-            maxAge: (15 * 60 * 1000),
+            maxAge: 1000 * 60 * 60 * 24,
           });
-          res.cookie("refreshTokenuser", refreshTokenuser, {
-            maxAge: (7 * 24 * 60 * 60),
+          res.cookie("refreshTokenUser", refreshTokenuser, {
+            maxAge:  1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
           });
 

@@ -39,6 +39,7 @@ interface UserJwt {
   payload?: {
     token?: number;
     user?: {
+      id:string
       userName: string;
       email: string;
       number?: number | null;
@@ -53,12 +54,11 @@ export const userOtpverify = AsyncHandler(
       const UserOtpToken: string = req.cookies?.UserOtpToken;
 
       const data: number = req.body.value;
-      // const data: number = req.body.otp;
+
       console.log(data);
 
       if (UserOtpToken) {
         const { payload, expired }: UserJwt = verifyJwt(UserOtpToken);
-        console.log(payload);
 
         if (payload?.token == data) {
           let userExist: IUser | null = await userModel.findOne({
@@ -78,9 +78,11 @@ export const userOtpverify = AsyncHandler(
 
           const accessToken = jwtSign(
             {
-              id: userExist?._id,
-              name: userExist?.userName,
-              email: userExist?.email,
+              user: {
+                id: userExist?._id,
+                name: userExist?.userName,
+                email: userExist?.email,
+              },
             },
             "15min"
           );
@@ -96,7 +98,7 @@ export const userOtpverify = AsyncHandler(
               maxAge: 7 * 24 * 60 * 60,
               httpOnly: true,
             })
-            .json({ user: userExist,accessToken });
+            .json({ user: userExist, accessToken });
         }
       }
     } catch (error: any) {
@@ -119,7 +121,7 @@ export const userLoginController = AsyncHandler(
       email: data.email,
       ban: false,
     });
-    console.log("hai", userExist);
+
     if (userExist) {
       if (userExist && (await userExist.matchPassword(data.password))) {
         console.log("enterd");
@@ -132,7 +134,7 @@ export const userLoginController = AsyncHandler(
               email: userExist.email,
             },
           },
-          "5min"
+          "15min"
         );
         MailService(userExist.email, token);
         res
@@ -193,22 +195,24 @@ export const userGoogleAuth = AsyncHandler(
             });
             const accessToken = jwtSign(
               {
-                id: newUser?._id,
-                name: newUser?.userName,
-                email: newUser?.email,
+                user: {
+                  id: newUser?._id,
+                  name: newUser?.userName,
+                  email: newUser?.email,
+                },
               },
-              "5s"
+              "15min"
             );
-            const refreshToken = jwtSign({ email: newUser?.email }, "7d");
+            const refreshToken = jwtSign({ id: newUser?._id }, "7d");
 
             res.status(200).cookie("accessTokenUser", accessToken, {
-              maxAge: 300000,
+              maxAge: 1000 * 60 * 60 * 24,
               httpOnly: true,
             });
 
             res
               .cookie("refreshTokenUser", refreshToken, {
-                maxAge: 7 * 24 * 60 * 60,
+                maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
               })
               .json({
@@ -225,22 +229,24 @@ export const userGoogleAuth = AsyncHandler(
               verified_email: response.data?.verified_email,
             });
             const accessToken = jwtSign(
-              { id: user._id, name: user.userName, email: user.email },
-              "30s"
+              {
+                user: { id: user._id, name: user.userName, email: user.email },
+              },
+              "15min"
             );
             const refreshToken = jwtSign({ email: user.email }, "7d");
 
             res.status(200).cookie("accessTokenUser", accessToken, {
-              maxAge: 300000,
+              maxAge: 1000 * 60 * 60 * 24,
               httpOnly: true,
             });
 
             res
               .cookie("refreshTokenUser", refreshToken, {
-                maxAge: 7 * 24 * 60 * 60,
+                maxAge: 1000 * 60 * 60 * 24*7,
                 httpOnly: true,
               })
-              .json({ user,accessToken, message: "created" });
+              .json({ user, accessToken, message: "created" });
           }
         });
     }
@@ -266,7 +272,6 @@ interface IVerifyjwt {
 export const userCheck = AsyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     console.log(req.cookies);
-    console.log("hai");
 
     const accessToken: string = req.cookies?.accessTokenUser;
     const refreshToken: string = req.cookies?.refreshTokenUser;
