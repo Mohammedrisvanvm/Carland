@@ -24,6 +24,7 @@ export const MainHeader = (): ReactElement => {
     <>
       <nav className="w-full flex justify-between items-center navbar ">
         <img
+        onClick={()=>Navigate('/')}
           src="/carland-logos_black.png"
           alt=""
           className="px-10 h-16 w-auto contain"

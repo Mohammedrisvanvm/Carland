@@ -66,7 +66,7 @@ export const userprofileData = AsyncHandler(
       gender: string;
       userName: string;
     };
-    console.log(token);
+   
 
     const { gender, userName }: profile = req.body;
     if (userName) {

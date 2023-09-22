@@ -3,7 +3,7 @@ export const UserFooter = () => {
     <>
       <hr />
 
-      <div className="px-4 pt-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+      <div className="px-4  mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
         <div className="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="sm:col-span-2">
             <a
@@ -17,9 +17,9 @@ export const UserFooter = () => {
                 Car Land
               </span>
             </a>
-            <div className="mt-6 lg:max-w-sm">
+            <div className=" lg:max-w-sm">
             
-              <p className="mt-4 text-sm text-gray-800">
+              <p className="text-sm text-gray-800">
                 Whether you need a car for a leisurely road trip or a reliable
                 cab for your daily commute, we've got you covered. Our mission
                 is to deliver quality service, ensuring your safety and
@@ -105,14 +105,14 @@ export const UserFooter = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col-reverse justify-between pt-5 pb-10 border-t lg:flex-row">
+        <div className="flex flex-col-reverse justify-between border-b pb-10 border-t lg:flex-row">
           <p className="text-sm text-gray-600">
             Make sure to read and understand our Terms of Service and Privacy
             Policy to know how we handle your personal information and ensure a
             safe and secure experience on our website. © 2023 Car Land. All
             rights reserved.
           </p>
-          <ul className="flex flex-col mb-3 space-y-2 lg:mb-0 sm:space-y-0 sm:space-x-5 sm:flex-row">
+          <ul className="flex flex-col lg:mb-0  sm:space-x-5 sm:flex-row">
             <li>
               <a
                 href="/"

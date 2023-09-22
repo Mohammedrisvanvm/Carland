@@ -20,49 +20,45 @@ interface VendorJwt {
 interface IVerifyjwt {
   payload?: {
     id: string;
-  } 
+  };
   expired: boolean;
 }
 export const userAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-
     console.log(req.headers.authorization);
-    
+
     const accessTokenusertoken: string = req.cookies.accessTokenUser;
     const refreshTokenuser: string = req.cookies.refreshTokenUser;
-    console.log(refreshTokenuser,accessTokenusertoken);
-    
+    console.log(refreshTokenuser, accessTokenusertoken);
+
     if (!accessTokenusertoken && !refreshTokenuser) {
       throw new Error("Access Denied");
     }
     if (accessTokenusertoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenuser);
-req.headers.authorization=verifiedJWT.payload?.id
+      req.headers.authorization = verifiedJWT.payload?.id;
 
       if (verifiedJWT.payload.id) {
-        const user: IUser | null = await userModel.findOne(
-          { _id: verifiedJWT.payload.id,ban:false },
-         
-        );
+        const user: IUser | null = await userModel.findOne({
+          _id: verifiedJWT.payload.id,
+          ban: false,
+        });
 
         if (!user) {
           throw new Error("user banned");
         } else {
-      next();
+          next();
         }
       }
     } else if (!accessTokenusertoken && refreshTokenuser) {
-      const {payload}: IVerifyjwt = verifyJwt(refreshTokenuser);
-
-
+      const { payload }: IVerifyjwt = verifyJwt(refreshTokenuser);
 
       if (payload?.id) {
         const user: IUser = await userModel.findOne(
           { _id: payload.id },
           { password: 0 }
         );
-   
-     
+
         if (!user) {
           throw new Error("user not exist or banned");
         } else {
@@ -76,7 +72,7 @@ req.headers.authorization=verifiedJWT.payload?.id
             maxAge: 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshTokenUser", refreshTokenuser, {
-            maxAge:  1000 * 60 * 60 * 24 * 7,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
           });
 
