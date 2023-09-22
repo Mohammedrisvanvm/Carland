@@ -9,7 +9,8 @@ import { AxiosResponse } from "../../../interfaces/axiosinterface";
 const MyAccount: FC = () => {
   const [userName, setUserName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [number, setNumber] = useState<string | null>(null);
+  const [number, setNumber] = useState<string>("");
+  const [otp, setOtp] = useState<string>("");
   const [field, setField] = useState<boolean>(true);
   useEffect(() => {
     let timer: NodeJS.Timeout | undefined;
@@ -28,13 +29,14 @@ const MyAccount: FC = () => {
   }, [error]);
   const verifyNumber = async () => {
     try {
-      console.log("hi");
       if (number?.trim() && number.length == 10) {
-      const {data}:AxiosResponse=  await userVerifyNumber(parseInt(number));
-      if(data?.message=='otp sented'){
-        setNumber('')
-        setField(!field)
-      }
+        const { data }: AxiosResponse = await userVerifyNumber(
+          parseInt(number)
+        );
+        if (data?.message == "otp sented") {
+          setNumber("");
+          setField(!field);
+        }
       } else {
         setError("Enter 10 digit Phone number");
       }
@@ -45,19 +47,20 @@ const MyAccount: FC = () => {
   const verifyOtp = async () => {
     try {
       console.log("helo");
-      
-      if (number?.trim() && number.length == 6) {
-        const {data}:AxiosResponse=  await userVerifyNumberOtp(parseInt(number));
-        if(data?.message=='verified'){
-          setField(!field)
+
+      if (otp?.trim() && otp.length == 6) {
+        const { data }: AxiosResponse = await userVerifyNumberOtp(
+          parseInt(otp)
+        );
+        if (data?.message == "verified") {
+          setField(!field);
         }
       } else {
         setError("Enter 6 digit otp");
       }
     } catch (error: any) {
-      console.log(error);
-
-      // setError(error.response)
+      console.log(error.response.data.message);
+      setError(error.response.data.message);
     }
   };
   return (
@@ -79,7 +82,6 @@ const MyAccount: FC = () => {
 
         {field ? (
           <>
-           
             <div className="mb-1 sm:mb-2">
               <label htmlFor="email" className="inline-block  mb-1 font-medium">
                 phone Number :
@@ -88,22 +90,22 @@ const MyAccount: FC = () => {
                 placeholder="phone number"
                 required
                 type="tel"
+                value={number}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setNumber(e.target.value)
                 }
                 className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                 name="otp"
               />
-              <button onClick={()=>verifyNumber()} className="text-blue-600">
+              <button onClick={() => verifyNumber()} className="text-blue-600">
                 verify*
               </button>
               {error && <p className="text-red-600">{error}</p>}
             </div>
           </>
-
         ) : (
           <>
-         <div className="mb-1 sm:mb-2">
+            <div className="mb-1 sm:mb-2">
               <label htmlFor="email" className="inline-block  mb-1 font-medium">
                 otp
               </label>{" "}
@@ -111,14 +113,15 @@ const MyAccount: FC = () => {
                 placeholder="otp"
                 required
                 type="text"
+                value={otp}
                 max={6}
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setNumber(e.target.value)
+                  setOtp(e.target.value)
                 }
                 className="flex-grow text-center h-12 px-4 mb-2 transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-deep-purple-accent-400 focus:outline-none focus:shadow-outline"
                 name="otp"
               />
-              <button onClick={()=>verifyOtp()} className="text-blue-600">
+              <button onClick={() => verifyOtp()} className="text-blue-600">
                 verify*
               </button>
               {error && <p className="text-red-600">{error}</p>}
