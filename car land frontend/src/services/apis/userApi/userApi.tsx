@@ -19,6 +19,10 @@ export const userGoogleAuth = (value: {}): Promise<AxiosResponse<any>> => {
 export const userCheck = (): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/users/auth/userCheck");
 };
+
+export const currrentUserFetch = (): Promise<AxiosResponse<any>> => {
+  return axiosBase.get("/users/stuff/currrentuser");
+};
 export const userSignOut = (): Promise<AxiosResponse> => {
   return axiosBase.get("/users/auth/userLogout");
 };

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { ProfileVerificationData, userprofileData, verifyNumber, verifyOtp } from "../../controllers/userController/userStuff";
+import { ProfileVerificationData, currrentUser, userprofileData, verifyNumber, verifyOtp } from "../../controllers/userController/userStuff";
 import { parseImages } from "../../utils/multer/multer";
 
 
@@ -9,6 +9,7 @@ userStuffController.post('/verifynumber',verifyNumber)
 userStuffController.post('/verifyotp',verifyOtp)
 userStuffController.patch('/userprofileData',userprofileData)
 userStuffController.put('/ProfileVerificationData',parseImages,ProfileVerificationData)
+userStuffController.get('/currrentuser',currrentUser)
 
 
 export default userStuffController

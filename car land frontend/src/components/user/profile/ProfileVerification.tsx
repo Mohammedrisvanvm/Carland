@@ -1,49 +1,69 @@
-import React, { ChangeEvent, FormEvent, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  FC,
+  useState,
+  SetStateAction,
+  Dispatch,
+} from "react";
 import { ProfileVerificationData } from "../../../services/apis/userApi/userApi";
 import { Form } from "react-router-dom";
-
-const ProfileVerification = () => {
-  const [frontLicense, setFrontLicense] = useState<string>("");
-  const [BackLicense, setBackLicense] = useState<string>("");
-  const [frontAdhaar, setFrontAdhaar] = useState<string>("");
-  const [backAdhaar, setBackAdhaar] = useState<string>("");
-  const [Error, setError] = useState<string | null>(null);
+type prop = {
+  setloading: Dispatch<SetStateAction<boolean>>;
+  loading:boolean
+};
+const ProfileVerification: FC<prop> = ({ setloading,loading }) => {
+  const [frontLicense, setFrontLicense] = useState<File | null>(null);
+  const [backLicense, setBackLicense] = useState<File | null>(null);
+  const [frontAdhaar, setFrontAdhaar] = useState<File | null>(null);
+  const [backAdhaar, setBackAdhaar] = useState<File | null>(null);
   const [imageData, setImageData] = useState<File[]>([]);
-  const convertToString = (file: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result as string);
-      };
-      fileReader.onerror = (error: any) => {
-        reject(error);
-      };
-      setImageData((prevImageData: any) => {
-        const newImageData = [file as unknown, ...(prevImageData || [])];
-        return newImageData;
-      });
-    });
-  };
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log(imageData);
+  const [Error, setError] = useState<string | null>(null);
 
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    if (imageData.length > 4) {
+      return setImageData([]);
+    }
     try {
-      if (imageData.length == 4) {
-        const formData = new FormData();
-        imageData.forEach((file: File) => {
-          formData.append("images", file);
-        });
-    
-          ProfileVerificationData(formData);
-        
-      } else {
-        setError("please complete the form data");
+      if (!frontLicense || !backLicense || !frontAdhaar || !backAdhaar) {
+        setError("Please complete the form data");
+        return;
       }
+
+      setImageData((prevImageData) => [
+        frontLicense,
+        backLicense,
+        frontAdhaar,
+        backAdhaar,
+        ...prevImageData,
+      ]);
     } catch (error: any) {
       console.log(error);
     }
+  };
+  useEffect(() => {
+    if (imageData.length !== 4) {
+      setError("An unexpected error occurred");
+      return;
+    }
+
+    const formData = new FormData();
+    imageData.forEach((file: File) => {
+      formData.append("images", file);
+    });
+
+    ProfileVerificationData(formData);
+    setloading(!loading)
+  }, [imageData]);
+  const resetState = () => {
+    setFrontLicense(null);
+    setBackLicense(null);
+    setFrontAdhaar(null);
+    setBackAdhaar(null);
+    setImageData([]);
   };
   console.log(Error);
   return (
@@ -61,11 +81,7 @@ const ProfileVerification = () => {
               <label className="flex flex-col items-center justify-center w-full mx-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   {frontLicense ? (
-                    <img
-                      src={frontLicense}
-                      className="w-1/3 h-1/3 sm:w-auto sm:h-auto"
-                      alt=""
-                    />
+                    <span className="text-green-500">completed</span>
                   ) : (
                     <>
                       <svg
@@ -100,7 +116,7 @@ const ProfileVerification = () => {
                   className="hidden"
                   onChange={async (e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setFrontLicense(await convertToString(e.target.files[0]));
+                      setFrontLicense(e.target.files[0]);
                     }
                   }}
                 />
@@ -111,12 +127,8 @@ const ProfileVerification = () => {
             <div className="flex items-center justify-center w-full">
               <label className="flex flex-col items-center justify-center w-full mx-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                  {BackLicense ? (
-                    <img
-                      src={BackLicense}
-                      className="w-1/3 h-1/3 sm:w-20 sm:h-20"
-                      alt=""
-                    />
+                  {backLicense ? (
+                    <span className="text-green-500">completed</span>
                   ) : (
                     <>
                       <svg
@@ -151,7 +163,7 @@ const ProfileVerification = () => {
                   className="hidden"
                   onChange={async (e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setBackLicense(await convertToString(e.target.files[0]));
+                      setBackLicense(e.target.files[0]);
                     }
                   }}
                 />
@@ -173,11 +185,7 @@ const ProfileVerification = () => {
               <label className="flex flex-col items-center justify-center w-full mx-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   {frontAdhaar ? (
-                    <img
-                      src={frontAdhaar}
-                      className="w-1/3 h-1/3 sm:w-auto sm:h-auto"
-                      alt=""
-                    />
+                    <span className="text-green-500">completed</span>
                   ) : (
                     <>
                       <svg
@@ -212,7 +220,7 @@ const ProfileVerification = () => {
                   className="hidden"
                   onChange={async (e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setFrontAdhaar(await convertToString(e.target.files[0]));
+                      setFrontAdhaar(e.target.files[0]);
                     }
                   }}
                 />
@@ -224,11 +232,7 @@ const ProfileVerification = () => {
               <label className="flex flex-col items-center justify-center w-full mx-3 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                   {backAdhaar ? (
-                    <img
-                      src={backAdhaar}
-                      className="w-1/3 h-1/3 sm:w-auto sm:h-auto"
-                      alt=""
-                    />
+                    <span className="text-green-500">completed</span>
                   ) : (
                     <>
                       <svg
@@ -263,7 +267,7 @@ const ProfileVerification = () => {
                   className="hidden"
                   onChange={async (e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setBackAdhaar(await convertToString(e.target.files[0]));
+                      setBackAdhaar(e.target.files[0]);
                     }
                   }}
                 />
@@ -276,6 +280,14 @@ const ProfileVerification = () => {
             <div className="text-center hidden sm:block font-semibold">
               Back
             </div>
+          </div>
+          <div className="m-6 flex justify-center">
+            <button
+              onClick={resetState}
+              className=" text-red-600 flex text-center"
+            >
+              Reset
+            </button>
           </div>
 
           <div className="m-6 flex justify-center">

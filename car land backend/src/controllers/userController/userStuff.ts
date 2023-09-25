@@ -6,6 +6,7 @@ import user from "../../models/userSchema";
 import userModel from "../../models/userSchema";
 import cloudinary from "../../config/cloudinary";
 import fs from "fs";
+import IUser from "../../interfaces/userInterface";
 
 interface UserJwt {
   payload?: {
@@ -98,7 +99,7 @@ export const ProfileVerificationData = AsyncHandler(
 
     const data: UploadedFile[] | any = req.files;
 
-console.log(data);
+
 
     const Documents = await Promise.all(
       data.map(async (image: UploadedFile) => {
@@ -122,10 +123,10 @@ console.log(data);
 
 
     const currentuser=await userModel.findById(user)
-console.log(currentuser,Documents);
+
 const license: string[] = [Documents[0], Documents[1]];
 const adhaar: string[] = [Documents[2], Documents[3]];
-console.log(license,adhaar);
+
 
 if(currentuser){
   currentuser.profileVerificationRequest=true
@@ -137,3 +138,11 @@ if(currentuser){
     res.json({ message: user });
   }
 );
+
+
+export const currrentUser = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const user: string = req.headers.authorization;
+const currrentUser:IUser=await userModel.findById(user)
+res.json({message:'current User',user:currrentUser})
+  })

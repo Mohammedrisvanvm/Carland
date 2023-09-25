@@ -1,4 +1,4 @@
-import { ChangeEvent, FC, FormEvent } from "react";
+import { ChangeEvent, FC, FormEvent,SetStateAction,Dispatch } from "react";
 import { useState, useEffect } from "react";
 import {
   userVerifyNumber,
@@ -12,8 +12,11 @@ import { useDispatch } from "react-redux";
 import { setVerify, userLogout } from "../../../redux/slice/userSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const MyAccount: FC = () => {
+type prop={
+  setloading:Dispatch<SetStateAction<boolean>>
+  loading:boolean
+}
+const MyAccount: FC<prop> = ({setloading,loading}) => {
   const [userName, setUserName] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [error1, setError1] = useState<string | null>(null);
@@ -92,6 +95,7 @@ const MyAccount: FC = () => {
         await userprofileData(gender, trimmedUserName);
       } else if (gender) {
         await userprofileData(gender, user.userName);
+        setloading(!loading)
       } else {
         setError1(
           "Invalid username. Username must be at least 3 characters long and should not contain spaces."

@@ -1,11 +1,28 @@
-import React, { FC, ReactNode, useState } from "react";
+import React, { FC, ReactNode, useState, useEffect } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 import Pages from "./Pages";
 import { useAppSelector } from "../../../redux/store/storeHook";
+import { Authcheck, user } from "../../../interfaces/userAuth";
+import { currrentUserFetch } from "../../../services/apis/userApi/userApi";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const LeftSide: FC = () => {
-  const [page, setPage] = useState<string>("Account");
+  const [page, setPage] = useState<string>("");
+  const [loading, setloading] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<user| undefined>(undefined);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {data}: Authcheck = await currrentUserFetch();
+     
+     
+      
+        setCurrentUser(data?.user);
+      
+    };
+    fetchUser();
+  }, [loading]);
 
+  
   const user = useAppSelector((state) => state.user);
   return (
     <>
@@ -23,26 +40,41 @@ const LeftSide: FC = () => {
               </div>
               <div className="flex flex-col  text-center">
                 <p className="text-lg font-bold"> {user.userName}</p>
-                <p className="mb-5 text-xs text-gray-800">
-                  {user.email}
-                </p>
+                <p className="mb-5 text-xs text-gray-800">{user.email}</p>
+                <p className="mb-5 text-xs text-gray-800">{currentUser?.gender}</p>
                 <hr className="mx-6" />
 
                 <ul className=" m-3 text-center  space-y-3 font-medium tracking-wide text-gray-700  transition-colors duration-200 hover:text-deep-purple-accent-400">
                   <li className="flex  flex-row justify-center  items-center">
                     Profile Document
-                    <span>
-                      <img
-                        className="h-4 w-4"
-                        src="https://static.vecteezy.com/system/resources/previews/018/887/462/original/signs-close-icon-png.png"
-                        alt=""
-                      />
-                    </span>
+                    {currentUser?.verifiedProfile ? (
+                      <>
+                        {" "}
+                        <span>
+                          <img
+                            className="h-5 w-5"
+                            src="https://cdn-icons-png.flaticon.com/512/7595/7595571.png"
+                            alt=""
+                          />
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <span>
+                          <img
+                            className="h-4 w-4"
+                            src="https://static.vecteezy.com/system/resources/previews/018/887/462/original/signs-close-icon-png.png"
+                            alt=""
+                          />
+                        </span>
+                      </>
+                    )}
                   </li>
 
                   <li className="flex flex-row justify-center items-center">
                     Mobile Number
-                    {user.verifyPhone ? (
+                    {currentUser?.verified_phonenumber ? (
                       <>
                         {" "}
                         <span>
@@ -97,8 +129,12 @@ const LeftSide: FC = () => {
                         aria-label="Verification"
                         onClick={() => setPage("Verification")}
                         title="Verification"
+                        disabled={currentUser?.profileVerificationRequest}
+                        className={`${currentUser?.profileVerificationRequest ? 'disabled':''}`}
                       >
-                        Profile Verification
+                        Profile Verification 
+                        <span className="mr-2 text-sm text-center text-orange-500"> {currentUser?.profileVerificationRequest ? "pending":''}</span>
+                       
                       </button>
                     </li>
                     <hr />
@@ -114,7 +150,7 @@ const LeftSide: FC = () => {
             </div>
           </div>
           <div className="transition duration-300 transform bg-white rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center">
-            <Pages role={page} />
+            <Pages role={page} setloading={setloading} loading={loading} />
           </div>
         </div>
       </div>

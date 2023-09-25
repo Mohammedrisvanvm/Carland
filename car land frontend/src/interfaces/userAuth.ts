@@ -6,10 +6,15 @@ export interface user {
   verified_phonenumber:boolean|null
   googleId?: string;
   image?: string;
+  gender?:string
   ban?: boolean;
   verified_email?: boolean;
   loading?: boolean;
   accessToken?: string | undefined;
+  license?: Array<String>;
+  adhaar?: Array<String>;
+  profileVerificationRequest?:boolean
+  verifiedProfile?:boolean
 }
 export interface hub{
  
