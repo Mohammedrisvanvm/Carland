@@ -43,6 +43,22 @@ const userSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
+    license:{
+     type:  Array<String>,
+     required:false
+    },
+    adhaar:{
+     type:  Array<String>,
+     required:false
+    },
+    profileVerificationRequest:{
+      type: Boolean,
+      default: false,
+    },
+    verifiedProfile:{
+      type: Boolean,
+      default: false,
+    }
   },
   { timestamps: true }
 );

@@ -98,29 +98,42 @@ export const ProfileVerificationData = AsyncHandler(
 
     const data: UploadedFile[] | any = req.files;
 
+console.log(data);
 
-    // const Documents = await Promise.all(
-    //   data.map(async (image: UploadedFile) => {
-    //     try {
-    //       const filePath = `/path/to/temporary/directory/${image.originalname}`;
-    //       const tempFilePath = image.originalname;
-    //       fs.writeFileSync(tempFilePath, image.buffer);
+    const Documents = await Promise.all(
+      data.map(async (image: UploadedFile) => {
+        try {
+          const tempFilePath = image.originalname;
+          fs.writeFileSync(tempFilePath, image.buffer);
+          const response = await cloudinary.uploader.upload(tempFilePath, {
+            folder: "Documents",
+          });
 
-    //       const response = await cloudinary.uploader.upload(tempFilePath, {
-    //         folder: "Documents",
-    //       });
+          fs.unlinkSync(tempFilePath);
 
-    //       fs.unlinkSync(tempFilePath);
+          return response.url;
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          return "";
+        }
+      })
+    );
+    const user: string = req.headers.authorization;
 
-    //       return response.url;
-    //     } catch (error) {
-    //       console.error("Error uploading image:", error);
-    //       return "";
-    //     }
-    //   })
-    // );
-  
 
-    res.json({ message: "hai" });
+    const currentuser=await userModel.findById(user)
+console.log(currentuser,Documents);
+const license: string[] = [Documents[0], Documents[1]];
+const adhaar: string[] = [Documents[2], Documents[3]];
+console.log(license,adhaar);
+
+if(currentuser){
+  currentuser.profileVerificationRequest=true
+  currentuser.adhaar=adhaar
+  currentuser.license=license
+  await currentuser.save()
+}
+
+    res.json({ message: user });
   }
 );
