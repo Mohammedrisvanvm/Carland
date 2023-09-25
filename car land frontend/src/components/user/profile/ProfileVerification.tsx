@@ -1,8 +1,16 @@
-import React from "react";
+import React, { ChangeEvent, FormEvent, useState } from "react";
 
 const ProfileVerification = () => {
-  const handleSubmit = () => {
-    console.log("hai");
+
+
+  const [frontLicense,setFrontLicense]=useState<File>()
+  const [BackLicense,setBackLicense]=useState<File>()
+  const [frontAdhaar,setFrontAdhaar]=useState<File>()
+  const [backAdhaar,setBackAdhaar]=useState<File>()
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+  console.log(frontLicense,BackLicense,frontAdhaar,backAdhaar);
+  
   };
   return (
     <>
@@ -42,10 +50,15 @@ const ProfileVerification = () => {
                   </p>
                 </div>
                 <input
-                  id="dropzone-file"
+                  id="licensefront"
                   required
                   type="file"
                   className="hidden"
+                  onChange={(e:ChangeEvent<HTMLInputElement>)=>{
+                    if (e.target.files && e.target.files[0]) {
+                      setFrontLicense(e.target.files[0]);
+                    }
+                  }}
                 />
               </label>
             </div>
@@ -82,6 +95,13 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
+                   
+                  onChange={(e:ChangeEvent<HTMLInputElement>)=>{
+                    if (e.target.files && e.target.files[0]) {
+                      setBackLicense(e.target.files[0]);
+                    }
+                  }}
+
                 />
               </label>
             </div>
@@ -128,6 +148,12 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
+ 
+                  onChange={(e:ChangeEvent<HTMLInputElement>)=>{
+                    if (e.target.files && e.target.files[0]) {
+                      setFrontAdhaar(e.target.files[0]);
+                    }
+                  }}
                 />
               </label>
             </div>
@@ -164,6 +190,12 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
+ 
+                  onChange={(e:ChangeEvent<HTMLInputElement>)=>{
+                    if (e.target.files && e.target.files[0]) {
+                      setBackAdhaar(e.target.files[0]);
+                    }
+                  }}
                 />
               </label>
             </div>
