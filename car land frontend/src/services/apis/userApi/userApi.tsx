@@ -46,9 +46,10 @@ export const userprofileData = async (
 };
 
 export const ProfileVerificationData = async (
-  FormData: FormData
+  formData:FormData
 ): Promise<AxiosResponse> => {
-  return await axiosBase.patch("/users/stuff/ProfileVerificationData", {
-    FormData,
-  });
+  return await axiosBase.put("/users/stuff/ProfileVerificationData",formData,{headers:{
+    
+  }}
+ );
 };

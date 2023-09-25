@@ -4,6 +4,8 @@ import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../utils/twilio/twilio";
 import user from "../../models/userSchema";
 import userModel from "../../models/userSchema";
+import cloudinary from "../../config/cloudinary";
+import fs from "fs";
 
 interface UserJwt {
   payload?: {
@@ -41,14 +43,13 @@ export const verifyOtp = AsyncHandler(
     const token: string = req.headers.authorization;
     const otp: number = req.body.otp;
     const verificationToken: string = req.cookies?.verificationToken;
-    
-    const { payload }: UserJwt = verifyJwt(verificationToken);
 
+    const { payload }: UserJwt = verifyJwt(verificationToken);
 
     if (otp == payload.token) {
       await userModel.findByIdAndUpdate(
         { _id: token },
-        { $set: { phone_number: payload.number,verified_phonenumber:true } }
+        { $set: { phone_number: payload.number, verified_phonenumber: true } }
       );
       res.status(200).json({ message: "verified" });
     } else {
@@ -66,7 +67,6 @@ export const userprofileData = AsyncHandler(
       gender: string;
       userName: string;
     };
-   
 
     const { gender, userName }: profile = req.body;
     if (userName) {
@@ -82,5 +82,45 @@ export const userprofileData = AsyncHandler(
     }
 
     res.status(204).json({ message: "updated user profile" });
+  }
+);
+
+export const ProfileVerificationData = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    interface UploadedFile {
+      fieldname: string;
+      originalname: string;
+      encoding: string;
+      mimetype: string;
+      buffer: Buffer;
+      size: number;
+    }
+
+    const data: UploadedFile[] | any = req.files;
+
+
+    // const Documents = await Promise.all(
+    //   data.map(async (image: UploadedFile) => {
+    //     try {
+    //       const filePath = `/path/to/temporary/directory/${image.originalname}`;
+    //       const tempFilePath = image.originalname;
+    //       fs.writeFileSync(tempFilePath, image.buffer);
+
+    //       const response = await cloudinary.uploader.upload(tempFilePath, {
+    //         folder: "Documents",
+    //       });
+
+    //       fs.unlinkSync(tempFilePath);
+
+    //       return response.url;
+    //     } catch (error) {
+    //       console.error("Error uploading image:", error);
+    //       return "";
+    //     }
+    //   })
+    // );
+  
+
+    res.json({ message: "hai" });
   }
 );
