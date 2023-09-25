@@ -1,29 +1,51 @@
 import React, { ChangeEvent, FormEvent, useState } from "react";
 import { ProfileVerificationData } from "../../../services/apis/userApi/userApi";
+import { Form } from "react-router-dom";
 
 const ProfileVerification = () => {
-  const [frontLicense, setFrontLicense] = useState<File>();
-  const [BackLicense, setBackLicense] = useState<File>();
-  const [frontAdhaar, setFrontAdhaar] = useState<File>();
-  const [backAdhaar, setBackAdhaar] = useState<File>();
+  const [frontLicense, setFrontLicense] = useState<string>("");
+  const [BackLicense, setBackLicense] = useState<string>("");
+  const [frontAdhaar, setFrontAdhaar] = useState<string>("");
+  const [backAdhaar, setBackAdhaar] = useState<string>("");
   const [Error, setError] = useState<string | null>(null);
+  const convertToString = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+      fileReader.onload = () => {
+        resolve(fileReader.result as string);
+      };
+      fileReader.onerror = (error: any) => {
+        reject(error);
+      };
+    });
+  };
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(frontLicense, BackLicense, frontAdhaar, backAdhaar);
+
     try {
       if (frontLicense && BackLicense && frontAdhaar && backAdhaar) {
-        const formData = new FormData();
-        formData.append("frontLicense", frontLicense);
-        formData.append("BackLicense", frontLicense);
-        formData.append("frontAdhaar", frontAdhaar);
-        formData.append("backAdhaar", backAdhaar);
-        ProfileVerificationData(formData);
+        console.log(frontLicense, BackLicense, frontAdhaar, backAdhaar);
+
+
+  let value:File[]
+  
+  // [frontLicense, BackLicense, frontAdhaar, backAdhaar]
+// console.log(value);
+let formData = new FormData();
+formData.append('frontLicense', frontLicense);
+formData.append('BackLicense', BackLicense);
+formData.append('frontAdhaar', frontAdhaar);
+formData.append('backAdhaar', backAdhaar);
+
+console.log(formData);
+
+        ProfileVerificationData(value);
       } else {
-        setError('please complete the form data')
+        setError("please complete the form data");
       }
     } catch (error) {}
     console.log(Error);
-    
   };
   return (
     <>
@@ -67,10 +89,10 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
-                 
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  onChange={async(e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setFrontLicense(e.target.files[0]);
+                   
+                      setFrontLicense(await convertToString(e.target.files[0]));
                     }
                   }}
                 />
@@ -109,9 +131,9 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  onChange={async(e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setBackLicense(e.target.files[0]);
+                      setBackLicense(await convertToString(e.target.files[0]));
                     }
                   }}
                 />
@@ -160,9 +182,9 @@ const ProfileVerification = () => {
                   required
                   type="file"
                   className="hidden"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  onChange={async(e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setFrontAdhaar(e.target.files[0]);
+                      setFrontAdhaar(await convertToString(e.target.files[0]));
                     }
                   }}
                 />
@@ -200,11 +222,10 @@ const ProfileVerification = () => {
                   id="backAdhaar"
                   required
                   type="file"
-
                   className="hidden"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  onChange={async(e: ChangeEvent<HTMLInputElement>) => {
                     if (e.target.files && e.target.files[0]) {
-                      setBackAdhaar(e.target.files[0]);
+                      setBackAdhaar(await convertToString(e.target.files[0]));
                     }
                   }}
                 />
