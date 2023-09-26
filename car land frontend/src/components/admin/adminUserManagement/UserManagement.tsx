@@ -10,6 +10,8 @@ const UserManagement = () => {
   const [users, setUser] = useState<user[]|undefined>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  const [modalData, setModalData] = useState<user | undefined>(Object);
+  const [showModal, setShowModal] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -27,6 +29,12 @@ const UserManagement = () => {
   console.log(users);
   const banHandle = async (value: string | undefined) => {
     await banUser(value);
+    setLoading(!loading);
+  };
+  
+  const handleVerify = async (value: string | undefined) => {
+    // await Verifyhub(value);
+    setShowModal(false);
     setLoading(!loading);
   };
   return (
@@ -230,7 +238,7 @@ const UserManagement = () => {
               </th>
 
               <th scope="col" className="px-6 py-3">
-                verifiedEmail
+                verifiedProfile
               </th>
               <th scope="col" className="px-6 py-3">
                 verifiedNumber
@@ -269,20 +277,99 @@ const UserManagement = () => {
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
-                    <td className="px-6 py-4"> {item.verified_email}</td>
-                    {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4"> <button className="bg-black">
-              {item.status}
-                </button></td> */}
+                    <td className="px-6 py-4"> <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"><span
+                          className={`${
+                            item.verifiedProfile ? "text-green-600" : "text-red-600"
+                          }`}
+                        >
+                          {item.verifiedProfile ? "verified" : "not verified"}
+                        </span></button></td>
+                    <td className="px-6 py-4"> <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"><span
+                          className={`${
+                            item.verified_phonenumber ? "text-green-600" : "text-red-600"
+                          }`}
+                        >
+                          {item.verified_phonenumber ? "verified" : "not verified"}
+                        </span></button></td>
+                
 
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                    <button
+                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                        onClick={() => {
+                          setModalData(users[index]);
+
+                          setShowModal(true);
+                        }}
                       >
-                        Edit
-                      </a>
+                        {" "}
+                        action
+                      </button>
+                      <div>
+                        {showModal ? (
+                          <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+                            <div className="w-3/6 h-4/6 flex flex-col">
+                              <button
+                                className="text-white text-xl place-self-end"
+                                onClick={() => setShowModal(false)}
+                              >
+                                x
+                              </button>
+                              <div className="bg-white p-2 rounded">
+                                <div className="p-6">
+                                  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+                                    verification
+                                  </h3>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto sm:mx-28">
+                                    <div className="bg-gray-500 h-42 w-56">
+                                      <img
+                                        src={modalData?.adhaar ? modalData.adhaar[0]:''}
+                                        alt="Hub Image"
+                                      />
+                                    </div>
+                                    <div className="bg-blue-400 h-42 w-56">
+                                      <img
+                                        // src={modalData?.license}
+                                        alt="License"
+                                      />
+                                    </div>
+                                    <div className="text-center font-semibold">
+                                      hub image
+                                    </div>
+                                    <div className="text-center font-semibold">
+                                      license
+                                    </div>
+                                  </div>
+
+                                  <div className="flex flex-row justify-evenly">
+                                    <button
+                                      onClick={() => {
+                                        setModalData(undefined);
+                                        setShowModal(false);
+                                      }}
+                                      className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      cancel
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleVerify(modalData?._id)
+                                      }
+                                      className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      {modalData?.verifiedProfile
+                                        ? "remove verification"
+                                        : "verify"}
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))
