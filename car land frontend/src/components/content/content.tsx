@@ -109,7 +109,7 @@ export const Content = () => {
                           <br />
                           <span className="text-xl text-black font-semibold font-sans">
                             {" "}
-                            ₹864/hr
+                            ₹ {item.fairPrice} /day
                           </span>
                         </p>
                         <button className="text-gray-800 bg-stone-200 hover:bg-black hover:text-white focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center ">

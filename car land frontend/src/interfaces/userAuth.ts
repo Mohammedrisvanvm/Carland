@@ -11,8 +11,8 @@ export interface user {
   verified_email?: boolean;
   loading?: boolean;
   accessToken?: string | undefined;
-  license?: Array<String>;
-  adhaar?: Array<String>;
+  license: Array<string>;
+  adhaar: Array<string>;
   profileVerificationRequest?:boolean
   verifiedProfile?:boolean
 }

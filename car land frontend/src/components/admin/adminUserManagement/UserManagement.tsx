@@ -323,13 +323,13 @@ const UserManagement = () => {
                                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto sm:mx-28">
                                     <div className="bg-gray-500 h-42 w-56">
                                       <img
-                                        src={modalData?.adhaar ? modalData.adhaar[0]:''}
+                                        src={modalData?.adhaar[0]}
                                         alt="Hub Image"
                                       />
                                     </div>
                                     <div className="bg-blue-400 h-42 w-56">
                                       <img
-                                        // src={modalData?.license}
+                                        src={modalData?.license[0]}
                                         alt="License"
                                       />
                                     </div>
