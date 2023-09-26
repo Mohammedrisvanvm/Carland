@@ -1,19 +1,18 @@
 interface IAddcar {
     id?:string
     vehicleName: string,
+    year:string
     vehicleNumber: string,
-    serviceType: string,
-    type: string,
     colour: string,
     fuel: string,
-    numofseats: number,
+    numofseats: string,
     hubName: string,
-    mileage: number,
-    fairPrice: number,
-    fairKm: number,
+    mileage: string,
+    fairPrice: string,
+    fairKm: string,
     vehiclesingleimage: string,
     vehiclemultipleimage: string[],
     specification: Array<string>,
     vehicleValidityDate: string | number,
-    documents: Array<string>,
+    DocumentVehicle: string,
 }

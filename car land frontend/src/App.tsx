@@ -11,7 +11,6 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 import AdminRouters from "./routes/admin";
 import VendorRouters from "./routes/vendorRouters";
-import RentRouters from "./routes/rentrouters";
 import { Content } from "./test/test";
 
 function App() {
@@ -22,7 +21,6 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/*" element={<UserRoutes />} />
-          <Route path="/rent/*" element={<RentRouters />} />
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
           <Route path="/test" element={<Content />} />

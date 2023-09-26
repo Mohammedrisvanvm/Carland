@@ -12,14 +12,6 @@ const vehicleSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    serviceType: {
-      type: String,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
     colour: {
       type: String,
       required: true,
@@ -32,10 +24,10 @@ const vehicleSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
-    hubId: {
-      type: String,
-      required: true,
-    },
+    // hubId: {
+    //   type: String,
+    //   required: true,
+    // },
     mileage: {
       type: Number,
       required: true,
@@ -67,8 +59,8 @@ const vehicleSchema: Schema = new Schema(
       type: Date,
       required: true,
     },
-    documents: {
-      type: Array,
+    DocumentVehicle: {
+      type: String,
       required: true,
     },
     isVerified: {

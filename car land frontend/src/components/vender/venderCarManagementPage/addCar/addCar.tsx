@@ -1,11 +1,12 @@
 import { FormikConfig, FormikHelpers, useFormik } from "formik";
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import { CarAdd } from "../../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../../interfaces/axiosinterface";
 import { useAppSelector } from "../../../../redux/store/storeHook";
+import { error } from "console";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -14,47 +15,44 @@ const convertToBase64 = (file: File): Promise<string> => {
     fileReader.onload = () => {
       resolve(fileReader.result as string);
     };
-    fileReader.onerror = (error:any) => {
+    fileReader.onerror = (error: any) => {
       reject(error);
     };
   });
 };
 const AddCar = () => {
-
-  const hubid=useAppSelector((state)=>state.vendor.hubId)
+  const hubid = useAppSelector((state) => state.vendor.hubId);
   const Navigate = useNavigate();
   const initialValues: IAddcar = {
     vehicleName: "",
     vehicleNumber: "",
-    serviceType: "",
-    type: "",
     colour: "",
+    year: "",
     fuel: "",
-    numofseats: 0,
+    numofseats: "",
     hubName: "",
-    mileage: 0,
-    fairPrice: 0,
-    fairKm: 0,
+    mileage: "",
+    fairPrice: "",
+    fairKm: "",
     vehiclesingleimage: "",
     vehiclemultipleimage: [],
     specification: [],
     vehicleValidityDate: "",
-    documents: [],
+    DocumentVehicle: "",
   };
-
   const submitForm = async (
     values: IAddcar,
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-      interface axios{
-        data:{
-          message:string
-        }
+      interface axios {
+        data: {
+          message: string;
+        };
       }
-      const res:AxiosResponse= await CarAdd(values,hubid);
-      toast.success(res.data?.message)
-     Navigate('/vendor/vendorcars')
+      const res: AxiosResponse = await CarAdd(values, hubid);
+      toast.success(res.data?.message);
+      Navigate("/vendor/vendorcars");
     } catch (error: any) {
       console.log(error);
     }
@@ -77,7 +75,19 @@ const AddCar = () => {
     validateOnMount: true,
     validationSchema: AddCarSchema,
   });
-
+  const handleDocumentVehicleChange = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      if (e.target.files != null) {
+        const file: File | null = e.target.files[0];
+        const Base = await convertToBase64(file);
+        setFieldValue("DocumentVehicle", Base);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
@@ -96,6 +106,16 @@ const AddCar = () => {
       console.log(error);
     }
   };
+const [spec,setspec]=useState<string[]>([])
+  const handleChangeSpec = async (
+    e: ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try { console.log(spec);
+      setFieldValue("specification", spec);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handlesingleImageChange = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
@@ -109,6 +129,7 @@ const AddCar = () => {
       console.log(error);
     }
   };
+console.log(values.specification);
 
   return (
     <>
@@ -122,29 +143,54 @@ const AddCar = () => {
         <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
             <form onSubmit={handleSubmit}>
-              <div className="relative z-0 w-full mb-6 group">
-                <input
-                  type="text"
-                  className={`${
-                    errors.vehicleName && touched.vehicleName
-                      ? "input-error"
-                      : ""
-                  } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                  placeholder=" "
-                  value={values.vehicleName}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  name="vehicleName"
-                  required
-                />
-                {errors.vehicleName && touched.vehicleName && (
-                  <p className="border-red-500 text-sm text-red-500">
-                    {errors.vehicleName}
-                  </p>
-                )}
-                <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                  vehicle Name
-                </label>
+              <div className="grid md:grid-cols-2 md:gap-6">
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    className={`${
+                      errors.vehicleName && touched.vehicleName
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=" "
+                    value={values.vehicleName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="vehicleName"
+                    required
+                  />
+                  {errors.vehicleName && touched.vehicleName && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.vehicleName}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    vehicle Name
+                  </label>
+                </div>
+                <div className="relative z-0 w-full mb-6 group">
+                  <input
+                    type="text"
+                    value={values.year}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    name="year"
+                    id="floating_company"
+                    className={`${
+                      errors.year && touched.year ? "input-error" : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=""
+                    required
+                  />
+                  {errors.year && touched.year && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.year}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    year
+                  </label>
+                </div>
               </div>
               <img
                 src={values.vehiclesingleimage ? values.vehiclesingleimage : ""}
@@ -174,52 +220,6 @@ const AddCar = () => {
                 <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                   vehicle Number
                 </label>
-              </div>
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <select
-                    id="serviceType"
-                    value={values.serviceType}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-                  >
-                    <option selected>Choose a service Type</option>
-                    <option value="cab">Cab</option>
-                    <option value="rent">Rent</option>
-                  </select>
-
-                  {errors.serviceType && touched.serviceType && (
-                    <p className="border-red-500 text-sm text-red-500">
-                      {errors.serviceType}
-                    </p>
-                  )}
-                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    service Type
-                  </label>
-                </div>
-                <div className="relative z-0 w-full mb-6 group">
-                  <select
-                    id="type"
-                    value={values.type}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    className="block py-2.5 px-0 w-full text-sm text-gray-500 bg-transparent border-0 border-b-2 border-gray-200 appearance-none dark:text-gray-400 dark:border-gray-700 focus:outline-none focus:ring-0 focus:border-gray-200 peer"
-                  >
-                    <option selected>Choose a Type</option>
-                    <option value="car">Car</option>
-                    <option value="bike">bike</option>
-                  </select>
-
-                  {errors.type && touched.type && (
-                    <p className="border-red-500 text-sm text-red-500">
-                      {errors.type}
-                    </p>
-                  )}
-                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    Type
-                  </label>
-                </div>
               </div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">
@@ -295,7 +295,7 @@ const AddCar = () => {
                     numofseats
                   </label>
                 </div>
-                <div className="relative z-0 w-full mb-6 group">
+                {/* <div className="relative z-0 w-full mb-6 group">
                   <input
                     type="text"
                     value={values.hubName}
@@ -311,6 +311,40 @@ const AddCar = () => {
                   />
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
                     hubName
+                  </label>
+                </div> */}
+                <div className="relative z-0 w-full mb-6 group">
+                
+                  <input
+                    type="text"
+                    onChange={handleChangeSpec}
+                    onBlur={handleBlur}
+                    
+                    name="specification"
+                    id="specification"
+                    onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault(); // Prevent the default behavior of the "Enter" key
+                        const enteredValue = e.currentTarget.value;
+                        setspec((previous)=>[...previous,enteredValue])
+                        e.currentTarget.value = "";
+                      }
+                    }}
+                    className={`${
+                      errors.specification && touched.specification
+                        ? "input-error"
+                        : ""
+                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                    placeholder=""
+                   
+                  />
+                  {errors.specification && touched.specification && (
+                    <p className="border-red-500 text-sm text-red-500">
+                      {errors.specification}
+                    </p>
+                  )}
+                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
+                    specification
                   </label>
                 </div>
               </div>
@@ -388,33 +422,6 @@ const AddCar = () => {
                 </div>
                 <div className="relative z-0 w-full mb-6 group">
                   <input
-                    type="text"
-                    value={values.specification}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    name="specification"
-                    id="floating_company"
-                    className={`${
-                      errors.specification && touched.specification
-                        ? "input-error"
-                        : ""
-                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                    placeholder="optional "
-                    required
-                  />
-                  {errors.specification && touched.specification && (
-                    <p className="border-red-500 text-sm text-red-500">
-                      {errors.specification}
-                    </p>
-                  )}
-                  <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    specification
-                  </label>
-                </div>
-              </div>{" "}
-              <div className="grid md:grid-cols-2 md:gap-6">
-                <div className="relative z-0 w-full mb-6 group">
-                  <input
                     type="Date"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                     value={values.vehicleValidityDate}
@@ -440,29 +447,25 @@ const AddCar = () => {
                     vehicle Validity Date
                   </label>
                 </div>
+              </div>{" "}
+              <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">
                   <input
-                    type="text"
-                    value={values.documents}
-                    onChange={handleChange}
+                    className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    type="file"
+                    name="DocumentVehicle"
+                    onChange={handleDocumentVehicleChange}
                     onBlur={handleBlur}
-                    name="documents"
-                    id="floating_company"
-                    className={`${
-                      errors.documents && touched.documents ? "input-error" : ""
-                    } block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                    placeholder=" "
-                    required
                   />
-                  {errors.documents && touched.documents && (
-                    <p className="border-red-500 text-sm text-red-500">
-                      {errors.documents}
-                    </p>
-                  )}
+
                   <label className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">
-                    documents
+                    Vehicle Rc
                   </label>
-                </div>
+                </div> <div className="relative z-0 w-full mb-6 group">
+                {values.specification ? (
+                    <div>{values.specification}</div>
+                  ) : null}
+                  </div>
               </div>
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="relative z-0 w-full mb-6 group">

@@ -16,7 +16,7 @@ interface IVehicle extends Document {
     status: Boolean,
     specification: Array<string>,
     vehicleValidate: Date,
-    documents: Array<string>,
+    DocumentVehicle: string,
     vehiclesingleimage :string,
     vehiclemultipleimage:Array<string>,
     vehicleValidityDate:string,

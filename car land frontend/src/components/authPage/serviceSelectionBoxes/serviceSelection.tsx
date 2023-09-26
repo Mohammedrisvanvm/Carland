@@ -52,7 +52,7 @@ export const service = () => {
             Rent a car and explore the city at your own pace
           </p>
           <button
-            onClick={() => Navigate("/rent/renthome")}
+            onClick={() => Navigate("/selectcity")}
             aria-label=""
             className="inline-flex items-center font-semibold transition-colors duration-200 text-deep-purple-accent-400 hover:text-deep-purple-800"
           >

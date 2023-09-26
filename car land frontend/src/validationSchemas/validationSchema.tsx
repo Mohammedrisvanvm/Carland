@@ -52,6 +52,8 @@ export const LoginSchema = yup.object().shape({
     })
     .required(),
 });
+const currentDate = new Date();
+const currentYear = currentDate.getFullYear();
 export const AddCarSchema = yup.object().shape({
   vehicleName: yup
     .string()
@@ -59,12 +61,17 @@ export const AddCarSchema = yup.object().shape({
     .min(3)
     .matches(/^[a-zA-Z0-9\s]+$/, "Name must not contain special characters")
     .required(),
+    year: yup.number()
+    .min(2005,'year must be at least 2005')
+    .max(currentYear,'year must not be at morethan this year')
+    .required(),
   vehicleNumber: yup
     .string()
+    .min(3)
     .trim()
-    .min(6)
+    .min(7)
     // .matches(
-    //   /^[A-Za-z]{2}\s[0-9]{2}\s[A-Za-z]{2}\s[0-9]{4}$/,
+    //   /^[A-Za-z]{2}\s[0-9]{2}/,
     //   "number is not valid eg:KL10N2020"
     // )
     .required(),
@@ -75,26 +82,17 @@ export const AddCarSchema = yup.object().shape({
     .matches(/^[a-zA-Z0-9\s]+$/, "colour must not contain special characters")
     .required(),
   numofseats: yup
-    .string()
-    .trim()
-    .matches(/^\d+$/, "seats must be number")
+    .number()
+
     .max(6, "vehicle seats must below 6 ")
+    .min(2, "vehicle seats atleast 2")
     .required(),
-  mileage: yup
-    .string()
-    .trim()
-    .matches(/^\d+$/, "mileage must be number")
-    .required(),
+  mileage: yup.number().min(5, "mileage must be at least 5").required(),
   fairPrice: yup
-    .string()
-    .trim()
-    .matches(/^\d+$/, "fair price must be number")
+    .number()
+    .min(1500, "fair Price must be at least 1500")
     .required(),
-  fairKm: yup
-    .string()
-    .trim()
-    .matches(/^\d+$/, "fair km must be number")
-    .required(),
+  fairKm: yup.number().min(100, "fair km must be at least 100").required(),
   vehicleValidityDate: yup
     .date()
     .required("Future date is required")
@@ -164,7 +162,7 @@ export const vendorHubSchema = yup.object().shape({
     .matches(/^\d+$/, "pincode must be number")
     .max(6, "pincode must be 6 number")
     .required(),
-    validityDate: yup
+  validityDate: yup
     .date()
     .required("Future date is required")
     .min(new Date(), "Date must be in the future"),

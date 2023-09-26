@@ -7,6 +7,7 @@ interface Ihub extends Document {
   location: Location;
   place?:object;
   pincode: Number;
+  vehicles:Array<string>
   validityDate: Date;
   license: string;
   hubImage: string;

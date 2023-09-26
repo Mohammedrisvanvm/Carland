@@ -3,6 +3,8 @@ import { Request, Response } from "express";
 import vehicleModel from "../../models/vehicleSchema";
 import IVehicle from "../../interfaces/vehicleInterface";
 import cloudinary from "../../config/cloudinary";
+import Ihub from "../../interfaces/hubInterface";
+import hubModel from "../../models/hubSchema";
 interface CloudinaryResponse {
   public_id: string;
   secure_url: string;
@@ -26,13 +28,18 @@ export const addVehicleController = AsyncHandler(
       vehiclemultipleimage,
       specification,
       vehicleValidityDate,
-      documents,
+      DocumentVehicle,
     }: IVehicle = req.body.values;
     const hubId: string = req.body.id;
+
+    const docimage = await cloudinary.uploader
+      .upload(DocumentVehicle, { folder: "carsDoc" })
+      .then((response) => response.url);
 
     const singleImage = await cloudinary.uploader
       .upload(vehiclesingleimage, { folder: "cars" })
       .then((response) => response.url);
+
     const SubImages = await Promise.all(
       vehiclemultipleimage.map(async (image, index) => {
         try {
@@ -69,9 +76,11 @@ export const addVehicleController = AsyncHandler(
         SubImages,
         specification,
         vehicleValidityDate,
-        documents,
-        hubId,
+        DocumentVehicle: docimage,
       });
+
+      const hub: Ihub = await hubModel.findByIdAndUpdate(hubId,{$addToSet:{vehicles:vehicle._id}});
+  
       res.status(201).json({ message: `${vehicle.vehicleName}vehicle added` });
     } else {
       throw new Error("vehicle already exist");

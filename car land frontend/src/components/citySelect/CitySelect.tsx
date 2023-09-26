@@ -11,7 +11,7 @@ export const CitySelect = () => {
 
   const handleSelectChange = (e: any) => {
     setSelectedLocation(e.target.value);
-    Navigate(`/rent/rentcars${selectedLocation}`);
+    Navigate(`/rentcars${selectedLocation}`);
    
   };
   return (
