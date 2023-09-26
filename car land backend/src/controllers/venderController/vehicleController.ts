@@ -14,11 +14,11 @@ interface CloudinaryResponse {
 }
 export const addVehicleController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    console.log(typeof(req.body.values.year));
     const {
       vehicleName,
       vehicleNumber,
-      serviceType,
-      type,
+      year,
       colour,
       fuel,
       numofseats,
@@ -33,6 +33,7 @@ export const addVehicleController = AsyncHandler(
       DocumentVehicle,
     }: IVehicle = req.body.values;
     const hubId: string = req.body.id;
+
 
     const docimage = await cloudinary.uploader
       .upload(DocumentVehicle, { folder: "carsDoc" })
@@ -65,10 +66,9 @@ export const addVehicleController = AsyncHandler(
       const vehicle: IVehicle = await vehicleModel.create({
         vehicleName,
         vehicleNumber,
-        serviceType,
         colour,
+        year,
         fuel,
-        type,
         numofseats,
         hubName,
         mileage,
@@ -100,58 +100,90 @@ export const getVehiclesController = AsyncHandler(
     };
     const { hubId, search }: hubId = req.query;
     console.log(hubId, search, 11);
-    if (search == "") {
-      var vehicles: IVehicle[] = await hubModel.aggregate([
-        {
-          $match: {
-            _id: new ObjectId(hubId),
-          },
-        },
-        {
-          $lookup: {
-            from: "vehicles",
-            localField: "vehicles",
-            foreignField: "_id",
-            as: "vehicleData",
-          },
-        },
+    // if (search == "") {
+    //   var vehicles: IVehicle[] = await hubModel.aggregate([
+    //     {
+    //       $match: {
+    //         _id: new ObjectId(hubId),
+    //       },
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "vehicles",
+    //         localField: "vehicles",
+    //         foreignField: "_id",
+    //         as: "vehicleData",
+    //       },
+    //     },
 
-        {
-          $unwind: "$vehicleData",
-        },
-        {
-          $replaceRoot: {
-            newRoot: "$vehicleData",
-          },
-        },
-      ]);
-    } else {
-      var vehicles: IVehicle[] = await hubModel.aggregate([
-        {
-          $match: {
-            _id: new ObjectId(hubId),
-          },
-        },
-        {
-          $lookup: {
-            from: "vehicles",
-            localField: "vehicles",
-            foreignField: "_id",
-            as: "vehicleData",
-          },
-        },
+    //     {
+    //       $unwind: "$vehicleData",
+    //     },
+    //     {
+    //       $replaceRoot: {
+    //         newRoot: "$vehicleData",
+    //       },
+    //     },
+    //   ]);
+    // } else {
+    //   var vehicles: IVehicle[] = await hubModel.aggregate([
+    //     {
+    //       $match: {
+    //         _id: new ObjectId(hubId),
+    //       },
+    //     },
+    //     {
+    //       $lookup: {
+    //         from: "vehicles",
+    //         localField: "vehicles",
+    //         foreignField: "_id",
+    //         as: "vehicleData",
+    //       },
+    //     },
 
-        {
-          $unwind: "$vehicleData",
+    //     {
+    //       $unwind: "$vehicleData",
+    //     },
+    //     {
+    //       $replaceRoot: {
+    //         newRoot: "$vehicleData",
+    //       },
+    //     },
+    //   ]);
+    // }
+
+    var pipeline = [
+      {
+        $match: {
+          _id: new ObjectId(hubId),
         },
-        {
-          $replaceRoot: {
-            newRoot: "$vehicleData",
-          },
+      },
+      {
+        $lookup: {
+          from: "vehicles",
+          localField: "vehicles",
+          foreignField: "_id",
+          as: "vehicleData",
         },
-      ]);
-    }
-    console.log(vehicles, 312);
+      },
+      {
+        $unwind: "$vehicleData",
+      },
+      {
+        $match: {
+          $or: [
+            { "vehicleData.vehicleName": { $regex: search, $options: "i" } },
+            { "vehicleData.vehicleNumber": { $regex: search, $options: "i" } },
+          ],
+        },
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$vehicleData",
+        },
+      },
+    ];
+    var vehicles: IVehicle[] = await hubModel.aggregate(pipeline);
 
     res.status(200).json({ vehicles });
   }

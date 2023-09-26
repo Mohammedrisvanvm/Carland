@@ -3,9 +3,8 @@ interface IVehicle extends Document {
     _id:string
     vehicleName: string,
     vehicleNumber: string,
-    serviceType: string,
-    type: string
     image: Array<string>,
+    year:string
     colour: string,
     fuel: string,
     numofseats: Number,

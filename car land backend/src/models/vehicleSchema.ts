@@ -24,10 +24,11 @@ const vehicleSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
-    // hubId: {
-    //   type: String,
-    //   required: true,
-    // },
+    year: {
+      type: Number,
+      required: true,
+    },
+  
     mileage: {
       type: Number,
       required: true,
@@ -42,7 +43,7 @@ const vehicleSchema: Schema = new Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     singleImage: {
       type: String,

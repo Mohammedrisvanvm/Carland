@@ -134,7 +134,7 @@ console.log(values.specification);
   return (
     <>
       {" "}
-      <div className="flex justify-center overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8 ">
+      <div className="flex justify-center overflow-hidden shadow-md sm:rounded-lg mt-14 m-8 ">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
           Add Car
         </span>
