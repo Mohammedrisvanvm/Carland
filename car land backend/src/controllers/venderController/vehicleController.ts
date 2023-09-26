@@ -5,6 +5,8 @@ import IVehicle from "../../interfaces/vehicleInterface";
 import cloudinary from "../../config/cloudinary";
 import Ihub from "../../interfaces/hubInterface";
 import hubModel from "../../models/hubSchema";
+import mongoose from "mongoose";
+const ObjectId = mongoose.Types.ObjectId;
 interface CloudinaryResponse {
   public_id: string;
   secure_url: string;
@@ -79,8 +81,10 @@ export const addVehicleController = AsyncHandler(
         DocumentVehicle: docimage,
       });
 
-      const hub: Ihub = await hubModel.findByIdAndUpdate(hubId,{$addToSet:{vehicles:vehicle._id}});
-  
+      const hub: Ihub = await hubModel.findByIdAndUpdate(hubId, {
+        $addToSet: { vehicles: vehicle._id },
+      });
+
       res.status(201).json({ message: `${vehicle.vehicleName}vehicle added` });
     } else {
       throw new Error("vehicle already exist");
@@ -97,13 +101,57 @@ export const getVehiclesController = AsyncHandler(
     const { hubId, search }: hubId = req.query;
     console.log(hubId, search, 11);
     if (search == "") {
-      var vehicles: IVehicle[] = await vehicleModel.find({ hubId: hubId });
+      var vehicles: IVehicle[] = await hubModel.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(hubId),
+          },
+        },
+        {
+          $lookup: {
+            from: "vehicles",
+            localField: "vehicles",
+            foreignField: "_id",
+            as: "vehicleData",
+          },
+        },
+
+        {
+          $unwind: "$vehicleData",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$vehicleData",
+          },
+        },
+      ]);
     } else {
-      var vehicles: IVehicle[] = await vehicleModel.find({
-        vehicleName: new RegExp(search, "i"),
-      });
+      var vehicles: IVehicle[] = await hubModel.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(hubId),
+          },
+        },
+        {
+          $lookup: {
+            from: "vehicles",
+            localField: "vehicles",
+            foreignField: "_id",
+            as: "vehicleData",
+          },
+        },
+
+        {
+          $unwind: "$vehicleData",
+        },
+        {
+          $replaceRoot: {
+            newRoot: "$vehicleData",
+          },
+        },
+      ]);
     }
-    console.log(vehicles, 11);
+    console.log(vehicles, 312);
 
     res.status(200).json({ vehicles });
   }

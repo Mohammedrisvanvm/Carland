@@ -22,6 +22,10 @@ interface IVehicle extends Document {
     vehicleValidityDate:string,
     hubId?:string
     ban:boolean
+   
+}
+interface IVehicle {
+    vehicleData:IVehicle[]
 }
 
 export default IVehicle

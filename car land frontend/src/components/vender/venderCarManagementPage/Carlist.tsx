@@ -10,6 +10,7 @@ import axios, { AxiosError } from "axios";
 import { vendorLogout } from "../../../redux/slice/vendorSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const CarList = () => {
   const [vehicles, setVehicles] = useState<Vehicles[]|undefined>([]);
@@ -20,7 +21,7 @@ const CarList = () => {
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response = await getVehicle(id,search);
+        const response:AxiosResponse = await getVehicle(id,search);
         console.log(response.data?.vehicles);
 
         setVehicles(response.data?.vehicles);
@@ -45,6 +46,7 @@ const CarList = () => {
 
     fetchData();
   }, [search]);
+console.log(vehicles);
 
   return (
     <>
