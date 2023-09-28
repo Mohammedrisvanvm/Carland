@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
+
+const API_ENDPOINTS=`https://api.openweathermap.org/data/3.0/onecall?`
+const API_KEY=`c74d5b78ec373a800f3a214adba28c0a`
+
 export const CitySelect = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [latitude, setLatitude] = useState<number|null>(null);
