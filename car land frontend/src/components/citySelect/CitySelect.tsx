@@ -1,3 +1,5 @@
+import axios from "axios";
+import mapboxgl, { Map, MapboxEvent } from "mapbox-gl";
 import React, { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -11,7 +13,15 @@ export const CitySelect = () => {
   const [longitude, setLongitude] = useState<number|null>(null);;
   const Navigate = useNavigate();
   console.log(selectedLocation);
+const getlocation=()=>{
+  // const finalEndpoint=`${API_ENDPOINTS}lat=${latitude}&lon=${longitude}&exclude=hourly,daily&appid=${API_KEY}`
 
+  // axios.get(finalEndpoint).then((Response)=>{
+  //   console.log(Response);
+    
+  // })
+ 
+}
 
  
 
@@ -20,6 +30,8 @@ export const CitySelect = () => {
     // Navigate(`/rentcars${selectedLocation}`);
    
   };
+  
+
   return (
     <>
       <div className="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
@@ -34,6 +46,7 @@ export const CitySelect = () => {
           <div onClick={()=>navigator.geolocation.getCurrentPosition((position)=>{
             setLatitude(position.coords.latitude)
             setLongitude(position.coords.longitude)
+             getlocation()
             console.log(position.coords);
             })}>
 hello
