@@ -1,33 +1,19 @@
-import React,{Fragment,useState,CSSProperties, ChangeEvent } from 'react'
-import ClipLoader from "react-spinners/ClipLoader";
+import React, { Fragment, useState, CSSProperties, ChangeEvent } from "react";
+import { RingLoader } from "react-spinners";
 const override: CSSProperties = {
-    display: "block",
-    margin: "0 auto",
-    borderColor: "red",
-  };
+  display: "block",
+  margin: "0 auto",
+};
 const Loader = () => {
-    let [loading, setLoading] = useState<boolean>(true);
-    let [color, setColor] = useState<string>("#ffffff");
   return (
-   <Fragment>
+    <Fragment>
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <RingLoader color={"hsl(8, 0%, 40%)"} cssOverride={override} />
+        </div>
+      </div>
+    </Fragment>
+  );
+};
 
-<div className="sweet-loading">
-      <button onClick={(event: React.MouseEvent<HTMLElement>) => setLoading(!loading)}>Toggle Loader</button>
-      <input value={color} onChange={(input:ChangeEvent<HTMLInputElement>) => setColor(input.target.value)} placeholder="Color of the loader" />
-
-      <ClipLoader
-        color={color}
-        loading={loading}
-        cssOverride={override}
-        size={150}
-        aria-label="Loading Spinner"
-        data-testid="loader"
-      />
-    </div>
-
-
-   </Fragment>
-  )
-}
-
-export default Loader
+export default Loader;

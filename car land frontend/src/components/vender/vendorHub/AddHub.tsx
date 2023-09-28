@@ -8,6 +8,7 @@ import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import Map from "./Map";
 import MapboxComponent from "./Map";
+import { hub } from "../../../interfaces/userAuth";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -34,7 +35,7 @@ const AddHub: FC = () => {
   const Navigate = useNavigate();
   const [showMap, setShowMap] = useState<boolean>(false);
   const [location, setLocation] = useState<object|null>(null);
-  const initialValues: IHub = {
+  const initialValues: hub = {
     hubName: "",
     place: {},
     pincode: "",
@@ -42,11 +43,12 @@ const AddHub: FC = () => {
     hubMultiImage: [],
     validityDate: "",
     license: "",
+   
   };
 
   const submitForm = async (
-    values: IHub,
-    actions: FormikHelpers<IHub>
+    values: hub,
+    actions: FormikHelpers<hub>
   ): Promise<void> => {
     try {
       console.log(location);

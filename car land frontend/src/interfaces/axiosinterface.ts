@@ -6,6 +6,7 @@ export interface AxiosResponse<T = any> {
     hubs?: hub[];
     message?: string;
     vehicles?: Vehicles[];
+    count?:number
     vendors?:IVendor[]
     users?:user[]
     accessToken?: string;

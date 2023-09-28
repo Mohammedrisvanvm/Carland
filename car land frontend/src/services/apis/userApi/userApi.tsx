@@ -26,8 +26,8 @@ export const currrentUserFetch = (): Promise<AxiosResponse<any>> => {
 export const userSignOut = (): Promise<AxiosResponse> => {
   return axiosBase.get("/users/auth/userLogout");
 };
-export const userGetVehicle = async (): Promise<AxiosResponse<any>> => {
-  return axiosBase.get("/users/vehicle/getvehicles");
+export const userGetVehicle = async (currentPage:number,search:string,filter:string): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}`);
 };
 export const userVerifyNumber = async (
   phoneNumber: number

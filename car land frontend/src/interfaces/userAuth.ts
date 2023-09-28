@@ -17,12 +17,13 @@ export interface user {
   verifiedProfile?:boolean
 }
 export interface hub{
+  place: object;
  
-  _id:string,
+  _id?:string,
   hubName: string;
-  isVerified: boolean;
-  ban: boolean;
-  location: {
+  isVerified?: boolean;
+  ban?: boolean;
+  location?: {
     lat:number,lng:number
   }|undefined;
   placeName?:string;
