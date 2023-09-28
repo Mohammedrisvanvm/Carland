@@ -9,6 +9,7 @@ import Pages from '../components/user/profile/Pages'
 import LeftSide from '../components/user/profile/LeftSide'
 import CitySelect from '../components/citySelect/CitySelect'
 import { Content } from '../components/content/content'
+import SingleVehicle from '../components/user/singlevehiclepage/SingleVehicle'
 
 const UserRoutes = () => {
     return (
@@ -21,6 +22,7 @@ const UserRoutes = () => {
                 <Route path='/UserOtp' element={<OtpPage/>}/>
                 <Route path='/selectcity' element={<CitySelect/>}/>
                 <Route path='/rentcars' element={<Content/>} />
+                <Route path='/singlecar/:id' element={<SingleVehicle/>} />
             <Route path='/profile' element={<LeftSide/>}/> 
             </Routes>
         </>

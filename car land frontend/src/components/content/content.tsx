@@ -52,24 +52,24 @@ export const Content = () => {
   }, [currentPage, search, filter]);
   console.log(searchedLatitude,searchedLongitude);
 
- const locationSearch=async()=>{
-    const response:any = await mapboxAPI.get(`/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`);
-      if (response.data.features.length === 0) {
-        console.log('Location not found');
-        return;
-      }
+//  const locationSearch=async()=>{
+//     const response:any = await mapboxAPI.get(`/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`);
+//       if (response.data.features.length === 0) {
+//         console.log('Location not found');
+//         return;
+//       }
     
-      const points:any = response.data.features[1];
-      console.log(points);
-      const latitude:number = parseFloat(points.center[1]);
-      const longitude:number = parseFloat(points.center[0]);
-      setSearchedLatitude(latitude);
-      setSearchedLongitude(longitude);
-      const searchedLocation : {
-        latitude: number | undefined;
-        longitude: number | undefined;
-    }= { latitude: searchedLatitude, longitude: searchedLongitude };
-  }
+//       const points:any = response.data.features[1];
+//       console.log(points);
+//       const latitude:number = parseFloat(points.center[1]);
+//       const longitude:number = parseFloat(points.center[0]);
+//       setSearchedLatitude(latitude);
+//       setSearchedLongitude(longitude);
+//       const searchedLocation : {
+//         latitude: number | undefined;
+//         longitude: number | undefined;
+//     }= { latitude: searchedLatitude, longitude: searchedLongitude };
+//   }
   const [isOpen, setIsOpen] = useState(true);
 //   function calculateDistance(lat1:number, lon1:number, lat2:number, lon2:number) {
 //     const R = 6371; // Earth's radius in km
@@ -122,7 +122,7 @@ export const Content = () => {
             className="h-12 px-4 border  border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 focus: w-96"
           />
           <button
-            onClick={locationSearch}
+            // onClick={locationSearch}
   
             className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
           >
@@ -236,6 +236,7 @@ export const Content = () => {
                 ? vehicles.map((item) => (
                     <button
                       aria-label="View Item"
+                      onClick={()=>Navigate(`/singlecar/${item._id}`)}
                       className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
                     >
                       <div className="flex flex-col h-full">
