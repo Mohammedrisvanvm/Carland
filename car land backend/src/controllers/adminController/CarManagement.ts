@@ -33,3 +33,17 @@ export const banCar = AsyncHandler(
     res.status(200).json({ message: "success" });
   }
 );
+export const verifyCar = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const id: string = req.body.value;
+
+    const car: IVehicle | null = await vehicleModel.findById(id);
+
+    if (car) {
+      car.isVerified = !car.isVerified;
+      await car.save();
+    }
+
+    res.status(200).json({ message: "success" });
+  }
+);
