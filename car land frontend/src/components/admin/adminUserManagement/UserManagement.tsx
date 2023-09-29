@@ -37,6 +37,8 @@ const UserManagement = () => {
     setShowModal(false);
     setLoading(!loading);
   };
+  console.log(modalData);
+  
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">

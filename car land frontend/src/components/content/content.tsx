@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router";
+import {  useNavigate } from "react-router";
 import { userGetVehicle } from "../../services/apis/userApi/userApi";
 import { Vehicles } from "../../interfaces/vehicleInterface";
+import { useLocation } from "react-router-dom";
 import {
   useEffect,
   useState,
@@ -18,6 +19,7 @@ import mapboxAPI from "../../services/mapbox/mapbox";
 export const Content = () => {
   const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);
   const Navigate = useNavigate();
+  let location = useLocation();
   const [search, setSearch] = useState<string>("");
   const [filter, setFilter] = useState<string>("");
   const [loader, setLoader] = useState<boolean>(false);
@@ -27,6 +29,7 @@ export const Content = () => {
   const [searchedLatitude, setSearchedLatitude] = useState<number>();
   const [searchedLongitude, setSearchedLongitude] = useState<number>();
   const pageSize = 4;
+console.log(location);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -236,7 +239,10 @@ export const Content = () => {
                 ? vehicles.map((item) => (
                     <button
                       aria-label="View Item"
-                      onClick={()=>Navigate(`/singlecar/${item._id}`)}
+                      onClick={()=>{
+                       
+                        Navigate(`/singlecar?carId=${item._id}`)
+                      }}
                       className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
                     >
                       <div className="flex flex-col h-full">

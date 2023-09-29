@@ -12,7 +12,7 @@ export const userVehicles = AsyncHandler(
 
     const { search, filter }: search = req.query;
 
-    const query: any = {};
+    const query: any = { isVerified: true };
 
     if (search) {
       query.vehicleName = new RegExp(search, "i");
@@ -31,5 +31,14 @@ export const userVehicles = AsyncHandler(
 
     const count: number = await vehicleModel.countDocuments(query);
     res.json({ vehicles, count });
+  }
+);
+export const singleCar = AsyncHandler(
+  async (req: Request, res: Response): Promise<any> => {
+    
+    const id: string = typeof req.query.id === 'string' ? req.query.id : '';
+    const vehicle: IVehicle = await vehicleModel.findById(id);
+    console.log(req.query.id,vehicle);
+    res.json({ vehicle });
   }
 );

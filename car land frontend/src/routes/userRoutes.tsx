@@ -22,7 +22,7 @@ const UserRoutes = () => {
                 <Route path='/UserOtp' element={<OtpPage/>}/>
                 <Route path='/selectcity' element={<CitySelect/>}/>
                 <Route path='/rentcars' element={<Content/>} />
-                <Route path='/singlecar/:id' element={<SingleVehicle/>} />
+                <Route path='/singlecar' element={<SingleVehicle/>} />
             <Route path='/profile' element={<LeftSide/>}/> 
             </Routes>
         </>

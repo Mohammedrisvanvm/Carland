@@ -21,6 +21,7 @@ interface IVehicle extends Document {
     vehicleValidityDate:string,
     hubId?:string
     ban:boolean
+    isVerified:boolean
    
 }
 interface IVehicle {

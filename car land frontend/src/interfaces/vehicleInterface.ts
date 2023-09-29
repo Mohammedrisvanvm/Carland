@@ -12,11 +12,12 @@ export interface Vehicles {
   fairPrice: number;
   fairKm: number;
   status: boolean;
+DocumentVehicle:string
   specification: Array<string>;
   vehicleValidate: Date;
   documents: Array<string>;
   singleImage: string;
-  subImages: Array<string>;
+  SubImages: Array<string>;
   vehicleValidityDate: string;
   isVerified: boolean;
   ban: boolean;

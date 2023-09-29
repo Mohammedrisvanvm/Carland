@@ -1,68 +1,97 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
+import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
+import { useLocation } from "react-router";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { Vehicles } from "../../../interfaces/vehicleInterface";
+import Item from "antd/es/list/Item";
 
-const SingleVehicle = () => {
+const SingleVehicle:React.FC = () => {
+  const location = useLocation();
+  const [vehicle,setVehicles] = useState<Vehicles|null>(null);
+  const queryParams = new URLSearchParams(location.search);
+  const carId = queryParams.get("carId");
+  console.log(carId);
+  
+useEffect(()=>{
+  
+   const fetchData = async (): Promise<void> => {
+      try {
+        const response: AxiosResponse = await userSingleGetVehicle(carId)
+        console.log(response);
+        if(response.data?.vehicle){
+          setVehicles(response.data?.vehicle)
+        }
+      }catch{
+
+        }
+      }
+      fetchData()
+},[])
   return (
     <>
       <MainHeader />
 
       <div className="w-full grid h-screen sm:grid-cols-6 text-center grid-cols-3">
         <div className=" sm:m-24 col-span-3">
-          <div className="">
+    
+          <div className="h-2/3 w-full flex justify-center">
             <img
-              src="https://cdni.autocarindia.com/utils/imageresizer.ashx?n=https://cms.haymarketindia.net/model/uploads/modelimages/BMW-2-Series-Gran-Coupe-271220221147.jpg"
+            src={vehicle?.SubImages[0]}
+             className='object-center'
               alt=""
             />
           </div>
-          <div className="flex flex-row justify-evenly mx-2">
+          <div className="flex flex-row justify-evenly mx-2 mt-5">
             <div className="bg-red-500 mx-2 object-fit">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7DQKyFDzrVKGOUCl6erzzqGTUGRXpqX4uXnid52Rj5_q_kIcciGciGNzFWevJ_3iTysI&usqp=CAU"
-                alt=""
-                className=" h-full"
-              />
-            </div>
-            <div className="bg-red-500 mx-2 object-fit">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7DQKyFDzrVKGOUCl6erzzqGTUGRXpqX4uXnid52Rj5_q_kIcciGciGNzFWevJ_3iTysI&usqp=CAU"
+                 src={vehicle?.singleImage}
                 alt=""
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="bg-red-500 mx-2 object-fit">
               <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7DQKyFDzrVKGOUCl6erzzqGTUGRXpqX4uXnid52Rj5_q_kIcciGciGNzFWevJ_3iTysI&usqp=CAU"
+                src={vehicle?.SubImages[1]}
+                alt=""
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="bg-red-500 mx-2 object-fit">
+              <img
+                src={vehicle?.SubImages[2]}
                 alt=""
                 className="w-full h-full object-cover"
               />
             </div>
           </div>
         </div>
-        <div className=" m-4 col-span-3 mb-4">
+        <div className=" m-4 col-span-3 mb-4  ">
           {" "}
-          <h2 className="m-5 sm:mt-14 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none md:text-center">
+          <div className="border-2 rounded border-spacing-4">
+          <h2 className="m-5 mt-14  font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none md:text-center">
             Car Details
           </h2>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Model: Hyundai Eon Era
+            Model: {vehicle?.vehicleName}
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Year: 2007
+            Year: {vehicle?.year}
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Mileage: 20 kmpl
+            Mileage: {vehicle?.mileage} kmpl
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Fuel Type: diesal
+            Fuel Type: {vehicle?.fuel}
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
             Transmission Mode: mannual
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Specification: fulloption
+            Specification: {vehicle?.specification.map((Item)=>Item,)}
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Rent Per Day: ₹ 1500
+            Rent Per Day: ₹ {vehicle?.fairPrice}
           </p>
           <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
             Location: Pantheeramkavu, Kozhikode, Kozhikode, Kerala, India
@@ -73,6 +102,7 @@ const SingleVehicle = () => {
             >
               Book Now
             </button>
+          </div>
           </div>
         </div>
       </div>

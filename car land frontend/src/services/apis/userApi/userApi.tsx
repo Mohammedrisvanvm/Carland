@@ -29,6 +29,9 @@ export const userSignOut = (): Promise<AxiosResponse> => {
 export const userGetVehicle = async (currentPage:number,search:string,filter:string): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}`);
 };
+export const userSingleGetVehicle = async (id:String|null): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/users/vehicle/singleCar?id=${id}`);
+};
 export const userVerifyNumber = async (
   phoneNumber: number
 ): Promise<AxiosResponse> => {

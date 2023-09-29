@@ -32,6 +32,9 @@ export const banHub=async (value:string|undefined): Promise<AxiosResponse<any>>=
 export const Verifyhub=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.patch("/admin/hubmanagement/verifyhub",{value})
 }
+export const VerifyCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
+    return axiosBase.patch("/admin/carmanagement/verifycar",{value})
+}
 export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.patch("/admin/carmanagement/bancar",{value})
 }

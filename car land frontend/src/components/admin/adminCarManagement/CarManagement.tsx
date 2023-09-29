@@ -1,19 +1,21 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { user } from "../../../interfaces/userAuth";
-import { banCar, getAllCars } from "../../../services/apis/adminApi/adminApi";
+import { VerifyCar, Verifyhub, banCar, getAllCars } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 
 const CarManagement = () => {
-  const [cars, setCars] = useState<Vehicles[] | undefined>([]);
+  const [cars, setCars] = useState<Vehicles[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [search, setSearch] = useState<string>("");
+
+  const [modalData, setModalData] = useState<Vehicles | undefined>(Object);
+  const [showModal, setShowModal] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllCars(search);
-
-        setCars(response.data?.vehicles);
+        if (response.data?.vehicles) setCars(response.data?.vehicles);
       } catch (error) {
         console.error("Error fetching vehicles:", error);
       }
@@ -26,8 +28,14 @@ const CarManagement = () => {
     await banCar(value);
     setLoading(!loading);
   };
+
+  const handleVerify = async (value: string | undefined) => {
+    await VerifyCar(value);
+    setShowModal(false);
+    setLoading(!loading);
+  };
   console.log(search);
-  
+
   return (
     <>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">
@@ -215,7 +223,7 @@ const CarManagement = () => {
               <th scope="col" className="px-6 py-3">
                 index
               </th>
-            
+
               <th scope="col" className="px-6 py-3">
                 image
               </th>
@@ -262,7 +270,7 @@ const CarManagement = () => {
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     <td className="w-4 p-4">{index + 1}</td>
-                 
+
                     <td className="px-6 py-4">
                       {" "}
                       <img src={item.singleImage} alt="" />
@@ -312,13 +320,69 @@ const CarManagement = () => {
                     </td>
 
                     <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                      <button
+                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                        onClick={() => {
+                          setModalData(cars[index]);
+
+                          setShowModal(true);
+                        }}
                       >
-                        Edit
-                      </a>
+                        {" "}
+                        action
+                      </button>
                     </td>
+                    <div>
+                      {showModal ? (
+                        <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+                          <div className="w-3/6 h-4/6 flex flex-col">
+                            <button
+                              className="text-white text-xl place-self-end"
+                              onClick={() => setShowModal(false)}
+                            >
+                              x
+                            </button>
+                            <div className="bg-white p-2 rounded">
+                              <div className="p-6">
+                                <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+                                  verification RC
+                                </h3>
+                                <div className="flex justify-center">
+                                  <div className="bg-blue-400 h-42 w-56">
+                                    <img
+                                      src={modalData?.DocumentVehicle}
+                                      alt="License"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-row justify-evenly">
+                                  <button
+                                    onClick={() => {
+                                      setModalData(undefined);
+                                      setShowModal(false);
+                                    }}
+                                    className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                  >
+                                    cancel
+                                  </button>
+                                  <button
+                                    onClick={() => handleVerify(modalData?._id)}
+                                    className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                  >
+                                    {modalData?.isVerified
+                                      ? "remove verification"
+                                      : "verify"}
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                   </tr>
                 ))
               : "not one"}
