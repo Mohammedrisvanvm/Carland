@@ -24,3 +24,18 @@ export const banUser = AsyncHandler(
     res.status(200).json({ message: "success" });
   }
 );
+export const ProfileVerification = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const id: string = req.body.value;
+
+    const user: IUser | null = await userModel.findById(id);
+
+    if (user) {
+      user.verifiedProfile = !user.verifiedProfile;
+      user.profileVerificationRequest = false;
+      await user.save();
+    }
+
+    res.status(200).json({ message: "success" });
+  }
+);

@@ -22,6 +22,9 @@ export const getAllCars=async (search:string): Promise<AxiosResponse<any>>=>{
 export const banUser=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/usermanagement/banuser",{value})
 }
+export const verifyProfile=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
+    return axiosBase.post("/admin/usermanagement/verifyprofile",{value})
+}
 export const banVendor=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/vendormanagement/banvendor",{value})
 }

@@ -22,6 +22,7 @@ const LeftSide: FC = () => {
     fetchUser();
   }, [loading]);
 
+  console.log(currentUser);
   
   const user = useAppSelector((state) => state.user);
   return (
@@ -129,11 +130,12 @@ const LeftSide: FC = () => {
                         aria-label="Verification"
                         onClick={() => setPage("Verification")}
                         title="Verification"
-                        disabled={currentUser?.profileVerificationRequest}
+                        disabled={currentUser?.profileVerificationRequest|| currentUser?.verifiedProfile}
                         className={`${currentUser?.profileVerificationRequest ? 'disabled':''}`}
                       >
                         Profile Verification 
                         <span className="mr-2 text-sm text-center text-orange-500"> {currentUser?.profileVerificationRequest ? "pending":''}</span>
+                        <span className="mr-2 text-sm text-center text-green-500">  {currentUser?.verifiedProfile ? "verified":''}</span>
                        
                       </button>
                     </li>

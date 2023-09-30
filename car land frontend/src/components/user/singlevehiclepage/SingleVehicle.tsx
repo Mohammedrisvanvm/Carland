@@ -48,6 +48,7 @@ const SingleVehicle: React.FC = () => {
  
   const submitForm = async (values: Idates): Promise<void> => {
     console.log(values, 12);
+
     bookingCar(values)
   };
   const {

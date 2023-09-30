@@ -3,6 +3,7 @@ import { user } from "../../../interfaces/userAuth";
 import {
   banUser,
   getAllUser,
+  verifyProfile,
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
@@ -33,11 +34,11 @@ const UserManagement = () => {
   };
   
   const handleVerify = async (value: string | undefined) => {
-    // await Verifyhub(value);
+    await verifyProfile(value);
     setShowModal(false);
     setLoading(!loading);
   };
-  console.log(modalData);
+
   
   return (
     <>
@@ -245,9 +246,9 @@ const UserManagement = () => {
               <th scope="col" className="px-6 py-3">
                 verifiedNumber
               </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Vehicle Validity Date
-              </th> */}
+              <th scope="col" className="px-6 py-3">
+              Verification Request
+              </th>
               <th scope="col" className="px-6 py-3">
                 Status
               </th>
@@ -292,6 +293,13 @@ const UserManagement = () => {
                           }`}
                         >
                           {item.verified_phonenumber ? "verified" : "not verified"}
+                        </span></button></td>
+                    <td className="px-6 py-4"> <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"><span
+                          className={`${
+                            item.profileVerificationRequest ? "text-green-600" : "text-red-600"
+                          }`}
+                        >
+                          {item.profileVerificationRequest ? "requested" : "not requested"}
                         </span></button></td>
                 
 

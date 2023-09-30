@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { banUser, getAllUser } from "../../controllers/adminController/userManagement";
+import { ProfileVerification, banUser, getAllUser } from "../../controllers/adminController/userManagement";
 let adminUser = Router();
 
 
@@ -9,6 +9,7 @@ let adminUser = Router();
 
 adminUser.get("/allusers", getAllUser);
 adminUser.post("/banuser", banUser);
+adminUser.post("/verifyprofile", ProfileVerification);
 
 
 export default adminUser
