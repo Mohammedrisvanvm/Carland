@@ -1,6 +1,6 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
-import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
+import { bookingCar, userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
 import { useLocation } from "react-router";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
@@ -43,11 +43,12 @@ const SingleVehicle: React.FC = () => {
     setDropDate(nextDay);
   }, [pickUpDate]);
 
-  type Idates = { pickUpDate: string; dropDate: string,time:string };
+   type Idates = { pickUpDate: string; dropDate: string,time:string };
   const initialValues: Idates = { pickUpDate: "", dropDate: "" ,time:'' };
  
   const submitForm = async (values: Idates): Promise<void> => {
     console.log(values, 12);
+    bookingCar(values)
   };
   const {
     values,

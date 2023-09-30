@@ -45,11 +45,7 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-      interface axios {
-        data: {
-          message: string;
-        };
-      }
+    
       const res: AxiosResponse = await CarAdd(values, hubid);
       toast.success(res.data?.message);
       Navigate("/vendor/vendorcars");

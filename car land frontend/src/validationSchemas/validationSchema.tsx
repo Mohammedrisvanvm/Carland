@@ -83,7 +83,6 @@ export const AddCarSchema = yup.object().shape({
     .required(),
   numofseats: yup
     .number()
-
     .max(6, "vehicle seats must below 6 ")
     .min(2, "vehicle seats atleast 2")
     .required(),
@@ -166,4 +165,18 @@ export const vendorHubSchema = yup.object().shape({
     .date()
     .required("Future date is required")
     .min(new Date(), "Date must be in the future"),
+});
+const pickUpDate = new Date();
+pickUpDate.setDate(pickUpDate.getDate() + 1);
+
+const dropDate = new Date(pickUpDate);
+dropDate.setDate(dropDate.getDate() + 1);
+
+const minDate = pickUpDate.toISOString().split("T")[0];
+
+export const bookingDateSchema = yup.object().shape({
+  pickUpDate: yup.date().min(minDate, 'Date must be tomorrow').required(),
+  dropDate: yup
+    .date()
+    .min(dropDate.toISOString().split("T")[0], 'Date must be 1 day after pickupdate').required()
 });

@@ -109,9 +109,7 @@ console.log(location);
           <div className="px-4 mt-6 sm:my-0 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
             <div className="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
             <h2 className="max-w-lg mb-10 font-sans inline-block font-bold leading-none text-center tracking-tight text-gray-900 text-sm sm:text-4xl md:mx-auto">
-                <span className="relative inline-block">
-                  <span className="relative">The</span>
-                </span>{" "}
+               
                 Rent a car and explore the city at your own pace
               </h2>
             <div className="flex items-center justify-center mb-5">

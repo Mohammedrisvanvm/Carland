@@ -60,3 +60,9 @@ export const ProfileVerificationData = async (
   }}
  );
 };
+type Idates = { pickUpDate: string; dropDate: string,time:string };
+export const bookingCar=async (data:Idates):Promise<AxiosResponse> =>{
+  console.log(data);
+  
+  return await axiosBase.post("/users/booking/bookcar",{data})
+}
