@@ -1,5 +1,5 @@
 import  { Schema, model } from "mongoose";
-import Ihub from "src/interfaces/hubInterface";
+import Ihub from "../interfaces/hubInterface";
 
 const hubSchema: Schema = new Schema(
   {
