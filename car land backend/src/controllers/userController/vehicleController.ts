@@ -38,7 +38,7 @@ export const singleCar = AsyncHandler(
     
     const id: string = typeof req.query.id === 'string' ? req.query.id : '';
     const vehicle: IVehicle = await vehicleModel.findById(id);
-    console.log(req.query.id,vehicle);
+  
     res.json({ vehicle });
   }
 );
