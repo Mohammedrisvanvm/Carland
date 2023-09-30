@@ -1,63 +1,98 @@
-import React, { useEffect,useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
 import { useLocation } from "react-router";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 import Item from "antd/es/list/Item";
+import { useFormik } from "formik";
+import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
 
-const SingleVehicle:React.FC = () => {
+const SingleVehicle: React.FC = () => {
   const location = useLocation();
-  const [vehicle,setVehicles] = useState<Vehicles|null>(null);
+  const [vehicle, setVehicles] = useState<Vehicles | null>(null);
   const queryParams = new URLSearchParams(location.search);
+  const [pickUpDate, setPickUpDate] = useState<Date>(new Date());
+  const [dropDate, setDropDate] = useState<Date>(pickUpDate);
   const carId = queryParams.get("carId");
-  console.log(carId);
-  
-useEffect(()=>{
-  
-   const fetchData = async (): Promise<void> => {
-      try {
-        const response: AxiosResponse = await userSingleGetVehicle(carId)
-        console.log(response);
-        if(response.data?.vehicle){
-          setVehicles(response.data?.vehicle)
-        }
-      }catch{
+  console.log(pickUpDate, dropDate);
 
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response: AxiosResponse = await userSingleGetVehicle(carId);
+        console.log(response);
+        if (response.data?.vehicle) {
+          setVehicles(response.data?.vehicle);
         }
-      }
-      fetchData()
-},[])
+      } catch {}
+    };
+    fetchData();
+  }, []);
+  const currentDate = new Date();
+
+  currentDate.setDate(currentDate.getDate() + 1);
+
+  const minDate = currentDate.toISOString().split("T")[0];
+
+  console.log(pickUpDate, dropDate);
+
+  useEffect(() => {
+    const nextDay = new Date(pickUpDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+    setDropDate(nextDay);
+  }, [pickUpDate]);
+
+  type Idates = { pickUpDate: string; dropDate: string,time:string };
+  const initialValues: Idates = { pickUpDate: "", dropDate: "" ,time:'' };
+ 
+  const submitForm = async (values: Idates): Promise<void> => {
+    console.log(values, 12);
+  };
+  const {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleSubmit,
+    handleBlur,
+    handleChange,
+    setFieldValue,
+  } = useFormik({
+    initialValues,
+    onSubmit: submitForm,
+    initialErrors: {},
+    initialTouched: {},
+    validateOnMount: true,
+    validationSchema: bookingDateSchema,
+  });
+  console.log(errors, touched);
+
   return (
     <>
       <MainHeader />
 
       <div className="w-full grid h-screen sm:grid-cols-6 text-center grid-cols-3">
         <div className=" sm:m-24 col-span-3">
-    
           <div className="h-2/3 w-full flex justify-center">
-            <img
-            src={vehicle?.SubImages[0]}
-             className='object-center'
-              alt=""
-            />
+            <img src={vehicle?.SubImages[0]} className="" alt="" />
           </div>
           <div className="flex flex-row justify-evenly mx-2 mt-5">
-            <div className="bg-red-500 mx-2 object-fit">
+            <div className=" mx-2 object-fit">
               <img
-                 src={vehicle?.singleImage}
+                src={vehicle?.singleImage}
                 alt=""
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="bg-red-500 mx-2 object-fit">
+            <div className=" mx-2 object-fit">
               <img
                 src={vehicle?.SubImages[1]}
                 alt=""
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="bg-red-500 mx-2 object-fit">
+            <div className=" mx-2 object-fit">
               <img
                 src={vehicle?.SubImages[2]}
                 alt=""
@@ -66,43 +101,261 @@ useEffect(()=>{
             </div>
           </div>
         </div>
+
         <div className=" m-4 col-span-3 mb-4  ">
-          {" "}
-          <div className="border-2 rounded border-spacing-4">
-          <h2 className="m-5 mt-14  font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none md:text-center">
-            Car Details
-          </h2>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Model: {vehicle?.vehicleName}
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Year: {vehicle?.year}
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Mileage: {vehicle?.mileage} kmpl
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Fuel Type: {vehicle?.fuel}
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Transmission Mode: mannual
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Specification: {vehicle?.specification.map((Item)=>Item,)}
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Rent Per Day: ₹ {vehicle?.fairPrice}
-          </p>
-          <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-            Location: Pantheeramkavu, Kozhikode, Kozhikode, Kerala, India
-          </p>
-          <div className="mb-10 text-center md:mb-16 lg:mb-20">
-            <button
-              className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md md:w-auto bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-            >
-              Book Now
-            </button>
-          </div>
+          <div className="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            {/* <div className="w-11/12 h-2 mx-auto bg-gray-900 rounded-b opacity-75" />
+            <div className="w-10/12 h-2 mx-auto bg-gray-900 rounded-b opacity-50" />
+            <div className="w-9/12 h-2 mx-auto bg-gray-900 rounded-b opacity-25" /> */}
+
+            <div className="p-8 bg-gray-100 rounded">
+              <div className="mb-4 text-center">
+                <p className="text-xl font-medium capitalize tracking-wide text-black">
+                  {vehicle?.vehicleName} <p className="mx-2" /> {vehicle?.year}
+                </p>
+                <div className="flex items-center justify-center mt-4">
+                  <p className="mr-2 text-xl font-semibold text-black sm:text-4xl">
+                    ₹ {vehicle?.fairPrice}
+                  </p>
+                  <p className="text-lg text-gray-500">/ Day</p>
+                </div>
+              </div>
+              <ul className="mb-8 space-y-2">
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-black">
+                    {vehicle?.mileage} kmpl
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-black">{vehicle?.fuel}</p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-black">manual</p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium flex text-black">
+                    {vehicle?.specification.map((Item) => (
+                      <p className="mr-2 flex text-green-500 ">{Item} </p>
+                    ))}
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-black inline-flex">
+                    Location: Pantheeramkavu, Kozhikode, Kozhikode, Kerala,
+                    India
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-black">
+                    {vehicle?.status ? "not available" : "available"}
+                  </p>
+                </li>
+              </ul>
+              <form onSubmit={handleSubmit}>
+                {/* <p> pick time slot</p>
+                <div className="sm:flex-row flex-col items-center sm:justify-evenly sm:h-12 px-6  font-semibold tracking-wide">
+                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
+                    {" "}
+                    9am to 12am
+                  </div>
+                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
+                    12pm to 3pm
+                  </div>
+                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
+                    3pm to 6pm
+                  </div>
+                </div> */}
+                <label htmlFor="pickDate">Pick Time:</label>
+
+                <select id="picktime" required   value={values.time}   onChange={handleChange}
+                      onBlur={handleBlur} name="time">
+                  <option value="">select time</option>
+                  <option value="9am to 12am">9am to 12am</option>
+                  <option value="12pm to 3pm">12pm to 3pm</option>
+                  <option value="3pm to 6pm">3pm to 6pm</option>
+                </select>
+
+                <div className="flex items-center justify-evenly h-28 px-6 mb-4 font-semibold tracking-wide">
+                  <div className="flex flex-col items-center">
+                    <label htmlFor="">pick Up Date :</label>
+                    <input
+                      type="Date"
+                      className={`${
+                        errors.pickUpDate && touched.pickUpDate
+                          ? "input-error"
+                          : ""
+                      } block text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      placeholder=" "
+                      value={values.pickUpDate}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      name="pickUpDate"
+                      required
+                    />
+                    {errors.pickUpDate && touched.pickUpDate && (
+                      <p className="border-red-500 text-sm text-red-500">
+                        {errors.pickUpDate}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col items-center">
+                    <label htmlFor="">Drop Date :</label>
+                    <input
+                      type="Date"
+                      className={`${
+                        errors.dropDate && touched.dropDate ? "input-error" : ""
+                      } block text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
+                      placeholder=" "
+                      value={values.dropDate}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      name="dropDate"
+                      required
+                    />
+                    {errors.dropDate && touched.dropDate && (
+                      <p className="border-red-500 text-sm text-red-500">
+                        {errors.dropDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                >
+                  Book Now
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
@@ -111,84 +364,3 @@ useEffect(()=>{
 };
 
 export default SingleVehicle;
-// export const Content = () => {
-//     return (
-//       <div className="relative flex flex-col-reverse py-16 lg:py-0 lg:flex-col">
-//         <div className="w-full max-w-xl px-4 mx-auto md:px-0 lg:px-8 lg:py-20 lg:max-w-screen-xl">
-//           <div className="mb-0 lg:max-w-lg lg:pr-8 xl:pr-6">
-//             <h2 className="mb-5 font-sans text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-none md:text-center">
-//               The quick, brown fox
-//               <br className="hidden md:block" />
-//               jumps over a lazy dog
-//             </h2>
-//             <p className="mb-5 text-base text-gray-700 md:text-lg md:text-center">
-//               Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-//               accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-//               quae. explicabo.
-//             </p>
-//             <div className="mb-10 text-center md:mb-16 lg:mb-20">
-//               <a
-//                 href="/"
-//                 className="inline-flex items-center justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded shadow-md md:w-auto bg-deep-purple-accent-400 hover:bg-deep-purple-accent-700 focus:shadow-outline focus:outline-none"
-//               >
-//                 Learn more
-//               </a>
-//             </div>
-//             <div className="flex flex-col items-center">
-//               <div className="mb-2 text-sm text-gray-600 md:mb-2">Follow us</div>
-//               <div className="flex items-center space-x-4">
-//                 <div className="flex items-center">
-//                   <a
-//                     href="/"
-//                     className="text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-//                   >
-//                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
-//                       <path d="M24,4.6c-0.9,0.4-1.8,0.7-2.8,0.8c1-0.6,1.8-1.6,2.2-2.7c-1,0.6-2,1-3.1,1.2c-0.9-1-2.2-1.6-3.6-1.6 c-2.7,0-4.9,2.2-4.9,4.9c0,0.4,0,0.8,0.1,1.1C7.7,8.1,4.1,6.1,1.7,3.1C1.2,3.9,1,4.7,1,5.6c0,1.7,0.9,3.2,2.2,4.1 C2.4,9.7,1.6,9.5,1,9.1c0,0,0,0,0,0.1c0,2.4,1.7,4.4,3.9,4.8c-0.4,0.1-0.8,0.2-1.3,0.2c-0.3,0-0.6,0-0.9-0.1c0.6,2,2.4,3.4,4.6,3.4 c-1.7,1.3-3.8,2.1-6.1,2.1c-0.4,0-0.8,0-1.2-0.1c2.2,1.4,4.8,2.2,7.5,2.2c9.1,0,14-7.5,14-14c0-0.2,0-0.4,0-0.6 C22.5,6.4,23.3,5.5,24,4.6z" />
-//                     </svg>
-//                   </a>
-//                 </div>
-//                 <div className="flex items-center">
-//                   <a
-//                     href="/"
-//                     className="text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-//                   >
-//                     <svg viewBox="0 0 30 30" fill="currentColor" className="h-6">
-//                       <circle cx="15" cy="15" r="4" />
-//                       <path d="M19.999,3h-10C6.14,3,3,6.141,3,10.001v10C3,23.86,6.141,27,10.001,27h10C23.86,27,27,23.859,27,19.999v-10   C27,6.14,23.859,3,19.999,3z M15,21c-3.309,0-6-2.691-6-6s2.691-6,6-6s6,2.691,6,6S18.309,21,15,21z M22,9c-0.552,0-1-0.448-1-1   c0-0.552,0.448-1,1-1s1,0.448,1,1C23,8.552,22.552,9,22,9z" />
-//                     </svg>
-//                   </a>
-//                 </div>
-//                 <div className="flex items-center">
-//                   <a
-//                     href="/"
-//                     className="text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-//                   >
-//                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-5">
-//                       <path d="M22,0H2C0.895,0,0,0.895,0,2v20c0,1.105,0.895,2,2,2h11v-9h-3v-4h3V8.413c0-3.1,1.893-4.788,4.659-4.788 c1.325,0,2.463,0.099,2.795,0.143v3.24l-1.918,0.001c-1.504,0-1.795,0.715-1.795,1.763V11h4.44l-1,4h-3.44v9H22c1.105,0,2-0.895,2-2 V2C24,0.895,23.105,0,22,0z" />
-//                     </svg>
-//                   </a>
-//                 </div>
-//                 <div className="flex items-center">
-//                   <a
-//                     href="/"
-//                     className="text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-//                   >
-//                     <svg viewBox="0 0 24 24" fill="currentColor" className="h-6">
-//                       <path d="M23.8,7.2c0,0-0.2-1.7-1-2.4c-0.9-1-1.9-1-2.4-1C17,3.6,12,3.6,12,3.6h0c0,0-5,0-8.4,0.2 c-0.5,0.1-1.5,0.1-2.4,1c-0.7,0.7-1,2.4-1,2.4S0,9.1,0,11.1v1.8c0,1.9,0.2,3.9,0.2,3.9s0.2,1.7,1,2.4c0.9,1,2.1,0.9,2.6,1 c1.9,0.2,8.2,0.2,8.2,0.2s5,0,8.4-0.3c0.5-0.1,1.5-0.1,2.4-1c0.7-0.7,1-2.4,1-2.4s0.2-1.9,0.2-3.9v-1.8C24,9.1,23.8,7.2,23.8,7.2z M9.5,15.1l0-6.7l6.5,3.4L9.5,15.1z" />
-//                     </svg>
-//                   </a>
-//                 </div>
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="inset-y-0 top-0 right-0 w-full max-w-xl px-4 mx-auto mb-6 md:px-0 lg:pl-8 lg:pr-0 lg:mb-0 lg:mx-0 lg:w-1/2 lg:max-w-full lg:absolute xl:px-0">
-//           <img
-//             className="object-cover w-full h-56 rounded shadow-lg lg:rounded-none lg:shadow-none md:h-96 lg:h-full"
-//             src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=750&amp;w=1260"
-//             alt=""
-//           />
-//         </div>
-//       </div>
-//     );
-//   };
