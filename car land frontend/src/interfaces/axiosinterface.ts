@@ -1,6 +1,7 @@
 import { AxiosError, AxiosRequestConfig } from "axios";
 import { Vehicles } from "./vehicleInterface";
 import { hub, user } from "./userAuth";
+import { Irazresponse } from "./razorpayInterface";
 export interface AxiosResponse<T = any> {
   data?: {
     hubs?: hub[];
@@ -11,6 +12,7 @@ export interface AxiosResponse<T = any> {
     vendors?:IVendor[]
     users?:user[]
     accessToken?: string;
+    razorpay?:Irazresponse
   };
   status: number;
   statusText: string;
