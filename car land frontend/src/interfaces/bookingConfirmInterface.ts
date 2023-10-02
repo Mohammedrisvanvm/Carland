@@ -1,4 +1,4 @@
-interface IBook extends Document {
+export interface IConfirmBook extends Document {
     _id: string;
     hubId: string;
     vehicleId: string;
