@@ -3,11 +3,21 @@ interface IBook extends Document {
   hubId: string;
   vehicleId: string;
   userId: string;
+  hubName:string,
+  vehicleName:string,
   bookingStartDate: Date;
+  totalPrice: number;
+  carPrice:number
+  days: number;
   bookingEndDate: Date;
-  time: string;
+  pickuptime: string;
+  paymentDetails:object
+  paymentStatus:string
   status: boolean;
 }
-
-
-export default IBook
+interface IBookWithTimestamps extends IBook {
+  save(): unknown;
+  createdAt: Date;
+  updatedAt: Date;
+}
+export default IBookWithTimestamps;

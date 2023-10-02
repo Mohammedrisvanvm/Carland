@@ -34,6 +34,8 @@ export const userAuthenticate = AsyncHandler(
     if (!accessTokenusertoken && !refreshTokenuser) {
       throw new Error("Access Denied");
     }
+    console.log(accessTokenusertoken);
+
     if (accessTokenusertoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenuser);
       req.headers.authorization = verifiedJWT.payload?.id;
@@ -75,8 +77,9 @@ export const userAuthenticate = AsyncHandler(
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
           });
-
-          req.cookies.accessTokenuser = access;
+          console.log(access, 111);
+          req.headers.authorization = user._id;
+          req.cookies.accessTokenUser = access;
           next();
         }
       } else {
