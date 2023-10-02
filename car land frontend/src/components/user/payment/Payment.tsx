@@ -7,6 +7,7 @@ import {
 } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { log } from "util";
+import { useNavigate } from "react-router";
 
 const loadRazorpay = (src: string) => {
   return new Promise((resolve) => {
@@ -36,7 +37,7 @@ type Iresponse = {
 };
 const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
   console.log(value, 11);
-
+  const Navigate=useNavigate()
   async function showRazorpay() {
     const response: AxiosResponse = await razorpayApi(value);
     if (response?.data?.razorpay) {
@@ -64,9 +65,12 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
           value.razorpay_order_id = response.razorpay_order_id;
           value.razorpay_signature = response.razorpay_signature;
           await verifyRazorpayPayment(response).then(async(res: AxiosResponse) => {
-            console.log(res.data?.message);
+            
             if (res.data?.message == "verified") {
-           await bookingCar(value)
+          const confirmorder:AxiosResponse= await bookingCar(value)
+
+          if(confirmorder.data?.id)
+           Navigate(`/confirmorder/${confirmorder.data?.id}`)
             } else {
               console.log("false");
             }
