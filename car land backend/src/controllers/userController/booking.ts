@@ -91,7 +91,7 @@ export const bookCar = AsyncHandler(
     console.log(days, vehicle, hubDetails, userId, req.body);
 
     let paymentStatus: string = "FullPaid";
-    const order: IBook = await bookModel.create({
+    const booking: IBook = await bookModel.create({
       hubId: hubDetails._id,
       vehicleId: carId,
       userId,
@@ -110,8 +110,8 @@ export const bookCar = AsyncHandler(
       totalPrice: days * Number(vehicle.fairPrice),
       days,
     });
-    order.save();
-    res.json({ id:order._id });
+    booking.save();
+    res.json({ id: booking._id });
   }
 );
 type Iresponse = {
@@ -138,3 +138,8 @@ export const verifyRazorpayPayment = AsyncHandler(
     }
   }
 );
+export const bookingDetails = AsyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+        console.log(req.query);
+        
+    })

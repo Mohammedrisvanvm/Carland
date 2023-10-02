@@ -70,7 +70,7 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
           const confirmorder:AxiosResponse= await bookingCar(value)
 
           if(confirmorder.data?.id)
-           Navigate(`/confirmorder/${confirmorder.data?.id}`)
+           Navigate(`/BookingConfirm/${confirmorder.data?.id}`)
             } else {
               console.log("false");
             }

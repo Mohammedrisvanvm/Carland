@@ -11,6 +11,7 @@ import CitySelect from '../components/citySelect/CitySelect'
 import { Content } from '../components/content/content'
 import SingleVehicle from '../components/user/singlevehiclepage/SingleVehicle'
 import Payment from '../components/user/payment/Payment'
+import BookingConfirmPage from '../components/user/payment/BookingConfirmPage'
 
 const UserRoutes = () => {
     return (
@@ -25,7 +26,7 @@ const UserRoutes = () => {
                 <Route path='/rentcars' element={<Content/>} />
                 <Route path='/singlecar' element={<SingleVehicle/>} />
             <Route path='/profile' element={<LeftSide/>}/> 
-            {/* <Route path="/payment" element={<Payment/>} /> */}
+            <Route path="/BookingConfirm" element={<BookingConfirmPage/>} />
             </Routes>
         </>
     )

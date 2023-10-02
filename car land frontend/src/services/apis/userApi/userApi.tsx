@@ -73,7 +73,9 @@ export const bookingCar = async (data: data): Promise<AxiosResponse> => {
 
   return await axiosBase.post("/users/booking/bookcar", { data });
 };
-export const verifyRazorpayPayment = async (data: Iresponse): Promise<AxiosResponse> => {
+export const verifyRazorpayPayment = async (
+  data: Iresponse
+): Promise<AxiosResponse> => {
   console.log(data);
 
   return await axiosBase.post("/users/booking/razorpayverify", { data });
@@ -96,4 +98,13 @@ export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
   console.log(data);
 
   return await axiosBase.post("/users/booking/razorpay", { data });
+};
+export const bookingDetails = async (
+  bookingID: string | null
+): Promise<AxiosResponse> => {
+  console.log(bookingID);
+
+  return await axiosBase.get(
+    `/users/booking/bookingdetails?bookingID=${bookingID}`
+  );
 };
