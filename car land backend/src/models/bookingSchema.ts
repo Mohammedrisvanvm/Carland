@@ -50,13 +50,14 @@ const bookingSchema: Schema = new Schema(
     },
     paymentDetails: {
       type: Object,
-      default: null,
+      required:true
     },
     paymentStatus: {
       type: String,
       enum: ["HalfPaid", "FullPaid"],
      required:true
     },
+    
     status: {
       type: String,
       enum: ["PickUp", "Ongoing", "Dropoff", "Completed", "Cancelled"],

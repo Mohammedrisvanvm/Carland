@@ -64,7 +64,9 @@ export const razorpayPayment = AsyncHandler(
 );
 export const bookCar = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const { pickUpDate, dropDate, time, carId }: Idates = req.body.data;
+    const { pickUpDate, dropDate, time, carId ,razorpay_payment_id,
+        razorpay_order_id,
+        razorpay_signature}: Idates = req.body.data;
     const userId: string = req.headers.authorization;
 
     const hubDetails: Ihub = await hubModel.findOne(
@@ -80,7 +82,9 @@ export const bookCar = AsyncHandler(
     }
     vehicle.save();
 
-    // let paymentStatus: string;
+    console.log(days,vehicle,hubDetails,userId,req.body);
+    
+    let paymentStatus: string='FullPaid'
     // if (payment == "paid") {
     //   paymentStatus = "FullPaid";
     // } else {
@@ -97,7 +101,10 @@ export const bookCar = AsyncHandler(
       bookingEndDate: dropDate,
       pickuptime: time,
       carPrice: vehicle.fairPrice,
-      //   paymentStatus,
+    paymentStatus,
+    paymentDetails:{ razorpay_payment_id,
+        razorpay_order_id,
+        razorpay_signature},
       totalPrice: days * Number(vehicle.fairPrice),
       days,
     });
@@ -122,7 +129,10 @@ export const verifyRazorpayPayment = AsyncHandler(
     generated_signature = generated_signature.digest("hex");
 
     if (generated_signature == data.razorpay_signature) {
+        res.json({message:'verified'})
       console.log(" payment is successful");
+    }else{
+        res.json({message:'not verified'})
     }
   }
 );

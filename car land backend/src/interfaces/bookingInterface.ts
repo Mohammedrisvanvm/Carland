@@ -11,7 +11,11 @@ interface IBook extends Document {
   days: number;
   bookingEndDate: Date;
   pickuptime: string;
-  paymentDetails:object
+  paymentDetails:{
+    razorpay_payment_id: string;
+    razorpay_order_id: string;
+    razorpay_signature: string;
+  }
   paymentStatus:string
   status: boolean;
 }
