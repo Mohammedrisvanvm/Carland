@@ -66,3 +66,9 @@ export const bookingCar=async (data:Idates):Promise<AxiosResponse> =>{
   
   return await axiosBase.post("/users/booking/bookcar",{data})
 }
+export const razorpayApi=async (data:{}):Promise<AxiosResponse> =>{
+  console.log(data);
+  
+  return await axiosBase.post("/users/booking/razorpay",{data})
+}
+
