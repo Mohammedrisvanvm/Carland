@@ -9,6 +9,7 @@ import hubModel from "../../models/hubSchema";
 import { dateCount } from "../../helpers/dateCount";
 import Razorpay from "razorpay";
 import crypto from "crypto";
+import IBookWithTimestamps from "../../interfaces/bookingInterface";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -141,5 +142,9 @@ export const verifyRazorpayPayment = AsyncHandler(
 export const bookingDetails = AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
         console.log(req.query);
+        const id: string = typeof req.query.bookingID === 'string' ? req.query.bookingID : '';
+        const bookingDetails:IBookWithTimestamps=await bookModel.findById(id)
+        console.log(id);
         
+        res.json({message:"g",bookingDetails})
     })

@@ -26,7 +26,7 @@ const UserRoutes = () => {
                 <Route path='/rentcars' element={<Content/>} />
                 <Route path='/singlecar' element={<SingleVehicle/>} />
             <Route path='/profile' element={<LeftSide/>}/> 
-            <Route path="/BookingConfirm" element={<BookingConfirmPage/>} />
+            <Route path="/BookingConfirm/:id" element={<BookingConfirmPage/>} />
             </Routes>
         </>
     )

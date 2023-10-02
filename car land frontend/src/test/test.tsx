@@ -4,19 +4,20 @@ import { useNavigate } from "react-router";
 import { AxiosResponse } from "../interfaces/axiosinterface";
 import { IConfirmBook } from "../interfaces/bookingConfirmInterface";
 import { bookingDetails } from "../services/apis/userApi/userApi";
-
+import { useParams } from 'react-router-dom';
 const content: React.FC = () => {
   const Navigate = useNavigate();
 const [bookingData,setbookingData]=useState<IConfirmBook|null>(null)
 const queryParams = new URLSearchParams(location.search);
 const carId: string | null = queryParams.get("carId");
+const { productId } = useParams();
 useEffect(()=>{
   const fetchData = async (): Promise<void> => {
     try {
       const response: AxiosResponse = await bookingDetails(carId);
       console.log(response);
-      if (response.data?.bookingconfirm) {
-        setbookingData(response.data?.bookingconfirm);
+      if (response.data?.bookingDetails) {
+        setbookingData(response.data?.bookingDetails);
       }
     } catch {}
   };

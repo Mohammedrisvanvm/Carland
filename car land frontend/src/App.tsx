@@ -23,7 +23,7 @@ function App() {
           <Route path="/*" element={<UserRoutes />} />
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
-          <Route path="/test" element={<Location />} />
+          <Route path="/test/:id" element={<Location />} />
         </Routes>
       </BrowserRouter>
 

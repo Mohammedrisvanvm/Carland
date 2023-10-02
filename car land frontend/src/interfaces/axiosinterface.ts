@@ -15,7 +15,7 @@ export interface AxiosResponse<T = any> {
     accessToken?: string;
     razorpay?:Irazresponse
     id?:string,
-    bookingconfirm?:IConfirmBook
+    bookingDetails?:IConfirmBook
   };
   status?: number;
   statusText?: string;
