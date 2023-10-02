@@ -8,6 +8,7 @@ import Ihub from "../../interfaces/hubInterface";
 import hubModel from "../../models/hubSchema";
 import { dateCount } from "../../helpers/dateCount";
 import Razorpay from "razorpay";
+import crypto from "crypto";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -25,10 +26,21 @@ function generateRandomString(length: number) {
 
   return result;
 }
+type Idates = {
+  pickUpDate: string;
+  dropDate: string;
+  time: string;
+  carId: string;
+  razorpay_payment_id?: string;
+  razorpay_order_id?: string;
+  razorpay_signature?: string;
+};
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     console.log(req.body);
-
+    const { pickUpDate, dropDate, carId }: Idates = req.body.data;
+    const days: number = dateCount(pickUpDate, dropDate);
+    const vehicle: IVehicle = await vehicleModel.findById(carId);
     type Irazresponse = {
       id: string;
       entity: string;
@@ -42,28 +54,19 @@ export const razorpayPayment = AsyncHandler(
       created_at: number;
     };
     const response: Irazresponse = await razorpay.orders.create({
-      amount: (500*100),
+      amount: Number(vehicle.fairPrice) * days * 100,
       currency: "INR",
       receipt: generateRandomString(10),
     });
-
 
     res.json({ message: "razorpay data", razorpay: response });
   }
 );
 export const bookCar = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    type Idates = {
-      pickUpDate: string;
-      dropDate: string;
-      time: string;
-      carId: string;
-      payment: string;
-    };
-    const { pickUpDate, dropDate, time, carId, payment }: Idates =
-      req.body.data;
+    const { pickUpDate, dropDate, time, carId }: Idates = req.body.data;
     const userId: string = req.headers.authorization;
-    console.log(payment);
+
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
       { _id: 1, hubName: 1 }
@@ -77,12 +80,12 @@ export const bookCar = AsyncHandler(
     }
     vehicle.save();
 
-    let paymentStatus: string;
-    if (payment == "paid") {
-      paymentStatus = "FullPaid";
-    } else {
-      paymentStatus = "HalfPaid";
-    }
+    // let paymentStatus: string;
+    // if (payment == "paid") {
+    //   paymentStatus = "FullPaid";
+    // } else {
+    //   paymentStatus = "HalfPaid";
+    // }
 
     const order: IBook = await bookModel.create({
       hubId: hubDetails._id,
@@ -94,11 +97,32 @@ export const bookCar = AsyncHandler(
       bookingEndDate: dropDate,
       pickuptime: time,
       carPrice: vehicle.fairPrice,
-      paymentStatus,
+      //   paymentStatus,
       totalPrice: days * Number(vehicle.fairPrice),
       days,
     });
     order.save();
     res.json({ order });
+  }
+);
+type Iresponse = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
+export const verifyRazorpayPayment = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    console.log(req.body, 123);
+
+    const data: Iresponse = req.body.data;
+    const token = data.razorpay_order_id + "|" + data.razorpay_payment_id;
+    const secretKey = process.env.RAZORPAY_SECRET;
+    let generated_signature: any = crypto.createHmac("SHA256", secretKey);
+    generated_signature.update(token);
+    generated_signature = generated_signature.digest("hex");
+
+    if (generated_signature == data.razorpay_signature) {
+      console.log(" payment is successful");
+    }
   }
 );
