@@ -1,22 +1,28 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
-import { bookingCar, userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
-import { useLocation } from "react-router";
+import {
+  bookingCar,
+  userSingleGetVehicle,
+} from "../../../services/apis/userApi/userApi";
+import { useLocation, useNavigate } from "react-router";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 import Item from "antd/es/list/Item";
 import { useFormik } from "formik";
 import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
+import Payment from "../payment/Payment";
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
   const [vehicle, setVehicles] = useState<Vehicles | null>(null);
+  const [paybutton, setPaybutton] = useState<boolean>(false);
+  // const [PayValue, setPayValue] = useState<object|null>(null);
   const queryParams = new URLSearchParams(location.search);
   const [pickUpDate, setPickUpDate] = useState<Date>(new Date());
   const [dropDate, setDropDate] = useState<Date>(pickUpDate);
-  const carId = queryParams.get("carId");
-  console.log(pickUpDate, dropDate);
-
+  const carId: string | null = queryParams.get("carId");
+  console.log(pickUpDate, dropDate,carId);
+const Navigate=useNavigate()
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -43,13 +49,23 @@ const SingleVehicle: React.FC = () => {
     setDropDate(nextDay);
   }, [pickUpDate]);
 
-   type Idates = { pickUpDate: string; dropDate: string,time:string };
-  const initialValues: Idates = { pickUpDate: "", dropDate: "" ,time:'' };
- 
-  const submitForm = async (values: Idates): Promise<void> => {
-    console.log(values, 12);
+  type Idates = {
+    pickUpDate: string;
+    dropDate: string;
+    time: string;
+    carId?: string;
+  };
+  const initialValues: Idates = { pickUpDate: "", dropDate: "", time: "",carId:'' };
 
-    bookingCar(values)
+  const submitForm = async (values: Idates): Promise<void> => {
+   
+  if(carId)
+      values.carId = carId
+    
+    console.log(values, 12);
+    // setPayValue(values)
+setPaybutton(!paybutton)
+    // bookingCar(values)
   };
   const {
     values,
@@ -280,23 +296,16 @@ const SingleVehicle: React.FC = () => {
                 </li>
               </ul>
               <form onSubmit={handleSubmit}>
-                {/* <p> pick time slot</p>
-                <div className="sm:flex-row flex-col items-center sm:justify-evenly sm:h-12 px-6  font-semibold tracking-wide">
-                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
-                    {" "}
-                    9am to 12am
-                  </div>
-                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
-                    12pm to 3pm
-                  </div>
-                  <div className="inline-flex items-center mb-2 justify-center w-18 h-8 px-6 font-semibold tracking-wide  transition duration-200 rounded shadow-md  hover:bg-gray-300 focus:shadow-outline focus:outline-none">
-                    3pm to 6pm
-                  </div>
-                </div> */}
                 <label htmlFor="pickDate">Pick Time:</label>
 
-                <select id="picktime" required   value={values.time}   onChange={handleChange}
-                      onBlur={handleBlur} name="time">
+                <select
+                  id="picktime"
+                  required
+                  value={values.time}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="time"
+                >
                   <option value="">select time</option>
                   <option value="9am to 12am">9am to 12am</option>
                   <option value="12pm to 3pm">12pm to 3pm</option>
@@ -348,14 +357,26 @@ const SingleVehicle: React.FC = () => {
                     )}
                   </div>
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                >
-                  Book Now
-                </button>
+                {paybutton ? (
+                  <>
+                    {" "}
+                    {/* <button onClick={()=>Navigate('/payment')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                      pay
+                    </button> */}
+                    <Payment value={values}/>
+                  </>
+                ) : (
+                  <>
+                    {" "}
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                    >
+                      Book Now
+                    </button>
+                  </>
+                )}
               </form>
             </div>
           </div>

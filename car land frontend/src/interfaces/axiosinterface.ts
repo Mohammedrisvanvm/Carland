@@ -14,10 +14,10 @@ export interface AxiosResponse<T = any> {
     accessToken?: string;
     razorpay?:Irazresponse
   };
-  status: number;
-  statusText: string;
-  headers: any;
-  config: AxiosRequestConfig;
+  status?: number;
+  statusText?: string;
+  headers?: any;
+  config?: AxiosRequestConfig;
   request?: any;
   
 }

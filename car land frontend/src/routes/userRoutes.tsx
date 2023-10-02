@@ -10,6 +10,7 @@ import LeftSide from '../components/user/profile/LeftSide'
 import CitySelect from '../components/citySelect/CitySelect'
 import { Content } from '../components/content/content'
 import SingleVehicle from '../components/user/singlevehiclepage/SingleVehicle'
+import Payment from '../components/user/payment/Payment'
 
 const UserRoutes = () => {
     return (
@@ -24,6 +25,7 @@ const UserRoutes = () => {
                 <Route path='/rentcars' element={<Content/>} />
                 <Route path='/singlecar' element={<SingleVehicle/>} />
             <Route path='/profile' element={<LeftSide/>}/> 
+            {/* <Route path="/payment" element={<Payment/>} /> */}
             </Routes>
         </>
     )

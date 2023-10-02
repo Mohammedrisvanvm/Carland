@@ -26,10 +26,18 @@ export const currrentUserFetch = (): Promise<AxiosResponse<any>> => {
 export const userSignOut = (): Promise<AxiosResponse> => {
   return axiosBase.get("/users/auth/userLogout");
 };
-export const userGetVehicle = async (currentPage:number,search:string,filter:string): Promise<AxiosResponse<any>> => {
-  return axiosBase.get(`/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}`);
+export const userGetVehicle = async (
+  currentPage: number,
+  search: string,
+  filter: string
+): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(
+    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}`
+  );
 };
-export const userSingleGetVehicle = async (id:String|null): Promise<AxiosResponse<any>> => {
+export const userSingleGetVehicle = async (
+  id: String | null
+): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/users/vehicle/singleCar?id=${id}`);
 };
 export const userVerifyNumber = async (
@@ -53,22 +61,39 @@ export const userprofileData = async (
 };
 
 export const ProfileVerificationData = async (
-  formData:FormData
+  formData: FormData
 ): Promise<AxiosResponse> => {
-  return await axiosBase.put("/users/stuff/ProfileVerificationData",formData,{headers:{
-    
-  }}
- );
+  return await axiosBase.put("/users/stuff/ProfileVerificationData", formData, {
+    headers: {},
+  });
 };
-type Idates = { pickUpDate: string; dropDate: string,time:string };
-export const bookingCar=async (data:Idates):Promise<AxiosResponse> =>{
-  console.log(data);
-  
-  return await axiosBase.post("/users/booking/bookcar",{data})
-}
-export const razorpayApi=async (data:{}):Promise<AxiosResponse> =>{
-  console.log(data);
-  
-  return await axiosBase.post("/users/booking/razorpay",{data})
-}
 
+export const bookingCar = async (data: data): Promise<AxiosResponse> => {
+  console.log(data);
+
+  return await axiosBase.post("/users/booking/bookcar", { data });
+};
+export const verifyRazorpayPayment = async (data: Iresponse): Promise<AxiosResponse> => {
+  console.log(data);
+
+  return await axiosBase.post("/users/booking/razorpayverify", { data });
+};
+type Iresponse = {
+  razorpay_payment_id: string;
+  razorpay_order_id: string;
+  razorpay_signature: string;
+};
+type data = {
+  pickUpDate: string;
+  dropDate: string;
+  time: string;
+  carId?: string;
+  razorpay_signature?: string;
+  razorpay_order_id?: string;
+  razorpay_payment_id?: string;
+};
+export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
+  console.log(data);
+
+  return await axiosBase.post("/users/booking/razorpay", { data });
+};

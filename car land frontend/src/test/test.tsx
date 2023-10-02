@@ -1,37 +1,76 @@
-const content = () => {
+import React from "react";
+import Razorpay from "razorpay";
+import {  razorpayApi } from "../services/apis/userApi/userApi";
+import { AxiosResponse } from "../interfaces/axiosinterface";
+import { Irazresponse } from "../interfaces/razorpayInterface";
+const loadRazorpay = (src: string) => {
+  return new Promise((resolve) => {
+    const script = document.createElement("script");
+    script.src = "https://checkout.razorpay.com/v1/checkout.js";
+    script.src = src;
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+};
+
+const content: React.FC = () => {
+  async function showRazorpay() {
+
+    const response:AxiosResponse=await razorpayApi()
+    if(response?.data?.razorpay){
+
+      var result = response?.data?.razorpay;
+   
+    
+    
+    
+    const res = await loadRazorpay(
+      "https://checkout.razorpay.com/v1/checkout.js"
+    );
+    if (!res) {
+      alert("sdk is not working");
+      return;
+    }
+
+    const options = {
+      key: import.meta.env.VITE_RAZORPAY_ID, 
+      amount: result.amount,
+      currency: result.currency,
+      name: "Car Land", 
+      description: "Test Transaction",
+      image: "https://example.com/your_logo",
+      order_id: result.id, 
+      handler: function (response: any) {
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature);
+      },
+      prefill: {
+        //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
+        name: "Gaurav Kumar", //your customer's name
+        email: "gaurav.kumar@example.com",
+        contact: "9000090000", //Provide the customer's phone number for better conversion rates
+      },
+      notes: {
+        address: "Razorpay Corporate Office",
+      },
+      theme: {
+        color: "#3399cc",
+      },
+    };
+
+    const _window = window as any;
+    var rzp1 = new _window.Razorpay(options);
+    rzp1.open();
+  }
+  }
+
   return (
-    <div className="flex flex-col md:flex-row py-8 md:py-32 mt-4">
-      <div className="w-full md:w-1/2 flex flex-col justify-center items-center">
-        {/* {activeImg && ( */}
-          <img
-            // src={`${process.env.REACT_APP_BASEURL}/images/${activeImg.filename}`}
-            // alt={`Car Image ${activeImg.id}`}
-            className="w-2/3 h-auto aspect-square object-cover rounded-xl shadow-lg"
-          />
-        {/* )} */}
-        <div className="flex flex-row justify-center mt-6">
-          {/* {car &&
-            car.carImages.map((image, index) => (
-              <div
-                key={index}
-                className={`image-container cursor-pointer ${
-                  activeImg === image
-                    ? "border-2 border-violet-600"
-                    : "border border-gray-300"
-                } rounded-md h-16 w-16 mx-2`}
-                onClick={() => handleImageClick(image)}
-              > */}
-                <img
-                  // src={`${process.env.REACT_APP_BASEURL}/images/${image.filename}`}
-                  // alt={`Car Image ${image._id}`}
-                  className="w-full h-full object-cover rounded-md"
-                />
-              </div>
-            {/* ))} */}
-        </div>
-      </div>
-    // </div>
+    <>
+      <a onClick={showRazorpay}>pay</a>
+    </>
   );
 };
 
-export default  content
+export default content;
