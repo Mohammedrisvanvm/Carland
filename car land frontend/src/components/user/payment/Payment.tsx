@@ -71,6 +71,7 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
 
           if(confirmorder.data?.id)
            Navigate(`/BookingConfirm/${confirmorder.data?.id}`)
+        
             } else {
               console.log("false");
             }
