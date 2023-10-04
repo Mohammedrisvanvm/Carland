@@ -146,5 +146,5 @@ export const bookingDetails = AsyncHandler(
         const bookingDetails:IBookWithTimestamps=await bookModel.findById(id)
         console.log(id);
         
-        res.json({message:"g",bookingDetails})
+        res.json({message:"got",bookingDetails})
     })

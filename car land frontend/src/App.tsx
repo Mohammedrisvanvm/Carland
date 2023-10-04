@@ -9,7 +9,7 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 
 
-import AdminRouters from "./routes/admin";
+import AdminRouters from "./routes/adminRouters";
 import VendorRouters from "./routes/vendorRouters";
 import  Location  from "./test/test";
 

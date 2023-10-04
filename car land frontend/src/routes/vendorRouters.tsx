@@ -11,6 +11,7 @@ import PrivateRoute from "../utils/PrivateRoute";
 import AddHub from "../components/vender/vendorHub/AddHub";
 import { useState } from "react";
 import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
+import ProtectedRouteVendor from "./protectedRoutes/vendor";
 
 
 const VendorRouters = () => {
@@ -19,18 +20,18 @@ const VendorRouters = () => {
   return (
     <>
       <Routes>
-        <Route path="/login" element={<PrivateRoute role="vendor"> <VenderLogin /></PrivateRoute>} />
-        <Route path="/signup" element={<PrivateRoute role="vendor"><VendorSignUp /></PrivateRoute>} />
-        <Route path="/otp" element={<PrivateRoute role="vendor"><VendorOtp /></PrivateRoute>} />
+        <Route path="/login" element={<ProtectedRouteVendor > <VenderLogin /></ProtectedRouteVendor>} />
+        <Route path="/signup" element={<ProtectedRouteVendor ><VendorSignUp /></ProtectedRouteVendor>} />
+        <Route path="/otp" element={<ProtectedRouteVendor ><VendorOtp /></ProtectedRouteVendor>} />
         {/* <Route path="/" element={<AdminProtectRoute> <Home /> </AdminProtectRoute>}></Route> */}
 
-        {/* <Route element={<PrivateRoute role="vendor" />}> */}
-          <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} />
-          <Route path="/addhub" element={ <PrivateRoute role="vendor"> <AddHub/> </PrivateRoute>} />
-          {/* <Route path="/*" element={ <PrivateRoute role="vendor"> <VendorHomePage /> </PrivateRoute>} /> */}
-          <Route path="/vendordashboard" element={<PrivateRoute role="vendor"> <VenderDashboardPage /></PrivateRoute>} />
-          <Route path="/vendorcars" element={<PrivateRoute role="vendor"> <CarManagementPage /></PrivateRoute>} />
-          <Route path="/vendorcar/addcar" element={<PrivateRoute role="vendor"> <AddCarPage /></PrivateRoute>} />
+        {/* <Route element={<PrivateRoute  />}> */}
+          <Route path="/*" element={ <ProtectedRouteVendor > <VendorHomePage /> </ProtectedRouteVendor>} />
+          <Route path="/addhub" element={ <ProtectedRouteVendor > <AddHub/> </ProtectedRouteVendor>} />
+          {/* <Route path="/*" element={ <ProtectedRouteVendor > <VendorHomePage /> </ProtectedRouteVendor>} /> */}
+          <Route path="/vendordashboard" element={<ProtectedRouteVendor > <VenderDashboardPage /></ProtectedRouteVendor>} />
+          <Route path="/vendorcars" element={ <CarManagementPage />} />
+          <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}
         {/* </Route> */}
       </Routes>

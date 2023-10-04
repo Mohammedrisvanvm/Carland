@@ -5,8 +5,8 @@ import hubModel from "../../models/hubSchema";
 import cloudinary from "../../config/cloudinary";
 import { verifyJwt } from "../../utils/jwtUtils/jwtutils";
 
-import VenderModel from "../../models/vendorSchema";
 import IVendor from "../../interfaces/vendorInterface";
+import VendorModel from "../../models/vendorSchema";
 
 export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -60,7 +60,7 @@ export const addhub = AsyncHandler(
       if (!value) {
         throw new Error("accessToken problem");
       }
-      await VenderModel.findByIdAndUpdate(
+      await VendorModel.findByIdAndUpdate(
         { _id: value.payload.id },
         { $addToSet: { renthubs: hub._id } }
       );
@@ -87,12 +87,13 @@ export const getHubs = AsyncHandler(
       throw new Error("accessToken not available");
     }
     const jwtdata: Ipayload = verifyJwt(accessTokenvendor);
+console.log(typeof(req.headers.authorization),'number');
 
-    const dbout: IVendor = await VenderModel.findOne(
-      { _id: jwtdata.payload.id },
+    const dbout: IVendor = await VendorModel.findOne(
+      { phoneNumber: req.headers.authorization },
       { renthubs: 1, _id: 0 }
     );
-
+console.log(dbout);
     const hubs: Ihub[] = await hubModel.find({ _id: { $in: dbout.renthubs } });
 
     res.json({ hubs });

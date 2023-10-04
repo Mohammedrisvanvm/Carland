@@ -9,6 +9,7 @@ import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import Map from "./Map";
 import MapboxComponent from "./Map";
 import { hub } from "../../../interfaces/userAuth";
+import Loader from "../../../utils/Loader";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -34,6 +35,7 @@ export interface IHub {
 const AddHub: FC = () => {
   const Navigate = useNavigate();
   const [showMap, setShowMap] = useState<boolean>(false);
+  const [loader, setLoader] = useState<boolean>(false);
   const [location, setLocation] = useState<object|null>(null);
   const initialValues: hub = {
     hubName: "",
@@ -56,8 +58,9 @@ const AddHub: FC = () => {
       if(location){
 
         values.place = location;
+        setLoader(!loader)
         const res: AxiosResponse = await HubAdd(values);
-  
+        setLoader(!loader)
         toast.success(res.data?.message);
         Navigate("/vendor");
       }else{
@@ -136,6 +139,7 @@ const AddHub: FC = () => {
     <>
       {" "}
       <VendorNavBar />
+      {loader ? <Loader/> :(<>
       <div className="flex justify-center overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8 ">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
           Add Hub
@@ -290,6 +294,8 @@ const AddHub: FC = () => {
           </div>
         </div>
       </div>
+      </>
+      )}
     </>
   );
 };

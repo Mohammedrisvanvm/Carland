@@ -100,6 +100,7 @@ export const getVehiclesController = AsyncHandler(
     };
     const { hubId, search }: hubId = req.query;
     console.log(hubId, search, 11);
+    
     // if (search == "") {
     //   var vehicles: IVehicle[] = await hubModel.aggregate([
     //     {

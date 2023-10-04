@@ -1,17 +1,20 @@
-interface Ihub extends Document {
+interface Ihub  {
   save(): unknown;
-  _id:string,
+  _id: string;
   hubName: string;
   isVerified: Boolean;
   ban: Boolean;
-  location: Location;
-  place?:object;
+  location: {
+    lat: number;
+    lng: number;
+  }
+  place?: object;
   pincode: Number;
-  vehicles:Array<string>
+  vehicles: Array<string>;
   validityDate: Date;
   license: string;
   hubImage: string;
   hubMultiImage: Array<string>;
 }
 
-export default Ihub
+export default Ihub;

@@ -7,22 +7,24 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
-import Item from "antd/es/list/Item";
+
 import { useFormik } from "formik";
 import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
 import Payment from "../payment/Payment";
+import { useAppSelector } from "../../../redux/store/storeHook";
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
   const [vehicle, setVehicles] = useState<Vehicles | null>(null);
+  const [price, setPrice] = useState<number | null>(null);
   const [paybutton, setPaybutton] = useState<boolean>(false);
   // const [PayValue, setPayValue] = useState<object|null>(null);
   const queryParams = new URLSearchParams(location.search);
   const [pickUpDate, setPickUpDate] = useState<Date>(new Date());
   const [dropDate, setDropDate] = useState<Date>(pickUpDate);
   const carId: string | null = queryParams.get("carId");
-  console.log(pickUpDate, dropDate,carId);
-const Navigate=useNavigate()
+  const user=useAppSelector((state)=>state.user)
+  const Navigate = useNavigate();
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -35,6 +37,19 @@ const Navigate=useNavigate()
     };
     fetchData();
   }, []);
+  useEffect(() => {
+    var date1: Date = new Date(pickUpDate);
+    var date2: Date = new Date(dropDate);
+
+    var Difference_In_Time: number = date2.getTime() - date1.getTime();
+
+    var Difference_In_Days: number = Difference_In_Time / (1000 * 3600 * 24);
+    if (vehicle?.fairPrice) {
+      setPrice(Difference_In_Days * vehicle?.fairPrice);
+    }
+  }, []);
+  console.log(price, 111);
+
   const currentDate = new Date();
 
   currentDate.setDate(currentDate.getDate() + 1);
@@ -55,16 +70,19 @@ const Navigate=useNavigate()
     time: string;
     carId?: string;
   };
-  const initialValues: Idates = { pickUpDate: "", dropDate: "", time: "",carId:'' };
+  const initialValues: Idates = {
+    pickUpDate: "",
+    dropDate: "",
+    time: "",
+    carId: "",
+  };
 
   const submitForm = async (values: Idates): Promise<void> => {
-   
-  if(carId)
-      values.carId = carId
-    
+    if (carId) values.carId = carId;
+
     console.log(values, 12);
     // setPayValue(values)
-setPaybutton(!paybutton)
+    setPaybutton(!paybutton);
     // bookingCar(values)
   };
   const {
@@ -291,9 +309,40 @@ setPaybutton(!paybutton)
                     </svg>
                   </div>
                   <p className="font-medium text-black">
-                    {vehicle?.status ? "not available" : "available"}
+                    {vehicle?.status ? "available" : "not available"}
                   </p>
                 </li>
+                {price ? (
+                  <>
+                    {" "}
+                    <li className="flex items-center">
+                      <div className="mr-3">
+                        <svg
+                          className="w-4 h-4 text-teal-accent-400"
+                          viewBox="0 0 24 24"
+                          strokeLinecap="round"
+                          strokeWidth="2"
+                        >
+                          <polyline
+                            fill="none"
+                            stroke="currentColor"
+                            points="6,12 10,16 18,8"
+                          />
+                          <circle
+                            cx="12"
+                            cy="12"
+                            fill="none"
+                            r="11"
+                            stroke="currentColor"
+                          />
+                        </svg>
+                      </div>
+                      <p className="font-medium text-black">price:{price}</p>
+                    </li>
+                  </>
+                ) : (
+                  ""
+                )}
               </ul>
               <form onSubmit={handleSubmit}>
                 <label htmlFor="pickDate">Pick Time:</label>
@@ -357,26 +406,45 @@ setPaybutton(!paybutton)
                     )}
                   </div>
                 </div>
-                {paybutton ? (
+
+                {user.accessToken ? <> {vehicle?.status ? (
                   <>
                     {" "}
-                    {/* <button onClick={()=>Navigate('/payment')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                    {paybutton ? (
+                      <>
+                        {" "}
+                        {/* <button onClick={()=>Navigate('/payment')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
                       pay
                     </button> */}
-                    <Payment value={values}/>
+                        <Payment value={values} />
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <button
+                          type="submit"
+                          disabled={isSubmitting}
+                          className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                        >
+                          Book Now
+                        </button>
+                      </>
+                    )}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                    >
-                      Book Now
-                    </button>
+                    <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                      not available at this moment
+                    </div>
                   </>
-                )}
+                )}</>:<>  <>
+                {" "}
+                <div onClick={()=>Navigate('/UserAuth')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                 login
+                </div>
+              </></>}
+               
               </form>
             </div>
           </div>

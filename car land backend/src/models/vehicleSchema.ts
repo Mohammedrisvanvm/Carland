@@ -43,7 +43,7 @@ const vehicleSchema: Schema = new Schema(
     },
     status: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     singleImage: {
       type: String,

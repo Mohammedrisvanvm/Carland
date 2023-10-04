@@ -7,6 +7,7 @@ import { CarAdd } from "../../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../../interfaces/axiosinterface";
 import { useAppSelector } from "../../../../redux/store/storeHook";
 import { error } from "console";
+import Loader from "../../../../utils/Loader";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -23,6 +24,9 @@ const convertToBase64 = (file: File): Promise<string> => {
 const AddCar = () => {
   const hubid = useAppSelector((state) => state.vendor.hubId);
   const Navigate = useNavigate();
+  const [loader, setLoader] = useState<boolean>(false);
+
+
   const initialValues: IAddcar = {
     vehicleName: "",
     vehicleNumber: "",
@@ -45,8 +49,9 @@ const AddCar = () => {
     actions: FormikHelpers<IAddcar>
   ): Promise<void> => {
     try {
-    
+      setLoader(!loader)
       const res: AxiosResponse = await CarAdd(values, hubid);
+      setLoader(!loader)
       toast.success(res.data?.message);
       Navigate("/vendor/vendorcars");
     } catch (error: any) {
@@ -130,6 +135,7 @@ console.log(values.specification);
   return (
     <>
       {" "}
+      {loader ? <Loader/> :(<>
       <div className="flex justify-center overflow-hidden shadow-md sm:rounded-lg mt-14 m-8 ">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
           Add Car
@@ -506,6 +512,7 @@ console.log(values.specification);
           </div>
         </div>
       </div>
+      </>)}
     </>
   );
 };

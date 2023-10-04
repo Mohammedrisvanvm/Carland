@@ -5,25 +5,26 @@ import { AxiosResponse } from "../interfaces/axiosinterface";
 import { IConfirmBook } from "../interfaces/bookingConfirmInterface";
 import { bookingDetails } from "../services/apis/userApi/userApi";
 import { useParams } from 'react-router-dom';
+import { useAppSelector } from "../redux/store/storeHook";
 const content: React.FC = () => {
   const Navigate = useNavigate();
-const [bookingData,setbookingData]=useState<IConfirmBook|null>(null)
-const queryParams = new URLSearchParams(location.search);
-const carId: string | null = queryParams.get("carId");
-const { productId } = useParams();
-useEffect(()=>{
-  const fetchData = async (): Promise<void> => {
-    try {
-      const response: AxiosResponse = await bookingDetails(carId);
-      console.log(response);
-      if (response.data?.bookingDetails) {
-        setbookingData(response.data?.bookingDetails);
-      }
-    } catch {}
-  };
-  fetchData();
-},[])
-console.log(bookingData);
+const [bookingData,setbookingData]=useState<IConfirmBook[]>([])
+
+const user=useAppSelector((state)=>state.user)
+
+// useEffect(()=>{
+//   const fetchData = async (): Promise<void> => {
+//     try {
+//       const response: AxiosResponse = await bookingDetails(id);
+//       console.log(response);
+//       if (response.data?.bookingDetails) {
+//         setbookingData(response.data?.bookingDetails);
+//       }
+//     } catch {}
+//   };
+//   fetchData();
+// },[])
+
 
   return (
     <>
@@ -44,7 +45,7 @@ console.log(bookingData);
                 <h5 className="text-left">Your Booking Confirmed!</h5>
 
                 <span className="font-semibold block text-green-600 mt-4">
-                  Hello, Risvan
+                  Hello, {user.userName}
                 </span>
                 <span>
                   Your Booking has been confirmed and will be available tomorrow
@@ -58,36 +59,36 @@ console.log(bookingData);
                   <ul className="sm:flex justify-around">
                     <li>
                       <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span>{new Date().toLocaleDateString()}</span>
+                    </li>
+                    {/* <li>
+                      <span className="block text-gray-500">Order id</span>
+                      <span>{bookingData?._id}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span className="block text-gray-500">Hub Name</span>
+                      <span>{bookingData?.hubName}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span className="block text-gray-500">vehicle Name</span>
+                      <span>{bookingData?.vehicleName}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span className="block text-gray-500">pickup time</span>
+                      <span>{bookingData?.pickuptime}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span className="block text-gray-500">total Price</span>
+                      <span>{bookingData?.totalPrice}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
+                      <span className="block text-gray-500">paymentDetails</span>
+                      <span className="text-green-500">{bookingData?.paymentStatus}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
-                    </li>
-                    <li>
-                      <span className="block text-gray-500">Order Date</span>
-                      <span>qwerty</span>
-                    </li>
+                      <span className="block text-gray-500">payment id</span>
+                      <span>{bookingData?.paymentDetails.razorpay_payment_id}</span>
+                    </li> */}
                   </ul>
                 </div>
                 <div className="payment border-t mt-3 mb-3 border-b table-responsive">
@@ -111,13 +112,13 @@ console.log(bookingData);
                 </div>
 
                 <p>
-                  We will be sending a shipping confirmation email when the item
+                  We will be sending a booking confirmation email when the item
                   is shipped successfully!
                 </p>
                 <p className="font-semibold mb-0">
-                  Thanks for shopping with us!
+                  Thanks for booking with us!
                 </p>
-                <span>ESHOP SPORT TEAM</span>
+                <span>CAR LAND TEAM</span>
               </div>
 
               <div className="flex justify-between footer p-3">
@@ -127,7 +128,8 @@ console.log(bookingData);
                     help center
                   </a>
                 </span>
-                <span>12 June, 2020</span>
+       
+                <span>{new Date().toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}</span>
               </div>
             </div>
           </div>
@@ -135,11 +137,11 @@ console.log(bookingData);
       </div>
 
       <div className="flex justify-center">
-        <a href="/orders">
-          <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">
-            Back to Order Details
+       
+          <button onClick={()=>Navigate('/profile')} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">
+            Back To Booking Details
           </button>
-        </a>
+      
       </div>
 
       <footer

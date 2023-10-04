@@ -29,10 +29,12 @@ export const userSignOut = (): Promise<AxiosResponse> => {
 export const userGetVehicle = async (
   currentPage: number,
   search: string,
-  filter: string
+  filter: string,
+  latitude:number| null,
+  longitude:number| null
 ): Promise<AxiosResponse<any>> => {
   return axiosBase.get(
-    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}`
+    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}&lat=${latitude}&lng=${longitude}`
   );
 };
 export const userSingleGetVehicle = async (
@@ -100,7 +102,7 @@ export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
   return await axiosBase.post("/users/booking/razorpay", { data });
 };
 export const bookingDetails = async (
-  bookingID: string | null
+  bookingID: string |undefined
 ): Promise<AxiosResponse> => {
   console.log(bookingID);
 

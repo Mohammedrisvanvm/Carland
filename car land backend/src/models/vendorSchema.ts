@@ -1,6 +1,7 @@
 import  { Schema, model } from "mongoose";
 import bcrypt from 'bcrypt'
 import IVender from "../interfaces/vendorInterface";
+import IVendor from "../interfaces/vendorInterface";
 
 
 const VendorSchema:Schema=new Schema({
@@ -47,5 +48,5 @@ VendorSchema.methods.matchPassword=async function (enteredPassword: string) {
     return await bcrypt.compare(enteredPassword, this.password)
 }
 
-const VendorModel=model<IVender>('vender',VendorSchema)
+const VendorModel=model<IVendor>('vender',VendorSchema)
 export default VendorModel

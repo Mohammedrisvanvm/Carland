@@ -12,21 +12,24 @@ import { Content } from '../components/content/content'
 import SingleVehicle from '../components/user/singlevehiclepage/SingleVehicle'
 import Payment from '../components/user/payment/Payment'
 import BookingConfirmPage from '../components/user/payment/BookingConfirmPage'
+import PrivateRoute from '../utils/PrivateRoute'
+import ProtectedRouteuser from './protectedRoutes/user'
 
 const UserRoutes = () => {
     return (
         <>
             <Routes>
+                
                 <Route path='/'  element={<UserHomePage/>}/>
-                <Route path='/UserAuth' element={<GoogleAuthPage/>}/>
-                <Route path='/UserLogin' element={<LoginPage/>}/>
-                <Route path='/UserSignUp' element={<SignUpPage/>}/>
-                <Route path='/UserOtp' element={<OtpPage/>}/>
+                <Route path='/userauth' element={<ProtectedRouteuser role='user'><GoogleAuthPage/></ProtectedRouteuser>}/>
+                <Route path='/userlogin' element={<ProtectedRouteuser role='user'><LoginPage/></ProtectedRouteuser>}/>
+                <Route path='/usersignup' element={<ProtectedRouteuser role='user'><SignUpPage/></ProtectedRouteuser>}/>
+                <Route path='/userotp' element={<ProtectedRouteuser role='user'><OtpPage/></ProtectedRouteuser>}/>
                 <Route path='/selectcity' element={<CitySelect/>}/>
                 <Route path='/rentcars' element={<Content/>} />
                 <Route path='/singlecar' element={<SingleVehicle/>} />
-            <Route path='/profile' element={<LeftSide/>}/> 
-            <Route path="/BookingConfirm/:id" element={<BookingConfirmPage/>} />
+            <Route path='/profile' element={<ProtectedRouteuser role='user'><LeftSide/></ProtectedRouteuser>}/> 
+            <Route path="/BookingConfirm/:id" element={<ProtectedRouteuser role='user'><BookingConfirmPage/></ProtectedRouteuser>} />
             </Routes>
         </>
     )

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState,useRef } from "react";
 import { useNavigate } from "react-router";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 import {
@@ -18,11 +18,17 @@ const CarList = () => {
   const dispatch = useDispatch();
   const id = useAppSelector((state) => state.vendor.hubId);
   const [search ,setSearch]=useState<string>('')
+  const hasInitialRenderRun = useRef<boolean>(false);
   useEffect(() => {
+    // if (!hasInitialRenderRun.current) {
+     
+    //   hasInitialRenderRun.current = true;
+    // } else {
     const fetchData = async (): Promise<void> => {
       try {
+        
         const response:AxiosResponse = await getVehicle(id,search);
-        console.log(response.data?.vehicles);
+      
 
         setVehicles(response.data?.vehicles);
       } catch (error) {
@@ -45,8 +51,11 @@ const CarList = () => {
     };
 
     fetchData();
+  // }
+  return console.log('unmouded');
+  
   }, [search]);
-console.log(vehicles);
+
 
   return (
     <>

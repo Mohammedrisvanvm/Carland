@@ -41,6 +41,7 @@ export const verifyCar = AsyncHandler(
 
     if (car) {
       car.isVerified = !car.isVerified;
+      // car.status = !car.status;
       await car.save();
     }
 

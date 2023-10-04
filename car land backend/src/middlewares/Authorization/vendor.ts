@@ -34,6 +34,8 @@ export const vendorAuthenticate = AsyncHandler(
     if (accessTokenvendortoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenvendor);
 
+      
+      req.headers.authorization = verifiedJWT.payload.number;
       if (verifiedJWT.payload.number) {
         const vendor: IVendor | null = await VendorModel.findOne(
           { phoneNumber: verifiedJWT.payload.number,ban:false },

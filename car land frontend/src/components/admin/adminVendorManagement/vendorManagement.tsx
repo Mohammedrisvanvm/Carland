@@ -7,6 +7,7 @@ import {
   getAllVendors,
 } from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import Loader from "../../../utils/Loader";
 
 const VendorManagement = () => {
   const [vendors, setVendors] = useState<IVendor[]|undefined>([]);
@@ -28,11 +29,13 @@ const VendorManagement = () => {
   }, [loading]);
   console.log(vendors);
   const banHandle = async (value: string | undefined) => {
+    setLoading(true)
     await banVendor(value);
-    setLoading(!loading);
+    setLoading(false);
   };
   return (
     <>
+   
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
           vendor Details
@@ -209,8 +212,9 @@ const VendorManagement = () => {
             <span className="mx-2"> add Car</span>
           </button>
         </div> */}
+         { loading ? <Loader/> : <>
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="text-xs justify-between text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 index
@@ -288,6 +292,7 @@ const VendorManagement = () => {
               : "not one"}
           </tbody>
         </table>
+     
         <nav
           className="flex items-center justify-between pt-4 mx-4 mb-4"
           aria-label="Table navigation"
@@ -362,6 +367,7 @@ const VendorManagement = () => {
             </li>
           </ul>
         </nav>
+        </>}
       </div>
     </>
   );
