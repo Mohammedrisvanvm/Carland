@@ -20,6 +20,8 @@ import { DatePicker, Pagination } from "antd";
 import mapboxAPI from "../../services/mapbox/mapbox";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { RangePickerProps } from "antd/es/date-picker";
+import dayjs from "dayjs";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const Content = () => {
   const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);
@@ -91,6 +93,10 @@ export const Content = () => {
   }, [currentPage, search, filter, latitude, longitude]);
 
   const [isOpen, setIsOpen] = useState(true);
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf("day");
+  };
 
   return (
     <Fragment>
@@ -131,7 +137,6 @@ export const Content = () => {
                     className="h-6 w-6 absolute right-2 top-3"
                     src="https://www.svgrepo.com/show/127575/location-sign.svg"
                     alt="current location"
-                    
                   />
                 </div>
 
@@ -145,11 +150,12 @@ export const Content = () => {
               <div className="sm:flex justify-center">
                 {" "}
                 <RangePicker
-                  showTime={{ format: "HH:mm" }}
-                  format="YYYY-MM-DD HH:mm"
+                  showTime={{ format: "HH" }}
+                  format="YYYY-MM-DD HH"
                   placeholder={["Start Time", "End Time"]}
                   onChange={onChange}
-                  onOk={onOk}
+                  disabledDate={disabledDate}
+                
                 />
                 <button
                   className="inline-flex items-center text-sm justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
