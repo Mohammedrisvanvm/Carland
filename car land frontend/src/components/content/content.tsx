@@ -21,7 +21,8 @@ import mapboxAPI from "../../services/mapbox/mapbox";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { RangePickerProps } from "antd/es/date-picker";
-import dayjs from "dayjs";
+import RangeValue from "antd/es/date-picker";
+import dayjs, { Dayjs } from "dayjs";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const Content = () => {
   const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);
@@ -33,14 +34,21 @@ export const Content = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalpage, setTotalpage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [seletedDate, setSeletedDate] = useState<string[]>([]);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const pageSize = 4;
   const { RangePicker } = DatePicker;
 
-  function onChange(value: any, dateString: any) {
-    console.log("Selected Time: ", typeof value, value);
+  function onChange(value: any, dateString: [string, string]) {
+    if (value[0] && value[1]) {
+      // Handle date range change here
+      console.log("Selected Time: ", typeof value[0].$d, value[1].$d);
+      console.log("Formatted Selected Time: ", typeof dateString, dateString);
+    }
+    // console.log("Selected Time: ", typeof(value[0].$d), value[0].$d);
     console.log("Formatted Selected Time: ", typeof dateString, dateString);
+    setSeletedDate(dateString);
   }
 
   function onOk(value: any) {
@@ -60,11 +68,14 @@ export const Content = () => {
 
     const points = response.data.features[1];
     console.log(parseFloat(points.center[1]));
-    const latitude = parseFloat(points.center[1]);
-    const longitude = parseFloat(points.center[0]);
+    const latitude: number = parseFloat(points.center[1]);
+    const longitude: number = parseFloat(points.center[0]);
     setLatitude(latitude);
     setLongitude(longitude);
-    const searchedLocation = { latitude: latitude, longitude: longitude };
+    const searchedLocation: {
+      latitude: number;
+      longitude: number;
+    } = { latitude: latitude, longitude: longitude };
     console.log(searchedLocation, "searched Location");
   };
   // console.log(location);
@@ -77,7 +88,8 @@ export const Content = () => {
           search,
           filter,
           latitude,
-          longitude
+          longitude,
+          seletedDate
         );
 
         setVehicles(response.data?.vehicles);
@@ -94,7 +106,6 @@ export const Content = () => {
 
   const [isOpen, setIsOpen] = useState(true);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    // Can not select days before today and today
     return current && current < dayjs().endOf("day");
   };
 
@@ -150,14 +161,17 @@ export const Content = () => {
               <div className="sm:flex justify-center">
                 {" "}
                 <RangePicker
-                  showTime={{ format: "HH" }}
-                  format="YYYY-MM-DD HH"
+                  showTime={{ format: "h a" }}
+                  format="YYYY-MM-DD h a"
                   placeholder={["Start Time", "End Time"]}
                   onChange={onChange}
+               
+                  
                   disabledDate={disabledDate}
-                
                 />
                 <button
+   onClick={()=> console.log("hai")
+   }
                   className="inline-flex items-center text-sm justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
                   aria-label="Sign up"
                   title="Sign up"

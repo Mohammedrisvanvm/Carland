@@ -13,9 +13,11 @@ export const userVehicles = AsyncHandler(
       filter?: string;
       lat?:number
       lng?:number
+      seletedDate?:string[]
     };
 
-    const { search, filter,lat,lng }: search = req.query;
+    const { search, filter,lat,lng,seletedDate }: search = req.query;
+console.log(search, filter,lat,lng,seletedDate );
 
     const query: any = { isVerified: true };
 
@@ -44,7 +46,7 @@ export const userVehicles = AsyncHandler(
       .skip(skip)
       .limit(perPage);
       
-      console.log(vehicles);
+      // console.log(vehicles);
     const count: number = await vehicleModel.countDocuments(query);
     res.json({ vehicles, count });
   }
