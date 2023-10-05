@@ -31,8 +31,6 @@ export const Content = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalpage, setTotalpage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [searchedLatitude, setSearchedLatitude] = useState<number>();
-  const [searchedLongitude, setSearchedLongitude] = useState<number>();
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const pageSize = 4;
@@ -46,7 +44,28 @@ export const Content = () => {
   function onOk(value: any) {
     console.log("onOk: ", typeof value, value);
   }
-  console.log(location);
+  const handlesearch = async () => {
+    console.log("hai");
+
+    const response = await mapboxAPI.get(
+      `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
+    );
+    if (response.data.features.length === 0) {
+      console.log("Location not found");
+      return;
+    }
+    console.log(response);
+
+    const points = response.data.features[1];
+    console.log(parseFloat(points.center[1]));
+    const latitude = parseFloat(points.center[1]);
+    const longitude = parseFloat(points.center[0]);
+    setLatitude(latitude);
+    setLongitude(longitude);
+    const searchedLocation = { latitude: latitude, longitude: longitude };
+    console.log(searchedLocation, "searched Location");
+  };
+  // console.log(location);
 
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -61,8 +80,6 @@ export const Content = () => {
 
         setVehicles(response.data?.vehicles);
         if (response.data?.count) {
-          console.log(Math.ceil(response.data.count / 4));
-
           setTotalpage(Math.ceil(response.data.count / 4));
         }
       } catch (error) {
@@ -71,34 +88,10 @@ export const Content = () => {
     };
 
     fetchData();
-  }, [currentPage, search, filter,latitude,
-    longitude]);
-  console.log(searchedLatitude, searchedLongitude);
+  }, [currentPage, search, filter, latitude, longitude]);
 
-  //  const locationSearch=async()=>{
-  //     const response:any = await mapboxAPI.get(`/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`);
-  //       if (response.data.features.length === 0) {
-  //         console.log('Location not found');
-  //         return;
-  //       }
-
-  //       const points:any = response.data.features[1];
-  //       console.log(points);
-  //       const latitude:number = parseFloat(points.center[1]);
-  //       const longitude:number = parseFloat(points.center[0]);
-  //       setSearchedLatitude(latitude);
-  //       setSearchedLongitude(longitude);
-  //       const searchedLocation : {
-  //         latitude: number | undefined;
-  //         longitude: number | undefined;
-  //     }= { latitude: searchedLatitude, longitude: searchedLongitude };
-  //   }
   const [isOpen, setIsOpen] = useState(true);
-  
-  //   const within10Km = distance <= 10;
-  //   console.log(within10Km, 'within 10 km');
-  //   return within10Km;
-  // }
+
   return (
     <Fragment>
       {loader ? (
@@ -113,32 +106,37 @@ export const Content = () => {
                 Rent a car and explore the city at your own pace
               </h2>
 
-              <div
-            onClick={() =>
-              navigator.geolocation.getCurrentPosition((position) => {
-                setLatitude(position.coords.latitude);
-                setLongitude(position.coords.longitude);
-                // getlocation();
-                console.log(position.coords);
-              })
-            }
-          >
-            hello
-          </div>
-
               <div className="flex items-center justify-center mb-5">
-                <input
-                  type="text"
-                  placeholder="Search using Location"
-                  // value={searchQuery}
-                  onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                    setSearchQuery(event.target.value);
-                  }}
-                  className="h-12 px-4 border  border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 focus: w-96"
-                />
-                <button
-                  // onClick={locationSearch}
+                <div className="relative w-96">
+                  <input
+                    type="text"
+                    placeholder="Search using Location"
+                    value={searchQuery}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                      setSearchQuery(event.target.value);
+                    }}
+                    className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
+                  />
 
+                  <img
+                    onClick={() =>
+                      navigator.geolocation.getCurrentPosition((position) => {
+                        setLatitude(position.coords.latitude);
+                        setLongitude(position.coords.longitude);
+                        // getlocation();
+                        console.log(position.coords);
+                      })
+                    }
+                    title="current location"
+                    className="h-6 w-6 absolute right-2 top-3"
+                    src="https://www.svgrepo.com/show/127575/location-sign.svg"
+                    alt="current location"
+                    
+                  />
+                </div>
+
+                <button
+                  onClick={handlesearch}
                   className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
                 >
                   Search
@@ -174,9 +172,9 @@ export const Content = () => {
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
                   >
                     <option value="" selected>
-                    All
+                      All
                     </option>
-                   
+
                     <option value="Diesel">Diesel</option>
                     <option value="Petrol">Petrol</option>
                   </select>
