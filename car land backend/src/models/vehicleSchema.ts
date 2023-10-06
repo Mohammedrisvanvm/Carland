@@ -1,18 +1,7 @@
 import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
 
-const bookingDatesSchema = new Schema({
-  pickUp: [
-    {
-      type: Date,
-    },
-  ],
-  dropOff: [
-    {
-      type: Date,
-    },
-  ],
-});
+
 const vehicleSchema: Schema = new Schema(
   {
     vehicleName: {
@@ -83,7 +72,18 @@ const vehicleSchema: Schema = new Schema(
       default: false,
     },
     bookingDates: {
-      type: bookingDatesSchema,
+      type: {
+        pickUp: [
+          {
+            type: Date,
+          },
+        ],
+        dropOff: [
+          {
+            type: Date,
+          },
+        ],
+      },
       default: null,
     },
   },

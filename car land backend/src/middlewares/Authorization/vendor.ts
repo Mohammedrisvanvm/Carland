@@ -27,9 +27,10 @@ export const vendorAuthenticate = AsyncHandler(
     const accessTokenvendortoken: string = req.cookies.accessTokenvendor;
     const refreshTokenvendor: string = req.cookies.refreshTokenvendor;
     console.log(refreshTokenvendor,accessTokenvendortoken);
-    
+   
+ 
     if (!accessTokenvendortoken && !refreshTokenvendor) {
-      throw new Error("Access Denied");
+      throw new Error("Vendor Access Denied");
     }
     if (accessTokenvendortoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenvendor);

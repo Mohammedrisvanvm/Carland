@@ -35,11 +35,18 @@ export const Content = () => {
   const [totalpage, setTotalpage] = useState<number>(1);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [seletedDate, setSeletedDate] = useState<string[]>([]);
+  const [seletedDateTemp, setSeletedDateTemp] = useState<string[]>([]);
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const pageSize = 4;
   const { RangePicker } = DatePicker;
 
+  function handleDate(e: ChangeEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log("got");
+    
+    setSeletedDate(seletedDateTemp);
+  }
   function onChange(value: any, dateString: [string, string]) {
     if (value[0] && value[1]) {
       // Handle date range change here
@@ -48,14 +55,14 @@ export const Content = () => {
     }
     // console.log("Selected Time: ", typeof(value[0].$d), value[0].$d);
     console.log("Formatted Selected Time: ", typeof dateString, dateString);
-    setSeletedDate(dateString);
+    setSeletedDateTemp(dateString);
   }
 
   function onOk(value: any) {
     console.log("onOk: ", typeof value, value);
   }
-  const handlesearch = async () => {
-    console.log("hai");
+  const handlesearch = async (e: ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     const response = await mapboxAPI.get(
       `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
@@ -91,6 +98,7 @@ export const Content = () => {
           longitude,
           seletedDate
         );
+console.log(response);
 
         setVehicles(response.data?.vehicles);
         if (response.data?.count) {
@@ -102,7 +110,7 @@ export const Content = () => {
     };
 
     fetchData();
-  }, [currentPage, search, filter, latitude, longitude]);
+  }, [currentPage, search, filter, latitude, longitude,seletedDate]);
 
   const [isOpen, setIsOpen] = useState(true);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
@@ -123,62 +131,84 @@ export const Content = () => {
                 Rent a car and explore the city at your own pace
               </h2>
 
-              <div className="flex items-center justify-center mb-5">
-                <div className="relative w-96">
-                  <input
-                    type="text"
-                    placeholder="Search using Location"
-                    value={searchQuery}
-                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                      setSearchQuery(event.target.value);
-                    }}
-                    className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
-                  />
+              <form onSubmit={handlesearch}>
+                <div className="flex items-center justify-center mb-5">
+                  <div className="relative w-96">
+                    <input
+                      type="text"
+                      placeholder="Search using Location"
+                      value={searchQuery}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setSearchQuery(event.target.value);
+                      }}
+                      className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
+                    />
 
-                  <img
-                    onClick={() =>
-                      navigator.geolocation.getCurrentPosition((position) => {
-                        setLatitude(position.coords.latitude);
-                        setLongitude(position.coords.longitude);
-                        // getlocation();
-                        console.log(position.coords);
-                      })
-                    }
-                    title="current location"
-                    className="h-6 w-6 absolute right-2 top-3"
-                    src="https://www.svgrepo.com/show/127575/location-sign.svg"
-                    alt="current location"
-                  />
+                    <img
+                      onClick={() =>
+                        navigator.geolocation.getCurrentPosition((position) => {
+                          setLatitude(position.coords.latitude);
+                          setLongitude(position.coords.longitude);
+                          // getlocation();
+                          console.log(position.coords);
+                        })
+                      }
+                      title="current location"
+                      className="h-6 w-6 absolute right-2 top-3"
+                      src="https://www.svgrepo.com/show/127575/location-sign.svg"
+                      alt="current location"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
+                  >
+                    Search
+                  </button>
                 </div>
+              </form>
+              <form onSubmit={handleDate}>
+                <div className="flex  items-center justify-center mb-5">
+                  <RangePicker
+                    size="middle"
+                    showTime={{ format: "h a" }}
+                    className="h-12"
+                    format="YYYY-MM-DD h a"
+                    placeholder={["Start Time", "End Time"]}
+                    onChange={onChange}
+                    disabledDate={disabledDate}
+                  />
 
-                <button
-                  onClick={handlesearch}
-                  className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
-                >
-                  Search
-                </button>
-              </div>
-              <div className="sm:flex justify-center">
+                  <button
+                    type="submit"
+                    className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide mx-2 text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
+                    aria-label="Sign up"
+                    title="Sign up"
+                  >
+                    get cars
+                  </button>
+                </div>
+              </form>
+              {/* <div className="sm:flex justify-around">
                 {" "}
+                <div></div>
                 <RangePicker
                   showTime={{ format: "h a" }}
                   format="YYYY-MM-DD h a"
                   placeholder={["Start Time", "End Time"]}
                   onChange={onChange}
-               
-                  
                   disabledDate={disabledDate}
                 />
                 <button
-   onClick={()=> console.log("hai")
-   }
-                  className="inline-flex items-center text-sm justify-center w-full h-12 px-6 font-medium tracking-wide text-white transition duration-200 rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
+                  type="submit"
+                  className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
                   aria-label="Sign up"
                   title="Sign up"
                 >
-                  Get Cars
+                  get cars
                 </button>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex justify-between my-10 ">

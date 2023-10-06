@@ -20,5 +20,9 @@ DocumentVehicle:string
   SubImages: Array<string>;
   vehicleValidityDate: string;
   isVerified: boolean;
+  bookingDates?: {
+    pickUp: string[];
+    dropOff: string[];
+  };
   ban: boolean;
 }
