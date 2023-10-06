@@ -10,7 +10,6 @@ interface IBook extends Document {
   carPrice:number
   days: number;
   bookingEndDate: Date;
-  pickuptime: string;
   paymentDetails:{
     razorpay_payment_id: string;
     razorpay_order_id: string;

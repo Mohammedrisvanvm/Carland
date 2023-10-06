@@ -27,10 +27,9 @@ function generateRandomString(length: number) {
 
   return result;
 }
-type Idates = {
+type values = {
   pickUpDate: string;
-  dropDate: string;
-  time: string;
+  dropOffDate: string;
   carId: string;
   razorpay_payment_id?: string;
   razorpay_order_id?: string;
@@ -38,9 +37,14 @@ type Idates = {
 };
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body);
-    const { pickUpDate, dropDate, carId }: Idates = req.body.data;
-    const days: number = dateCount(pickUpDate, dropDate);
+    const { pickUpDate, dropOffDate, carId }: values = req.body.data;
+    
+
+    const days: number = dateCount(pickUpDate, dropOffDate);
+    console.log(days);
+    if(!days){
+     throw new Error('date issue')
+    }
     const vehicle: IVehicle = await vehicleModel.findById(carId);
     type Irazresponse = {
       id: string;
@@ -67,29 +71,25 @@ export const bookCar = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const {
       pickUpDate,
-      dropDate,
-      time,
+      dropOffDate,
       carId,
       razorpay_payment_id,
       razorpay_order_id,
       razorpay_signature,
-    }: Idates = req.body.data;
+    }: values = req.body.data;
     const userId: string = req.headers.authorization;
+console.log(req.body);
 
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
       { _id: 1, hubName: 1 }
     );
 
-    const days: number = dateCount(pickUpDate, dropDate);
+    const days: number = dateCount(pickUpDate, dropOffDate);
 
-    const vehicle: IVehicle = await vehicleModel.findById(carId);
-    if (vehicle) {
-      vehicle.status = !vehicle.status;
-    }
-    vehicle.save();
+    const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate({_id:carId},{$push:{'bookingDates.pickUp':pickUpDate,'bookingDates.dropOff':dropOffDate}})   
 
-    console.log(days, vehicle, hubDetails, userId, req.body);
+    console.log(vehicle);
 
     let paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({
@@ -99,8 +99,7 @@ export const bookCar = AsyncHandler(
       hubName: hubDetails.hubName,
       vehicleName: vehicle.vehicleName,
       bookingStartDate: pickUpDate,
-      bookingEndDate: dropDate,
-      pickuptime: time,
+      bookingEndDate: dropOffDate,
       carPrice: vehicle.fairPrice,
       paymentStatus,
       paymentDetails: {
@@ -140,11 +139,13 @@ export const verifyRazorpayPayment = AsyncHandler(
   }
 );
 export const bookingDetails = AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
-        console.log(req.query);
-        const id: string = typeof req.query.bookingID === 'string' ? req.query.bookingID : '';
-        const bookingDetails:IBookWithTimestamps=await bookModel.findById(id)
-        console.log(id);
-        
-        res.json({message:"got",bookingDetails})
-    })
+  async (req: Request, res: Response): Promise<void> => {
+    console.log(req.query);
+    const id: string =
+      typeof req.query.bookingID === "string" ? req.query.bookingID : "";
+    const bookingDetails: IBookWithTimestamps = await bookModel.findById(id);
+    console.log(id);
+
+    res.json({ message: "got", bookingDetails });
+  }
+);

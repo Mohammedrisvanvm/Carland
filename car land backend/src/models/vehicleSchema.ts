@@ -75,12 +75,12 @@ const vehicleSchema: Schema = new Schema(
       type: {
         pickUp: [
           {
-            type: Date,
+            type: String,
           },
         ],
         dropOff: [
           {
-            type: Date,
+            type: String,
           },
         ],
       },

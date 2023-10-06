@@ -1,9 +1,13 @@
 export function dateCount(pickUpDate: string, dropDate: string): number {
-  var date1: Date = new Date(pickUpDate);
-  var date2: Date = new Date(dropDate);
 
-  var Difference_In_Time: number = date2.getTime() - date1.getTime();
+  const [datePart1] = pickUpDate.split(" ");
+  const [datePart2] = dropDate.split(" ");
 
-  var Difference_In_Days: number = Difference_In_Time / (1000 * 3600 * 24);
-  return Difference_In_Days;
+  var startDate: Date = new Date(datePart1);
+  var endDate: Date = new Date(datePart2);
+
+  const timeDifference: number = endDate.getTime() - startDate.getTime();
+
+  const daysDifference: number = timeDifference / (1000 * 60 * 60 * 24);
+  return Math.abs(daysDifference);
 }

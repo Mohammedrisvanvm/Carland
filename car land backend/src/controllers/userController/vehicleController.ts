@@ -14,7 +14,7 @@ export const userVehicles = AsyncHandler(
       filter?: string;
       lat?: number;
       lng?: number;
-      seletedDate?: string[];
+      seletedDate?: string;
     };
     console.log(req.query, "123456");
 
@@ -50,7 +50,7 @@ export const userVehicles = AsyncHandler(
         return value <= 50;
       });
     
-    console.log(filteredHubDetails);
+
     if (filteredHubDetails.length == 0 && lat) {
      return res.json({vehicles:''})
      
@@ -64,7 +64,7 @@ export const userVehicles = AsyncHandler(
       (arr) => arr.length > 0
     );
 
-    console.log(nonEmptyVehicles);
+  
 
     const perPage = 4;
     const skip = (pageNumber - 1) * perPage;
@@ -85,6 +85,33 @@ export const userVehicles = AsyncHandler(
           .map((id) => new mongoose.Types.ObjectId(id)),
       };
     }
+    // if (seletedDate) {
+    //   const [pickUpDate, dropOffDate]: string[] = seletedDate.split(',');
+    
+    //   filter1.bookingDates = {
+    //     pickUp:{
+    //       $in:pickUpDate
+    //     }
+    //     $nin: [
+    //       { $elemMatch: { 'pickUp': {  $in: pickUpDate } } },
+    //       { $elemMatch: { 'dropOff': { $in: dropOffDate } } },
+    //     ],
+    //   };
+    // }
+//     const [pickUpDate, dropOffDate]: string[] = seletedDate.split(',');
+//     const pickUpDateObj = new Date(pickUpDate);
+// const dropOffDateObj = new Date(dropOffDate);
+
+// const vehicle34: IVehicle[] = await vehicleModel.find({
+//   bookingDates: {
+//     pickUp: {
+//       $in: [pickUpDateObj],
+//     },
+//   },
+// });
+    
+//     console.log(vehicle34);
+    
     const vehicles: IVehicle[] = await vehicleModel.aggregate([
       { $match: filter1 },
       {

@@ -25,11 +25,11 @@ const bookingSchema: Schema = new Schema(
       required: true,
     },
     bookingStartDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     bookingEndDate: {
-      type: Date,
+      type: String,
       required: true,
     },
     carPrice: {
@@ -42,10 +42,6 @@ const bookingSchema: Schema = new Schema(
     },
     days: {
       type: Number,
-      required: true,
-    },
-    pickuptime: {
-      type: String,
       required: true,
     },
     paymentDetails: {
