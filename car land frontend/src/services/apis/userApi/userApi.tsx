@@ -90,9 +90,8 @@ type Iresponse = {
 };
 type data = {
   pickUpDate: string;
-  dropDate: string;
-  time: string;
-  carId?: string;
+  dropOffDate: string;
+  carId: string|null;
   razorpay_signature?: string;
   razorpay_order_id?: string;
   razorpay_payment_id?: string;

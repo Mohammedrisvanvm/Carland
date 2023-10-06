@@ -7,11 +7,13 @@ import {
 import { useLocation, useNavigate } from "react-router";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
-
+import { RangePickerProps } from "antd/es/date-picker";
+import dayjs from "dayjs";
 import { useFormik } from "formik";
 import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
 import Payment from "../payment/Payment";
 import { useAppSelector } from "../../../redux/store/storeHook";
+import { DatePicker } from "antd";
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
@@ -19,12 +21,17 @@ const SingleVehicle: React.FC = () => {
   const [price, setPrice] = useState<number | null>(null);
   const [paybutton, setPaybutton] = useState<boolean>(false);
   // const [PayValue, setPayValue] = useState<object|null>(null);
+  const [seletedDate, setSeletedDate] = useState<string[] | string>("");
   const queryParams = new URLSearchParams(location.search);
-  const [pickUpDate, setPickUpDate] = useState<Date>(new Date());
-  const [dropDate, setDropDate] = useState<Date>(pickUpDate);
+  const [value, setValues] = useState<values>({
+    dropOffDate: "",
+    pickUpDate: "",
+    carId: "",
+  });
   const carId: string | null = queryParams.get("carId");
-  const user=useAppSelector((state)=>state.user)
+  const user = useAppSelector((state) => state.user);
   const Navigate = useNavigate();
+  const { RangePicker } = DatePicker;
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
@@ -37,72 +44,37 @@ const SingleVehicle: React.FC = () => {
     };
     fetchData();
   }, []);
-  useEffect(() => {
-    var date1: Date = new Date(pickUpDate);
-    var date2: Date = new Date(dropDate);
-
-    var Difference_In_Time: number = date2.getTime() - date1.getTime();
-
-    var Difference_In_Days: number = Difference_In_Time / (1000 * 3600 * 24);
-    if (vehicle?.fairPrice) {
-      setPrice(Difference_In_Days * vehicle?.fairPrice);
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    return current && current < dayjs().endOf("day");
+  };
+  function onChange(value: any, dateString: [string, string]) {
+    if (value[0] && value[1]) {
+      setSeletedDate(dateString);
     }
-  }, []);
-  console.log(price, 111);
+  }
 
-  const currentDate = new Date();
-
-  currentDate.setDate(currentDate.getDate() + 1);
-
-  const minDate = currentDate.toISOString().split("T")[0];
-
-  console.log(pickUpDate, dropDate);
-
-  useEffect(() => {
-    const nextDay = new Date(pickUpDate);
-    nextDay.setDate(nextDay.getDate() + 1);
-    setDropDate(nextDay);
-  }, [pickUpDate]);
-
-  type Idates = {
+  type values = {
     pickUpDate: string;
-    dropDate: string;
-    time: string;
-    carId?: string;
-  };
-  const initialValues: Idates = {
-    pickUpDate: "",
-    dropDate: "",
-    time: "",
-    carId: "",
+    dropOffDate: string;
+    carId: string | null;
   };
 
-  const submitForm = async (values: Idates): Promise<void> => {
-    if (carId) values.carId = carId;
+  const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault();
 
-    console.log(values, 12);
-    // setPayValue(values)
-    setPaybutton(!paybutton);
-    // bookingCar(values)
+    if (!carId || seletedDate.length==0) {
+      console.log("error",carId,seletedDate.length);
+    } else {
+      setValues({
+        carId: carId,
+        dropOffDate: seletedDate[0],
+        pickUpDate: seletedDate[1],
+      });
+      setPaybutton(!paybutton);
+    }
+   
   };
-  const {
-    values,
-    errors,
-    touched,
-    isSubmitting,
-    handleSubmit,
-    handleBlur,
-    handleChange,
-    setFieldValue,
-  } = useFormik({
-    initialValues,
-    onSubmit: submitForm,
-    initialErrors: {},
-    initialTouched: {},
-    validateOnMount: true,
-    validationSchema: bookingDateSchema,
-  });
-  console.log(errors, touched);
+  console.log(seletedDate);
 
   return (
     <>
@@ -370,107 +342,73 @@ const SingleVehicle: React.FC = () => {
                   ""
                 )}
               </ul>
-              <form onSubmit={handleSubmit}>
-                <label htmlFor="pickDate">Pick Time:</label>
-
-                <select
-                  id="picktime"
-                  required
-                  value={values.time}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  name="time"
-                >
-                  <option value="">select time</option>
-                  <option value="9am to 12am">9am to 12am</option>
-                  <option value="12pm to 3pm">12pm to 3pm</option>
-                  <option value="3pm to 6pm">3pm to 6pm</option>
-                </select>
-
+              <form onSubmit={submitForm}>
+                <h1 className="text-lg font-semibold">pick your Date</h1>
                 <div className="flex items-center justify-evenly h-28 px-6 mb-4 font-semibold tracking-wide">
-                  <div className="flex flex-col items-center">
-                    <label htmlFor="">pick Up Date :</label>
-                    <input
-                      type="Date"
-                      className={`${
-                        errors.pickUpDate && touched.pickUpDate
-                          ? "input-error"
-                          : ""
-                      } block text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
-                      value={values.pickUpDate}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="pickUpDate"
-                      required
-                    />
-                    {errors.pickUpDate && touched.pickUpDate && (
-                      <p className="border-red-500 text-sm text-red-500">
-                        {errors.pickUpDate}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <label htmlFor="">Drop Date :</label>
-                    <input
-                      type="Date"
-                      className={`${
-                        errors.dropDate && touched.dropDate ? "input-error" : ""
-                      } block text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer`}
-                      placeholder=" "
-                      value={values.dropDate}
-                      onChange={handleChange}
-                      onBlur={handleBlur}
-                      name="dropDate"
-                      required
-                    />
-                    {errors.dropDate && touched.dropDate && (
-                      <p className="border-red-500 text-sm text-red-500">
-                        {errors.dropDate}
-                      </p>
-                    )}
-                  </div>
+                  <RangePicker
+                    size="middle"
+                    showTime={{ format: "h a" }}
+                    className="h-12"
+                    status={`error`}
+                    format="YYYY-MM-DD h a"
+                    placeholder={["Start Time", "End Time"]}
+                    onChange={onChange}
+                    disabledDate={disabledDate}
+                  />
                 </div>
 
-                {user.accessToken ? <> {vehicle?.status ? (
+                {user.accessToken ? (
                   <>
                     {" "}
-                    {paybutton ? (
+                    {vehicle?.status ? (
                       <>
                         {" "}
-                        {/* <button onClick={()=>Navigate('/payment')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                      pay
-                    </button> */}
-                        <Payment value={values} />
+                        {paybutton ? (
+                          <>
+                            {" "}
+                            {/* <button
+                              onClick={() => Navigate("/payment")}
+                              className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                            >
+                              pay
+                            </button> */}
+                            <Payment value={value} />
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <button
+                              type="submit"
+                              className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                            >
+                              Book Now
+                            </button>
+                          </>
+                        )}
                       </>
                     ) : (
                       <>
                         {" "}
-                        <button
-                          type="submit"
-                          disabled={isSubmitting}
-                          className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                        >
-                          Book Now
-                        </button>
+                        <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                          not available at this moment
+                        </div>
                       </>
                     )}
                   </>
                 ) : (
                   <>
                     {" "}
-                    <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                      not available at this moment
-                    </div>
+                    <>
+                      {" "}
+                      <div
+                        onClick={() => Navigate("/UserAuth")}
+                        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                      >
+                        login
+                      </div>
+                    </>
                   </>
-                )}</>:<>  <>
-                {" "}
-                <div onClick={()=>Navigate('/UserAuth')} className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                 login
-                </div>
-              </></>}
-               
+                )}
               </form>
             </div>
           </div>

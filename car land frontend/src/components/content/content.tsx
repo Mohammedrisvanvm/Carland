@@ -21,8 +21,8 @@ import mapboxAPI from "../../services/mapbox/mapbox";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { RangePickerProps } from "antd/es/date-picker";
-import RangeValue from "antd/es/date-picker";
-import dayjs, { Dayjs } from "dayjs";
+
+import dayjs from "dayjs";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const Content = () => {
   const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);

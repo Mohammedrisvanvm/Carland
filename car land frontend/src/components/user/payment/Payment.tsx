@@ -22,9 +22,8 @@ const loadRazorpay = (src: string) => {
 type Ivalues = {
   value: {
     pickUpDate: string;
-    dropDate: string;
-    time: string;
-    carId?: string;
+    dropOffDate: string;
+    carId: string | null;
     razorpay_signature?: string;
     razorpay_order_id?: string;
     razorpay_payment_id?: string;
@@ -37,7 +36,7 @@ type Iresponse = {
 };
 const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
   console.log(value, 11);
-  const Navigate=useNavigate()
+  const Navigate = useNavigate();
   async function showRazorpay() {
     const response: AxiosResponse = await razorpayApi(value);
     if (response?.data?.razorpay) {
@@ -64,18 +63,18 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
           value.razorpay_payment_id = response.razorpay_payment_id;
           value.razorpay_order_id = response.razorpay_order_id;
           value.razorpay_signature = response.razorpay_signature;
-          await verifyRazorpayPayment(response).then(async(res: AxiosResponse) => {
-            
-            if (res.data?.message == "verified") {
-          const confirmorder:AxiosResponse= await bookingCar(value)
+          await verifyRazorpayPayment(response).then(
+            async (res: AxiosResponse) => {
+              if (res.data?.message == "verified") {
+                const confirmorder: AxiosResponse = await bookingCar(value);
 
-          if(confirmorder.data?.id)
-           Navigate(`/BookingConfirm/${confirmorder.data?.id}`)
-        
-            } else {
-              console.log("false");
+                if (confirmorder.data?.id)
+                  Navigate(`/BookingConfirm/${confirmorder.data?.id}`);
+              } else {
+                console.log("false");
+              }
             }
-          });
+          );
         },
         prefill: {
           //We recommend using the prefill parameter to auto-fill customer's contact information, especially their phone number
@@ -99,7 +98,12 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
 
   return (
     <>
-      <a onClick={showRazorpay}>pay</a>
+      <a
+        onClick={showRazorpay}
+        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+      >
+        pay
+      </a>
     </>
   );
 };
