@@ -1,7 +1,18 @@
 import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
-import { boolean, string } from "joi";
 
+const bookingDatesSchema = new Schema({
+  pickUp: [
+    {
+      type: Date,
+    },
+  ],
+  dropOff: [
+    {
+      type: Date,
+    },
+  ],
+});
 const vehicleSchema: Schema = new Schema(
   {
     vehicleName: {
@@ -28,7 +39,6 @@ const vehicleSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
-  
     mileage: {
       type: Number,
       required: true,
@@ -68,10 +78,14 @@ const vehicleSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
-    ban:{
-        type:Boolean,
-        default:false
-    }
+    ban: {
+      type: Boolean,
+      default: false,
+    },
+    bookingDates: {
+      type: bookingDatesSchema,
+      default: null,
+    },
   },
   { timestamps: true }
 );
