@@ -11,16 +11,19 @@ import { vendorLogout } from "../../redux/slice/vendorSlice";
 import { Select } from "flowbite-react";
 import { FC, ReactNode } from "react";
 import { store } from "../../redux/store/store";
-import useAccessError, { AccessError, TokenObject, getToken } from "./tokenCheck";
+import useAccessError, {
+  AccessError,
+  TokenObject,
+  getToken,
+} from "./tokenCheck";
 import { userLogout } from "../../redux/slice/userSlice";
-
+import { adminLogout } from "../../redux/slice/adminSlice";
 
 export const axiosBase = axios.create({
   baseURL: "http://localhost:3131/",
   timeout: 10000,
   withCredentials: true,
 });
-
 
 const onRequest = (
   config: InternalAxiosRequestConfig
@@ -40,22 +43,25 @@ const onResponse = (response: AxiosResponse): AxiosResponse => {
   console.info(`[response] [${JSON.stringify(response)}]`);
   return response;
 };
-interface AxiosError1{
-response:{
-  data:{
-    message:string
-  }
+interface AxiosError1 {
+  response: {
+    data: {
+      message: string;
+    };
+  };
 }
-}
-const onResponseError = async(error: AxiosError1): Promise<AxiosError> => {
+const onResponseError = async (error: AxiosError1): Promise<AxiosError> => {
   console.error(`[response error] [${JSON.stringify(error)}]`);
-  const {dispatch} = store
+  const { dispatch } = store;
 
-  if (error.response?.data && typeof error.response.data.message === 'string') {
+  if (error.response?.data && typeof error.response.data.message === "string") {
     const message = error.response.data.message;
-    if (message === 'Access Denied') {
-      dispatch(userLogout())
-    
+    if (message === "User Access Denied") {
+      dispatch(userLogout());
+    } else if (message === "Vendor Access Denied") {
+      dispatch(vendorLogout());
+    } else if (message === "Admin Access Denied") {
+      dispatch(adminLogout());
     }
   }
 
