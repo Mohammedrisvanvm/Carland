@@ -35,7 +35,7 @@ export const userGetVehicle = async (
   seletedDate:string[]
 ): Promise<AxiosResponse<any>> => {
   return axiosBase.get(
-    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}&lat=${latitude}&lng=${longitude}&seletedDate=${seletedDate}`
+    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}&lat=${latitude?latitude:''}&lng=${longitude?longitude:''}&seletedDate=${seletedDate}`
   );
 };
 export const userSingleGetVehicle = async (

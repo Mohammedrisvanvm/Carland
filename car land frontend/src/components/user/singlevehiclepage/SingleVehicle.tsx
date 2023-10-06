@@ -281,7 +281,33 @@ const SingleVehicle: React.FC = () => {
                       />
                     </svg>
                   </div>
-                  <p className="font-medium text-black inline-flex">
+                  <p className="font-medium text-red-600  inline-flex">
+                    {vehicle?.hubName}asdfg
+                  </p>
+                </li>
+                <li className="flex items-center">
+                  <div className="mr-3">
+                    <svg
+                      className="w-4 h-4 text-teal-accent-400"
+                      viewBox="0 0 24 24"
+                      strokeLinecap="round"
+                      strokeWidth="2"
+                    >
+                      <polyline
+                        fill="none"
+                        stroke="currentColor"
+                        points="6,12 10,16 18,8"
+                      />
+                      <circle
+                        cx="12"
+                        cy="12"
+                        fill="none"
+                        r="11"
+                        stroke="currentColor"
+                      />
+                    </svg>
+                  </div>
+                  <p className="font-medium text-red-600 inline-flex">
                     Location: Pantheeramkavu, Kozhikode, Kozhikode, Kerala,
                     India
                   </p>

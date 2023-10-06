@@ -44,7 +44,7 @@ export const Content = () => {
   function handleDate(e: ChangeEvent<HTMLFormElement>) {
     e.preventDefault();
     console.log("got");
-    
+
     setSeletedDate(seletedDateTemp);
   }
   function onChange(value: any, dateString: [string, string]) {
@@ -98,7 +98,7 @@ export const Content = () => {
           longitude,
           seletedDate
         );
-console.log(response);
+        console.log(response);
 
         setVehicles(response.data?.vehicles);
         if (response.data?.count) {
@@ -110,7 +110,7 @@ console.log(response);
     };
 
     fetchData();
-  }, [currentPage, search, filter, latitude, longitude,seletedDate]);
+  }, [currentPage, search, filter, latitude, longitude, seletedDate]);
 
   const [isOpen, setIsOpen] = useState(true);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
@@ -315,7 +315,9 @@ console.log(response);
                       </div>
                     </button>
                   ))
-                : "hai"}
+                :<>
+                <div className="text-lg font-bold text-red-600">"no cars available in this area {searchQuery}"</div>
+                </> }
             </div>
             <div className="text-center">
               <Pagination
