@@ -30,12 +30,14 @@ export const userGetVehicle = async (
   currentPage: number,
   search: string,
   filter: string,
-  latitude:number| null,
-  longitude:number| null,
-  seletedDate:string[]
+  latitude: number | null,
+  longitude: number | null,
+  seletedDate: string[]
 ): Promise<AxiosResponse<any>> => {
   return axiosBase.get(
-    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}&lat=${latitude?latitude:''}&lng=${longitude?longitude:''}&seletedDate=${seletedDate}`
+    `/users/vehicle/getvehicles?currentPage=${currentPage}&search=${search}&filter=${filter}&lat=${
+      latitude ? latitude : ""
+    }&lng=${longitude ? longitude : ""}&seletedDate=${seletedDate}`
   );
 };
 export const userSingleGetVehicle = async (
@@ -91,7 +93,7 @@ type Iresponse = {
 type data = {
   pickUpDate: string;
   dropOffDate: string;
-  carId: string|null;
+  carId: string | null;
   razorpay_signature?: string;
   razorpay_order_id?: string;
   razorpay_payment_id?: string;
@@ -101,12 +103,16 @@ export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
 
   return await axiosBase.post("/users/booking/razorpay", { data });
 };
-export const bookingDetails = async (
-  bookingID: string |undefined
+export const bookingconfirmdetails = async (
+  bookingID: string | undefined
 ): Promise<AxiosResponse> => {
   console.log(bookingID);
 
   return await axiosBase.get(
-    `/users/booking/bookingdetails?bookingID=${bookingID}`
+    `/users/booking/bookingconfirmdetails?bookingID=${bookingID}`
   );
+};
+
+export const bookingdetails = async (): Promise<AxiosResponse> => {
+  return await axiosBase.get(`/users/booking/bookingdetails`);
 };
