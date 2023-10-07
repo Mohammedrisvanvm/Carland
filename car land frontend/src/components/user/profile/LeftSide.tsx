@@ -7,7 +7,7 @@ import { currrentUserFetch } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 
 const LeftSide: FC = () => {
-  const [page, setPage] = useState<string>("");
+  const [page, setPage] = useState<string>("Account");
   const [loading, setloading] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<user| undefined>(undefined);
   useEffect(() => {
@@ -28,7 +28,7 @@ const LeftSide: FC = () => {
   return (
     <>
       <MainHeader />
-      <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 ">
+      <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 h-screen">
         <div className="grid max-w-screen-lg gap-8 row-gap-5 md:row-gap-8 sm:mx-auto lg:grid-cols-2 ">
           <div className="transition duration-300 transform bg-white rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center">
             <div>
@@ -118,7 +118,7 @@ const LeftSide: FC = () => {
                     <li>
                       <button
                         aria-label="Mybooking"
-                        onClick={() => setPage("Account")}
+                        onClick={() => setPage("Bookings")}
                         title="bookings"
                       >
                         my bookings
@@ -151,7 +151,7 @@ const LeftSide: FC = () => {
               </div>
             </div>
           </div>
-          <div className="transition duration-300 transform bg-white rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center">
+          <div className="transition duration-300 transform rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center ">
             <Pages role={page} setloading={setloading} loading={loading} />
           </div>
         </div>
