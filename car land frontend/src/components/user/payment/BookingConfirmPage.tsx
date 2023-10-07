@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router";
 import { IConfirmBook } from "../../../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { bookingDetails } from "../../../services/apis/userApi/userApi";
+import {  bookingconfirmdetails } from "../../../services/apis/userApi/userApi";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 
 
@@ -20,16 +20,19 @@ const { id }: Params = useParams<{ id: string }>();
 useEffect(()=>{
   const fetchData = async (): Promise<void> => {
     try {
-      const response: AxiosResponse = await bookingDetails(id);
-      console.log(response);
-      if (response.data?.bookingDetails) {
-        setbookingData(response.data?.bookingDetails);
+      const response: AxiosResponse = await bookingconfirmdetails(id);
+      
+      if (response.data?.bookingConfirmDetails) {
+        setbookingData(response.data?.bookingConfirmDetails);
       }
-    } catch {}
+    } catch (error:any) {
+      console.log(error);
+      
+    }
   };
   fetchData();
 },[])
-console.log(bookingData,id);
+
 
   return (
     <>

@@ -169,11 +169,12 @@ export const bookingDetails = AsyncHandler(
     const vehicles: IVehicle[] = await vehicleModel.find({
       _id: { $in: vehiclesID },
     });
-    console.log(vehicles);
+    // console.log(vehicles);
     const vehicleImageMap: { [key: string]: string } = {};
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
+// console.log(vehicleImageMap);
 
     const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetails.map(
       (item) => ({
@@ -181,11 +182,11 @@ export const bookingDetails = AsyncHandler(
         image: vehicleImageMap[item.vehicleId], 
       })
     );
-    console.log(bookingDetailsWithImage);
+    console.log(bookingDetailsWithImage[8]);
 
     res.json({
       message: "user booking Details",
-      bookingDetails: bookingDetailsWithImage,
+      bookingDetails: bookingDetailsWithImage
     });
   }
 );

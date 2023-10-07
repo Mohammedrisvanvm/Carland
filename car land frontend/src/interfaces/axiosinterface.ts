@@ -2,7 +2,7 @@ import { AxiosError, AxiosRequestConfig } from "axios";
 import { Vehicles } from "./vehicleInterface";
 import { hub, user } from "./userAuth";
 import { Irazresponse } from "./razorpayInterface";
-import { IConfirmBook } from "./bookingConfirmInterface";
+import { IConfirmBook, IConfirmBookWithImage } from "./bookingConfirmInterface";
 export interface AxiosResponse<T = any> {
   data?: {
     hubs?: hub[];
@@ -15,7 +15,7 @@ export interface AxiosResponse<T = any> {
     accessToken?: string;
     razorpay?:Irazresponse
     id?:string,
-    bookingDetails?:IConfirmBook[]
+    bookingDetails?:IConfirmBookWithImage[]
     bookingConfirmDetails?:IConfirmBook
   };
   status?: number;

@@ -1,3 +1,5 @@
+
+
 export interface IConfirmBook extends Document {
   _id: string;
   hubId: string;
@@ -22,3 +24,10 @@ export interface IConfirmBook extends Document {
   createdAt: Date;
   updatedAt: Date;
 }
+
+
+export interface IConfirmBookWithImage  {
+_doc:IConfirmBook,
+image:string
+}
+

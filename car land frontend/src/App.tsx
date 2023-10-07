@@ -11,7 +11,8 @@ import 'mapbox-gl/dist/mapbox-gl.css'
 
 import AdminRouters from "./routes/adminRouters";
 import VendorRouters from "./routes/vendorRouters";
-import  Location  from "./test/test";
+import  Test  from "./test/test";
+import { SetStateAction } from "react";
 
 function App() {
  
@@ -23,7 +24,9 @@ function App() {
           <Route path="/*" element={<UserRoutes />} />
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
-          <Route path="/test/:id" element={<Location />} />
+          <Route path="/test" element={<Test setloading={function (value: SetStateAction<boolean>): void {
+            throw new Error("Function not implemented.");
+          } } loading={false} />} />
         </Routes>
       </BrowserRouter>
 
