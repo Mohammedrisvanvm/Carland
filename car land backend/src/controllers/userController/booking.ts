@@ -38,12 +38,11 @@ type values = {
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { pickUpDate, dropOffDate, carId }: values = req.body.data;
-    
 
     const days: number = dateCount(pickUpDate, dropOffDate);
     console.log(days);
-    if(!days){
-     throw new Error('date issue')
+    if (!days) {
+      throw new Error("date issue");
     }
     const vehicle: IVehicle = await vehicleModel.findById(carId);
     type Irazresponse = {
@@ -78,7 +77,7 @@ export const bookCar = AsyncHandler(
       razorpay_signature,
     }: values = req.body.data;
     const userId: string = req.headers.authorization;
-console.log(req.body);
+    console.log(req.body);
 
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
@@ -87,9 +86,15 @@ console.log(req.body);
 
     const days: number = dateCount(pickUpDate, dropOffDate);
 
-    const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate({_id:carId},{$push:{'bookingDates.pickUp':pickUpDate,'bookingDates.dropOff':dropOffDate}})   
-
-    console.log(vehicle);
+    const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate(
+      { _id: carId },
+      {
+        $push: {
+          "bookingDates.pickUp": pickUpDate,
+          "bookingDates.dropOff": dropOffDate,
+        },
+      }
+    );
 
     let paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({
@@ -138,14 +143,49 @@ export const verifyRazorpayPayment = AsyncHandler(
     }
   }
 );
-export const bookingDetails = AsyncHandler(
+export const bookingConfirmDetails = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     console.log(req.query);
     const id: string =
       typeof req.query.bookingID === "string" ? req.query.bookingID : "";
-    const bookingDetails: IBookWithTimestamps = await bookModel.findById(id);
+    const bookingConfirmDetails: IBookWithTimestamps = await bookModel.findById(
+      id
+    );
     console.log(id);
 
-    res.json({ message: "got", bookingDetails });
+    res.json({ message: "got", bookingConfirmDetails });
+  }
+);
+
+export const bookingDetails = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const userId: string = req.headers.authorization;
+
+    const bookingDetails: IBookWithTimestamps[] = await bookModel.find({
+      userId,
+    });
+    const vehiclesID: string[] = bookingDetails.map((item) => item.vehicleId);
+
+    const vehicles: IVehicle[] = await vehicleModel.find({
+      _id: { $in: vehiclesID },
+    });
+    console.log(vehicles);
+    const vehicleImageMap: { [key: string]: string } = {};
+    vehicles.forEach((vehicle) => {
+      vehicleImageMap[vehicle._id] = vehicle.singleImage;
+    });
+
+    const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetails.map(
+      (item) => ({
+        ...item,
+        image: vehicleImageMap[item.vehicleId], 
+      })
+    );
+    console.log(bookingDetailsWithImage);
+
+    res.json({
+      message: "user booking Details",
+      bookingDetails: bookingDetailsWithImage,
+    });
   }
 );

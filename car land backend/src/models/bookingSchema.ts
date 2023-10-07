@@ -57,6 +57,7 @@ const bookingSchema: Schema = new Schema(
     status: {
       type: String,
       enum: ["PickUp", "Ongoing", "Dropoff", "Completed", "Cancelled"],
+      default:"PickUp"
     },
   },
   { timestamps: true }

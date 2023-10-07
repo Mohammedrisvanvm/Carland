@@ -18,6 +18,8 @@ interface IVehicle extends Document {
   DocumentVehicle: string;
   vehiclesingleimage: string;
   vehiclemultipleimage: Array<string>;
+   singleImage?: string;
+  SubImages?: Array<string>;
   vehicleValidityDate: string;
   hubId?: string;
   ban: boolean;

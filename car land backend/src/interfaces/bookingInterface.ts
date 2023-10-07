@@ -16,9 +16,10 @@ interface IBook extends Document {
     razorpay_signature: string;
   }
   paymentStatus:string
-  status: boolean;
+  status: string;
 }
 interface IBookWithTimestamps extends IBook {
+  image: string;
   save(): unknown;
   createdAt: Date;
   updatedAt: Date;
