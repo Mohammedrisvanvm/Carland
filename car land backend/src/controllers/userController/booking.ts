@@ -38,6 +38,7 @@ type values = {
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { pickUpDate, dropOffDate, carId }: values = req.body.data;
+console.log(pickUpDate, dropOffDate, carId );
 
     const days: number = dateCount(pickUpDate, dropOffDate);
     console.log(days);
@@ -151,7 +152,7 @@ export const bookingConfirmDetails = AsyncHandler(
     const bookingConfirmDetails: IBookWithTimestamps = await bookModel.findById(
       id
     );
-    console.log(id);
+    
 
     res.json({ message: "got", bookingConfirmDetails });
   }
@@ -197,7 +198,7 @@ export const  pickupReq= AsyncHandler(
       bookingID?:string
     }
     const {bookingID}:query=req.query
-    await bookModel.updateOne({_id:bookingID}, { $set: { tempStatus: "pickUpreq" ,status:"pickUpreq"} })
+    await bookModel.updateOne({_id:bookingID}, { $set: {status:"pickUpreq"} })
 res.json({message:'pickup Requested'})
 
   })
@@ -207,6 +208,6 @@ res.json({message:'pickup Requested'})
         bookingID?:string
       }
       const {bookingID}:query=req.query
-      console.log(bookingID);
+ 
       res.status(200).json({message:`${bookingID}`})
     })
