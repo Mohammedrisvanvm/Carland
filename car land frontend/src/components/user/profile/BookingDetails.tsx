@@ -42,19 +42,16 @@ const BookingDetails: React.FC<prop> = ({ loading, setloading }) => {
                         alt=""
                       />
 
-                      <div className=" absolute right-0 sm:right-2 top-2 border-2 text-lg font-bold text-blue-500 rounded-2xl sm:w-1/2 w-52 h-40 pt-2">
+                      <div className=" absolute right-0 sm:right-2 top-2 border-2 text-base font-semibold text-black rounded-2xl sm:w-1/2 w-52 h-40 pt-2">
                         {" "}
-                        <p>{item._doc.vehicleName}</p>
+                        <p className="capitalize text-xl">{item._doc.vehicleName}</p>
                         <p>centre:{item._doc.hubName}</p>
-                        <p>Location</p>
+                        <p>status: <span className="text-orange-500">{item._doc.status}</span></p>
                         <div className="flex justify-evenly items-center mt-4">
-                          {" "}
-                          <p className="text-green-600 font-semibold text-sm">
-                            {item._doc.status}
-                          </p>
+                       
                           <button
                             type="button"
-                            className="bg-black text-white rounded font-normal px-5 py-1"
+                            className="bg-blue-500  text-white rounded font-normal px-10 sm:px-20 py-1"
                           >
                             Details
                           </button>

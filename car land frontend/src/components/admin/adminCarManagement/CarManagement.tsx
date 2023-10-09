@@ -1,6 +1,11 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import { user } from "../../../interfaces/userAuth";
-import { VerifyCar, Verifyhub, banCar, getAllCars } from "../../../services/apis/adminApi/adminApi";
+import {
+  VerifyCar,
+  Verifyhub,
+  banCar,
+  getAllCars,
+} from "../../../services/apis/adminApi/adminApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
 
@@ -273,7 +278,10 @@ const CarManagement = () => {
 
                     <td className="px-6 py-4">
                       {" "}
-                      <img src={item.singleImage} alt="" />
+                      <img
+                        src={item.singleImage}
+                        className="w-16 h-12 object-cover"
+                      />
                     </td>
                     <td className="px-6 py-4"> {item.vehicleName}</td>
                     <td

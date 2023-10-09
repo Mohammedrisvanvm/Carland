@@ -13,6 +13,7 @@ import AdminRouters from "./routes/adminRouters";
 import VendorRouters from "./routes/vendorRouters";
 import  Test  from "./test/test";
 import { SetStateAction } from "react";
+import Newadmin from "./test/newadmin";
 
 function App() {
  
@@ -27,6 +28,7 @@ function App() {
           <Route path="/test" element={<Test setloading={function (value: SetStateAction<boolean>): void {
             throw new Error("Function not implemented.");
           } } loading={false} />} />
+           <Route path="/new" element={<Newadmin />} />
         </Routes>
       </BrowserRouter>
 
