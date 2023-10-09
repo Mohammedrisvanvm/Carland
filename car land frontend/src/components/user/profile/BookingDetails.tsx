@@ -176,7 +176,7 @@ const BookingDetails: React.FC = () => {
                   </span>
                 </p>
                 <div>
-                  {singleBooking._doc.tempStatus == "pickUp" ? (
+                  {singleBooking._doc.status == "PickUp" ? (
                     <button
                       type="button"
                       onClick={() => handleConfirmation(singleBooking._doc._id)}
@@ -202,7 +202,7 @@ const BookingDetails: React.FC = () => {
                   {singleBooking._doc.status == "Ongoing" ? (
                     <button
                       type="button"
-                      onClick={() => handleConfirmation(singleBooking._doc._id)}
+                      // onClick={() => handleConfirmation(singleBooking._doc._id)}
                       className="bg-blue-600 text-white px-5 py-2 rounded"
                     >
                       {" "}

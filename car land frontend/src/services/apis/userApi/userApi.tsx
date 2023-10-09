@@ -106,8 +106,6 @@ export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
 export const bookingconfirmdetails = async (
   bookingID: string | undefined
 ): Promise<AxiosResponse> => {
-  console.log(bookingID);
-
   return await axiosBase.get(
     `/users/booking/bookingconfirmdetails?bookingID=${bookingID}`
   );
@@ -116,9 +114,9 @@ export const bookingconfirmdetails = async (
 export const bookingdetails = async (): Promise<AxiosResponse> => {
   return await axiosBase.get(`/users/booking/bookingdetails`);
 };
-export const pickupReq = async (id:string): Promise<AxiosResponse> => {
+export const pickupReq = async (id: string): Promise<AxiosResponse> => {
   return await axiosBase.patch(`/users/booking/pickupReq?bookingID=${id}`);
 };
-export const cancelBooking = async (id:string): Promise<AxiosResponse> => {
+export const cancelBooking = async (id: string): Promise<AxiosResponse> => {
   return await axiosBase.patch(`/users/booking/cancelbooking?bookingID=${id}`);
 };

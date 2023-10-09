@@ -37,9 +37,11 @@ const VendorBooking: FC = () => {
       setLoader(true);
 
       const response: AxiosResponse = await pickUpreqAction(showModalData);
-      console.log(response);
-      setLoader(false);
-      setShowModal(false);
+      if(response.data?.message){
+
+        setLoader(false);
+        setShowModal(false);
+      }
     } catch (error: any) {
       console.log(error);
     }

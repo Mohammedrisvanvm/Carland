@@ -37,7 +37,7 @@ const SingleVehicle: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
-        console.log(response);
+       
         if (response.data?.vehicle) {
           setVehicles(response.data?.vehicle);
         }
@@ -62,6 +62,7 @@ const SingleVehicle: React.FC = () => {
 
   const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
+console.log(seletedDate);
 
     if (!carId || seletedDate.length==0) {
       toast.error('pickdate')
@@ -349,10 +350,10 @@ const SingleVehicle: React.FC = () => {
                 <div className="flex items-center justify-evenly h-28 px-6 mb-4 font-semibold tracking-wide">
                   <RangePicker
                     size="middle"
-                    showTime={{ format: "h a" }}
+                   
                     className="h-12"
                     status={`error`}
-                    format="YYYY-MM-DD h a"
+                    format="YYYY-MM-DD"
                     placeholder={["Start Time", "End Time"]}
                     onChange={onChange}
                     disabledDate={disabledDate}
