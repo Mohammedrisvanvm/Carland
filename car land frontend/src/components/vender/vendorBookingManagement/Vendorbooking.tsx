@@ -10,12 +10,13 @@ const VendorBooking: FC = () => {
   const [bookings, setBookings] = useState<IConfirmBookWithImage[] | null>(
     null
   );
+  const [showModal, setShowModal] = React.useState<boolean>(false);
   const id = useAppSelector((state) => state.vendor.hubId);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         // const response: any = [];
-        const response:AxiosResponse = await getBookings(id);
+        const response: AxiosResponse = await getBookings(id);
         console.log(response);
         if (response.data?.bookingDetails)
           setBookings(response.data.bookingDetails);
@@ -67,12 +68,18 @@ const VendorBooking: FC = () => {
                   <th scope="col" className="px-6 py-3">
                     Status
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    action
+                  </th>
                 </tr>
               </thead>
               <tbody>
                 {bookings
                   ? bookings.map((item, index) => (
-                      <tr key={item._doc._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <tr
+                        key={item._doc._id}
+                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                      >
                         <td
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -80,55 +87,107 @@ const VendorBooking: FC = () => {
                           {index + 1}
                         </td>
                         <td className="px-6 py-4">
-
-                          <img src={item.image} className="w-16 h-12 object-cover" />
+                          <img
+                            src={item.image}
+                            className="w-16 h-12 object-cover"
+                          />
                         </td>
                         <td
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                         {item._doc.vehicleName}
+                          {item._doc.vehicleName}
                         </td>
-                        <td className="px-6 py-4">
-                        {item._doc.hubName}
+                        <td className="px-6 py-4">{item._doc.hubName}</td>
+                        <td
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {new Date(
+                            item._doc.bookingStartDate
+                          ).toLocaleDateString()}
                         </td>
                         <td
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                        {new Date(item._doc.bookingStartDate).toLocaleDateString()}
+                          {new Date(
+                            item._doc.bookingEndDate
+                          ).toLocaleDateString()}
                         </td>
+                        <td className="px-6 py-4">{item._doc.days}</td>
                         <td
                           scope="row"
                           className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
-                        {new Date(item._doc.bookingEndDate).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4">
-                        {item._doc.days}
-                        
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                          >
                           {item._doc.totalPrice}
                         </td>
                         <td className="px-6 py-4">
                           <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
-                          <span
+                            <span
                               className={`${
-                                item._doc.status ? "text-red-600" : "text-blue-600 "
+                                item._doc.status
+                                  ? "text-red-600"
+                                  : "text-blue-600 "
                               }`}
                             >
-                              {item._doc.status }
+                              {item._doc.status}
                             </span>
                           </button>
                         </td>
-                        
+                        <td className="px-6 py-4">
+                          <button
+                            className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                            onClick={() => {
+                              setShowModal(true);
+                            }}
+                          >
+                            {" "}
+                            action
+                          </button>
+                        </td>
                       </tr>
                     ))
                   : ""}
+                {showModal ? (
+                  <>
+                    <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center bg-gray-500">
+                      <div className="w-72 sm:w-1/3 h-4/6 flex flex-col">
+                        <button
+                          className="text-white text-xl sm:flex sm:justify-center place-self-end"
+                          onClick={() => setShowModal(false)}
+                        >
+                          x
+                        </button>
+
+                        <div className="px-4 py-8  h-52 overflow-y-auto bg-gray-100 ">
+                          <h1 className="flex font-bold text-2xl pb-5 justify-center">
+                          pick Up request
+                          </h1>
+                          <div className="flex flex-row justify-evenly">
+                                  <button
+                                    onClick={() => {
+                                      
+                                      setShowModal(false);
+                                    }}
+                                    className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                  >
+                                    cancel
+                                  </button>
+                                  <button
+                                  
+                                    className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                  >
+                                    accept
+                                  </button>
+                                </div>
+                        </div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
               </tbody>
             </table>
           </div>
