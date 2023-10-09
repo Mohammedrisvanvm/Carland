@@ -19,7 +19,7 @@ interface IBook extends Document {
   status: string;
 }
 interface IBookWithTimestamps extends IBook {
-  image: string;
+  image?: string;
   save(): unknown;
   createdAt: Date;
   updatedAt: Date;
