@@ -14,7 +14,7 @@ export interface IConfirmBook extends Document {
   bookingEndDate: string;
   pickuptime: string;
   image:string
-  paymentDetails: {
+  paymentDetails?: {
     razorpay_payment_id: string;
     razorpay_order_id: string;
     razorpay_signature: string;
