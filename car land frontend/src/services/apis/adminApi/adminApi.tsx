@@ -41,3 +41,7 @@ export const VerifyCar=async (value:string|undefined): Promise<AxiosResponse<any
 export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.patch("/admin/carmanagement/bancar",{value})
 }
+export const getBookingsManagement = async (): Promise<AxiosResponse<any>> => {
+    return axiosBase.get('/admin/bookingmanagement/allbookings');
+  };
+  

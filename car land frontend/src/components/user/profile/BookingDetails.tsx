@@ -42,7 +42,7 @@ const BookingDetails: React.FC<prop> = ({ loading, setloading }) => {
               <div className="font-semibold capitalize space-y-4 py-5">
                 <p
                   className="flex absolute left-3 text-blue-500  border-2 rounded-3xl hover:cursor-pointer"
-                  onClick={() => setSingleBooking(null)}
+                  onClick={() =>setSingleBooking(null)}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
