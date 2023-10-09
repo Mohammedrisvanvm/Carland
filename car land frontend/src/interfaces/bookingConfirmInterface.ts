@@ -20,7 +20,8 @@ export interface IConfirmBook extends Document {
     razorpay_signature: string;
   };
   paymentStatus: string;
-  status: boolean;
+  status: string;
+  tempStatus:string
   createdAt: Date;
   updatedAt: Date;
 }

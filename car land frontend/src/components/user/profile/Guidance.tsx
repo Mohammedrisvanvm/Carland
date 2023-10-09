@@ -101,8 +101,12 @@ const Guidance :React.FC<Iprops> = ({setShowModal}:Iprops) => {
                 </p>
                 <p className="text-gray-700">
                   In this step, you are instructed to proceed with the pickup
-                  process for the vehicle that is available at the hub station
+                  process for the vehicle that is available at the hub station,
+                  when you reach there ,you can Request
+                   
                 </p>
+                <span className='text-red-600 font-semibold'>Request for pickup</span>
+
               </div>
             </div>
             <div className="flex">
@@ -140,7 +144,7 @@ const Guidance :React.FC<Iprops> = ({setShowModal}:Iprops) => {
                   Step 3: ongoing
                 </p>
                 <p className="text-gray-700">
-                  In this step, it is indicated that you have successfully
+                  In this step,<span className='text-red-600 font-semibold'>after accept you can start your journey</span>. it is indicated that you have successfully
                   picked up the vehicle, and it is now in your possession for
                   your intended use. The "Ongoing" step signifies the
                   continuation of your journey or activity with the vehicle

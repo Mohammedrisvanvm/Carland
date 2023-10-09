@@ -14,6 +14,7 @@ import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
 import Payment from "../payment/Payment";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { DatePicker } from "antd";
+import { toast } from "react-toastify";
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
@@ -63,6 +64,7 @@ const SingleVehicle: React.FC = () => {
     e.preventDefault();
 
     if (!carId || seletedDate.length==0) {
+      toast.error('pickdate')
       console.log("error",carId,seletedDate.length);
     } else {
       setValues({
@@ -74,7 +76,7 @@ const SingleVehicle: React.FC = () => {
     }
    
   };
-  console.log(seletedDate);
+  
 
   return (
     <>

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { bookCar, bookingConfirmDetails, bookingDetails, pickupReq, razorpayPayment, verifyRazorpayPayment } from "../../controllers/userController/booking";
+import { bookCar, bookingConfirmDetails, bookingDetails, cancelBooking, pickupReq, razorpayPayment, verifyRazorpayPayment } from "../../controllers/userController/booking";
 
 
 const UserBookingRouter=Router()
@@ -8,6 +8,7 @@ UserBookingRouter.post('/razorpay',razorpayPayment)
 UserBookingRouter.post('/razorpayverify',verifyRazorpayPayment)
 UserBookingRouter.get('/bookingconfirmdetails',bookingConfirmDetails)
 UserBookingRouter.get('/bookingdetails',bookingDetails)
-UserBookingRouter.get('/pickupReq',pickupReq)
+UserBookingRouter.patch('/pickupReq',pickupReq)
+UserBookingRouter.patch('/cancelbooking',cancelBooking)
 
 export default UserBookingRouter

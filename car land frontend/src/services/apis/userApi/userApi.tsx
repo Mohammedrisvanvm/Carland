@@ -116,3 +116,9 @@ export const bookingconfirmdetails = async (
 export const bookingdetails = async (): Promise<AxiosResponse> => {
   return await axiosBase.get(`/users/booking/bookingdetails`);
 };
+export const pickupReq = async (id:string): Promise<AxiosResponse> => {
+  return await axiosBase.patch(`/users/booking/pickupReq?bookingID=${id}`);
+};
+export const cancelBooking = async (id:string): Promise<AxiosResponse> => {
+  return await axiosBase.patch(`/users/booking/cancelbooking?bookingID=${id}`);
+};

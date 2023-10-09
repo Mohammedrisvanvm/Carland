@@ -1,21 +1,27 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React from "react";
 import scroll from "./CustomScrollbar.module.css";
-import { bookingdetails } from "../../../services/apis/userApi/userApi";
+import {
+  bookingdetails,
+  cancelBooking,
+  pickupReq,
+} from "../../../services/apis/userApi/userApi";
 import {
   IConfirmBook,
   IConfirmBookWithImage,
 } from "../../../interfaces/bookingConfirmInterface";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import items from "razorpay/dist/types/items";
-type prop = {
-  setloading: Dispatch<SetStateAction<boolean>>;
-  loading: boolean;
-};
-const BookingDetails: React.FC<prop> = ({ loading, setloading }) => {
-  const [details, setDetails] = useState<IConfirmBookWithImage[] | null>(null);
+import Guidance from "./Guidance";
+import { toast } from "react-toastify";
+
+const BookingDetails: React.FC = () => {
+  const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [details, setDetails] = React.useState<IConfirmBookWithImage[] | null>(
+    null
+  );
   const [singleBooking, setSingleBooking] =
-    useState<IConfirmBookWithImage | null>(null);
-  useEffect(() => {
+    React.useState<IConfirmBookWithImage | null>(null);
+  const [loading, setLoading] = React.useState<boolean>(false);
+  React.useEffect(() => {
     const fetchData = async () => {
       const response: AxiosResponse = await bookingdetails();
       if (response.data?.bookingDetails) {
@@ -23,39 +29,81 @@ const BookingDetails: React.FC<prop> = ({ loading, setloading }) => {
       }
     };
     fetchData();
-  }, []);
-  console.log(singleBooking);
+  }, [loading]);
+  const handleConfirmation = async (id: string) => {
+    const userConfirmed = window.confirm("Do you want to make a request?");
+
+    if (userConfirmed) {
+      alert('You clicked "Yes." Requesting...');
+      await pickupReq(id);
+      toast.success("Requested");
+      setLoading(!loading);
+      setSingleBooking(null);
+    } else {
+      alert('You clicked "No." Request canceled.');
+    }
+  };
+  const cancelHandle = async (id: string) => {
+   await cancelBooking(id)
+  };
 
   return (
     <>
       <div className="justify-between sm:mt-5 h-96">
-        <h5 className=" m-10 text-xl text-center font-bold leading-none sm:text-2xl">
+        <h5 className="m-10 text-xl text-center font-bold leading-none sm:text-2xl">
           MY Bookings
         </h5>
 
         <div
-          style={{ height: "565px" }}
-          className={`text-center overflow-y-scroll ${scroll.customScrollbar} `}
+          style={{ height: "545px" }}
+          className={`text-center overflow-y-scroll  ${scroll.customScrollbar} `}
         >
           {singleBooking ? (
             <>
               <div className="font-semibold capitalize space-y-4 py-5">
-                <p
-                  className="flex absolute left-3 text-blue-500  border-2 rounded-3xl hover:cursor-pointer"
-                  onClick={() =>setSingleBooking(null)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
+                <div className="mb-10 sm:mb-0">
+                  {" "}
+                  <p
+                    className="flex absolute left-6 text-blue-500  border-2 rounded-3xl hover:cursor-pointer"
+                    onClick={() => setSingleBooking(null)}
                   >
-                    <path
-                      d="M20 11H7.414l3.293-3.293a1 1 0 1 0-1.414-1.414l-5 5a1 1 0 0 0 0 1.414l5 5a1 1 0 0 0 1.414-1.414L7.414 13H20a1 1 0 0 0 0-2z"
-                      fill="#888"
-                    />
-                  </svg>
-                </p>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M20 11H7.414l3.293-3.293a1 1 0 1 0-1.414-1.414l-5 5a1 1 0 0 0 0 1.414l5 5a1 1 0 0 0 1.414-1.414L7.414 13H20a1 1 0 0 0 0-2z"
+                        fill="#888"
+                      />
+                    </svg>
+                  </p>
+                  <p
+                    className="flex absolute right-6 text-blue-500 rounded-3xl hover:cursor-pointer"
+                    onClick={() => setShowModal(true)}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="30"
+                      height="30"
+                      viewBox="0 0 100 100"
+                      fill="#FF0000"
+                    >
+                      <circle
+                        cx="50"
+                        cy="50"
+                        r="40"
+                        stroke="#0084ff"
+                        strokeWidth="4"
+                        fill="none"
+                      />
+                      <text x="43" y="65" fontSize="50" fill="#0084ff">
+                        !
+                      </text>
+                    </svg>
+                  </p>
+                </div>
                 <div className=" flex justify-center">
                   <img src={singleBooking.image} alt="" />
                 </div>
@@ -127,20 +175,68 @@ const BookingDetails: React.FC<prop> = ({ loading, setloading }) => {
                     {singleBooking._doc.paymentDetails?.razorpay_payment_id}
                   </span>
                 </p>
+                <div>
+                  {singleBooking._doc.tempStatus == "pickUp" ? (
+                    <button
+                      type="button"
+                      onClick={() => handleConfirmation(singleBooking._doc._id)}
+                      className="bg-blue-600 text-white px-5 py-2 rounded"
+                    >
+                      {" "}
+                      pickup Request
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                  {singleBooking._doc.status == "pickUpreq" ? (
+                    <button
+                      type="button"
+                      className="bg-blue-600 text-white px-5 py-2 rounded"
+                    >
+                      {" "}
+                      pickup Requested
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                  {singleBooking._doc.status == "Ongoing" ? (
+                    <button
+                      type="button"
+                      onClick={() => handleConfirmation(singleBooking._doc._id)}
+                      className="bg-blue-600 text-white px-5 py-2 rounded"
+                    >
+                      {" "}
+                      extend
+                    </button>
+                  ) : (
+                    ""
+                  )}
+                </div>
                 <div className="flex justify-evenly">
                   <button
                     type="button"
+                    onClick={() => cancelHandle(singleBooking._doc._id)}
                     className="bg-red-600 px-6 rounded-lg py-2 text-white"
                   >
                     Cancel
                   </button>
                   <button
                     type="button"
+                    disabled
                     className="bg-blue-600 px-6 rounded-lg py-2 text-white"
                   >
-                    Booking Pdf
+                    pdf
                   </button>
                 </div>
+              </div>
+              <div>
+                {showModal ? (
+                  <>
+                    <Guidance setShowModal={setShowModal} />
+                  </>
+                ) : (
+                  ""
+                )}
               </div>
             </>
           ) : (

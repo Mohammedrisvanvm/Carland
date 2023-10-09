@@ -25,9 +25,7 @@ function App() {
           <Route path="/*" element={<UserRoutes />} />
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
-          <Route path="/test" element={<Test setloading={function (value: SetStateAction<boolean>): void {
-            throw new Error("Function not implemented.");
-          } } loading={false} />} />
+          <Route path="/test" element={<Test />} />
            <Route path="/new" element={<Newadmin />} />
         </Routes>
       </BrowserRouter>
