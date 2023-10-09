@@ -17,6 +17,7 @@ interface IBook extends Document {
   }
   paymentStatus:string
   status: string;
+  tempStatus:string
 }
 interface IBookWithTimestamps extends IBook {
   image?: string;

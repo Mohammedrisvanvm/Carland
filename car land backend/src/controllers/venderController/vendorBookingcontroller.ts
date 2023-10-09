@@ -36,3 +36,8 @@ console.log(bookingDetailsWithImage);
 
 res.json({message:"unique hub bookingDetails",bookingDetails:bookingDetailsWithImage})
     })
+
+    export const pickUpreqAction = AsyncHandler(
+        async (req: Request, res: Response): Promise<void> => {
+            
+        })

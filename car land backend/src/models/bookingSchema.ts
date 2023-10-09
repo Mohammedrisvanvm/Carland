@@ -53,10 +53,14 @@ const bookingSchema: Schema = new Schema(
       enum: ["HalfPaid", "FullPaid"],
      required:true
     },
-    
+    tempStatus:{
+      type:String,
+      enum:['pickUp','pickUpreq','cancel'],
+      default:"pickUp"
+    },
     status: {
       type: String,
-      enum: ["PickUp", "Ongoing", "Dropoff", "Completed", "Cancelled"],
+      enum: ["PickUp", 'pickUpreq', "Ongoing", "Completed", "Cancelled"],
       default:"PickUp"
     },
   },

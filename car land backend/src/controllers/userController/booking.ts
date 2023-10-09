@@ -190,3 +190,15 @@ export const bookingDetails = AsyncHandler(
     });
   }
 );
+export const  pickupReq= AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    console.log();
+    type query={
+      bookingID?:string
+    }
+    const {bookingID}:query=req.query
+    // await bookModel.updateOne({_id:bookingID}, { $set: { tempStatus: "pickUpreq" } })
+    await bookModel.updateOne({_id:bookingID}, { $set: { tempStatus: "pickUpreq" ,status:"pickUpreq"} })
+res.json({message:'pickup Requested'})
+
+  })
