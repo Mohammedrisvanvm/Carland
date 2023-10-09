@@ -18,7 +18,7 @@ import { toast } from "react-toastify";
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
-  const [vehicle, setVehicles] = useState<Vehicles | null>(null);
+  const [vehicle, setVehicle] = useState<Vehicles | null>(null);
   const [price, setPrice] = useState<number | null>(null);
   const [paybutton, setPaybutton] = useState<boolean>(false);
   // const [PayValue, setPayValue] = useState<object|null>(null);
@@ -37,17 +37,44 @@ const SingleVehicle: React.FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
-       
+
         if (response.data?.vehicle) {
-          setVehicles(response.data?.vehicle);
+          setVehicle(response.data?.vehicle);
         }
       } catch {}
     };
     fetchData();
   }, []);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
-    return current && current < dayjs().endOf("day");
+    const today = dayjs();
+
+    if (current.isBefore(today, "day")) {
+      return true;
+    }
+
+    const pickUpDates = vehicle?.bookingDates?.pickUp;
+    const dropOffDates = vehicle?.bookingDates?.dropOff;
+
+    if (!pickUpDates || !dropOffDates) {
+      return false;
+    }
+
+    for (let i = 0; i < pickUpDates.length; i++) {
+      const pickUpDate = dayjs(pickUpDates[i]);
+      const dropOffDate = dayjs(dropOffDates[i]);
+      console.log(pickUpDate);
+
+      if (
+        current.isAfter(pickUpDate, "day") &&
+        current.isBefore(dropOffDate, "day")
+      ) {
+        return true;
+      }
+    }
+
+    return false;
   };
+
   function onChange(value: any, dateString: [string, string]) {
     if (value[0] && value[1]) {
       setSeletedDate(dateString);
@@ -62,22 +89,21 @@ const SingleVehicle: React.FC = () => {
 
   const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
-console.log(seletedDate);
 
-    if (!carId || seletedDate.length==0) {
-      toast.error('pickdate')
-      console.log("error",carId,seletedDate.length);
+    if (!carId || seletedDate.length == 0) {
+      toast.error("pickdate");
+      console.log("error", carId, seletedDate.length);
     } else {
       setValues({
         carId: carId,
-        dropOffDate: seletedDate[0],
-        pickUpDate: seletedDate[1],
+        dropOffDate: seletedDate[1],
+        pickUpDate: seletedDate[0],
       });
       setPaybutton(!paybutton);
     }
-   
   };
-  
+  console.log(vehicle?.bookingDates?.dropOff, vehicle?.bookingDates?.pickUp);
+  console.log(vehicle);
 
   return (
     <>
@@ -350,7 +376,6 @@ console.log(seletedDate);
                 <div className="flex items-center justify-evenly h-28 px-6 mb-4 font-semibold tracking-wide">
                   <RangePicker
                     size="middle"
-                   
                     className="h-12"
                     status={`error`}
                     format="YYYY-MM-DD"

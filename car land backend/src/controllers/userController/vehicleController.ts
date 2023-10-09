@@ -16,7 +16,7 @@ export const userVehicles = AsyncHandler(
       lng?: number;
       seletedDate?: string;
     };
-    console.log(req.query, "123456");
+ 
 
     const { search, filter, lat, lng, seletedDate }: search = req.query;
     // console.log(search, filter, lat, lng, seletedDate);
@@ -45,7 +45,7 @@ export const userVehicles = AsyncHandler(
           lat,
           lng
         );
-        console.log(value, item.hubName);
+       
 
         return value <= 50;
       });

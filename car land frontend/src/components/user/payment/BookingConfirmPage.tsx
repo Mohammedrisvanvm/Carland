@@ -81,10 +81,10 @@ useEffect(()=>{
                       <span className="block text-gray-500">vehicle Name</span>
                       <span>{bookingData?.vehicleName}</span>
                     </li>
-                    <li>
+                    {/* <li>
                       <span className="block text-gray-500">pickup time</span>
                       <span>{bookingData?.pickuptime}</span>
-                    </li>
+                    </li> */}
                     <li>
                       <span className="block text-gray-500">total Price</span>
                       <span>{bookingData?.totalPrice}</span>
@@ -95,11 +95,11 @@ useEffect(()=>{
                     </li>
                     <li>
                       <span className="block text-gray-500">payment id</span>
-                      <span>{bookingData?.paymentDetails.razorpay_payment_id}</span>
+                      <span>{bookingData?.paymentDetails?.razorpay_payment_id}</span>
                     </li>
                   </ul>
                 </div>
-                <div className="payment border-t mt-3 mb-3 border-b table-responsive">
+                {/* <div className="payment border-t mt-3 mb-3 border-b table-responsive">
                   <table className="table-auto">
                     <tbody>
                       <tr className="">
@@ -117,7 +117,7 @@ useEffect(()=>{
                       </tr>
                     </tbody>
                   </table>
-                </div>
+                </div> */}
 
                 <p>
                   We will be sending a booking confirmation email when the item

@@ -38,10 +38,9 @@ type values = {
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { pickUpDate, dropOffDate, carId }: values = req.body.data;
-console.log(pickUpDate, dropOffDate, carId );
 
     const days: number = dateCount(pickUpDate, dropOffDate);
-    console.log(days);
+  
     if (!days) {
       throw new Error("date issue");
     }
