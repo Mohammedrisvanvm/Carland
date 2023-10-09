@@ -121,7 +121,7 @@ const VendorBookingManagement: FC = () => {
                             {item._doc.totalPrice}
                           </td>
                           <td className="px-6 py-4">
-                            <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                            <div className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                               <span
                                 className={`${
                                   item._doc.status
@@ -131,7 +131,7 @@ const VendorBookingManagement: FC = () => {
                               >
                                 {item._doc.status}
                               </span>
-                            </button>
+                            </div>
                           </td>
                         </tr>
                       ))

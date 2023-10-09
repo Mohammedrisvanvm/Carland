@@ -27,7 +27,7 @@ const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetailsAdmin.map(
     image: vehicleImageMap[item.vehicleId], 
   })
 );
-console.log(bookingDetailsWithImage);
+
     res.json({ message: "booking Details Admin" ,bookingDetails:bookingDetailsWithImage });
   }
 );

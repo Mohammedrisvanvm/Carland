@@ -163,12 +163,12 @@ export const bookingDetails = AsyncHandler(
 
     const bookingDetails: IBookWithTimestamps[] = await bookModel.find({
       userId,
-    });
+    }).sort({createdAt:-1});
     const vehiclesID: string[] = bookingDetails.map((item) => item.vehicleId);
 
     const vehicles: IVehicle[] = await vehicleModel.find({
       _id: { $in: vehiclesID },
-    });
+    }).sort();
     // console.log(vehicles);
     const vehicleImageMap: { [key: string]: string } = {};
     vehicles.forEach((vehicle) => {
