@@ -7,11 +7,11 @@ export interface IConfirmBook extends Document {
   userId: string;
   hubName: string;
   vehicleName: string;
-  bookingStartDate: Date;
+  bookingStartDate: string;
   totalPrice: number;
   carPrice: number;
   days: number;
-  bookingEndDate: Date;
+  bookingEndDate: string;
   pickuptime: string;
   image:string
   paymentDetails: {
