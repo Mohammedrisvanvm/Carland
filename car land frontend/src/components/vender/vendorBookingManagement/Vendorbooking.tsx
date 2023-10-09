@@ -3,14 +3,20 @@ import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import VendorAside from "../venderASide/vendorAside";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { getBookings } from "../../../services/apis/vendorApi/vendorApi";
+import {
+  getBookings,
+  pickUpreqAction,
+} from "../../../services/apis/vendorApi/vendorApi";
 import { IConfirmBookWithImage } from "../../../interfaces/bookingConfirmInterface";
+import Loader from "../../../utils/Loader";
 
 const VendorBooking: FC = () => {
   const [bookings, setBookings] = useState<IConfirmBookWithImage[] | null>(
     null
   );
   const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [loader, setLoader] = React.useState<boolean>(false);
+  const [showModalData, setshowModalData] = React.useState<string | null>(null);
   const id = useAppSelector((state) => state.vendor.hubId);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -25,170 +31,190 @@ const VendorBooking: FC = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [loader]);
+  const acceptAction = async () => {
+    try {
+      setLoader(true);
+
+      const response: AxiosResponse = await pickUpreqAction(showModalData);
+      console.log(response);
+      setLoader(false);
+      setShowModal(false);
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
       <div className="absolute">
         <VendorNavBar />
         <VendorAside />
+
         <div className="sm:ml-64">
           <div className="relative  top-20">
             <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400">
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    index
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    vehicle image
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Vehicle Name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    hubName
-                  </th>
+              {loader ? (
+                <Loader />
+              ) : (
+                <>
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        index
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        vehicle image
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Vehicle Name
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        hubName
+                      </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    bookingStartDate
-                  </th>
+                      <th scope="col" className="px-6 py-3">
+                        bookingStartDate
+                      </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    bookingEndDate
-                  </th>
+                      <th scope="col" className="px-6 py-3">
+                        bookingEndDate
+                      </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    days
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    totalPrice
-                  </th>
+                      <th scope="col" className="px-6 py-3">
+                        days
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        totalPrice
+                      </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    action
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings
-                  ? bookings.map((item, index) => (
-                      <tr
-                        key={item._doc._id}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                      >
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </td>
-                        <td className="px-6 py-4">
-                          <img
-                            src={item.image}
-                            className="w-16 h-12 object-cover"
-                          />
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {item._doc.vehicleName}
-                        </td>
-                        <td className="px-6 py-4">{item._doc.hubName}</td>
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {new Date(
-                            item._doc.bookingStartDate
-                          ).toLocaleDateString()}
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {new Date(
-                            item._doc.bookingEndDate
-                          ).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4">{item._doc.days}</td>
-                        <td
-                          scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {item._doc.totalPrice}
-                        </td>
-                        <td className="px-6 py-4">
-                          <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
-                            <span
-                              className={`${
-                                item._doc.status
-                                  ? "text-red-600"
-                                  : "text-blue-600 "
-                              }`}
-                            >
-                              {item._doc.status}
-                            </span>
-                          </button>
-                        </td>
-                        <td className="px-6 py-4">
-                          <button
-                            className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                            onClick={() => {
-                              setShowModal(true);
-                            }}
+                      <th scope="col" className="px-6 py-3">
+                        Status
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {bookings
+                      ? bookings.map((item, index) => (
+                          <tr
+                            key={item._doc._id}
+                            className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                           >
-                            {" "}
-                            action
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  : ""}
-                {showModal ? (
-                  <>
-                    <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center bg-gray-500">
-                      <div className="w-72 sm:w-1/3 h-4/6 flex flex-col">
-                        <button
-                          className="text-white text-xl sm:flex sm:justify-center place-self-end"
-                          onClick={() => setShowModal(false)}
-                        >
-                          x
-                        </button>
+                            <td
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {index + 1}
+                            </td>
+                            <td className="px-6 py-4">
+                              <img
+                                src={item.image}
+                                className="w-16 h-12 object-cover"
+                              />
+                            </td>
+                            <td
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {item._doc.vehicleName}
+                            </td>
+                            <td className="px-6 py-4">{item._doc.hubName}</td>
+                            <td
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {new Date(
+                                item._doc.bookingStartDate
+                              ).toLocaleDateString()}
+                            </td>
+                            <td
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {new Date(
+                                item._doc.bookingEndDate
+                              ).toLocaleDateString()}
+                            </td>
+                            <td className="px-6 py-4">{item._doc.days}</td>
+                            <td
+                              scope="row"
+                              className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                            >
+                              {item._doc.totalPrice}
+                            </td>
+                            <td className="px-6 py-4">
+                              <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                                <span
+                                  className={`${
+                                    item._doc.status
+                                      ? "text-red-600"
+                                      : "text-blue-600 "
+                                  }`}
+                                >
+                                  {item._doc.status}
+                                </span>
+                              </button>
+                            </td>
+                            <td className="px-6 py-4">
+                              <button
+                                className={`  text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5`}
+                                onClick={() => {
+                                  setShowModal(true);
+                                  setshowModalData(item._doc._id);
+                                }}
+                                disabled={item._doc.status !== "pickUpreq"}
+                              >
+                                {" "}
+                                action
+                              </button>
+                            </td>
+                          </tr>
+                        ))
+                      : ""}
+                    {showModal ? (
+                      <>
+                        <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center bg-gray-500">
+                          <div className="w-72 sm:w-1/3 h-4/6 flex flex-col">
+                            <button
+                              className="text-white text-xl sm:flex sm:justify-center place-self-end"
+                              onClick={() => setShowModal(false)}
+                            >
+                              x
+                            </button>
 
-                        <div className="px-4 py-8  h-52 overflow-y-auto bg-gray-100 ">
-                          <h1 className="flex font-bold text-2xl pb-5 justify-center">
-                          pick Up request
-                          </h1>
-                          <div className="flex flex-row justify-evenly">
-                                  <button
-                                    onClick={() => {
-                                      
-                                      setShowModal(false);
-                                    }}
-                                    className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                  >
-                                    cancel
-                                  </button>
-                                  <button
-                                  
-                                    className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                  >
-                                    accept
-                                  </button>
-                                </div>
+                            <div className="px-4 py-8  h-52 overflow-y-auto bg-gray-100 ">
+                              <h1 className="flex font-bold text-2xl pb-5 justify-center">
+                                pick Up request
+                              </h1>
+                              <div className="flex flex-row justify-evenly">
+                                <button
+                                  onClick={() => {
+                                    setShowModal(false);
+                                  }}
+                                  className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                >
+                                  cancel
+                                </button>
+                                <button
+                                  onClick={() => acceptAction()}
+                                  className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                >
+                                  accept
+                                </button>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </tbody>
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </tbody>
+                </>
+              )}
             </table>
           </div>
         </div>

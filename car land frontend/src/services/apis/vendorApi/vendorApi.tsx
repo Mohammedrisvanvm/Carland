@@ -44,3 +44,6 @@ export const vendorSignOut = async (): Promise<AxiosResponse<any>> => {
 export const getBookings = async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/bookings/getBookings?hubID=${id}`);
 };
+export const  pickUpreqAction= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/bookings/pickupreqaction?bookingID=${id}`);
+};

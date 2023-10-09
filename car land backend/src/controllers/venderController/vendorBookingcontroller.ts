@@ -39,5 +39,15 @@ res.json({message:"unique hub bookingDetails",bookingDetails:bookingDetailsWithI
 
     export const pickUpreqAction = AsyncHandler(
         async (req: Request, res: Response): Promise<void> => {
-            
+
+type query={
+    bookingID?:string
+}
+const {bookingID}:query=req.query
+
+console.log(bookingID);
+
+            await bookModel.findByIdAndUpdate({_id:bookingID},{$set:{status:"Ongoing"}})
+
+            res.status(200).json({message:"Request accepted"})
         })
