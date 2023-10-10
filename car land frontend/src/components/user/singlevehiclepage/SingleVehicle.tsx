@@ -110,10 +110,10 @@ const SingleVehicle: React.FC = () => {
 
       <div className="w-full grid h-screen sm:grid-cols-6 text-center grid-cols-3">
         <div className="sm:m-12 col-span-3  flex flex-col items-center pt-10">
-          <div className="sm:h-72 sm:w-96 ">
-            <img src={image} className="object-fill" alt="" />
+          <div className="sm:h-1/2">
+            <img src={image} className="object-cover w-full h-full"   alt="" />
           </div>
-          <div className="grid grid-cols-3 gap-3 ">
+          <div className="grid grid-cols-3 gap-3 sm:h-10 ">
             {" "}
             <div className="sm:h-20 sm:w-36 h-14 w-24  mt-4 border-2">
               <img
@@ -125,7 +125,7 @@ const SingleVehicle: React.FC = () => {
                 className="object-cover"
               />
             </div>
-            <div className="sm:h-20 sm:w-36 h-14 w-24  mt-4 border-2">
+            <div className="sm:h-full sm:w-36 h-14 w-24  mt-4 border-2">
               <img
                 src={vehicle?.SubImages[1]}
                 onClick={() => {
