@@ -1,7 +1,6 @@
 import { Schema, model } from "mongoose";
 import IVehicle from "../interfaces/vehicleInterface";
 
-
 const vehicleSchema: Schema = new Schema(
   {
     vehicleName: {
@@ -84,7 +83,6 @@ const vehicleSchema: Schema = new Schema(
           },
         ],
       },
-      default: null,
     },
   },
   { timestamps: true }

@@ -77,7 +77,7 @@ export const bookCar = AsyncHandler(
       razorpay_signature,
     }: values = req.body.data;
     const userId: string = req.headers.authorization;
-    console.log(req.body);
+    
 
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
@@ -89,12 +89,16 @@ export const bookCar = AsyncHandler(
     const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate(
       { _id: carId },
       {
-        $push: {
+        $set: {
           "bookingDates.pickUp": pickUpDate,
           "bookingDates.dropOff": dropOffDate,
         },
       }
     );
+    
+    
+    
+console.log(vehicle);
 
     let paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({

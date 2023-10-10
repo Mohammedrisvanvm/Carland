@@ -1,20 +1,18 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
-import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
-import {
-  bookingCar,
-  userSingleGetVehicle,
-} from "../../../services/apis/userApi/userApi";
+
 import { useLocation, useNavigate } from "react-router";
-import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { Vehicles } from "../../../interfaces/vehicleInterface";
 import { RangePickerProps } from "antd/es/date-picker";
 import dayjs from "dayjs";
 import { useFormik } from "formik";
-import { bookingDateSchema } from "../../../validationSchemas/validationSchema";
-import Payment from "../payment/Payment";
-import { useAppSelector } from "../../../redux/store/storeHook";
 import { DatePicker } from "antd";
 import { toast } from "react-toastify";
+import { Vehicles } from "../../../interfaces/vehicleInterface";
+import { useAppSelector } from "../../../redux/store/storeHook";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
+import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
+import Payment from "../payment/Payment";
+
 
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
@@ -39,6 +37,7 @@ const SingleVehicle: React.FC = () => {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
 
         if (response.data?.vehicle) {
+          setimage(response.data.vehicle.singleImage);
           setVehicle(response.data?.vehicle);
         }
       } catch {}
@@ -49,6 +48,9 @@ const SingleVehicle: React.FC = () => {
     const today = dayjs();
 
     if (current.isBefore(today, "day")) {
+      return true;
+    }
+    if (current.isSame(today, "day")) {
       return true;
     }
 
@@ -62,7 +64,6 @@ const SingleVehicle: React.FC = () => {
     for (let i = 0; i < pickUpDates.length; i++) {
       const pickUpDate = dayjs(pickUpDates[i]);
       const dropOffDate = dayjs(dropOffDates[i]);
-      console.log(pickUpDate);
 
       if (
         current.isAfter(pickUpDate, "day") &&
@@ -102,38 +103,47 @@ const SingleVehicle: React.FC = () => {
       setPaybutton(!paybutton);
     }
   };
-  console.log(vehicle?.bookingDates?.dropOff, vehicle?.bookingDates?.pickUp);
-  console.log(vehicle);
+  const [image, setimage] = useState<string>("");
 
   return (
     <>
       <MainHeader />
 
       <div className="w-full grid h-screen sm:grid-cols-6 text-center grid-cols-3">
-        <div className=" sm:m-24 col-span-3">
-          <div className="h-2/3 w-full flex justify-center">
-            <img src={vehicle?.SubImages[0]} className="" alt="" />
+        <div className="sm:m-12 col-span-3  flex flex-col items-center pt-10">
+          <div className="sm:h-72 sm:w-96 ">
+            <img src={image} className="object-fill" alt="" />
           </div>
-          <div className="flex flex-row justify-evenly mx-2 mt-5">
-            <div className=" mx-2 object-fit">
+          <div className="grid grid-cols-3 gap-3 ">
+            {" "}
+            <div className="h-20 w-36  mt-4 border-2">
               <img
                 src={vehicle?.singleImage}
+                onClick={() => {
+                  if (vehicle?.singleImage) setimage(vehicle?.singleImage);
+                }}
                 alt=""
-                className="w-full h-full object-cover"
+                className="object-cover"
               />
             </div>
-            <div className=" mx-2 object-fit">
+            <div className="h-20 w-36  mt-4 border-2">
               <img
                 src={vehicle?.SubImages[1]}
+                onClick={() => {
+                  if (vehicle?.SubImages) setimage(vehicle?.SubImages[1]);
+                }}
                 alt=""
-                className="w-full h-full object-cover"
+                className="object-cover"
               />
             </div>
-            <div className=" mx-2 object-fit">
+            <div className="h-20 w-36  mt-4 border-2">
               <img
                 src={vehicle?.SubImages[2]}
+                onClick={() => {
+                  if (vehicle?.SubImages) setimage(vehicle?.SubImages[2]);
+                }}
                 alt=""
-                className="w-full h-full object-cover"
+                className="object-cover"
               />
             </div>
           </div>
