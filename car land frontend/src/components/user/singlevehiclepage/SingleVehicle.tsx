@@ -13,7 +13,6 @@ import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 import Payment from "../payment/Payment";
 
-
 const SingleVehicle: React.FC = () => {
   const location = useLocation();
   const [vehicle, setVehicle] = useState<Vehicles | null>(null);
@@ -116,7 +115,7 @@ const SingleVehicle: React.FC = () => {
           </div>
           <div className="grid grid-cols-3 gap-3 ">
             {" "}
-            <div className="h-20 w-36  mt-4 border-2">
+            <div className="sm:h-20 sm:w-36 h-14 w-24  mt-4 border-2">
               <img
                 src={vehicle?.singleImage}
                 onClick={() => {
@@ -126,7 +125,7 @@ const SingleVehicle: React.FC = () => {
                 className="object-cover"
               />
             </div>
-            <div className="h-20 w-36  mt-4 border-2">
+            <div className="sm:h-20 sm:w-36 h-14 w-24  mt-4 border-2">
               <img
                 src={vehicle?.SubImages[1]}
                 onClick={() => {
@@ -136,7 +135,7 @@ const SingleVehicle: React.FC = () => {
                 className="object-cover"
               />
             </div>
-            <div className="h-20 w-36  mt-4 border-2">
+            <div className="sm:h-20 sm:w-36 h-14 w-24  mt-4 border-2">
               <img
                 src={vehicle?.SubImages[2]}
                 onClick={() => {
@@ -149,13 +148,13 @@ const SingleVehicle: React.FC = () => {
           </div>
         </div>
 
-        <div className=" m-4 col-span-3 mb-4  ">
-          <div className="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+        <div className=" col-span-3 pt-10 sm:pt-0 ">
+          <div className=" px-4  mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
             {/* <div className="w-11/12 h-2 mx-auto bg-gray-900 rounded-b opacity-75" />
             <div className="w-10/12 h-2 mx-auto bg-gray-900 rounded-b opacity-50" />
             <div className="w-9/12 h-2 mx-auto bg-gray-900 rounded-b opacity-25" /> */}
 
-            <div className="p-8 bg-gray-100 rounded">
+            <div className="p-4 sm:p-8 bg-gray-100 rounded">
               <div className="mb-4 text-center">
                 <p className="text-xl font-medium capitalize tracking-wide text-black">
                   {vehicle?.vehicleName} <p className="mx-2" /> {vehicle?.year}
