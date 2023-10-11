@@ -19,8 +19,7 @@ const BookingDetails: React.FC = () => {
   const [details, setDetails] = React.useState<IConfirmBookWithImage[] | null>(
     null
   );
-  const [singleBooking, setSingleBooking] =
-    React.useState<IConfirmBookWithImage | null>(null);
+  const [singleBooking, setSingleBooking]=React.useState<IConfirmBookWithImage | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     const fetchData = async () => {
@@ -31,6 +30,8 @@ const BookingDetails: React.FC = () => {
     };
     fetchData();
   }, [loading]);
+ 
+  
   const handleConfirmation = async (id: string) => {
     const userConfirmed = window.confirm("Do you want to make a request?");
 
@@ -179,7 +180,7 @@ const BookingDetails: React.FC = () => {
 <div className="flex justify-center">
                 <div className="h-44 w-72 bg-gray-200 ">
 
-                <StaticMapRoute latitude={singleBooking._doc.hubLatitude} longitude={singleBooking._doc.hubLongitude}/>
+                <StaticMapRoute latitude={singleBooking.hubLatitude} longitude={singleBooking.hubLongitude}/>
                 </div>
                 </div>
                 <div>
