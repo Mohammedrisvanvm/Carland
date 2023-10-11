@@ -172,9 +172,9 @@ export const Content = () => {
                 <div className="flex  items-center justify-center mb-5">
                   <RangePicker
                     size="middle"
-                    showTime={{ format: "h a" }}
+                   
                     className="h-12"
-                    format="YYYY-MM-DD h a"
+                    format="YYYY-MM-DD"
                     placeholder={["Start Time", "End Time"]}
                     onChange={onChange}
                     disabledDate={disabledDate}
@@ -225,8 +225,8 @@ export const Content = () => {
                       All
                     </option>
 
-                    <option value="Diesel">Diesel</option>
-                    <option value="Petrol">Petrol</option>
+                    <option value="diesel">Diesel</option>
+                    <option value="petrol">Petrol</option>
                   </select>
                 </form>
               </div>

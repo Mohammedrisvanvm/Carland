@@ -14,7 +14,7 @@ const StaticMapRoute:FC<MapboxComponentProps> = ({latitude,longitude}) => {
         const map=new mapboxgl.Map({
             container:"map",
             style:'mapbox://styles/mapbox/streets-v11',
-            zoom:8,
+            zoom:14,
             center: [longitude, latitude],
            
         })

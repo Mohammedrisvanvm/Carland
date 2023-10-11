@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useAppDispatch } from "../../../redux/store/storeHook";
+import { useAppDispatch, useAppSelector } from "../../../redux/store/storeHook";
 import { vendorLogout } from "../../../redux/slice/vendorSlice";
 import { vendorSignOut } from "../../../services/apis/vendorApi/vendorApi";
 import { useDispatch } from "react-redux";
@@ -13,8 +13,8 @@ type Iprop = {
 const VendorNavBar = ({ nav, setNav }: Iprop) => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
-  console.log(nav);
-
+  const vendor=useAppSelector((state)=>state.vendor)
+  console.log(vendor);
   const [dropdown, setdropdown] = useState(false);
 
   const dropdownHandler = () => {
@@ -95,10 +95,10 @@ const VendorNavBar = ({ nav, setNav }: Iprop) => {
                 >
                   <div className="px-4 py-3">
                     <span className="block text-sm text-gray-900 dark:text-white">
-                      Risvan
+                    {vendor.userName}
                     </span>
                     <span className="block text-sm  text-gray-500 truncate dark:text-gray-400">
-                      risvan@gmail.com
+                      {vendor.email}
                     </span>
                   </div>
 
