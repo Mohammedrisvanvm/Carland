@@ -9,16 +9,17 @@ interface MapboxComponentProps {
 
 const StaticMapRoute:FC<MapboxComponentProps> = ({latitude,longitude}) => {
 
+
     React.useEffect(()=>{
         const map=new mapboxgl.Map({
             container:"map",
             style:'mapbox://styles/mapbox/streets-v11',
             zoom:8,
-            center: [76.2711, 10.8505],
+            center: [longitude, latitude],
            
         })
         
-      new mapboxgl.Marker().setLngLat([76.2711, 10.8505]).addTo(map)
+      new mapboxgl.Marker().setLngLat([longitude, latitude]).addTo(map)
      return ()=>map.remove();
     },[])
    
