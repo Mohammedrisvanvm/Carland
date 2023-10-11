@@ -16,20 +16,20 @@ export const userVehicles = AsyncHandler(
       lng?: number;
       seletedDate?: string;
     };
- 
 
     const { search, filter, lat, lng, seletedDate }: search = req.query;
-    // console.log(search, filter, lat, lng, seletedDate);
+    console.log(search, filter, lat, lng, seletedDate);
 
-    const query: { isVerified: boolean; vehicleName?: RegExp; fuel?: RegExp } =
+    const query: { isVerified: boolean; vehicleName?: RegExp; fuel?: string } =
       { isVerified: true };
 
     if (search) {
       query.vehicleName = new RegExp(search, "i");
     }
     if (filter) {
-      query.fuel = new RegExp(filter, "i");
+      query.fuel = filter;
     }
+
     // if(seletedDate){
     //   query.bookingDates.pickUp={$ne:seletedDate[0]}
     //   query.bookingDates.dropOff={$ne:seletedDate[1]}
@@ -37,23 +37,19 @@ export const userVehicles = AsyncHandler(
     // }
     const hubDetails: Ihub[] = await hubModel.find();
 
-    
-      const filteredHubDetails = hubDetails.filter((item: Ihub): boolean => {
-        const value: number = calculateDistance(
-          item.location.lat,
-          item.location.lng,
-          lat,
-          lng
-        );
-       
+    const filteredHubDetails = hubDetails.filter((item: Ihub): boolean => {
+      const value: number = calculateDistance(
+        item.location.lat,
+        item.location.lng,
+        lat,
+        lng
+      );
 
-        return value <= 50;
-      });
-    
+      return value <= 50;
+    });
 
     if (filteredHubDetails.length == 0 && lat) {
-     return res.json({vehicles:''})
-     
+      return res.json({ vehicles: "" });
     }
     const filteredVehicles: string[][] = filteredHubDetails.map(
       (item: Ihub): string[] => {
@@ -64,8 +60,6 @@ export const userVehicles = AsyncHandler(
       (arr) => arr.length > 0
     );
 
-  
-
     const perPage = 4;
     const skip = (pageNumber - 1) * perPage;
 
@@ -73,6 +67,9 @@ export const userVehicles = AsyncHandler(
     const filter1: any = {
       isVerified: true,
     };
+    if (filter) {
+      filter1.fuel = filter;
+    }
     if (search) {
       filter1.vehicleName = {
         $regex: new RegExp(search, "i"),
@@ -87,31 +84,19 @@ export const userVehicles = AsyncHandler(
     }
     // if (seletedDate) {
     //   const [pickUpDate, dropOffDate]: string[] = seletedDate.split(',');
-    
-    //   filter1.bookingDates = {
-    //     pickUp:{
-    //       $in:pickUpDate
-    //     }
+
+    //   filter1.bookingDates= {
     //     $nin: [
-    //       { $elemMatch: { 'pickUp': {  $in: pickUpDate } } },
-    //       { $elemMatch: { 'dropOff': { $in: dropOffDate } } },
+    //       {
+    //         $elemMatch: { pickUp: { $in: pickUpDate } },
+    //       },
+    //       {
+    //         $elemMatch: { dropOff: { $in: dropOffDate } },
+    //       },
     //     ],
     //   };
     // }
-//     const [pickUpDate, dropOffDate]: string[] = seletedDate.split(',');
-//     const pickUpDateObj = new Date(pickUpDate);
-// const dropOffDateObj = new Date(dropOffDate);
 
-// const vehicle34: IVehicle[] = await vehicleModel.find({
-//   bookingDates: {
-//     pickUp: {
-//       $in: [pickUpDateObj],
-//     },
-//   },
-// });
-    
-//     console.log(vehicle34);
-    
     const vehicles: IVehicle[] = await vehicleModel.aggregate([
       { $match: filter1 },
       {
@@ -123,6 +108,17 @@ export const userVehicles = AsyncHandler(
     ]);
 
     const count: number = await vehicleModel.countDocuments(query);
+    // const [pickUpDate, dropOffDate]: string[] = seletedDate.split(",");
+    // const pickeddates: any = await vehicleModel.find({
+    //   bookingDates: {
+    //     $not: {
+    //       $elemMatch: { pickUp: pickUpDate, dropOff: dropOffDate }
+    //     }
+    //   }
+    // });
+    
+    // console.log(pickeddates);
+
     res.json({ vehicles, count });
   }
 );
