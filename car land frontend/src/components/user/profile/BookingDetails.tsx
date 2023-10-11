@@ -12,6 +12,7 @@ import {
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import Guidance from "./Guidance";
 import { toast } from "react-toastify";
+import StaticMapRoute from "./StaticMapRoute";
 
 const BookingDetails: React.FC = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false);
@@ -176,8 +177,10 @@ const BookingDetails: React.FC = () => {
                   </span>
                 </p>
 <div className="flex justify-center">
-                <div className="  h-44 w-72 bg-gray-200 ">
+                <div className="h-44 w-72 bg-gray-200 ">
 
+                  {/* <img src={`https://api.mapbox.com/styles/v1/mapbox/light-v11/static/url-https%3A%2F%2Fdocs.mapbox.com%2Fapi%2Fimg%2Fcustom-marker.png(-76.9,38.9)/-76.9,38.9,15/500x300?access_token=${import.meta.env.VITE_MAPBOXTOKEN}`} alt="" /> */}
+                <StaticMapRoute/>
                 </div>
                 </div>
                 <div>
