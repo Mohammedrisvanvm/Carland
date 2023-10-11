@@ -175,6 +175,11 @@ const BookingDetails: React.FC = () => {
                     {singleBooking._doc.paymentDetails?.razorpay_payment_id}
                   </span>
                 </p>
+<div className="flex justify-center">
+                <div className="  h-44 w-72 bg-gray-200 ">
+
+                </div>
+                </div>
                 <div>
                   {singleBooking._doc.status == "PickUp" ? (
                     <button

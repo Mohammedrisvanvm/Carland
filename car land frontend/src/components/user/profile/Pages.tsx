@@ -24,7 +24,7 @@ const Pages: FC<MyComponentProps> = ({
         <ProfileVerification setloading={setloading} loading={loading} />
       ) : null}
       {role === "Bookings" ? (
-        <BookingDetails setloading={setloading} loading={loading} />
+        <BookingDetails  />
       ) : null}
     </>
   );
