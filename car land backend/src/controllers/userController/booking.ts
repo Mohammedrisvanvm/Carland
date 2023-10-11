@@ -10,6 +10,7 @@ import { dateCount } from "../../helpers/dateCount";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
+import { IMap, } from "razorpay/dist/types/api";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -218,12 +219,45 @@ export const  pickupReq= AsyncHandler(
 res.json({message:'pickup Requested'})
 
   })
+  interface RazorpayRefund {
+    id: string;
+    entity: string;
+    amount?: number;
+    currency: string;
+    payment_id: string;
+    notes?: IMap<string | number>;
+    receipt?: string;
+    acquirer_data?: {
+      rrn?: string;
+    };
+    created_at: number;
+    batch_id?: string;
+    status: string;
+    speed_processed: string;
+    speed_requested: string;
+  }
+   
+  
+  
   export const  cancelBooking= AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
       type query={
         bookingID?:string
       }
       const {bookingID}:query=req.query
- 
+      const booking:IBookWithTimestamps=await bookModel.findById(bookingID)
+ console.log(booking.paymentDetails.razorpay_payment_id);
+ razorpay.payments.refund(booking.paymentDetails.razorpay_payment_id,{
+  "amount": `${booking.totalPrice}`,
+  "speed": "optimum",
+  "receipt": "Receipt No. 32"
+}).then((res:RazorpayRefund)=>{
+console.log(res);
+
+}).catch((error:any)=>{
+  console.log(error);
+  
+})
       res.status(200).json({message:`${bookingID}`})
     })
+
