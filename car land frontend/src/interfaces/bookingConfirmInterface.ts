@@ -22,6 +22,8 @@ export interface IConfirmBook extends Document {
   paymentStatus: string;
   status: string;
   tempStatus:string
+  hubLatitude:number
+  hubLongitude:number
   createdAt: Date;
   updatedAt: Date;
 }

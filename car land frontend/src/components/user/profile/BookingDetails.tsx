@@ -179,8 +179,7 @@ const BookingDetails: React.FC = () => {
 <div className="flex justify-center">
                 <div className="h-44 w-72 bg-gray-200 ">
 
-                  {/* <img src={`https://api.mapbox.com/styles/v1/mapbox/light-v11/static/url-https%3A%2F%2Fdocs.mapbox.com%2Fapi%2Fimg%2Fcustom-marker.png(-76.9,38.9)/-76.9,38.9,15/500x300?access_token=${import.meta.env.VITE_MAPBOXTOKEN}`} alt="" /> */}
-                <StaticMapRoute/>
+                <StaticMapRoute latitude={singleBooking._doc.hubLatitude} longitude={singleBooking._doc.hubLongitude}/>
                 </div>
                 </div>
                 <div>

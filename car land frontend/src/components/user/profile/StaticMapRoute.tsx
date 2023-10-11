@@ -1,10 +1,13 @@
-import React from "react";
+import React,{FC} from "react";
 
 import mapboxgl from "mapbox-gl";
 
+interface MapboxComponentProps {
+    latitude:number;
+    longitude:number;
+}
 
-
-const StaticMapRoute = () => {
+const StaticMapRoute:FC<MapboxComponentProps> = ({latitude,longitude}) => {
 
     React.useEffect(()=>{
         const map=new mapboxgl.Map({

@@ -169,24 +169,37 @@ export const bookingDetails = AsyncHandler(
       userId,
     }).sort({createdAt:-1});
     const vehiclesID: string[] = bookingDetails.map((item) => item.vehicleId);
-
+    const hubID: string[] = bookingDetails.map((item) => item.hubId);
     const vehicles: IVehicle[] = await vehicleModel.find({
       _id: { $in: vehiclesID },
     }).sort();
     // console.log(vehicles);
+    const hubs: Ihub[] = await hubModel.find({
+      _id: { $in: hubID },
+    }).sort();
+ 
+    
     const vehicleImageMap: { [key: string]: string } = {};
+    const hubLongitude: { [key: string]: number } = {};
+    const hubLatitude:{ [key: string]: number } = {};
+    
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
 // console.log(vehicleImageMap);
-
+hubs.forEach((hub)=>{
+  hubLatitude[hub._id]=hub.location.lat
+  hubLongitude[hub._id]=hub.location.lng
+})
     const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetails.map(
       (item) => ({
         ...item,
+        hubLatitude:hubLatitude[item.hubId],
+        hubLongitude:hubLongitude[item.hubId],
         image: vehicleImageMap[item.vehicleId], 
       })
     );
-    console.log(bookingDetailsWithImage[8]);
+    console.log(bookingDetailsWithImage);
 
     res.json({
       message: "user booking Details",

@@ -18,6 +18,8 @@ interface IBook extends Document {
   paymentStatus:string
   status: string;
   tempStatus:string
+  hubLatitude:number
+  hubLongitude:number
 }
 interface IBookWithTimestamps extends IBook {
   image?: string;
