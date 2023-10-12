@@ -11,7 +11,22 @@ import {
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
 import cookieParser from "cookie-parser";
 import path from 'path'
+import http from 'http'
+import { Server } from "socket.io";
+
+
+
+
+
+
+
+
+
 const app = express();
+//socket.io server
+const server=http.createServer(app)
+
+
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
@@ -35,4 +50,4 @@ app.get("/", (req: Request, res: Response): void => {
 app.use(notFound);
 app.use(errorHandler);
 
-app.listen(config.server.port, () => console.log("server connected @3131"));
+server.listen(config.server.port, () => console.log("server connected @3131"));

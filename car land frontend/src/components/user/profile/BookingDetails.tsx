@@ -13,13 +13,16 @@ import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import Guidance from "./Guidance";
 import { toast } from "react-toastify";
 import StaticMapRoute from "./StaticMapRoute";
+import UserChat from "./UserChat";
 
 const BookingDetails: React.FC = () => {
   const [showModal, setShowModal] = React.useState<boolean>(false);
+  const [showChat, setShowChat] = React.useState<boolean>(false);
   const [details, setDetails] = React.useState<IConfirmBookWithImage[] | null>(
     null
   );
-  const [singleBooking, setSingleBooking]=React.useState<IConfirmBookWithImage | null>(null);
+  const [singleBooking, setSingleBooking] =
+    React.useState<IConfirmBookWithImage | null>(null);
   const [loading, setLoading] = React.useState<boolean>(false);
   React.useEffect(() => {
     const fetchData = async () => {
@@ -30,8 +33,7 @@ const BookingDetails: React.FC = () => {
     };
     fetchData();
   }, [loading]);
- 
-  
+
   const handleConfirmation = async (id: string) => {
     const userConfirmed = window.confirm("Do you want to make a request?");
 
@@ -46,7 +48,7 @@ const BookingDetails: React.FC = () => {
     }
   };
   const cancelHandle = async (id: string) => {
-   await cancelBooking(id)
+    await cancelBooking(id);
   };
 
   return (
@@ -178,13 +180,28 @@ const BookingDetails: React.FC = () => {
                   </span>
                 </p>
 
-                <button type="button" className="rounded-md text-white py-1 px-4"><img src="/speech-bubble.gif" alt="" className="h-6 w-6" />
-</button>
-<div className="flex justify-center">
-                <div className="h-44 w-72 bg-gray-200 ">
-
-                <StaticMapRoute latitude={singleBooking.hubLatitude} longitude={singleBooking.hubLongitude}/>
-                </div>
+                <button
+                  type="button"
+                  className="rounded-md text-white py-1 px-4"
+                >
+                  {showChat ? (
+                    <UserChat setShowChat={setShowChat} />
+                  ) : (
+                    <img
+                      src="/speech-bubble.gif"
+                      alt=""
+                      className="h-8 w-8"
+                      onClick={() => setShowChat(true)}
+                    />
+                  )}
+                </button>
+                <div className="flex justify-center">
+                  <div className="h-44 w-72 bg-gray-200 ">
+                    <StaticMapRoute
+                      latitude={singleBooking.hubLatitude}
+                      longitude={singleBooking.hubLongitude}
+                    />
+                  </div>
                 </div>
                 <div>
                   {singleBooking._doc.status == "PickUp" ? (
