@@ -178,7 +178,7 @@ const BookingDetails: React.FC = () => {
                   </span>
                 </p>
 
-                <button type="button" className="rounded-md text-white py-1 px-4"><img src="/chaticon.png" alt="" className="h-6 w-6" />
+                <button type="button" className="rounded-md text-white py-1 px-4"><img src="/speech-bubble.gif" alt="" className="h-6 w-6" />
 </button>
 <div className="flex justify-center">
                 <div className="h-44 w-72 bg-gray-200 ">
