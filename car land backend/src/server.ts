@@ -25,7 +25,11 @@ import { Server } from "socket.io";
 const app = express();
 //socket.io server
 const server=http.createServer(app)
-
+const io=new Server(server,{cors:{
+  origin:"http://localhost:3000",
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  credentials: true,
+}})
 
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
