@@ -271,12 +271,14 @@ export const Content = () => {
                 ? vehicles.map((item) => (
                     <button
                       aria-label="View Item"
+                     
                       onClick={() => {
                         Navigate(`/singlecar?carId=${item._id}`);
                       }}
                       className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
                     >
-                      <div className="flex flex-col h-full">
+                      <div className="flex flex-col h-full"  key={item._id}>
+                        
                         <img
                           src={item.singleImage}
                           className="object-cover w-full h-48"

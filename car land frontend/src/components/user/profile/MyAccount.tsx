@@ -125,7 +125,7 @@ const MyAccount: FC<prop> = ({setloading,loading}) => {
           <label htmlFor="email" className="inline-block mb-1 font-medium">
             Email :
           </label>{" "}
-          risvanrishuguest0000@gmail.com
+          {user.email}
         </div>
         {!user.verifyPhone ? (
           <>

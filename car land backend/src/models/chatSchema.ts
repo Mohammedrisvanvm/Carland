@@ -9,17 +9,17 @@ const chatSchema: Schema = new Schema(
             type: String,
             required: true,
         },
-        sender: {
-            type: Object,
-            required: true,
-        },
-        roomId: {
+        vendorId: {
             type: Schema.Types.ObjectId,
-            required: true,
+            ref: 'vender',
         },
-        time: {
+        userId: {
+            type: Schema.Types.ObjectId,
+            ref: 'user',
+        },
+        date: {
             type: Date,
-            default: new Date(),
+            default: Date.now,
         },
     })
     

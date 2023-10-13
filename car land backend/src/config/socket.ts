@@ -2,8 +2,11 @@ import { NextFunction } from "express";
 import { Server, Socket } from "socket.io";
 
 interface userdataSocket extends Socket {
-  userName: string;
-  userId: string;
+    message: string;
+    userId?:string|null
+    userName?:string|null
+    isUser:boolean
+  
 }
 export const socketConnect = (io: Server) => {
   io.on("connection", (socket: userdataSocket) => {
@@ -21,6 +24,12 @@ export const socketConnect = (io: Server) => {
     socket.userName = userName;
     socket.userId = id;
 
-    console.log("a user connected",socket);
+   
   });
+  io.on('new message',(socket:userdataSocket)=>{
+    let i=socket.broadcast.emit("new message",{socket,
+    userId:socket.userId,userName:socket.userName})
+    console.log(i);
+    
+  })
 };
