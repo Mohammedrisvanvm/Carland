@@ -12,24 +12,29 @@ import {
 import cookieParser from "cookie-parser";
 import path from 'path'
 import http from 'http'
-import { Server } from "socket.io";
 
-
-
-
-
-
-
+import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./interfaces/socketIinterface";
+import { socketConnect } from "./config/socket";
+import { Server  } from "socket.io";
 
 
 const app = express();
 //socket.io server
-const server=http.createServer(app)
-const io=new Server(server,{cors:{
-  origin:"http://localhost:3000",
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  credentials: true,
-}})
+const newserver=http.createServer(app)
+const io = new Server<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+>(newserver,{
+  cors: {
+      origin: "http://localhost:3000",
+      credentials: true,
+  },
+});
+
+
+socketConnect(io)
 
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
@@ -54,4 +59,4 @@ app.get("/", (req: Request, res: Response): void => {
 app.use(notFound);
 app.use(errorHandler);
 
-server.listen(config.server.port, () => console.log("server connected @3131"));
+newserver.listen(config.server.port, () => console.log("server connected @3131"));
