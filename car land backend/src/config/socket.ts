@@ -1,10 +1,26 @@
-import { Socket } from "socket.io";
+import { NextFunction } from "express";
+import { Server, Socket } from "socket.io";
 
-export const socketConnect = (io: {
-  on: (arg0: string, arg1: (socket: Socket) => void) => void;
-}) => {
-    io.on('connection', (socket) => {
-        console.log(socket.handshake.auth);
-        console.log('a user connected');
-      });
+interface userdataSocket extends Socket {
+  userName: string;
+  userId: string;
+}
+export const socketConnect = (io: Server) => {
+  io.on("connection", (socket: userdataSocket) => {
+    type Iauth = {
+      userName?: string;
+      id?: string;
+    };
+    const { userName, id }: Iauth = socket.handshake.auth;
+
+    if (!id) {
+      socket.emit("error", "Invalid userData");
+      return;
+    }
+
+    socket.userName = userName;
+    socket.userId = id;
+
+    console.log("a user connected",socket);
+  });
 };

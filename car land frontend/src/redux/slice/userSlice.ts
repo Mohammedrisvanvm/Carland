@@ -12,6 +12,7 @@ interface InitialUser {
   userName?: string | null;
   email: string | null;
   verifyPhone: boolean | null;
+  _id?:string|null
   gender: string | null;
   accessToken: string | null | undefined;
   isLoading: boolean;
@@ -20,6 +21,7 @@ interface InitialUser {
 const initialState: InitialUser = {
   userName: null,
   email: null,
+  _id:null,
   accessToken: null,
   isLoading: false,
   verifyPhone: null,
@@ -64,6 +66,7 @@ const userSlice = createSlice({
     userLogout: (state) => {
       state.userName = null;
       state.email = null;
+      state._id = null;
       state.accessToken = null;
       state.verifyPhone = null;
       state.accessToken = null;
@@ -78,6 +81,7 @@ const userSlice = createSlice({
       .addCase(userGoogleThunk.pending, (state, action) => {
         state.accessToken = null;
         state.email = null;
+        state._id = null;
         state.accessToken = null;
         state.isLoading = true;
       })
@@ -86,6 +90,7 @@ const userSlice = createSlice({
         (state, action: PayloadAction<user>) => {
           state.userName = action.payload.userName;
           state.email = action.payload.email;
+          state._id=action.payload._id;
           state.isLoading = false;
           state.verifyPhone = action.payload.verified_phonenumber;
           state.accessToken = action.payload.accessToken;
@@ -109,6 +114,7 @@ const userSlice = createSlice({
           if (action.payload) {
             state.userName = action.payload.userName;
             state.email = action.payload.email;
+            state._id=action.payload._id;
             state.isLoading = false;
             state.accessToken = action.payload.accessToken;
           }
@@ -118,6 +124,7 @@ const userSlice = createSlice({
         state.accessToken = null;
         state.email = null;
         state.accessToken = null;
+        state._id=null;
         state.isLoading = false;
       });
   },

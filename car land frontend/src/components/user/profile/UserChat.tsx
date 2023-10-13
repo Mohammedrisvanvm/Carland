@@ -36,7 +36,8 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
 
        React.useEffect(()=>{
 const socket:Socket=io(ENDPOINT)
-
+socket.auth={userName:user.userName,id:user._id}
+socket.connect()
 socket.on("connected", () => setSocketConnected(true));
 
        })
