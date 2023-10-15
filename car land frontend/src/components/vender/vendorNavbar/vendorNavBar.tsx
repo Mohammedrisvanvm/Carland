@@ -14,7 +14,7 @@ const VendorNavBar = ({ nav, setNav }: Iprop) => {
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const vendor=useAppSelector((state)=>state.vendor)
-  console.log(vendor);
+
   const [dropdown, setdropdown] = useState(false);
 
   const dropdownHandler = () => {

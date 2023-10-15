@@ -12,6 +12,7 @@ export interface AxiosResponse<T = any> {
     vehicle?:Vehicles
     vendors?:IVendor[]
     users?:user[]
+    user?:user
     accessToken?: string;
     razorpay?:Irazresponse
     id?:string,

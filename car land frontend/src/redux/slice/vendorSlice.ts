@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 
 
 interface InitialVendor {
+  id:string|null
   userName?: string | null;
   email: string | null;
   accessToken: string | null | undefined;
@@ -16,6 +17,7 @@ interface InitialVendor {
   isLoading: boolean;
 }
 const initialState: InitialVendor = {
+  id:null,
   userName: null,
   email: null,
   accessToken: null,
@@ -52,6 +54,7 @@ const vendorSlice = createSlice({
   initialState,
   reducers: {
     vendorLogout: (state) => {
+      (state.id=null),
       (state.accessToken = null), (state.email = null);
       (state.isLoading = false), (state.userName = null);
     },
@@ -66,17 +69,20 @@ const vendorSlice = createSlice({
     builder
       .addCase(vendorLogin.pending, (state, action) => {
         state.userName = null;
+        state.id=null
         state.email = null;
         state.accessToken = null;
         state.isLoading = true;
       })
       .addCase(vendorLogin.fulfilled, (state, action: PayloadAction<user>) => {
+        state.id=action.payload._id
         state.userName = action.payload.userName;
         state.email = action.payload.email;
         state.accessToken = action.payload.accessToken;
         state.isLoading = false;
       })
       .addCase(vendorLogin.rejected, (state, action) => {
+        state.id=null
         state.userName = null;
         state.email = null;
         state.accessToken = null;
