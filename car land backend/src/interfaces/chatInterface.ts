@@ -1,7 +1,8 @@
 interface IChat extends Document {
-    messageText: String,
-    sender:  Object,    
-    roomId:string
-    time: Date,
+    messageText: string,
+    senderId:  string,    
+    conversationId:string
+    recieverId:string
+    createdAt:Date
 }
 export default IChat;
