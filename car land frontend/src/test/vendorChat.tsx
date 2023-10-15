@@ -3,6 +3,7 @@ import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
 import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../redux/store/storeHook";
+import {format} from 'timeago.js'
 import {
   getChatUser,
   getConversations,
@@ -142,9 +143,10 @@ fetchData()
               {item.messageText}
               </p>
             </div>
-            <div className="mt-2  text-gray-400 max-w-sm text-xs mb-4">
+            {` `}
+            <div className={`mt-3 flex  ${item.senderId=='651266a8c077d53eab4abe13'? "justify-end px-2":"justify-start px-14"}  text-gray-400 text-xs mb-4`}>
               {" "}
-              <p>{item.createdAt}</p>
+              <p >{format(item.createdAt)}</p>
             </div>
             </>))}
             
