@@ -5,6 +5,7 @@ import { config } from "./config/config";
 import userRouters from "./routers/userRouters";
 import vendorRouters from "./routers/VendorRouters";
 import adminRouters from "./routers/adminRouters";
+import chatRouter from "./routers/chatRouters";
 import {
   errorHandler,
   notFound,
@@ -52,6 +53,7 @@ app.use(
 app.use("/users", userRouters);
 app.use("/vendors", vendorRouters);
 app.use("/admin", adminRouters);
+app.use("/chat", chatRouter);
 app.get("/", (req: Request, res: Response): void => {
   res.send("hai");
 });
