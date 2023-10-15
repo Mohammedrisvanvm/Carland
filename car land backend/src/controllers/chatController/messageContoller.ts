@@ -12,7 +12,10 @@ type Ibody={
     senderId:string,
     conversationId:string
 }
-    const {messageText,senderId,recieverId,conversationId}:Ibody=req.body
+
+
+    const {messageText,senderId,recieverId,conversationId}:Ibody=req.body.message
+    
 const newMessage= new chatModel({
     messageText,
     senderId,

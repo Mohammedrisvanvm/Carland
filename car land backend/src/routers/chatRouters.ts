@@ -7,7 +7,7 @@ const chatRouter=Router()
 
 chatRouter.post('/createconversation',createConversation)
 chatRouter.get('/conversations/:userId',getConversation)
-chatRouter.post('/newmessage',addNewMessage)
+chatRouter.post('/addNewMessage',addNewMessage)
 chatRouter.get('/messages/:conversationId',getMessages)
 chatRouter.get('/chatuser/:userId',getChatUser)
 export default chatRouter

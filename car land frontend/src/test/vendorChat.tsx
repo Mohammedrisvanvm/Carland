@@ -3,8 +3,9 @@ import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
 import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../redux/store/storeHook";
-import {format} from 'timeago.js'
+import { format } from "timeago.js";
 import {
+  addNewMessage,
   getChatUser,
   getConversations,
   getMessages,
@@ -23,19 +24,22 @@ const VendorChat: FC = () => {
     updatedAt: Date;
   };
   interface IMessage {
-    _id: string;
-    conversationId: string;
-    messageText: string;
-    recieverId: string;
-    senderId: string;
-    createdAt: string;
-    updatedAt: string;
-
+    conversationId?: string;
+    messageText?: string;
+    recieverId?: string;
+    senderId?: string;
   }
-  
-  const [currentChat, setCurrentChat] = React.useState<IConversation|null>(null);
+  interface DateMessage extends IMessage {
+    createdAt: Date;
+    updatedAt: Date;
+    _id: string;
+  }
+
+  const [currentChat, setCurrentChat] = React.useState<IConversation | null>(
+    null
+  );
   const [newMessage, setNewMessage] = React.useState<string>("");
-  const [messages, setMessages] = React.useState<IMessage[]>([]);
+  const [messages, setMessages] = React.useState<DateMessage[]>([]);
   const [conversation, setConversation] = React.useState<
     IConversation[] | null
   >(null);
@@ -43,9 +47,24 @@ const VendorChat: FC = () => {
   const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
-  const handleSendMessage = () => {
-    console.log(newMessage);
+  }, [messages]);
+  const handleSendMessage = async () => {
+    const message: IMessage = {
+      conversationId: currentChat?._id,
+      messageText: newMessage,
+      recieverId: user?._id,
+      senderId: "651266a8c077d53eab4abe13",
+    };
+    console.log(message);
+
+    try {
+      const res: any = await addNewMessage(message);
+      console.log(res);
+      setMessages([...messages, res.data.savedMessage]);
+      setNewMessage("");
+    } catch (error: any) {
+      console.log(error);
+    }
   };
 
   React.useEffect(() => {
@@ -59,17 +78,15 @@ const VendorChat: FC = () => {
     };
     fetchData();
   }, [vendor.id]);
- React.useEffect(()=>{
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const res: any = await getMessages(currentChat?._id);
 
-const fetchData=async ()=>{
-    const res:any=await getMessages(currentChat?._id)
+      setMessages(res.data);
+    };
+    fetchData();
+  }, [currentChat]);
 
-setMessages(res.data)
-}
-fetchData()
- },[currentChat])
- console.log(messages);
- 
   React.useEffect(() => {
     const client: string =
       (conversation &&
@@ -110,7 +127,10 @@ fetchData()
           {conversation
             ? conversation.map((item) => (
                 <>
-                  <div onClick={()=>setCurrentChat(item)} className="flex items-center p-3 hover:bg-gray-300 mt-3 w-96 rounded-lg">
+                  <div
+                    onClick={() => setCurrentChat(item)}
+                    className="flex items-center p-3 hover:bg-gray-300 mt-3 w-96 rounded-lg"
+                  >
                     <img
                       className="w-12 h-12 rounded-full mr-5"
                       src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
@@ -125,31 +145,41 @@ fetchData()
             : ""}
         </div>
         <div className=" text-black mt-3 w-full col-span-2">
-          <div
-            className="overflow-y-scroll "
-            ref={scroll as React.RefObject<HTMLDivElement>}
-            style={{ height: "535px" }}
-          >
-           {messages.map((item)=>(<>
-            
-            <div className={`flex  ${item.senderId=='651266a8c077d53eab4abe13'? "justify-end":"justify-start"}  `}>
-              {" "}
-              <img
-                className="w-10 h-10 rounded-full mr-5"
-                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                alt="user photo"
-              />
-              <p className="p-2 bg-blue-400 rounded-lg max-w-xs">
-              {item.messageText}
-              </p>
-            </div>
-            {` `}
-            <div className={`mt-3 flex  ${item.senderId=='651266a8c077d53eab4abe13'? "justify-end px-2":"justify-start px-14"}  text-gray-400 text-xs mb-4`}>
-              {" "}
-              <p >{format(item.createdAt)}</p>
-            </div>
-            </>))}
-            
+          <div className="overflow-y-scroll " style={{ height: "535px" }}>
+            {messages
+              ? messages.map((item) => (
+                  <div ref={scroll as React.RefObject<HTMLDivElement>}>
+                    <div
+                      className={`flex  ${
+                        item.senderId == "651266a8c077d53eab4abe13"
+                          ? "justify-end"
+                          : "justify-start"
+                      }  `}
+                    >
+                      {" "}
+                      <img
+                        className="w-10 h-10 rounded-full mr-5"
+                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                        alt="user photo"
+                      />
+                      <p className="p-2 bg-blue-400 rounded-lg max-w-xs">
+                        {item.messageText}
+                      </p>
+                    </div>
+                    {` `}
+                    <div
+                      className={`mt-3 flex  ${
+                        item.senderId == "651266a8c077d53eab4abe13"
+                          ? "justify-end px-2"
+                          : "justify-start px-14"
+                      }  text-gray-400 text-xs mb-4`}
+                    >
+                      {" "}
+                      <p>{format(item.createdAt)}</p>
+                    </div>
+                  </div>
+                ))
+              : ""}
           </div>
           {/* <div className="flex fixed bottom-0 h-20 border-2 border-gray-200 rounded ">
             <span className="bg-white">
@@ -181,6 +211,7 @@ fetchData()
             <textarea
               placeholder="text-something"
               className="w-full p-3"
+              value={newMessage}
               onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
                 setNewMessage(e.target.value)
               }

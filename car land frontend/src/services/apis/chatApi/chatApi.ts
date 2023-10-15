@@ -10,3 +10,15 @@ export const getConversations=async (id:string|null): Promise<AxiosResponse<any>
 export const getMessages=async (id:string|null|undefined): Promise<AxiosResponse<any>> => {
     return axiosBase.get("chat/messages/"+id);
 }
+interface IMessage {
+    
+    conversationId?: string;
+    messageText?: string;
+    recieverId?: string;
+    senderId?: string;
+
+
+  }
+export const addNewMessage=async (message:IMessage): Promise<AxiosResponse<any>> => {
+    return axiosBase.post("chat/addNewMessage/",{message});
+}
