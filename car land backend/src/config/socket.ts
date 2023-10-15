@@ -15,7 +15,12 @@ export const socketConnect = (io: Server) => {
       id?: string;
     };
     const { userName, id }: Iauth = socket.handshake.auth;
+console.log(socket.handshake.auth);
+socket.on("message",(data)=>{
+console.log(data,"123456");
+socket.broadcast.emit("receive",data)
 
+})
     if (!id) {
       socket.emit("error", "Invalid userData");
       return;
@@ -26,10 +31,13 @@ export const socketConnect = (io: Server) => {
 
    
   });
-  io.on('new message',(socket:userdataSocket)=>{
-    let i=socket.broadcast.emit("new message",{socket,
-    userId:socket.userId,userName:socket.userName})
-    console.log(i);
+  // io.on('message',(socket:userdataSocket)=>{
+  io.on('message',(socket:any)=>{
+    console.log(socket,2222);
+    
+    // let i=socket.broadcast.emit("new message",{socket,
+    // userId:socket.userId,userName:socket.userName})
+    // console.log(i);
     
   })
 };
