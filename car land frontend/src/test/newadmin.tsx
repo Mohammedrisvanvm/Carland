@@ -4,6 +4,7 @@ import { AxiosResponse } from "../interfaces/axiosinterface";
 import { getBookings } from "../services/apis/vendorApi/vendorApi";
 import { IConfirmBookWithImage } from "../interfaces/bookingConfirmInterface";
 import { DatePicker, Pagination } from "antd";
+import {  useNavigate } from "react-router";
 const Newadmin = () => {
   const [sidebarWidth, setsidebarWidth] = useState<boolean>(true);
   const [spanVisible, setSpanVisible] = useState<boolean>(false);
@@ -12,6 +13,7 @@ const Newadmin = () => {
   const [bookings, setBookings] = useState<IConfirmBookWithImage[] | null>(
     null
   );
+  const Navigate=useNavigate()
   const id = useAppSelector((state) => state.vendor.hubId);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -95,18 +97,15 @@ const Newadmin = () => {
               className="h-20 w-28"
             />
           </div>
-          <div className="space-x-4">
-            <button>
-              <svg
-                className="w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 22 21"
-              >
-                <path d="M16.975 11H10V4.025a1 1 0 0 0-1.066-.998 8.5 8.5 0 1 0 9.039 9.039.999.999 0 0 0-1-1.066h.002Z" />
-                <path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
-              </svg>
+          <div className="space-x-12">
+            <button >
+              <img
+              onClick={()=>Navigate("/chat")}
+                width="25"
+                className="text-black"
+                src="https://img.icons8.com/color/48/speech-bubble-with-dots.png"
+                alt="speech-bubble-with-dots"
+              />
             </button>
             <button>
               <svg
@@ -353,7 +352,6 @@ const Newadmin = () => {
         <div className="flex relative justify-between  py-5 ">
           {" "}
           <div className="w-10 h-5">
-         
             <select
               id="countries"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

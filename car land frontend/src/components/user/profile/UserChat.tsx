@@ -17,14 +17,15 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
   const scroll = React.useRef<HTMLElement | null>(null);
   const [messages, setNewMessages] = React.useState<Imessages[]>([]);
   const [message, setNewMessage] = React.useState<string>("");
+  const [recieveMessage, setReceiveMessage] = React.useState<string>("");
   const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
   const socket: Socket = io(ENDPOINT);
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+  }, []);
   const handleSendMessage = () => {
     if (message) {
-      socket.emit("new message",message)
+      socket.emit("message",{message})
       const newMessage={
         type:"message",
         userId:user._id,
@@ -39,23 +40,27 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
   };
 
   React.useEffect(()=>{
-    socket.on("new message",({userName,userId,message})=>{
-      const newMessage={
-        type:"message",
-        userId:userId,
-        userName:userName,
-        isUser:true,
-        message
-      }
-      setNewMessages([...messages, newMessage]);
+    // socket.on("new message",({userName,userId,message})=>{
+    //   const newMessage={
+    //     type:"message",
+    //     userId:userId,
+    //     userName:userName,
+    //     isUser:true,
+    //     message
+    //   }
+    //   setNewMessages([...messages, newMessage]);
+    // })
+    socket.on("receive",(data)=>{
+console.log("data",data);setReceiveMessage(data.message)
+
     })
-  })
+  },[socket])
   React.useEffect(() => {
    
     socket.auth = { userName: user.userName, id: user._id };
     socket.connect();
     socket.on("connected", () => setSocketConnected(true));
-  });
+  },[]);
 
  
   return (
@@ -87,7 +92,7 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
                   </div>
                 </div>
                 <div className="h-96 w-auto px-5 pt-5 bg-gray-300 flex justify-between overflow-y-auto ">
-                  <div className="bg-gray-400 h-8 py-1 px-3 rounded">vd df</div>
+                  <div className="bg-gray-400 h-8 py-1 px-3 rounded">{recieveMessage}</div>
 
                   <div>
                     {messages.map((message, index) => (
