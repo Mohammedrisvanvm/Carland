@@ -24,7 +24,7 @@ export const createConversation = AsyncHandler(
 
 export const getConversation=AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-console.log(req.params);
+console.log(req.params,12222222222);
 
 const conversation:any=await conversationModel.find({
     members:{$in:[req.params.userId]}
@@ -35,12 +35,12 @@ res.status(200).json({conversation})
     })
 export const getChatUser=AsyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-console.log(req.params);
+
 
 const user:IUser=await userModel.findOne({
    _id:req.params.userId
 })
-console.log(user);
+
 
 res.status(200).json({user})
     })
