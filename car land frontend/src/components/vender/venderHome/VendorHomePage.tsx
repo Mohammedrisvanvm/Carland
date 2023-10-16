@@ -82,7 +82,7 @@ const VendorHomePage = () => {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   }}
                 >
-                  <span className="self-center flex text-white justify-center my-14 text-black text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                  <span className="self-center flex text-white justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                     {item.hubName}
                   </span>
                 </div>

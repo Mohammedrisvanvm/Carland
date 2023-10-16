@@ -5,7 +5,7 @@ import { addNewMessage, getMessages } from "../controllers/chatController/messag
 
 const chatRouter=Router()
 
-chatRouter.post('/createconversation',createConversation)
+chatRouter.post('/createconversation/:hubId/:bookingId',createConversation)
 chatRouter.get('/conversations/:userId',getConversation)
 chatRouter.post('/addNewMessage',addNewMessage)
 chatRouter.get('/messages/:conversationId',getMessages)

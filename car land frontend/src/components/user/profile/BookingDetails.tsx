@@ -185,7 +185,7 @@ const BookingDetails: React.FC = () => {
                   className="rounded-md text-white py-1 px-4"
                 >
                   {showChat ? (
-                    <UserChat setShowChat={setShowChat} />
+                    <UserChat setShowChat={setShowChat} bookingId={singleBooking._doc._id} hubId={singleBooking._doc.hubId}/>
                   ) : (
                     <img
                       src="/speech-bubble.gif"

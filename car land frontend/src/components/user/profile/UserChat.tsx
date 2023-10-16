@@ -4,6 +4,7 @@ import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import {
   addNewMessage,
+  createConversation,
   getConversations,
   getMessages,
 } from "../../../services/apis/chatApi/chatApi";
@@ -11,8 +12,10 @@ import { format } from "timeago.js";
 const ENDPOINT: string = "http://localhost:3131/";
 type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
+  bookingId:string,
+  hubId:string
 };
-const UserChat: FC<Iprop> = ({ setShowChat }) => {
+const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
   const scroll = React.useRef<HTMLElement | null>(null);
   const user = useAppSelector((state) => state.user);
   type IMessage = {
@@ -67,7 +70,9 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res: any = await getConversations(user._id);
+        const res: any = await createConversation(hubId,bookingId);
+        console.log(res);
+        
         setCurrentChat(res.data.conversation[0]);
       } catch (error: any) {
         console.log(error);

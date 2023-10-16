@@ -13,8 +13,11 @@ import {
 import { user } from "../interfaces/userAuth";
 import { AxiosResponse } from "../interfaces/axiosinterface";
 const ENDPOINT: string = "ws://localhost:3131/";
+
 const VendorChat: FC = () => {
   const vendor = useAppSelector((state) => state.vendor);
+  console.log(vendor);
+  
   const scroll = React.useRef<HTMLElement | null>(null);
   const socket = React.useRef<Socket>();
   type IMessage = {
@@ -95,7 +98,9 @@ const VendorChat: FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res: any = await getConversations("651266a8c077d53eab4abe13");
+        const res: any = await getConversations(vendor.hubId);
+        console.log(res);
+        
         setConversation(res.data.conversation);
       } catch (error: any) {
         console.log(error);
@@ -114,6 +119,7 @@ const VendorChat: FC = () => {
     };
     fetchData();
   }, [currentChat]);
+console.log(conversation);
 
   React.useEffect(() => {
     const client: string =
@@ -139,7 +145,7 @@ const VendorChat: FC = () => {
     socket.current?.connect();
     socket.current?.on("connected", () => setSocketConnected(true));
   }, []);
-console.log(arrivalMessage);
+
 
 
   React.useEffect(() => {

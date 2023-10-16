@@ -27,7 +27,6 @@ const getUser = (userId: string) => {
 };
 export const socketConnect = (io: Server) => {
   io.on("connection", (socket: userdataSocket) => {
-   
     socket.on("addUser", (userId) => {
       console.log(userId, 1221);
       addUser(userId, socket.id);
@@ -35,29 +34,20 @@ export const socketConnect = (io: Server) => {
     });
     socket.on("disconnect", () => {
       console.log("disconnected");
-      
+
       removeUser(socket.id);
       io.emit("getUsers", users);
     });
 
     socket.on("sendMessage", ({ senderId, receiverId, text, socketId }) => {
       console.log(senderId, receiverId, socketId, text, "12345678");
-      const user=getUser(receiverId)
-console.log(users,user,232332);
+      const user = getUser(receiverId);
 
-      
       try {
-        
-     
-        
-      
-      io.to(user.socketId).emit("getmessage",{senderId,text,receiverId});
-
-    } catch (error) {
-      console.log(error);
-      
-    }
+        io.to(user.socketId).emit("getmessage", { senderId, text, receiverId });
+      } catch (error) {
+        console.log(error);
+      }
     });
   });
-  // io.on('message',(socket:userdataSocket)=>{
 };
