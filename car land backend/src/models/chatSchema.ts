@@ -11,7 +11,7 @@ const chatSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    recieverId: {
+    receiverId: {
       type: Schema.Types.ObjectId,
       required: true,
     },

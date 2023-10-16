@@ -13,12 +13,13 @@ type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
 };
 const UserChat: FC<Iprop> = ({ setShowChat }) => {
+  const scroll = React.useRef<HTMLElement | null>(null);
   const user = useAppSelector((state) => state.user);
   type IMessage = {
     conversationId?: string;
     messageText?: string;
     senderId?: string | null;
-    receiveId?: string;
+    receiverId?: string;
   };
   interface DateMessage extends IMessage {
     createdAt: Date;
@@ -31,7 +32,6 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
     createdAt: Date;
     updatedAt: Date;
   };
-  const scroll = React.useRef<HTMLElement | null>(null);
   const [currentChat, setCurrentChat] = React.useState<IConversation>();
   const [messages, setMessages] = React.useState<DateMessage[]>([]);
   const [arrivalMessage, setArrivalMessage] = React.useState<DateMessage>();
@@ -41,26 +41,28 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
   const socket = React.useRef<Socket>();
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, []);
+  }, [messages]);
   React.useEffect(() => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
       const senderId: string = data?.senderId || "";
+      console.log(data);
+
       setArrivalMessage({
         senderId,
         messageText: data.text,
-        receiveId: data.receiverId,
+        receiverId: data.receiverId,
         createdAt: new Date(Date.now()),
       });
     });
   }, []);
-console.log(arrivalMessage);
+  console.log(arrivalMessage);
 
   React.useEffect(() => {
     arrivalMessage &&
       currentChat?.members.includes(arrivalMessage.senderId as string) &&
       setMessages([...messages, arrivalMessage]);
-  }, [arrivalMessage]);
+  }, [arrivalMessage,currentChat]);
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -76,6 +78,7 @@ console.log(arrivalMessage);
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
+      console.log(res);
 
       setMessages(res.data);
     };
@@ -85,29 +88,35 @@ console.log(arrivalMessage);
 
   const handleSendMessage = async () => {
     if (NewMessage) {
-      socket.current?.emit("message", {
-        conversationId: currentChat?._id,
-        messageText: NewMessage,
+      socket.current?.emit("sendMessage", {
+        socketId: socket.current.id,
+        text: NewMessage,
         senderId: user?._id,
-        receiveId: "651266a8c077d53eab4abe13",
+        receiverId: "651266a8c077d53eab4abe13",
       });
       const message: IMessage = {
         conversationId: currentChat?._id,
         messageText: NewMessage,
         senderId: user?._id,
-        receiveId: "651266a8c077d53eab4abe13",
+        receiverId: "651266a8c077d53eab4abe13",
       };
-      const res: any = await addNewMessage(message);
-      console.log(res);
-      setMessages([...messages, res.data.savedMessage]);
-      setNewMessage("");
+      try {
+        const res: any = await addNewMessage(message);
+        console.log(res);
+        setMessages([...messages, res.data.savedMessage]);
+        setNewMessage("");
+      } catch (error: any) {
+        console.log(error);
+      }
     }
   };
   React.useEffect(() => {
     socket.current?.emit("addUser", user._id);
   }, [user]);
   React.useEffect(() => {
-    socket.current?.on("getmessage", (data) => {});
+    socket.current?.on("getmessage", (data) => {
+      console.log(data);
+    });
   }, [socket]);
   React.useEffect(() => {
     socket.current?.connect();

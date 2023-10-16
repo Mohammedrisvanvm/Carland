@@ -46,12 +46,16 @@ export const socketConnect = (io: Server) => {
     socket.on("sendMessage", ({ senderId, receiverId, text, socketId }) => {
       console.log(senderId, receiverId, socketId, text, "12345678");
       const user=getUser(receiverId)
+console.log(users,user,232332);
+
+      
       try {
         
      
         
       
       io.to(user.socketId).emit("getmessage",{senderId,text,receiverId});
+
     } catch (error) {
       console.log(error);
       

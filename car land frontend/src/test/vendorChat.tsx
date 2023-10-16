@@ -16,12 +16,12 @@ const ENDPOINT: string = "ws://localhost:3131/";
 const VendorChat: FC = () => {
   const vendor = useAppSelector((state) => state.vendor);
   const scroll = React.useRef<HTMLElement | null>(null);
-  const socket = React.useRef<Socket>(io(ENDPOINT));
+  const socket = React.useRef<Socket>();
   type IMessage = {
     conversationId?: string;
     messageText?: string;
     senderId?: string | null;
-    receiveId?: string;
+    receiverId?: string;
   };
   interface DateMessage extends IMessage {
     createdAt: Date;
@@ -44,21 +44,40 @@ const VendorChat: FC = () => {
     IConversation[] | null
   >(null);
   const [arrivalMessage, setArrivalMessage] =
-  React.useState<DateMessage | null>(null);
+    React.useState<DateMessage | null>(null);
   const [user, setuser] = React.useState<user>();
   const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+  React.useEffect(() => {
+    socket.current = io(ENDPOINT);
+    socket.current?.on("getmessage", (data) => {
+      const senderId: string = data?.senderId || "";
+      console.log(data);
+
+      setArrivalMessage({
+        senderId,
+        messageText: data.text,
+        receiverId: data.receiverId,
+        createdAt: new Date(Date.now()),
+      });
+    });
+  }, []);
   const handleSendMessage = async () => {
     const message: IMessage = {
       conversationId: currentChat?._id,
       messageText: newMessage,
-      receiveId: user?._id,
+      receiverId: user?._id,
       senderId: "651266a8c077d53eab4abe13",
     };
     console.log(message);
-
+    socket.current?.emit("sendMessage", {
+      senderId: "651266a8c077d53eab4abe13",
+      receiverId: user?._id,
+      socketId: socket.current.id,
+      text: newMessage,
+    });
     try {
       const res: any = await addNewMessage(message);
       console.log(res);
@@ -69,7 +88,7 @@ const VendorChat: FC = () => {
     }
   };
   React.useEffect(() => {
-    socket.current.on("getUsers", (users) => {
+    socket.current?.on("getUsers", (users) => {
       console.log(users);
     });
   }, []);
@@ -84,6 +103,9 @@ const VendorChat: FC = () => {
     };
     fetchData();
   }, [vendor.id]);
+  React.useEffect(() => {
+    socket.current?.emit("addUser", "651266a8c077d53eab4abe13");
+  }, [user]);
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
@@ -114,38 +136,19 @@ const VendorChat: FC = () => {
     fetchData();
   }, [conversation]);
   React.useEffect(() => {
-    socket.current.connect();
-    socket.current.on("connected", () => setSocketConnected(true));
-    socket.current?.on("getmessage", (data) => {
-      setArrivalMessage({
-        senderId: data.senderId,
-        messageText: data.text,
-        receiveId:data.receiverId,
-        createdAt: new Date(Date.now()),
-      });
-    });
-    console.log(socket);
+    socket.current?.connect();
+    socket.current?.on("connected", () => setSocketConnected(true));
   }, []);
   console.log(arrivalMessage);
-  
-  // React.useEffect(() => {
-  //   arrivalMessage&&currentChat?.members.includes(arrivalMessage.senderId)&&
-  //   setMessages([...messages,arrivalMessage])
-  //     },[arrivalMessage])
-    
+
   React.useEffect(() => {
-    socket.current.emit("sendMessage", {
-      senderId: "651266a8c077d53eab4abe13",
-      receiverId: user?._id,
-      socketId: socket.current.id,
-      text: newMessage,
-    });
-  }, [newMessage]);
-  React.useEffect(() => {
-    socket.current.on("sendMessage", (message) => {
-      console.log(message);
-    });
-  }, [messages]);
+    arrivalMessage &&
+      currentChat?.members.includes(arrivalMessage.senderId as string) &&
+      setMessages([...messages, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+
+  console.log(arrivalMessage);
+
   return (
     <React.Fragment>
       <VendorNavBar />
