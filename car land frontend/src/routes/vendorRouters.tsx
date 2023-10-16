@@ -13,6 +13,7 @@ import { useState } from "react";
 import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 import ProtectedRouteVendor from "./protectedRoutes/vendor";
 import VendorBooking from "../components/vender/vendorBookingManagement/Vendorbooking";
+import VendorChat from "../components/vender/vendorChat/VendorChat";
 
 
 const VendorRouters = () => {
@@ -34,6 +35,7 @@ const VendorRouters = () => {
           <Route path="/vendorcars" element={ <CarManagementPage />} />
           <Route path="/vendorbookings" element={ <VendorBooking/>} />
           <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
+          <Route path="/chat" element={<ProtectedRouteVendor > <VendorChat /></ProtectedRouteVendor>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}
         {/* </Route> */}
       </Routes>

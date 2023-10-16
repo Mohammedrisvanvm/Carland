@@ -100,7 +100,7 @@ const Newadmin = () => {
           <div className="space-x-12">
             <button >
               <img
-              onClick={()=>Navigate("/chat")}
+              onClick={()=>Navigate("/vendor/chat")}
                 width="25"
                 className="text-black"
                 src="https://img.icons8.com/color/48/speech-bubble-with-dots.png"
