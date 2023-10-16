@@ -139,7 +139,8 @@ const VendorChat: FC = () => {
     socket.current?.connect();
     socket.current?.on("connected", () => setSocketConnected(true));
   }, []);
-  console.log(arrivalMessage);
+console.log(arrivalMessage);
+
 
   React.useEffect(() => {
     arrivalMessage &&
@@ -147,7 +148,7 @@ const VendorChat: FC = () => {
       setMessages([...messages, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
-  console.log(arrivalMessage);
+
 
   return (
     <React.Fragment>

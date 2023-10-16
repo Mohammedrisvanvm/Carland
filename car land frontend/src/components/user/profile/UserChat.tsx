@@ -45,7 +45,7 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
   React.useEffect(() => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
-      const senderId: string = data?.senderId || "";
+      const senderId: string = data.senderId || "";
       console.log(data);
 
       setArrivalMessage({
@@ -53,7 +53,7 @@ const UserChat: FC<Iprop> = ({ setShowChat }) => {
         messageText: data.text,
         receiverId: data.receiverId,
         createdAt: new Date(Date.now()),
-      });
+      }); 
     });
   }, []);
   console.log(arrivalMessage);
