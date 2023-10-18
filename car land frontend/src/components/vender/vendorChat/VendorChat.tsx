@@ -153,7 +153,7 @@ console.log(conversation);
   }, [arrivalMessage, currentChat]);
 
 
-
+    
   return (
     <React.Fragment>
       <VendorNavBar />

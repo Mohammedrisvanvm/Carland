@@ -100,7 +100,7 @@ const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
     <>
       <a
         onClick={showRazorpay}
-        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+        className="inline-flex mt-10 capitalize items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
       >
        click to pay
       </a>
