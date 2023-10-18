@@ -50,8 +50,12 @@ const bookingSchema: Schema = new Schema(
     },
     paymentStatus: {
       type: String,
-      enum: ["HalfPaid", "FullPaid"],
+      enum: ["Refunded", "FullPaid"],
      required:true
+    },
+    refundedDetails:{
+      type: Object,
+      default:null
     },
     tempStatus:{
       type:String,

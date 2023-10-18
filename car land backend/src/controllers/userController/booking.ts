@@ -10,7 +10,8 @@ import { dateCount } from "../../helpers/dateCount";
 import Razorpay from "razorpay";
 import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
-import { IMap, } from "razorpay/dist/types/api";
+import { RazorpayRefund } from "../../interfaces/razorpayInterface";
+import { generateId } from "../../helpers/createId";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -41,7 +42,7 @@ export const razorpayPayment = AsyncHandler(
     const { pickUpDate, dropOffDate, carId }: values = req.body.data;
 
     const days: number = dateCount(pickUpDate, dropOffDate);
-  
+
     if (!days) {
       throw new Error("date issue");
     }
@@ -78,7 +79,6 @@ export const bookCar = AsyncHandler(
       razorpay_signature,
     }: values = req.body.data;
     const userId: string = req.headers.authorization;
-    
 
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
@@ -96,10 +96,8 @@ export const bookCar = AsyncHandler(
         },
       }
     );
-    
-    
-    
-console.log(vehicle);
+
+    console.log(vehicle);
 
     let paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({
@@ -156,7 +154,6 @@ export const bookingConfirmDetails = AsyncHandler(
     const bookingConfirmDetails: IBookWithTimestamps = await bookModel.findById(
       id
     );
-    
 
     res.json({ message: "got", bookingConfirmDetails });
   }
@@ -166,98 +163,91 @@ export const bookingDetails = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const userId: string = req.headers.authorization;
 
-    const bookingDetails: IBookWithTimestamps[] = await bookModel.find({
-      userId,
-    }).sort({createdAt:-1});
+    const bookingDetails: IBookWithTimestamps[] = await bookModel
+      .find({
+        userId,
+      })
+      .sort({ createdAt: -1 });
     const vehiclesID: string[] = bookingDetails.map((item) => item.vehicleId);
     const hubID: string[] = bookingDetails.map((item) => item.hubId);
-    const vehicles: IVehicle[] = await vehicleModel.find({
-      _id: { $in: vehiclesID },
-    }).sort();
+    const vehicles: IVehicle[] = await vehicleModel
+      .find({
+        _id: { $in: vehiclesID },
+      })
+      .sort();
     // console.log(vehicles);
-    const hubs: Ihub[] = await hubModel.find({
-      _id: { $in: hubID },
-    }).sort();
- 
-    
+    const hubs: Ihub[] = await hubModel
+      .find({
+        _id: { $in: hubID },
+      })
+      .sort();
+
     const vehicleImageMap: { [key: string]: string } = {};
     const hubLongitude: { [key: string]: number } = {};
-    const hubLatitude:{ [key: string]: number } = {};
-    
+    const hubLatitude: { [key: string]: number } = {};
+
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
-// console.log(vehicleImageMap);
-hubs.forEach((hub)=>{
-  hubLatitude[hub._id]=hub.location.lat
-  hubLongitude[hub._id]=hub.location.lng
-})
+    // console.log(vehicleImageMap);
+    hubs.forEach((hub) => {
+      hubLatitude[hub._id] = hub.location.lat;
+      hubLongitude[hub._id] = hub.location.lng;
+    });
     const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetails.map(
       (item) => ({
         ...item,
-        hubLatitude:hubLatitude[item.hubId],
-        hubLongitude:hubLongitude[item.hubId],
-        image: vehicleImageMap[item.vehicleId], 
+        hubLatitude: hubLatitude[item.hubId],
+        hubLongitude: hubLongitude[item.hubId],
+        image: vehicleImageMap[item.vehicleId],
       })
     );
     console.log(bookingDetailsWithImage);
 
     res.json({
       message: "user booking Details",
-      bookingDetails: bookingDetailsWithImage
+      bookingDetails: bookingDetailsWithImage,
     });
   }
 );
-export const  pickupReq= AsyncHandler(
+export const pickupReq = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-   
-    type query={
-      bookingID?:string
-    }
-    const {bookingID}:query=req.query
-    await bookModel.updateOne({_id:bookingID}, { $set: {status:"pickUpreq"} })
-res.json({message:'pickup Requested'})
-
-  })
-  interface RazorpayRefund {
-    id: string;
-    entity: string;
-    amount?: number;
-    currency: string;
-    payment_id: string;
-    notes?: IMap<string | number>;
-    receipt?: string;
-    acquirer_data?: {
-      rrn?: string;
+    type query = {
+      bookingID?: string;
     };
-    created_at: number;
-    batch_id?: string;
-    status: string;
-    speed_processed: string;
-    speed_requested: string;
+    const { bookingID }: query = req.query;
+    await bookModel.updateOne(
+      { _id: bookingID },
+      { $set: { status: "pickUpreq" } }
+    );
+    res.json({ message: "pickup Requested" });
   }
-   
-  
-  
-  export const  cancelBooking= AsyncHandler(
-    async (req: Request, res: Response): Promise<void> => {
-      type query={
-        bookingID?:string
-      }
-      const {bookingID}:query=req.query
-      const booking:IBookWithTimestamps=await bookModel.findById(bookingID)
- console.log(booking.paymentDetails.razorpay_payment_id);
- razorpay.payments.refund(booking.paymentDetails.razorpay_payment_id,{
-  "amount": `${booking.totalPrice}`,
-  "speed": "optimum",
-  "receipt": "Receipt No. 32"
-}).then((res:RazorpayRefund)=>{
-console.log(res);
+);
 
-}).catch((error:any)=>{
-  console.log(error);
-  
-})
-      res.status(200).json({message:`${bookingID}`})
-    })
 
+export const cancelBooking = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    type query = {
+      bookingID?: string;
+    };
+    const { bookingID }: query = req.query;
+    const booking: IBookWithTimestamps = await bookModel.findById(bookingID);
+    console.log(booking.paymentDetails.razorpay_payment_id,booking);
+    razorpay.payments
+      .refund(booking.paymentDetails.razorpay_payment_id, {
+        amount: `${booking.totalPrice}`,
+        speed: "optimum",
+        receipt: `${generateId()}`,
+      })
+      .then((res: RazorpayRefund) => {
+        booking.status="Cancelled"
+        booking.paymentStatus="Refunded"
+        booking.refundedDetails=res
+        booking.save()
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+    res.status(200).json({ message: `${bookingID}` });
+  }
+);

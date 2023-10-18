@@ -78,7 +78,7 @@ const SingleCar: FC = () => {
 
   const [price, setPrice] = React.useState<number>(0);
   React.useEffect(() => {
-    console.log(seletedDate);
+    
     const date1 = new Date(seletedDate[0]);
     const date2 = new Date(seletedDate[1]);
 
@@ -120,7 +120,6 @@ const SingleCar: FC = () => {
   useEffect(()=>{
   const fetchData=async()=>{
       const res:GeocodingResponse=await mapboxAPI.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${Location?.lng},${Location?.lat}.json`) 
-    
       setPlace(res.data.features[0].place_name)
     }
     fetchData()
@@ -153,7 +152,7 @@ const SingleCar: FC = () => {
             onClick={prevSlide}
           >
             <svg
-              className="w-4 h-4 text-white dark:text-gray-800"
+              className="w-4 h-4 sm:text-white text-gray-500 dark:text-gray-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -175,7 +174,7 @@ const SingleCar: FC = () => {
             onClick={nextSlide}
           >
             <svg
-              className="w-4 h-4 text-white dark:text-gray-800"
+              className="w-4 h-4 sm:text-white text-gray-500 dark:text-gray-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -204,7 +203,7 @@ const SingleCar: FC = () => {
             />
           </div>
 {seletedDate ? (<><div className="sm:h-44 h-auto mt-4 w-full p-2">
-            <div className="h-full border-4 sm:grid sm:grid-cols-3 grid-col-1 p-3">
+            <div className="h-full border-4 sm:grid sm:grid-cols-2 grid-col-1 p-3">
               <div className="">
                 <span className="text-lg font-semibold">From</span>
                 <p>{new Date(seletedDate[0]).toDateString()}</p>
@@ -219,9 +218,7 @@ const SingleCar: FC = () => {
               {place}
                 </p>
               </div>
-              <div className="">
-                <span className="text-lg font-semibold">from</span>
-              </div>
+           
             </div>
           </div></>):""}
           

@@ -49,7 +49,9 @@ const BookingDetails: React.FC = () => {
   };
   const cancelHandle = async (id: string) => {
     await cancelBooking(id);
+    setSingleBooking(null);
   };
+  console.log(singleBooking);
 
   return (
     <>
@@ -185,7 +187,11 @@ const BookingDetails: React.FC = () => {
                   className="rounded-md text-white py-1 px-4"
                 >
                   {showChat ? (
-                    <UserChat setShowChat={setShowChat} bookingId={singleBooking._doc._id} hubId={singleBooking._doc.hubId}/>
+                    <UserChat
+                      setShowChat={setShowChat}
+                      bookingId={singleBooking._doc._id}
+                      hubId={singleBooking._doc.hubId}
+                    />
                   ) : (
                     <img
                       src="/speech-bubble.gif"
@@ -228,6 +234,8 @@ const BookingDetails: React.FC = () => {
                     ""
                   )}
                   {singleBooking._doc.status == "Ongoing" ? (
+                    <>
+                   <div className="flex justify-evenly">
                     <button
                       type="button"
                       // onClick={() => handleConfirmation(singleBooking._doc._id)}
@@ -236,18 +244,53 @@ const BookingDetails: React.FC = () => {
                       {" "}
                       extend
                     </button>
+                    <button
+                    type="button"
+                    // onClick={() => handleConfirmation(singleBooking._doc._id)}
+                    className="bg-green-600 text-white px-5 py-2 rounded"
+                  >
+                    {" "}
+                    dropOffReq?
+                  </button>
+                  </div>
+                  </>
                   ) : (
                     ""
                   )}
                 </div>
                 <div className="flex justify-evenly">
-                  <button
-                    type="button"
-                    onClick={() => cancelHandle(singleBooking._doc._id)}
-                    className="bg-red-600 px-6 rounded-lg py-2 text-white"
-                  >
-                    Cancel
-                  </button>
+                  {singleBooking._doc.status === "Cancelled" ? (
+                    <>
+                      {" "}
+                      <button
+                        type="button"
+                        disabled
+                        className="bg-red-600 px-6 rounded-lg py-2 text-white"
+                      >
+                        {singleBooking._doc.paymentStatus === "Refunded"
+                          ? "Refunded"
+                          : "Cancelled"}
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      {singleBooking._doc.status == "Ongoing" ? (
+                        ""
+                      ) : (
+                        <>
+                          <button
+                            type="button"
+                            onClick={() => cancelHandle(singleBooking._doc._id)}
+                            className="bg-red-600 px-6 rounded-lg py-2 text-white"
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      )}
+                    </>
+                  )}
+
                   <button
                     type="button"
                     disabled

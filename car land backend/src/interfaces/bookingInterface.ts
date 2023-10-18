@@ -1,3 +1,5 @@
+import { RazorpayRefund } from "./razorpayInterface";
+
 interface IBook extends Document {
   _id: string;
   hubId: string;
@@ -15,6 +17,7 @@ interface IBook extends Document {
     razorpay_order_id: string;
     razorpay_signature: string;
   }
+  refundedDetails:RazorpayRefund
   paymentStatus:string
   status: string;
   tempStatus:string
