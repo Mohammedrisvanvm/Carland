@@ -13,14 +13,17 @@ import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
 import Payment from "../payment/Payment";
 import StaticMapRoute from "../profile/StaticMapRoute";
+import mapboxAPI from "../../../services/mapbox/mapbox";
+import { GeocodingResponse } from "../../../interfaces/geocodingInterface";
 
 let images: string[] = [];
 
 const SingleCar: FC = () => {
   const [vehicle, setVehicle] = React.useState<Vehicles | null>(null);
-  const [activeSlide, setActiveSlide] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const [map, setMap] = React.useState(false);
+  const [activeSlide, setActiveSlide] = React.useState<number>(0);
+  const [open, setOpen] = React.useState<boolean>(false);
+  const [map, setMap] = React.useState<boolean>(false);
+  const [place, setPlace] = React.useState<string>('');
   const [seletedDate, setSeletedDate] = React.useState<string[] | string>("");
   const Navigate = useNavigate();
   const location = useLocation();
@@ -114,6 +117,14 @@ const SingleCar: FC = () => {
       setPaybutton(!paybutton);
     }
   };
+  useEffect(()=>{
+  const fetchData=async()=>{
+      const res:GeocodingResponse=await mapboxAPI.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${Location?.lng},${Location?.lat}.json`) 
+    
+      setPlace(res.data.features[0].place_name)
+    }
+    fetchData()
+  },[Location])
   return (
     <>
       <MainHeader />
@@ -192,30 +203,28 @@ const SingleCar: FC = () => {
               // disabledDate={disabledDate}
             />
           </div>
-
-          <div className="sm:h-44 h-auto mt-4 w-full p-2">
+{seletedDate ? (<><div className="sm:h-44 h-auto mt-4 w-full p-2">
             <div className="h-full border-4 sm:grid sm:grid-cols-3 grid-col-1 p-3">
               <div className="">
                 <span className="text-lg font-semibold">From</span>
-                <p>Thu, 19 Oct, 08:00 AM</p>
+                <p>{new Date(seletedDate[0]).toDateString()}</p>
                 <p>
-                  Housing Society, A603, Bhumkar Nagar, Wakad, Pimpri-Chinchwad
-                  411057, India
+                {place}
                 </p>
               </div>
               <div className="">
                 <span className="text-lg font-semibold">To</span>
-                <p>Thu, 19 Oct, 08:00 AM</p>
+                <p>{new Date(seletedDate[1]).toDateString()}</p>
                 <p>
-                  Housing Society, A603, Bhumkar Nagar, Wakad, Pimpri-Chinchwad
-                  411057, India
+              {place}
                 </p>
               </div>
               <div className="">
                 <span className="text-lg font-semibold">from</span>
               </div>
             </div>
-          </div>
+          </div></>):""}
+          
           <div className="sm:h-44 h-auto mt-4 w-full text-base font-medium p-2 border-2 border-gray-500 bg-gray-200">
             <div className=" flex justify-between mb-2">
               <p className="text-lg font-bold">
