@@ -6,7 +6,7 @@ import {
   verifyRazorpayPayment,
 } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { log } from "util";
+
 import { useNavigate } from "react-router";
 
 const loadRazorpay = (src: string) => {

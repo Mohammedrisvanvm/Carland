@@ -116,7 +116,7 @@ export const userVehicles = AsyncHandler(
     //     }
     //   }
     // });
-    
+
     // console.log(pickeddates);
 
     res.json({ vehicles, count });
@@ -126,7 +126,9 @@ export const singleCar = AsyncHandler(
   async (req: Request, res: Response): Promise<any> => {
     const id: string = typeof req.query.id === "string" ? req.query.id : "";
     const vehicle: IVehicle = await vehicleModel.findById(id);
+    const hub: Ihub = await hubModel.findOne({ vehicles: { $in: [id] } });
+  
 
-    res.json({ vehicle });
+    res.json({ vehicle, location: hub.location });
   }
 );

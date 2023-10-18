@@ -1,36 +1,26 @@
-import React, { FC, ChangeEvent, useEffect } from "react";
+import React, { FC,ChangeEvent } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { DatePicker } from "antd";
 const { RangePicker } = DatePicker;
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-
-import { toast } from "react-toastify";
-import { Vehicles } from "../../../interfaces/vehicleInterface";
+import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
+import { useAppSelector } from "../redux/store/storeHook";
 import { useLocation, useNavigate } from "react-router";
-import { useAppSelector } from "../../../redux/store/storeHook";
-import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { userSingleGetVehicle } from "../../../services/apis/userApi/userApi";
-import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
-import Payment from "../payment/Payment";
-import StaticMapRoute from "../profile/StaticMapRoute";
-
-let images: string[] = [];
+import { AxiosResponse } from "../interfaces/axiosinterface";
+import { userSingleGetVehicle } from "../services/apis/userApi/userApi";
+import { Vehicles } from "../interfaces/vehicleInterface";
+import Payment from "../components/user/payment/Payment";
+import { toast } from "react-toastify";
+const images: string[] = [];
 
 const SingleCar: FC = () => {
   const [vehicle, setVehicle] = React.useState<Vehicles | null>(null);
   const [activeSlide, setActiveSlide] = React.useState(0);
   const [open, setOpen] = React.useState(false);
-  const [map, setMap] = React.useState(false);
   const [seletedDate, setSeletedDate] = React.useState<string[] | string>("");
-  const Navigate = useNavigate();
+const Navigate=useNavigate()
   const location = useLocation();
   const [paybutton, setPaybutton] = React.useState<boolean>(false);
-
-  type ILocation = {
-    lng: number;
-    lat: number;
-  };
-  const [Location, setLocation] = React.useState<ILocation | null>(null);
   const queryParams = new URLSearchParams(location.search);
   const carId: string | null = queryParams.get("carId");
   const user = useAppSelector((state) => state.user);
@@ -52,54 +42,48 @@ const SingleCar: FC = () => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
 
-        if (response.data?.vehicle && response.data?.location) {
+        if (response.data?.vehicle) {
           setVehicle(response.data?.vehicle);
           images.push(response.data.vehicle?.singleImage);
           response.data.vehicle?.SubImages.forEach((image) => {
             images.push(image);
           });
-
-          setLocation(response.data?.location);
-          setMap(true);
         }
       } catch (error: any) {
         console.log(error);
       }
     };
     fetchData();
-    return () => {
-      images = [];
-    };
   }, []);
 
+  const [price,setPrice]=React.useState<number>(0)
+React.useEffect(()=>{
+console.log(seletedDate);
+const date1 = new Date(seletedDate[0]);
+const date2 = new Date(seletedDate[1]);
 
-  const [price, setPrice] = React.useState<number>(0);
-  React.useEffect(() => {
-    console.log(seletedDate);
-    const date1 = new Date(seletedDate[0]);
-    const date2 = new Date(seletedDate[1]);
+// Calculate the time difference in milliseconds
+const timeDifference = date2.getTime() - date1.getTime();
 
-    // Calculate the time difference in milliseconds
-    const timeDifference = date2.getTime() - date1.getTime();
+// Calculate the number of days
+const daysDifference = timeDifference / (1000 * 3600 * 24);
+if(vehicle){
+    setPrice(daysDifference*vehicle?.fairPrice)
+}
+console.log(`Number of days between the two dates: ${daysDifference}`);
 
-    // Calculate the number of days
-    const daysDifference = timeDifference / (1000 * 3600 * 24);
-    if (vehicle) {
-      setPrice(daysDifference * vehicle?.fairPrice);
-    }
-    console.log(`Number of days between the two dates: ${daysDifference}`);
-  }, [seletedDate]);
-  type values = {
+},[seletedDate])
+type values = {
     pickUpDate: string;
     dropOffDate: string;
     carId: string | null;
   };
-  const [value, setValues] = React.useState<values>({
+const [value, setValues] = React.useState<values>({
     dropOffDate: "",
     pickUpDate: "",
     carId: "",
   });
-  const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
+const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
 
     if (!carId || seletedDate.length == 0) {
@@ -182,7 +166,7 @@ const SingleCar: FC = () => {
           </button>
           <div className=" pt-4 flex flex-col sm:flex-row  justify-center items-center font-semibold sm:text-lg">
             <p className="sm:mr-2"> Pick your date {"->"}</p>
-
+           
             <RangePicker
               size="middle"
               className="h-12"
@@ -239,22 +223,6 @@ const SingleCar: FC = () => {
               ))}
             </div>
           </div>
-
-          <div className="my-4">
-            {" "}
-            <p className="my-2 text-lg font-bold">Car Location</p>
-            {map ? (
-              <>
-                {" "}
-                <StaticMapRoute
-                  latitude={Location ? Location.lat : 0}
-                  longitude={Location ? Location.lng : 0}
-                />
-              </>
-            ) : (
-              ""
-            )}
-          </div>
         </div>
 
         <div className="bg-gray-300 h-96 flex justify-center rounded-lg items-center ">
@@ -262,9 +230,7 @@ const SingleCar: FC = () => {
             <p className=" text-lg font-bold">Please review final amount</p>
 
             <div className="pt-10 w-56 flex justify-between items-center">
-              <span className="text-lg font-extrabold text-black">
-                ₹ {price ? price : 0}
-              </span>
+              <span className="text-lg font-extrabold text-black">₹ {price ? price :0}</span>
               <div
                 className="font-medium  flex capitalize"
                 onClick={() => setOpen(true)}
@@ -366,60 +332,64 @@ const SingleCar: FC = () => {
               </div>
             </div>
             <div>
-              {user.accessToken ? (
-                <>
-                  {" "}
-                  {vehicle?.status ? (
-                    <>
-                      {" "}
-                      {paybutton ? (
-                        <>
-                          {" "}
-                          {/* <button
+                
+            {user.accessToken ? (
+                  <>
+                    {" "}
+                    {vehicle?.status ? (
+                      <>
+                        {" "}
+                        {paybutton ? (
+                          <>
+                            {" "}
+                            {/* <button
                               onClick={() => Navigate("/payment")}
                               className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
                             >
                               pay
                             </button> */}
-                          <Payment value={value} />
-                        </>
-                      ) : (
-                        <>
-                          {" "}
-                          <form onSubmit={submitForm}>
+                            <Payment value={value} />
+                          </>
+                        ) : (
+                          <>
+                            {" "}
+                            <form  onSubmit={submitForm}>
                             <button
                               type="submit"
+                             
                               className="inline-flex  mt-10 items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
                             >
                               Book Now
                             </button>
-                          </form>
-                        </>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      {" "}
-                      <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                        not available at this moment
-                      </div>
-                    </>
-                  )}
-                </>
-              ) : (
-                <>
-                  {" "}
+                            </form>
+                          </>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        {" "}
+                        <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
+                          not available at this moment
+                        </div>
+                      </>
+                    )}
+                  </>
+                ) : (
                   <>
                     {" "}
-                    <div
-                      onClick={() => Navigate("/UserAuth")}
-                      className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                    >
-                      login
-                    </div>
+                    <>
+                      {" "}
+                      <div
+                        onClick={() => Navigate("/UserAuth")}
+                        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
+                      >
+                        login
+                      </div>
+                    </>
                   </>
-                </>
-              )}{" "}
+                )}
+              {" "}
+           
             </div>
           </div>
         </div>
