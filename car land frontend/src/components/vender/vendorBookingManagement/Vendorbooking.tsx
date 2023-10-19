@@ -1,23 +1,26 @@
-import React, { FC } from "react";
+import React, { ChangeEvent, FC } from "react";
 
 import { Pagination } from "antd";
 import { IConfirmBookWithImage } from "../../../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { getBookings, pickUpreqAction } from "../../../services/apis/vendorApi/vendorApi";
+import {
+  getBookings,
+  pickUpreqAction,
+} from "../../../services/apis/vendorApi/vendorApi";
 import Loader from "../../../utils/Loader";
-
 
 type Iprop = {
   sidebarWidth: boolean;
 };
 const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
-// const Data: FC<Iprop> = ({ sidebarWidth }) => {
+  // const Data: FC<Iprop> = ({ sidebarWidth }) => {
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [totalpage, setTotalpage] = React.useState<number>(1);
   const [bookings, setBookings] = React.useState<
     IConfirmBookWithImage[] | null
   >(null);
+  const [search, setSearch] = React.useState<string>("");
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [loader, setLoader] = React.useState<boolean>(false);
   const [showModalData, setshowModalData] = React.useState<string | null>(null);
@@ -26,16 +29,23 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         // const response: any = [];
-        const response: AxiosResponse = await getBookings(id);
+        const response: AxiosResponse = await getBookings(
+          id,
+          search,
+          currentPage
+        );
         console.log(response);
         if (response.data?.bookingDetails)
           setBookings(response.data.bookingDetails);
+        if (response.data?.count) {
+          setTotalpage(Math.ceil(response.data.count / 5));
+        }
       } catch (error: any) {
         console.log(error);
       }
     };
     fetchData();
-  }, []);
+  }, [search, currentPage]);
   const acceptAction = async () => {
     try {
       setLoader(true);
@@ -92,7 +102,9 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
               id="table-search"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search"
-              // onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)}
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
             />
           </div>
         </div>
@@ -112,7 +124,6 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
                   <th scope="col" className="px-6 py-3">
                     Vehicle Name
                   </th>
-          
 
                   <th scope="col" className="px-6 py-3">
                     bookingStartDate

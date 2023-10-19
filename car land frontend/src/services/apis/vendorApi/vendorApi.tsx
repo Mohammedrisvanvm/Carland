@@ -41,8 +41,8 @@ export const VendorOtpVerify = async (
 export const vendorSignOut = async (): Promise<AxiosResponse<any>> => {
   return axiosBase.get("/vendors/auth/vendorlogout");
 };
-export const getBookings = async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
-  return axiosBase.get(`/vendors/bookings/getBookings?hubID=${id}`);
+export const getBookings = async (id: string | null | undefined,search:string,currentPage:number): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/bookings/getBookings?hubID=${id}&search=${search}&currentPage=${currentPage}`);
 };
 export const  pickUpreqAction= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/bookings/pickupreqaction?bookingID=${id}`);
