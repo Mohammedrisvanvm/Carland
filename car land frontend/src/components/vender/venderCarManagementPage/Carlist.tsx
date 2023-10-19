@@ -1,191 +1,60 @@
-import { ChangeEvent, useEffect, useState,useRef } from "react";
-import { useNavigate } from "react-router";
-import { Vehicles } from "../../../interfaces/vehicleInterface";
-import {
-  getVehicle,
-  vendorSignOut,
-} from "../../../services/apis/vendorApi/vendorApi";
-import { useAppSelector } from "../../../redux/store/storeHook";
-import axios, { AxiosError } from "axios";
-import { vendorLogout } from "../../../redux/slice/vendorSlice";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
-import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import React, { ChangeEvent, FC } from "react";
 
-const CarList = () => {
-  const [vehicles, setVehicles] = useState<Vehicles[]|undefined>([]);
+
+import { Pagination } from "antd";
+
+import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { Vehicles } from "../../../interfaces/vehicleInterface";
+import { useAppSelector } from "../../../redux/store/storeHook";
+import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { getVehicle } from "../../../services/apis/vendorApi/vendorApi";
+
+type Iprop = {
+  sidebarWidth: boolean;
+};
+const  CarList: FC<Iprop> = ({ sidebarWidth }) => {
+  const [vehicles, setVehicles] = React.useState<Vehicles[] | undefined>([]);
   const Navigate = useNavigate();
   const dispatch = useDispatch();
   const id = useAppSelector((state) => state.vendor.hubId);
-  const [search ,setSearch]=useState<string>('')
-  const hasInitialRenderRun = useRef<boolean>(false);
-  useEffect(() => {
-    // if (!hasInitialRenderRun.current) {
-     
-    //   hasInitialRenderRun.current = true;
-    // } else {
+  const [search, setSearch] = React.useState<string>("");
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [totalpage, setTotalpage] = React.useState<number>(1);
+
+  React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        
-        const response:AxiosResponse = await getVehicle(id,search);
-      
-
+        const response: AxiosResponse = await getVehicle(id, search);
         setVehicles(response.data?.vehicles);
-      } catch (error) {
-        type Message = {
-          message?: string | unknown;
-        };
-
-        if (axios.isAxiosError(error)) {
-          const err = error as AxiosError;
-          const { message }: any = err.response?.data;
-
-          if (message == "user banned") {
-            toast.error(message);
-            await vendorSignOut();
-            dispatch(vendorLogout());
-          }
-          console.error("Error fetching vehicles:", error);
-        }
+      } catch (error: any) {
+        console.log(error);
       }
     };
-
     fetchData();
-  // }
-  return console.log('unmouded');
-  
   }, [search]);
-
-
   return (
     <>
-      <div className="absolute overflow-hidden shadow-md sm:rounded-lg mt-14 m-8">
-        <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
-          Car Details
-        </span>
-        <div className="flex items-center justify-between pb-4">
-          <div>
-            <button
-              id="dropdownRadioButton"
-              data-dropdown-toggle="dropdownRadio"
-              className="inline-flex items-center text-gray-500 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-3 py-1.5 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
-              type="button"
+      <div
+        className={` ${
+          sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
+        } bg-gray-100 px-6 fixed w-6/6 transition-all duration-200 ease-in-out h-96`}
+        style={{ height: "560px" }}
+      >
+        <div className="flex relative justify-between  py-5 ">
+          {" "}
+          <div className="w-10 h-5">
+            <select
+              id="countries"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
-              <svg
-                className="w-3 h-3 text-gray-500 dark:text-gray-400 mr-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm3.982 13.982a1 1 0 0 1-1.414 0l-3.274-3.274A1.012 1.012 0 0 1 9 10V6a1 1 0 0 1 2 0v3.586l2.982 2.982a1 1 0 0 1 0 1.414Z" />
-              </svg>
-              Last 30 days
-              <svg
-                className="w-2.5 h-2.5 ml-2.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 10 6"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="m1 1 4 4 4-4"
-                />
-              </svg>
-            </button>
-
-            <div
-              id="dropdownRadio"
-              className="z-10 hidden w-48 bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600"
-              data-popper-reference-hidden=""
-              data-popper-escaped=""
-              data-popper-placement="top"
-            >
-              <ul
-                className="p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200"
-                aria-labelledby="dropdownRadioButton"
-              >
-                <li>
-                  <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input
-                      id="filter-radio-example-1"
-                      type="radio"
-                      value=""
-                      name="filter-radio"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                      Last day
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input
-                      checked
-                      id="filter-radio-example-2"
-                      type="radio"
-                      value=""
-                      name="filter-radio"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                      Last 7 days
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input
-                      id="filter-radio-example-3"
-                      type="radio"
-                      value=""
-                      name="filter-radio"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                      Last 30 days
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input
-                      id="filter-radio-example-4"
-                      type="radio"
-                      value=""
-                      name="filter-radio"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                      Last month
-                    </label>
-                  </div>
-                </li>
-                <li>
-                  <div className="flex items-center p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600">
-                    <input
-                      id="filter-radio-example-5"
-                      type="radio"
-                      value=""
-                      name="filter-radio"
-                      className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                    />
-                    <label className="w-full ml-2 text-sm font-medium text-gray-900 rounded dark:text-gray-300">
-                      Last year
-                    </label>
-                  </div>
-                </li>
-              </ul>
-            </div>
+              <option selected>filter</option>
+              <option value="US">United States</option>
+              <option value="CA">Canada</option>
+              <option value="FR">France</option>
+              <option value="DE">Germany</option>
+            </select>
           </div>
-
-          <label className="sr-only">Search</label>
-
           <div className="relative">
             <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
@@ -206,8 +75,10 @@ const CarList = () => {
               type="text"
               id="table-search"
               className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search for items"
-              onChange={(e:ChangeEvent<HTMLInputElement>)=>setSearch(e.target.value)}
+              placeholder="Search"
+              onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
             />
           </div>
         </div>
@@ -216,7 +87,7 @@ const CarList = () => {
             onClick={() => {
               Navigate("/vendor/vendorcar/addcar");
             }}
-            className="flex items-center justify-center text-blue-600 dark:text-blue-500 mb-6 h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow-xl  shadow-black/20 dark:shadow-black/40"
+            className="flex items-center justify-center text-white bg-blue-500 mb-6 h-10 w-28 rounded   shadow-xl  shadow-blue-600/20 dark:shadow-blue-600/40"
           >
             <svg
               className="w-3.5 h-3.5"
@@ -236,10 +107,10 @@ const CarList = () => {
             <span className="mx-2"> add Car</span>
           </button>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 index
               </th>
               <th scope="col" className="px-6 py-3">
@@ -252,9 +123,9 @@ const CarList = () => {
               <th scope="col" className="px-6 py-3">
                 Number
               </th>
-            
+
               <th scope="col" className="px-6 py-3">
-             year
+                year
               </th>
 
               <th scope="col" className="px-6 py-3">
@@ -277,31 +148,31 @@ const CarList = () => {
               </th>
             </tr>
           </thead>
-          <tbody>
-            {vehicles
+          <tbody className=" ">
+          {vehicles
               ? vehicles.map((item, index) => (
                   <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                     <td className="w-4 p-4">{index + 1}</td>
-                    <td className="px-6 py-4">
-                      <img src={item.singleImage} className="w-16 h-12 object-cover" />
+                    <td className="px-4 py-4">
+                      <img src={item.singleImage} className="w-14 h-12 object-cover" />
                     </td>
                     <td
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-4 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {item.vehicleName}
                     </td>
-                    <td className="px-6 py-4"> {item.vehicleNumber}</td>
+                    <td className="px-4 py-4"> {item.vehicleNumber}</td>
 
-                    <td className="px-6 py-4"> {item.year}</td>
-                    <td className="px-6 py-4"> {item.fuel}</td>
-                    <td className="px-6 py-4"> {item.numofseats}</td>
+                    <td className="px-4 py-4"> {item.year}</td>
+                    <td className="px-4 py-4"> {item.fuel}</td>
+                    <td className="px-4 py-4"> {item.numofseats}</td>
 
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       {" "}
                       {new Date(item.vehicleValidityDate).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -312,7 +183,7 @@ const CarList = () => {
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                       <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -324,7 +195,7 @@ const CarList = () => {
                       </button>
                     </td>
 
-                    <td className="px-6 py-4">
+                    <td className="px-4 py-4">
                     <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
@@ -340,80 +211,14 @@ const CarList = () => {
               : "not one"}
           </tbody>
         </table>
-        <nav
-          className="flex items-center justify-between pt-4 mx-4 mb-4"
-          aria-label="Table navigation"
-        >
-          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-            Showing{" "}
-            <span className="font-semibold text-gray-900 dark:text-white">
-              {vehicles?.length}
-            </span>{" "}
-            of{" "}
-            <span className="font-semibold text-gray-900 dark:text-white">
-              10
-            </span>
-          </span>
-          <ul className="inline-flex -space-x-px text-sm h-8">
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                Previous
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 text-blue-600 border border-gray-300 bg-blue-50 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white"
-              >
-                1
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                2
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                aria-current="page"
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                3
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                4
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                5
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-              >
-                Next
-              </a>
-            </li>
-          </ul>
-        </nav>
+        <div className="text-center mt-10">
+          <Pagination
+            className="text-black"
+            onChange={(page: number, pageSize: number) => setCurrentPage(page)}
+            current={currentPage}
+            total={totalpage * 10}
+          />
+        </div>
       </div>
     </>
   );

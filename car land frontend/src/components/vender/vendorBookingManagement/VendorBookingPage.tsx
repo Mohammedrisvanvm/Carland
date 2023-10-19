@@ -1,24 +1,23 @@
-import React, { useState } from "react";
-import VendorNavBar from "../vendorNavbar/vendorNavBar";
+import React from "react";
 import VendorAside from "../venderASide/vendorAside";
-import CarList from "./Carlist";
-import NewNav from "../../../test/NewNav";
+import VendorNavBar from "../vendorNavbar/vendorNavBar";
+import VendorBooking from "./Vendorbooking";
 
-const CarManagementPage = () => {
+const VendorBookingPage = () => {
   const [sidebarWidth, setsidebarWidth] = React.useState<boolean>(true);
   const [spanVisible, setSpanVisible] = React.useState<boolean>(false);
   return (
     <>
-      <NewNav
+      <VendorNavBar
         setSpanVisible={setSpanVisible}
         sidebarWidth={sidebarWidth}
         spanVisible={spanVisible}
         setsidebarWidth={setsidebarWidth}
       />
       <VendorAside spanVisible={spanVisible} />
-      <CarList sidebarWidth={sidebarWidth} />
+      <VendorBooking sidebarWidth={sidebarWidth} />
     </>
   );
 };
 
-export default CarManagementPage;
+export default VendorBookingPage;

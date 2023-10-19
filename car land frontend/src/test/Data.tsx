@@ -1,22 +1,22 @@
 import React, { ChangeEvent, FC } from "react";
-
+import { useAppSelector } from "../redux/store/storeHook";
+import { AxiosResponse } from "../interfaces/axiosinterface";
 import { Pagination } from "antd";
 import { useNavigate } from "react-router";
-import { Vehicles } from "../../../interfaces/vehicleInterface";
-import { useAppSelector } from "../../../redux/store/storeHook";
-import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { VerifyCar, banCar, getAllCars } from "../../../services/apis/adminApi/adminApi";
-
+import {
+  Verifyhub,
+  banHub,
+  getAllHubs,
+} from "../services/apis/adminApi/adminApi";
+import { hub } from "../interfaces/userAuth";
 
 type Iprop = {
   sidebarWidth: boolean;
 };
-const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
-  const [cars, setCars] = React.useState<Vehicles[]>([]);
+const Data: FC<Iprop> = ({ sidebarWidth }) => {
+  const [hubs, setHubs] = React.useState<hub[] | undefined>([]);
   const [loading, setLoading] = React.useState<boolean>(false);
-  const [modalData, setModalData] = React.useState<Vehicles | undefined>(
-    Object
-  );
+  const [modalData, setModalData] = React.useState<hub | undefined>(Object);
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const Navigate = useNavigate();
   const id = useAppSelector((state) => state.vendor.hubId);
@@ -27,10 +27,10 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getAllCars(search, currentPage);
+        const response: AxiosResponse = await getAllHubs(search, currentPage);
         console.log(response);
 
-        if (response.data?.vehicles) setCars(response.data?.vehicles);
+        if (response.data?.hubs) setHubs(response.data?.hubs);
         if (response.data?.count) {
           setTotalpage(Math.ceil(response.data.count / 5));
         }
@@ -40,14 +40,13 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
     };
     fetchData();
   }, [search, currentPage]);
-  const banHandle = async (value: string | undefined) => {
-    await banCar(value);
+  const handleVerify = async (value: string | undefined) => {
+    await Verifyhub(value);
+    setShowModal(false);
     setLoading(!loading);
   };
-
-  const handleVerify = async (value: string | undefined) => {
-    await VerifyCar(value);
-    setShowModal(false);
+  const banHandle = async (value: string) => {
+    await banHub(value);
     setLoading(!loading);
   };
   return (
@@ -103,47 +102,41 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
         <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-            <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-6 py-3">
                 index
               </th>
 
               <th scope="col" className="px-6 py-3">
-                image
+                hub Image
               </th>
               <th scope="col" className="px-6 py-3">
                 Name
               </th>
 
               <th scope="col" className="px-6 py-3">
-                vehicle Number
+                Location
               </th>
-
               <th scope="col" className="px-6 py-3">
-                colour
+                pincode
+              </th>
+              <th scope="col" className="px-6 py-3">
+                Validity Date
+              </th>
+              <th scope="col" className="px-6 py-3">
+                verified
               </th>
               <th scope="col" className="px-6 py-3">
                 ban
               </th>
-              <th scope="col" className="px-6 py-3">
-                isVerified
-              </th>
-              <th scope="col" className="px-6 py-3">
-                fuel
-              </th>
 
               <th scope="col" className="px-6 py-3">
-                Vehicle Validity Date
+                Status
               </th>
-           
-              <th scope="col" className="px-6 py-3">
-                edit
-              </th>
-        
             </tr>
           </thead>
           <tbody className=" ">
-          {cars
-              ? cars.map((item, index) => (
+            {hubs
+              ? hubs.map((item, index) => (
                   <tr
                     key={index}
                     className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
@@ -152,60 +145,48 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
 
                     <td className="px-6 py-4">
                       {" "}
-                      <img
-                        src={item.singleImage}
-                        className="w-16 h-12 object-cover"
-                      />
+                      <img className="w-16 h-12" src={item.hubImage} />
                     </td>
-                    <td className="px-6 py-4"> {item.vehicleName}</td>
-                    <td
-                      scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {item.vehicleNumber}
-                    </td>
-                    <td className="px-6 py-4"> {item.colour}</td>
+                    <td className="px-6 py-4"> {item.hubName}</td>
+
+                    <td className="px-6 py-4"> {item.placeName}</td>
+
+                    <td className="px-6 py-4"> {item.pincode}</td>
                     <td className="px-6 py-4">
-                      {" "}
-                      <button
-                        onClick={() => banHandle(item._id)}
-                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
-                      >
+                      {new Date(item.validityDate).toLocaleDateString()}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
                         <span
                           className={`${
-                            item.ban ? "text-red-600" : "text-blue-600 "
-                          }`}
-                        >
-                          {item.ban ? "banned" : "not banned"}
-                        </span>
-                      </button>
-                    </td>
-                    <td className="px-6 py-4">
-                      {" "}
-                      <button
-                        onClick={() => banHandle(item._id)}
-                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
-                      >
-                        <span
-                          className={`${
-                            item.isVerified ? "text-green-600" : "text-red-600 "
+                            item.isVerified ? "text-green-600" : "text-red-600"
                           }`}
                         >
                           {item.isVerified ? "verified" : "not verified"}
                         </span>
                       </button>
                     </td>
-                    <td className="px-6 py-4"> {item.fuel}</td>
                     <td className="px-6 py-4">
-                      {" "}
-                      {new Date(item.vehicleValidityDate).toDateString()}
+                      <button
+                        onClick={() => banHandle(item._id)}
+                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
+                      >
+                        <span
+                          className={`${
+                            item.ban ? "text-red-600" : "text-green-600 "
+                          }`}
+                        >
+                          {item.ban ? "banned" : "not banned"}
+                        </span>
+                      </button>
                     </td>
 
                     <td className="px-6 py-4">
                       <button
                         className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                         onClick={() => {
-                          setModalData(cars[index]);
+                          setModalData(hubs[index]);
 
                           setShowModal(true);
                         }}
@@ -213,58 +194,72 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
                         {" "}
                         action
                       </button>
-                    </td>
-                    <div>
-                      {showModal ? (
-                        <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-                          <div className="w-3/6 h-4/6 flex flex-col">
-                            <button
-                              className="text-white text-xl place-self-end"
-                              onClick={() => setShowModal(false)}
-                            >
-                              x
-                            </button>
-                            <div className="bg-white p-2 rounded">
-                              <div className="p-6">
-                                <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
-                                  verification RC
-                                </h3>
-                                <div className="flex justify-center">
-                                  <div className="bg-blue-400 h-42 w-56">
-                                    <img
-                                      src={modalData?.DocumentVehicle}
-                                      alt="License"
-                                    />
+                      <div>
+                        {showModal ? (
+                          <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
+                            <div className="w-3/6 h-4/6 flex flex-col">
+                              <button
+                                className="text-white text-xl place-self-end"
+                                onClick={() => setShowModal(false)}
+                              >
+                                x
+                              </button>
+                              <div className="bg-white p-2 rounded">
+                                <div className="p-6">
+                                  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
+                                    verification
+                                  </h3>
+                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto sm:mx-28">
+                                    <div className="bg-gray-500 h-42 w-56">
+                                      <img
+                                        src={modalData?.hubImage}
+                                        alt="Hub Image"
+                                      />
+                                    </div>
+                                    <div className="bg-blue-400 h-42 w-56">
+                                      <img
+                                        src={modalData?.license}
+                                        alt="License"
+                                      />
+                                    </div>
+                                    <div className="text-center font-semibold">
+                                      hub image
+                                    </div>
+                                    <div className="text-center font-semibold">
+                                      license
+                                    </div>
                                   </div>
-                                </div>
 
-                                <div className="flex flex-row justify-evenly">
-                                  <button
-                                    onClick={() => {
-                                      setModalData(undefined);
-                                      setShowModal(false);
-                                    }}
-                                    className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                  >
-                                    cancel
-                                  </button>
-                                  <button
-                                    onClick={() => handleVerify(modalData?._id)}
-                                    className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                  >
-                                    {modalData?.isVerified
-                                      ? "remove verification"
-                                      : "verify"}
-                                  </button>
+                                  <div className="flex flex-row justify-evenly">
+                                    <button
+                                      onClick={() => {
+                                        setModalData(undefined);
+                                        setShowModal(false);
+                                      }}
+                                      className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      cancel
+                                    </button>
+                                    <button
+                                      onClick={() =>
+                                        handleVerify(modalData?._id)
+                                      }
+                                      className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
+                                    >
+                                      {modalData?.isVerified
+                                        ? "remove verification"
+                                        : "verify"}
+                                    </button>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    </td>
                   </tr>
                 ))
               : "not one"}
@@ -283,5 +278,4 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
   );
 };
 
-export default CarManagement;
-
+export default Data;

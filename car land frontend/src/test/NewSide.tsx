@@ -1,12 +1,11 @@
 import React, { FC } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import { rmhubId } from "../../../redux/slice/vendorSlice";
-
+import { rmhubId } from "../redux/slice/vendorSlice";
 type Iprop = {
   spanVisible: boolean;
 };
-const VendorAside: FC<Iprop> = ({ spanVisible }) => {
+const NewSide: FC<Iprop> = ({ spanVisible }) => {
   const Navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -64,7 +63,7 @@ const VendorAside: FC<Iprop> = ({ spanVisible }) => {
         </div>
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-          // onClick={() =>  Navigate("/vendor/vendordashboard")}
+          onClick={() => Navigate("/vendor/vendordashboard")}
           // onClick={highlightSidebarItem}
         >
           <svg
@@ -111,9 +110,56 @@ const VendorAside: FC<Iprop> = ({ spanVisible }) => {
         </button>
 
         <button
-          onClick={() => Navigate("/vendor/vendorcars")}
-          // onClick={highlightSidebarItem}
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
+          // onClick={highlightSidebarItem}
+          // onClick={() => Navigate("/admin/usermanagement")}
+        >
+          <svg
+            className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 20 18"
+          >
+            <path d="M14 2a3.963 3.963 0 0 0-1.4.267 6.439 6.439 0 0 1-1.331 6.638A4 4 0 1 0 14 2Zm1 9h-1.264A6.957 6.957 0 0 1 15 15v2a2.97 2.97 0 0 1-.184 1H19a1 1 0 0 0 1-1v-1a5.006 5.006 0 0 0-5-5ZM6.5 9a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9ZM8 10H5a5.006 5.006 0 0 0-5 5v2a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-2a5.006 5.006 0 0 0-5-5Z" />
+          </svg>
+          <span
+            className={`font-medium transition-all duration-200 ${
+              spanVisible ? "opacity-0" : ""
+            }`}
+          >
+            {" "}
+            User Management
+          </span>
+        </button>
+        <button
+          className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
+          // onClick={highlightSidebarItem}
+          // onClick={() => Navigate("/admin/vendormanagement")}
+        >
+          <svg
+            className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            height="1em"
+            viewBox="0 0 640 512"
+          >
+            <path d="M144 0a80 80 0 1 1 0 160A80 80 0 1 1 144 0zM512 0a80 80 0 1 1 0 160A80 80 0 1 1 512 0zM0 298.7C0 239.8 47.8 192 106.7 192h42.7c15.9 0 31 3.5 44.6 9.7c-1.3 7.2-1.9 14.7-1.9 22.3c0 38.2 16.8 72.5 43.3 96c-.2 0-.4 0-.7 0H21.3C9.6 320 0 310.4 0 298.7zM405.3 320c-.2 0-.4 0-.7 0c26.6-23.5 43.3-57.8 43.3-96c0-7.6-.7-15-1.9-22.3c13.6-6.3 28.7-9.7 44.6-9.7h42.7C592.2 192 640 239.8 640 298.7c0 11.8-9.6 21.3-21.3 21.3H405.3zM224 224a96 96 0 1 1 192 0 96 96 0 1 1 -192 0zM128 485.3C128 411.7 187.7 352 261.3 352H378.7C452.3 352 512 411.7 512 485.3c0 14.7-11.9 26.7-26.7 26.7H154.7c-14.7 0-26.7-11.9-26.7-26.7z" />
+          </svg>
+          <span
+            className={`font-medium transition-all duration-200 ${
+              spanVisible ? "opacity-0" : ""
+            }`}
+          >
+            {" "}
+            Vendor Management
+          </span>
+        </button>
+        <button
+          className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
+          // onClick={highlightSidebarItem}
+          // onClick={() => Navigate("/admin/carmanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -138,7 +184,32 @@ const VendorAside: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          onClick={() => Navigate("/vendor/vendorbookings")}
+          // onClick={() => Navigate("/admin/hubmanagement")}
+        >
+          <svg
+            className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            height="1em"
+            viewBox="0 0 640 512"
+          >
+            <path d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z" />
+          </svg>
+          <span
+            className={`font-medium transition-all duration-200 ${
+              spanVisible ? "opacity-0" : ""
+            }`}
+          >
+            {" "}
+            Hub Management
+          </span>
+        </button>
+
+        <button
+          className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
+          // onClick={highlightSidebarItem}
+          // onClick={() => Navigate("/admin/bookingmanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -188,4 +259,4 @@ const VendorAside: FC<Iprop> = ({ spanVisible }) => {
   );
 };
 
-export default VendorAside;
+export default NewSide;

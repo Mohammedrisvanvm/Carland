@@ -13,11 +13,11 @@ export const getAllUser=async (): Promise<AxiosResponse<any>>=>{
 export const getAllVendors=async (): Promise<AxiosResponse<any>>=>{
     return axiosBase.get("/admin/vendormanagement/allvendors")
 }
-export const getAllHubs=async (search:string): Promise<AxiosResponse<any>>=>{
-    return axiosBase.get(`/admin/hubmanagement/allhubs?search=${search}`)
+export const getAllHubs=async (search:string,currentPage:number): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get(`/admin/hubmanagement/allhubs?search=${search}&currentPage=${currentPage}`)
 }
-export const getAllCars=async (search:string): Promise<AxiosResponse<any>>=>{
-    return axiosBase.get(`/admin/carmanagement/allcars?search=${search}`)
+export const getAllCars=async (search:string,currentPage:number): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get(`/admin/carmanagement/allcars?search=${search}&currentPage=${currentPage}`)
 }
 export const banUser=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.post("/admin/usermanagement/banuser",{value})
@@ -41,7 +41,7 @@ export const VerifyCar=async (value:string|undefined): Promise<AxiosResponse<any
 export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=>{
     return axiosBase.patch("/admin/carmanagement/bancar",{value})
 }
-export const getBookingsManagement = async (): Promise<AxiosResponse<any>> => {
-    return axiosBase.get('/admin/bookingmanagement/allbookings');
+export const getBookingsManagement = async (search:string,currentPage:number): Promise<AxiosResponse<any>> => {
+    return axiosBase.get(`/admin/bookingmanagement/allbookings?search=${search}&currentPage=${currentPage}`);
   };
   

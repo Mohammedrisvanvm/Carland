@@ -19,7 +19,7 @@ export interface user {
 export interface hub{
   place: object;
  
-  _id?:string,
+  _id:string,
   hubName: string;
   isVerified?: boolean;
   ban?: boolean;

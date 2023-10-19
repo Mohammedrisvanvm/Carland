@@ -4,7 +4,7 @@ import { AxiosResponse } from "../interfaces/axiosinterface";
 import { getBookings } from "../services/apis/vendorApi/vendorApi";
 import { IConfirmBookWithImage } from "../interfaces/bookingConfirmInterface";
 import { DatePicker, Pagination } from "antd";
-import {  useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 const Newadmin = () => {
   const [sidebarWidth, setsidebarWidth] = useState<boolean>(true);
   const [spanVisible, setSpanVisible] = useState<boolean>(false);
@@ -13,7 +13,7 @@ const Newadmin = () => {
   const [bookings, setBookings] = useState<IConfirmBookWithImage[] | null>(
     null
   );
-  const Navigate=useNavigate()
+  const Navigate = useNavigate();
   const id = useAppSelector((state) => state.vendor.hubId);
   useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -98,9 +98,9 @@ const Newadmin = () => {
             />
           </div>
           <div className="space-x-12">
-            <button >
+            <button>
               <img
-              onClick={()=>Navigate("/vendor/chat")}
+                onClick={() => Navigate("/vendor/chat")}
                 width="25"
                 className="text-black"
                 src="https://img.icons8.com/color/48/speech-bubble-with-dots.png"

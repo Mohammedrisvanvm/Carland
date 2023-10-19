@@ -5,17 +5,24 @@ import hubModel from "../../models/hubSchema";
 
 export const getAllHubs = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
- 
-    console.log(req.query);
-    
-    type search={
-      search?:string
-    }
-    const {search}:search=req.query
-    const hubs: Ihub[] = await hubModel.find({
-      hubName: new RegExp(search, "i"),
-    });
-    res.json({ hubs });
+    const search = req.query.search as string;
+    const currentPage = req.query.currentPage as string;
+    const skip = (Number(currentPage) - 1) * 5;
+    const hubs: Ihub[] = await hubModel
+      .find({
+        $or: [
+          {
+            hubName: { $regex: search, $options: "i" },
+          
+          },
+        ],
+      })
+      .skip(skip)
+      .limit(5)
+      .sort({ createdAt: -1 });
+    // const hubs: Ihub[] = await hubModel.find()
+    const count: number = await hubModel.countDocuments();
+    res.json({ hubs, count });
   }
 );
 export const banHub = AsyncHandler(
@@ -48,12 +55,11 @@ export const verifyHub = AsyncHandler(
 );
 export const hubSearch = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-
     console.log(req.query);
-    type search={
-      search?:string
-    }
-    const {search}:search=req.query
+    type search = {
+      search?: string;
+    };
+    const { search }: search = req.query;
     const hubs: Ihub[] = await hubModel.find({
       hubName: new RegExp(search, "i"),
     });

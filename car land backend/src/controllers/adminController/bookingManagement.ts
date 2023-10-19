@@ -6,28 +6,44 @@ import IVehicle from "../../interfaces/vehicleInterface";
 import vehicleModel from "../../models/vehicleSchema";
 export const allBookings = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
+    const search = req.query.search as string;
+    const currentPage = req.query.currentPage as string;
 
-    const bookingDetailsAdmin:IBookWithTimestamps[]=await bookModel.find()
-    console.log(bookingDetailsAdmin);
-    const vehiclesID: string[] = bookingDetailsAdmin.map((item) => item.vehicleId);
+    const skip = (Number(currentPage) - 1) * 5;
+    const bookingDetailsAdmin: IBookWithTimestamps[] = await bookModel
+      .find({
+        $or: [
+          { vehicleName: { $regex: search, $options: "i" } },
+          { hubName: { $regex: search, $options: "i" } },
+        ],
+      })
+      .skip(skip).limit(5).sort({createdAt:-1})
 
-const vehicles: IVehicle[] = await vehicleModel.find({
-  _id: { $in: vehiclesID },
-});
+    const vehiclesID: string[] = bookingDetailsAdmin.map(
+      (item) => item.vehicleId
+    );
 
-const vehicleImageMap: { [key: string]: string } = {};
-vehicles.forEach((vehicle) => {
-  vehicleImageMap[vehicle._id] = vehicle.singleImage;
-});
+    const vehicles: IVehicle[] = await vehicleModel.find({
+      _id: { $in: vehiclesID },
+    });
 
+    const vehicleImageMap: { [key: string]: string } = {};
+    vehicles.forEach((vehicle) => {
+      vehicleImageMap[vehicle._id] = vehicle.singleImage;
+    });
 
-const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetailsAdmin.map(
-  (item) => ({
-    ...item,
-    image: vehicleImageMap[item.vehicleId], 
-  })
-);
-
-    res.json({ message: "booking Details Admin" ,bookingDetails:bookingDetailsWithImage });
+    const bookingDetailsWithImage: IBookWithTimestamps[] =
+      bookingDetailsAdmin.map((item) => ({
+        ...item,
+        image: vehicleImageMap[item.vehicleId],
+      }));
+      const count: number = await bookModel.countDocuments();
+ 
+      
+    res.json({
+      message: "booking Details Admin",
+      bookingDetails: bookingDetailsWithImage,
+      count
+    });
   }
 );

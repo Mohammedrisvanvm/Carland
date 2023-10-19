@@ -4,18 +4,26 @@ import IVehicle from "../../interfaces/vehicleInterface";
 import vehicleModel from "../../models/vehicleSchema";
 export const getAllCars = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    type search = {
-      search?: string;
-    };
-    console.log(req.query);
-    
-    const { search }: search = req.query;
-  
+    const search = req.query.search as string;
+    const currentPage = req.query.currentPage as string;
 
-    const vehicles: IVehicle[] = await vehicleModel.find({
-      vehicleName: new RegExp(search, "i"),
-    });
-    res.json({ vehicles });
+    const skip = (Number(currentPage) - 1) * 5;
+
+    const vehicles: IVehicle[] = await vehicleModel
+      .find({
+        $or: [
+          { vehicleName: { $regex: search, $options: "i" } },
+          { colour: { $regex: search, $options: "i" } },
+        ],
+      })
+      .skip(skip)
+      .limit(5)
+      .sort({ createdAt: -1 });
+
+    const count: number = await vehicleModel.countDocuments();
+    console.log(count);
+
+    res.json({ vehicles, count });
   }
 );
 export const banCar = AsyncHandler(

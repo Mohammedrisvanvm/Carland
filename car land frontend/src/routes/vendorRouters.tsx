@@ -14,6 +14,7 @@ import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 import ProtectedRouteVendor from "./protectedRoutes/vendor";
 import VendorBooking from "../components/vender/vendorBookingManagement/Vendorbooking";
 import VendorChat from "../components/vender/vendorChat/VendorChat";
+import VendorBookingPage from "../components/vender/vendorBookingManagement/VendorBookingPage";
 
 
 const VendorRouters = () => {
@@ -33,7 +34,7 @@ const VendorRouters = () => {
           {/* <Route path="/*" element={ <ProtectedRouteVendor > <VendorHomePage /> </ProtectedRouteVendor>} /> */}
           <Route path="/vendordashboard" element={<ProtectedRouteVendor > <VenderDashboardPage /></ProtectedRouteVendor>} />
           <Route path="/vendorcars" element={ <CarManagementPage />} />
-          <Route path="/vendorbookings" element={ <VendorBooking/>} />
+          <Route path="/vendorbookings" element={ <VendorBookingPage />} />
           <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
           <Route path="/chat" element={<ProtectedRouteVendor > <VendorChat /></ProtectedRouteVendor>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}

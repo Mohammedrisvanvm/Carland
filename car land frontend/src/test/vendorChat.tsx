@@ -158,7 +158,11 @@ console.log(conversation);
 
   return (
     <React.Fragment>
-      <VendorNavBar />
+      <VendorNavBar sidebarWidth={false} spanVisible={false} setsidebarWidth={function (value: React.SetStateAction<boolean>): void {
+        throw new Error("Function not implemented.");
+      } } setSpanVisible={function (value: React.SetStateAction<boolean>): void {
+        throw new Error("Function not implemented.");
+      } } />
       <div className=" h-screen w-screen pt-20 text-white grid grid-cols-3 gap-4 px-10">
         <div className="">
           <input
