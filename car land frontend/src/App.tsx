@@ -15,7 +15,7 @@ import  Test  from "./test/test";
 import { SetStateAction } from "react";
 import Newadmin from "./test/newadmin";
 import VendorChat from "./test/vendorChat";
-import SingleCar from "./test/SingleCar";
+import { Content } from "./test/SingleCar";
 
 function App() {
  
@@ -30,7 +30,7 @@ function App() {
           {/* <Route path="/test" element={<Test />} /> */}
            <Route path="/new" element={<Newadmin />} />
            <Route path="/chat" element={<VendorChat />} />
-           <Route path="/bug" element={<SingleCar />} />
+           <Route path="/bug" element={<Content />} />
         </Routes>
       </BrowserRouter>
 

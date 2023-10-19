@@ -1,401 +1,341 @@
-import React, { FC,ChangeEvent } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { DatePicker } from "antd";
-const { RangePicker } = DatePicker;
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
-import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
-import { useAppSelector } from "../redux/store/storeHook";
-import { useLocation, useNavigate } from "react-router";
-import { AxiosResponse } from "../interfaces/axiosinterface";
-import { userSingleGetVehicle } from "../services/apis/userApi/userApi";
+import { useNavigate } from "react-router";
+
+import { useLocation } from "react-router-dom";
+
+import { useEffect, useState, Fragment, ChangeEvent } from "react";
+
+import { RangePickerProps } from "antd/es/date-picker";
+
+import dayjs from "dayjs";
 import { Vehicles } from "../interfaces/vehicleInterface";
-import Payment from "../components/user/payment/Payment";
-import { toast } from "react-toastify";
-const images: string[] = [];
+import { DatePicker, Pagination } from "antd";
+import mapboxAPI from "../services/mapbox/mapbox";
+import { AxiosResponse } from "../interfaces/axiosinterface";
+import { userGetVehicle } from "../services/apis/userApi/userApi";
+import Loader from "../utils/Loader";
+import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
+// import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+export const Content = () => {
+  const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);
+  const Navigate = useNavigate();
+  let location = useLocation();
+  const [search, setSearch] = useState<string>("");
+  const [filter, setFilter] = useState<string>("");
+  const [loader, setLoader] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalpage, setTotalpage] = useState<number>(1);
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [seletedDate, setSeletedDate] = useState<string[]>([]);
+  const [seletedDateTemp, setSeletedDateTemp] = useState<string[]>([]);
+  const [latitude, setLatitude] = useState<number | null>(null);
+  const [longitude, setLongitude] = useState<number | null>(null);
+  const pageSize = 4;
+  const { RangePicker } = DatePicker;
 
-const SingleCar: FC = () => {
-  const [vehicle, setVehicle] = React.useState<Vehicles | null>(null);
-  const [activeSlide, setActiveSlide] = React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const [seletedDate, setSeletedDate] = React.useState<string[] | string>("");
-const Navigate=useNavigate()
-  const location = useLocation();
-  const [paybutton, setPaybutton] = React.useState<boolean>(false);
-  const queryParams = new URLSearchParams(location.search);
-  const carId: string | null = queryParams.get("carId");
-  const user = useAppSelector((state) => state.user);
-  const cancelButtonRef = React.useRef(null);
-  const nextSlide = () => {
-    setActiveSlide((activeSlide + 1) % images.length);
-  };
+  function handleDate(e: ChangeEvent<HTMLFormElement>) {
+    e.preventDefault();
+    console.log("got");
 
-  const prevSlide = () => {
-    setActiveSlide((activeSlide - 1 + images.length) % images.length);
-  };
+    setSeletedDate(seletedDateTemp);
+  }
   function onChange(value: any, dateString: [string, string]) {
     if (value[0] && value[1]) {
-      setSeletedDate(dateString);
+      // Handle date range change here
+      console.log("Selected Time: ", typeof value[0].$d, value[1].$d);
+      console.log("Formatted Selected Time: ", typeof dateString, dateString);
     }
+    // console.log("Selected Time: ", typeof(value[0].$d), value[0].$d);
+    console.log("Formatted Selected Time: ", typeof dateString, dateString);
+    setSeletedDateTemp(dateString);
   }
-  React.useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response: AxiosResponse = await userSingleGetVehicle(carId);
 
-        if (response.data?.vehicle) {
-          setVehicle(response.data?.vehicle);
-          images.push(response.data.vehicle?.singleImage);
-          response.data.vehicle?.SubImages.forEach((image) => {
-            images.push(image);
-          });
-        }
-      } catch (error: any) {
-        console.log(error);
-      }
-    };
-    fetchData();
-  }, []);
-
-  const [price,setPrice]=React.useState<number>(0)
-React.useEffect(()=>{
-console.log(seletedDate);
-const date1 = new Date(seletedDate[0]);
-const date2 = new Date(seletedDate[1]);
-
-// Calculate the time difference in milliseconds
-const timeDifference = date2.getTime() - date1.getTime();
-
-// Calculate the number of days
-const daysDifference = timeDifference / (1000 * 3600 * 24);
-if(vehicle){
-    setPrice(daysDifference*vehicle?.fairPrice)
-}
-console.log(`Number of days between the two dates: ${daysDifference}`);
-
-},[seletedDate])
-type values = {
-    pickUpDate: string;
-    dropOffDate: string;
-    carId: string | null;
-  };
-const [value, setValues] = React.useState<values>({
-    dropOffDate: "",
-    pickUpDate: "",
-    carId: "",
-  });
-const submitForm = async (e: ChangeEvent<HTMLFormElement>): Promise<void> => {
+  function onOk(value: any) {
+    console.log("onOk: ", typeof value, value);
+  }
+  const handlesearch = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!carId || seletedDate.length == 0) {
-      toast.error("pickdate");
-      console.log("error", carId, seletedDate.length);
-    } else {
-      setValues({
-        carId: carId,
-        dropOffDate: seletedDate[1],
-        pickUpDate: seletedDate[0],
-      });
-      setPaybutton(!paybutton);
+    const response = await mapboxAPI.get(
+      `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
+    );
+    if (response.data.features.length === 0) {
+      console.log("Location not found");
+      return;
     }
+    console.log(response);
+
+    const points = response.data.features[1];
+    console.log(parseFloat(points.center[1]));
+    const latitude: number = parseFloat(points.center[1]);
+    const longitude: number = parseFloat(points.center[0]);
+    setLatitude(latitude);
+    setLongitude(longitude);
+    const searchedLocation: {
+      latitude: number;
+      longitude: number;
+    } = { latitude: latitude, longitude: longitude };
+    console.log(searchedLocation, "searched Location");
   };
+  // console.log(location);
+
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response: AxiosResponse = await userGetVehicle(
+          currentPage,
+          search,
+          filter,
+          latitude,
+          longitude,
+          seletedDate
+        );
+        console.log(response);
+
+        setVehicles(response.data?.vehicles);
+        if (response.data?.count) {
+          setTotalpage(Math.ceil(response.data.count / 4));
+        }
+      } catch (error) {
+        console.error("Error fetching vehicles:", error);
+      }
+    };
+
+    fetchData();
+  }, [currentPage, search, filter, latitude, longitude, seletedDate]);
+
+  const [isOpen, setIsOpen] = useState(true);
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    return current && current < dayjs().endOf("day");
+  };
+
   return (
-    <>
-      <MainHeader />
-      <div className="sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-4">
-        <div className="relative w-full col-span-2  h-auto sm:h-screen overflow-y-scroll">
-          <div className="relative h-56 overflow-hidden rounded-lg md:h-96 bg-gray-300">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`duration-700 ease-in-out   ${
-                  activeSlide === index ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <img
-                  src={image}
-                  className="absolute block bg-gray-300 sm:h-80 sm:w-1/2 -translate-x-1/2 px-3 -translate-y-1/2 top-1/2 left-1/2 object-cover"
-                  alt={`Slide ${index + 1}`}
-                />
-              </div>
-            ))}
-          </div>
+    <Fragment>
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          {" "}
+          <MainHeader />
+          <div className="relative" style={{ height: "450px" }}>
+            <div className="w-full h-96  p-5">
+              <div className="bg-white h-full w-full p-10  flex justify-center bg-[url('/download.jpg')] bg-contain">
+                <div className="absolute bottom-0  border-4 rounded-3xl border-zinc-400  h-48 w-2/3 bg-white bg-[url('/colour.jpg')] p-10" >
+                  {" "}
+                  <form onSubmit={handlesearch}>
+                  <div className="flex items-center justify-center mb-5 ">
+                  <div className="relative w-96">
+                    
+                    <input
+                      type="text"
+                      placeholder="Search using Location"
+                      value={searchQuery}
+                      onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                        setSearchQuery(event.target.value);
+                      }}
+                      className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
+                    />
 
-          <button
-            type="button"
-            className="absolute left-4 sm:top-44 top-24 z-30 flex items-center justify-center  px-4 cursor-pointer group focus:outline-none"
-            onClick={prevSlide}
-          >
-            <svg
-              className="w-4 h-4 text-white dark:text-gray-800"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M5 1 1 5l4 4"
-              />
-            </svg>
-            <span className="sr-only">Previous</span>
-          </button>
-          <button
-            type="button"
-            className="absolute right-4 sm:top-44 top-24 z-30 flex items-center justify-center  px-4 cursor-pointer group focus:outline-none"
-            onClick={nextSlide}
-          >
-            <svg
-              className="w-4 h-4 text-white dark:text-gray-800"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 6 10"
-            >
-              <path
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="m1 9 4-4-4-4"
-              />
-            </svg>
-            <span className="sr-only">Next</span>
-          </button>
-          <div className=" pt-4 flex flex-col sm:flex-row  justify-center items-center font-semibold sm:text-lg">
-            <p className="sm:mr-2"> Pick your date {"->"}</p>
-           
-            <RangePicker
-              size="middle"
-              className="h-12"
-              format="YYYY-MM-DD"
-              placeholder={["Start Time", "End Time"]}
-              onChange={onChange}
-              // disabledDate={disabledDate}
-            />
-          </div>
+                    <img
+                      onClick={() =>
+                        navigator.geolocation.getCurrentPosition((position) => {
+                          setLatitude(position.coords.latitude);
+                          setLongitude(position.coords.longitude);
+                          // getlocation();
+                          console.log(position.coords);
+                        })
+                      }
+                      title="current location"
+                      className="h-6 w-6 absolute right-2 top-3"
+                      src="https://www.svgrepo.com/show/127575/location-sign.svg"
+                      alt="current location"
+                    />
+                  </div>
 
-          <div className="sm:h-44 h-auto mt-4 w-full p-2">
-            <div className="h-full border-4 sm:grid sm:grid-cols-3 grid-col-1 p-3">
-              <div className="">
-                <span className="text-lg font-semibold">From</span>
-                <p>Thu, 19 Oct, 08:00 AM</p>
-                <p>
-                  Housing Society, A603, Bhumkar Nagar, Wakad, Pimpri-Chinchwad
-                  411057, India
-                </p>
-              </div>
-              <div className="">
-                <span className="text-lg font-semibold">To</span>
-                <p>Thu, 19 Oct, 08:00 AM</p>
-                <p>
-                  Housing Society, A603, Bhumkar Nagar, Wakad, Pimpri-Chinchwad
-                  411057, India
-                </p>
-              </div>
-              <div className="">
-                <span className="text-lg font-semibold">from</span>
-              </div>
-            </div>
-          </div>
-          <div className="sm:h-44 h-auto mt-4 w-full text-base font-medium p-2 border-2 border-gray-500 bg-gray-200">
-            <div className=" flex justify-between mb-2">
-              <p className="text-lg font-bold">
-                {vehicle?.vehicleName} <span>{vehicle?.year}</span>
-              </p>
-
-              <div className="text-lg font-bold">car land</div>
-            </div>
-
-            <div className="grid sm:grid-cols-4 grid-cols-2 gap-4 capitalize">
-              <div>colour:{vehicle?.colour}</div>
-              <div>fuel:{vehicle?.fuel}</div>
-              <div>mileage:{vehicle?.mileage}</div>
-              <div>fairPrice:{vehicle?.fairPrice}</div>
-
-              <div>Transmission:manual</div>
-              <div>fairKm:{vehicle?.fairKm}</div>
-              <div>numofseats:{vehicle?.numofseats}</div>
-              {vehicle?.specification.map((item) => (
-                <div>{item}</div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gray-300 h-96 flex justify-center rounded-lg items-center ">
-          <div className=" p-4 h-80 w-80 sm:w-96 bg-white shadow-md flex flex-col justify-center items-center border-4 rounded-lg">
-            <p className=" text-lg font-bold">Please review final amount</p>
-
-            <div className="pt-10 w-56 flex justify-between items-center">
-              <span className="text-lg font-extrabold text-black">₹ {price ? price :0}</span>
-              <div
-                className="font-medium  flex capitalize"
-                onClick={() => setOpen(true)}
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="hover:cursor-pointer"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 16.5a2.25 2.25 0 0 1-2.25 2.25h-7.5v.75c0 .385.29.702.663.745L9 20.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005H18v9.75zM15.75 3.75H6a.75.75 0 0 0-.745.663L5.25 4.5v12c0 .385.29.702.663.745L6 17.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005zm-1.5 9.75a.75.75 0 0 1 .087 1.495L14.25 15H7.5a.75.75 0 0 1-.087-1.495L7.5 13.5h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 9.75h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 6h6.75zM6 18.75a2.25 2.25 0 0 1-2.25-2.25v-12A2.25 2.25 0 0 1 6 2.25h9.75A2.25 2.25 0 0 1 18 4.5v.75h.75A2.25 2.25 0 0 1 21 7.5v12a2.25 2.25 0 0 1-2.25 2.25H9a2.25 2.25 0 0 1-2.25-2.25v-.75H6z"
-                    fill="#10A310"
-                    fill-rule="evenodd"
-                  ></path>
-                </svg>
-                fair summary
-                <Transition.Root show={open} as={React.Fragment}>
-                  <Dialog
-                    as="div"
-                    className="relative z-10"
-                    initialFocus={cancelButtonRef}
-                    onClose={setOpen}
+                  <button
+                    type="submit"
+                    className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
                   >
-                    <Transition.Child
-                      as={React.Fragment}
-                      enter="ease-out duration-300"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="ease-in duration-200"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                    </Transition.Child>
+                    Search
+                  </button>
+                </div>
+                </form>
+              <form onSubmit={handleDate}>
+                <div className="flex items-center justify-center mb-5">
+                  <RangePicker
+                    size="middle"
+                    className="h-12"
+                    format="YYYY-MM-DD"
+                    placeholder={["Start Time", "End Time"]}
+                    onChange={onChange}
+                    disabledDate={disabledDate}
+                  />
 
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                      <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                        <Transition.Child
-                          as={React.Fragment}
-                          enter="ease-out duration-300"
-                          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                          enterTo="opacity-100 translate-y-0 sm:scale-100"
-                          leave="ease-in duration-200"
-                          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                        >
-                          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                              <div className="sm:flex sm:items-start">
-                                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                  <ExclamationTriangleIcon
-                                    className="h-6 w-6 text-red-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                  <Dialog.Title
-                                    as="h3"
-                                    className="text-base font-semibold leading-6 text-gray-900"
-                                  >
-                                    Deactivate account
-                                  </Dialog.Title>
-                                  <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                      Are you sure you want to deactivate your
-                                      account? All of your data will be
-                                      permanently removed. This action cannot be
-                                      undone.
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                              <button
-                                type="button"
-                                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                onClick={() => setOpen(false)}
-                              >
-                                Deactivate
-                              </button>
-                              <button
-                                type="button"
-                                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                onClick={() => setOpen(false)}
-                                ref={cancelButtonRef}
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </Dialog.Panel>
-                        </Transition.Child>
+                  <button
+                    type="submit"
+                    className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide mx-2 text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
+                    aria-label="Sign up"
+                    title="Sign up"
+                  >
+                    get cars
+                  </button>
+                </div>
+              </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="px-4 mt-6 sm:my-0 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+            <div className="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
+              <h2 className="max-w-lg mb-10 font-sans inline-block font-bold leading-none text-center tracking-tight text-gray-900 text-sm sm:text-4xl md:mx-auto">
+                Rent a car and explore the city at your own pace
+              </h2>
+
+              {/* <div className="sm:flex justify-around">
+                {" "}
+                <div></div>
+                <RangePicker
+                  showTime={{ format: "h a" }}
+                  format="YYYY-MM-DD h a"
+                  placeholder={["Start Time", "End Time"]}
+                  onChange={onChange}
+                  disabledDate={disabledDate}
+                />
+                <button
+                  type="submit"
+                  className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
+                  aria-label="Sign up"
+                  title="Sign up"
+                >
+                  get cars
+                </button>
+              </div> */}
+            </div>
+
+            <div className="flex justify-between my-10 ">
+              <div className="flex">
+                <form className="flex">
+                  <select
+                    id="countries"
+                    onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                      setFilter(e.target.value);
+                    }}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg  block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white"
+                  >
+                    <option value="" selected>
+                      All
+                    </option>
+
+                    <option value="diesel">Diesel</option>
+                    <option value="petrol">Petrol</option>
+                  </select>
+                </form>
+              </div>
+
+              <form className="flex justify-between">
+                <input
+                  type="text"
+                  id="simple-search"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Search Car Name..."
+                  required
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setSearch(e.target.value)
+                  }
+                />
+
+                <button
+                  type="submit"
+                  className="p-2.5 ml-2 text-sm font-medium text-white bg-black rounded-lg border border-gray-700 hover:bg-gray-700 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  <svg
+                    className="w-4 h-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                  <span className="sr-only">Search</span>
+                </button>
+              </form>
+            </div>
+            <div className="grid gap-5 row-gap-5 mb-8 lg:grid-cols-4 sm:grid-cols-2">
+              {vehicles ? (
+                vehicles.map((item) => (
+                  <button
+                    aria-label="View Item"
+                    onClick={() => {
+                      Navigate(`/singlecar?carId=${item._id}`);
+                    }}
+                    className="inline-block overflow-hidden duration-300 transform bg-white rounded shadow-sm hover:-translate-y-2"
+                  >
+                    <div className="flex flex-col h-full" key={item._id}>
+                      <img
+                        src={item.singleImage}
+                        className="object-cover w-full h-48"
+                        alt=""
+                      />
+                      <div className="flex-grow border border-t-0 rounded-b">
+                        <div className="p-5">
+                          <h6 className="mb-2 font-bold text-xl ">
+                            {item.vehicleName} {item.year}
+                          </h6>
+                          <p className="text-xs flex justify-center text-gray-600 font-medium items-center gap-[5px]  ">
+                            <span> {item.colour}</span>
+                            <div className="relative w-[3px] h-[3px] bg-[#a8a8a8] rounded-[1.5px]" />
+
+                            <span> {item.fuel}</span>
+                            <div className="relative w-[3px] h-[3px] bg-[#a8a8a8] rounded-[1.5px]" />
+
+                            <span> {item.numofseats}</span>
+                          </p>
+                        </div>
+                        <hr />
+                        <div className="flex justify-around my-4">
+                          <p className="text-xs text-gray-600 font-serif font-medium">
+                            available at feb 32
+                            <br />
+                            <span className="text-xl text-black font-semibold font-sans">
+                              {" "}
+                              ₹ {item.fairPrice} /day
+                            </span>
+                          </p>
+                          <button className="text-gray-800 bg-stone-200 hover:bg-black hover:text-white focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center ">
+                            view
+                          </button>
+                        </div>
                       </div>
                     </div>
-                  </Dialog>
-                </Transition.Root>
-              </div>
+                  </button>
+                ))
+              ) : (
+                <>
+                  <div className="text-lg font-bold text-red-600">
+                    "no cars available in this area {searchQuery}"
+                  </div>
+                </>
+              )}
             </div>
-            <div>
-                
-            {user.accessToken ? (
-                  <>
-                    {" "}
-                    {vehicle?.status ? (
-                      <>
-                        {" "}
-                        {paybutton ? (
-                          <>
-                            {" "}
-                            {/* <button
-                              onClick={() => Navigate("/payment")}
-                              className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                            >
-                              pay
-                            </button> */}
-                            <Payment value={value} />
-                          </>
-                        ) : (
-                          <>
-                            {" "}
-                            <form  onSubmit={submitForm}>
-                            <button
-                              type="submit"
-                             
-                              className="inline-flex  mt-10 items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                            >
-                              Book Now
-                            </button>
-                            </form>
-                          </>
-                        )}
-                      </>
-                    ) : (
-                      <>
-                        {" "}
-                        <div className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none">
-                          not available at this moment
-                        </div>
-                      </>
-                    )}
-                  </>
-                ) : (
-                  <>
-                    {" "}
-                    <>
-                      {" "}
-                      <div
-                        onClick={() => Navigate("/UserAuth")}
-                        className="inline-flex items-center justify-center w-full h-12 px-6 font-semibold tracking-wide text-white transition duration-200 rounded shadow-md bg-black hover:bg-gray-700 focus:shadow-outline focus:outline-none"
-                      >
-                        login
-                      </div>
-                    </>
-                  </>
-                )}
-              {" "}
-           
+            <div className="text-center">
+              <Pagination
+                className="text-black"
+                onChange={(page: number, pageSize: number) =>
+                  setCurrentPage(page)
+                }
+                current={currentPage}
+                total={totalpage * 10}
+              />
             </div>
           </div>
-        </div>
-      </div>
-    </>
+        </>
+      )}
+    </Fragment>
   );
 };
-
-export default SingleCar;
