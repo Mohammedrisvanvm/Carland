@@ -1,25 +1,25 @@
 import React, { ChangeEvent, FC } from "react";
-import { useAppSelector } from "../redux/store/storeHook";
 import { AxiosResponse } from "../interfaces/axiosinterface";
 import { Pagination } from "antd";
-import { useNavigate } from "react-router";
 import {
-  Verifyhub,
-  banHub,
-  getAllHubs,
+  banUser,
+  banVendor,
+  getAllUser,
+  getAllVendors,
+  verifyProfile,
 } from "../services/apis/adminApi/adminApi";
-import { hub } from "../interfaces/userAuth";
+import { hub, user } from "../interfaces/userAuth";
+import Loader from "../utils/Loader";
 
 type Iprop = {
   sidebarWidth: boolean;
 };
-const Data: FC<Iprop> = ({ sidebarWidth }) => {
-  const [hubs, setHubs] = React.useState<hub[] | undefined>([]);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const [modalData, setModalData] = React.useState<hub | undefined>(Object);
+const VendorManagement: FC<Iprop> = ({ sidebarWidth }) => {
+  const [vendors, setVendors] = React.useState<IVendor[]|undefined>([]);
+  const [loading, setLoading] = React.useState<boolean>(false)
+
+  const [modalData, setModalData] = React.useState<user | undefined>(Object);
   const [showModal, setShowModal] = React.useState<boolean>(false);
-  const Navigate = useNavigate();
-  const id = useAppSelector((state) => state.vendor.hubId);
   const [search, setSearch] = React.useState<string>("");
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [totalpage, setTotalpage] = React.useState<number>(1);
@@ -27,10 +27,11 @@ const Data: FC<Iprop> = ({ sidebarWidth }) => {
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getAllHubs(search, currentPage);
-        console.log(response);
+        const response: AxiosResponse = await getAllVendors(search,currentPage);
+        console.log(response.data?.vendors);
+        setVendors(response.data?.vendors);
 
-        if (response.data?.hubs) setHubs(response.data?.hubs);
+      
         if (response.data?.count) {
           setTotalpage(Math.ceil(response.data.count / 5));
         }
@@ -39,16 +40,14 @@ const Data: FC<Iprop> = ({ sidebarWidth }) => {
       }
     };
     fetchData();
-  }, [search, currentPage]);
-  const handleVerify = async (value: string | undefined) => {
-    await Verifyhub(value);
-    setShowModal(false);
-    setLoading(!loading);
+  }, [search, currentPage,loading]);
+  const banHandle = async (value: string | undefined) => {
+    setLoading(true)
+    await banVendor(value);
+    setLoading(false);
   };
-  const banHandle = async (value: string) => {
-    await banHub(value);
-    setLoading(!loading);
-  };
+  
+
   return (
     <>
       <div
@@ -99,172 +98,88 @@ const Data: FC<Iprop> = ({ sidebarWidth }) => {
           </div>
         </div>
 
-        <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        { loading ? <Loader/> : <>
+        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <thead className="text-xs justify-between text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 index
               </th>
-
-              <th scope="col" className="px-6 py-3">
-                hub Image
-              </th>
+          
               <th scope="col" className="px-6 py-3">
                 Name
               </th>
 
               <th scope="col" className="px-6 py-3">
-                Location
+                email
               </th>
-              <th scope="col" className="px-6 py-3">
-                pincode
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Validity Date
-              </th>
-              <th scope="col" className="px-6 py-3">
-                verified
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 ban
               </th>
 
               <th scope="col" className="px-6 py-3">
+                phone Number
+              </th>
+              <th scope="col" className="px-6 py-3">
+                hub(count)
+              </th>
+              {/* <th scope="col" className="px-6 py-3">
+                Vehicle Validity Date
+              </th> */}
+              <th scope="col" className="px-6 py-3">
                 Status
               </th>
+              {/* <th scope="col" className="px-6 py-3">
+                Action
+              </th> */}
             </tr>
           </thead>
-          <tbody className=" ">
-            {hubs
-              ? hubs.map((item, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                  >
-                    <td className="w-4 p-4">{index + 1}</td>
-
+          <tbody>
+            {vendors
+              ? vendors.map((item, index) => (
+                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <td className="w-4 p-4">{index + 1}</td>                
+                    <td className="px-6 py-4"> {item.userName}</td>
+                    <td className="px-6 py-4"> {item.email}</td>
                     <td className="px-6 py-4">
                       {" "}
-                      <img className="w-16 h-12" src={item.hubImage} />
-                    </td>
-                    <td className="px-6 py-4"> {item.hubName}</td>
-
-                    <td className="px-6 py-4"> {item.placeName}</td>
-
-                    <td className="px-6 py-4"> {item.pincode}</td>
-                    <td className="px-6 py-4">
-                      {new Date(item.validityDate).toLocaleDateString()}
-                    </td>
-
-                    <td className="px-6 py-4">
-                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
-                        <span
-                          className={`${
-                            item.isVerified ? "text-green-600" : "text-red-600"
-                          }`}
-                        >
-                          {item.isVerified ? "verified" : "not verified"}
-                        </span>
-                      </button>
-                    </td>
-                    <td className="px-6 py-4">
                       <button
                         onClick={() => banHandle(item._id)}
                         className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
                       >
                         <span
                           className={`${
-                            item.ban ? "text-red-600" : "text-green-600 "
+                            item.ban ? "text-red-600" : "text-blue-600 "
                           }`}
                         >
                           {item.ban ? "banned" : "not banned"}
                         </span>
                       </button>
                     </td>
+                    <td className="px-6 py-4"> {item.phoneNumber}</td>
+                    <td className="px-6 py-4"> {item.renthubs?.length}</td>
+                 
+                    {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
+              <td className="px-6 py-4"> <button className="bg-black">
+              {item.status}
+                </button></td> */}
 
                     <td className="px-6 py-4">
-                      <button
-                        className="text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                        onClick={() => {
-                          setModalData(hubs[index]);
-
-                          setShowModal(true);
-                        }}
+                      <a
+                        href="#"
+                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
                       >
-                        {" "}
-                        action
-                      </button>
-                      <div>
-                        {showModal ? (
-                          <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center">
-                            <div className="w-3/6 h-4/6 flex flex-col">
-                              <button
-                                className="text-white text-xl place-self-end"
-                                onClick={() => setShowModal(false)}
-                              >
-                                x
-                              </button>
-                              <div className="bg-white p-2 rounded">
-                                <div className="p-6">
-                                  <h3 className="text-xl flex justify-center font-semibold mb-5 text-gray-900">
-                                    verification
-                                  </h3>
-                                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mx-auto sm:mx-28">
-                                    <div className="bg-gray-500 h-42 w-56">
-                                      <img
-                                        src={modalData?.hubImage}
-                                        alt="Hub Image"
-                                      />
-                                    </div>
-                                    <div className="bg-blue-400 h-42 w-56">
-                                      <img
-                                        src={modalData?.license}
-                                        alt="License"
-                                      />
-                                    </div>
-                                    <div className="text-center font-semibold">
-                                      hub image
-                                    </div>
-                                    <div className="text-center font-semibold">
-                                      license
-                                    </div>
-                                  </div>
-
-                                  <div className="flex flex-row justify-evenly">
-                                    <button
-                                      onClick={() => {
-                                        setModalData(undefined);
-                                        setShowModal(false);
-                                      }}
-                                      className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                    >
-                                      cancel
-                                    </button>
-                                    <button
-                                      onClick={() =>
-                                        handleVerify(modalData?._id)
-                                      }
-                                      className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                                    >
-                                      {modalData?.isVerified
-                                        ? "remove verification"
-                                        : "verify"}
-                                    </button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ) : (
-                          ""
-                        )}
-                      </div>
+                        Edit
+                      </a>
                     </td>
                   </tr>
                 ))
               : "not one"}
+
           </tbody>
         </table>
+        </>}
         <div className="text-center mt-10">
           <Pagination
             className="text-black"
@@ -278,4 +193,4 @@ const Data: FC<Iprop> = ({ sidebarWidth }) => {
   );
 };
 
-export default Data;
+export default VendorManagement;

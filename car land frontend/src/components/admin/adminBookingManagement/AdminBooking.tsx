@@ -11,10 +11,9 @@ import NewSide from "../../../test/NewSide";
 
 
 type Iprop = {
-  sidebarWidth: boolean;
+  sidebarWidth?: boolean;
 };
-// const Data: FC<Iprop> = ({ sidebarWidth }) => {
-  const  VendorBookingManagement: FC<Iprop> = ({ sidebarWidth }) => {
+  const  VendorBookingManagement: FC<Iprop> = ({ }) => {
   const [bookings, setBookings] = React.useState<
     IConfirmBookWithImage[] | null
   >(null);
@@ -42,14 +41,17 @@ console.log(response);
     fetchData();
   }, [search,currentPage]);
 
+  const [sidebarWidth, setsidebarWidth] = React.useState<boolean>(true);
+  const [spanVisible, setSpanVisible] = React.useState<boolean>(false);
   return (
     <>
-    <NewNav sidebarWidth={false} spanVisible={false} setsidebarWidth={function (value: React.SetStateAction<boolean>): void {
-        throw new Error("Function not implemented.");
-      } } setSpanVisible={function (value: React.SetStateAction<boolean>): void {
-        throw new Error("Function not implemented.");
-      } }/>
-      <NewSide spanVisible={true}/>
+    <NewNav
+        setSpanVisible={setSpanVisible}
+        sidebarWidth={sidebarWidth}
+        spanVisible={spanVisible}
+        setsidebarWidth={setsidebarWidth}
+      />
+        <NewSide spanVisible={spanVisible}/>
       <div
         className={` ${
           sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"

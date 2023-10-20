@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 import { useAppSelector } from "../redux/store/storeHook";
 import { vendorSignOut } from "../services/apis/vendorApi/vendorApi";
 import { vendorLogout } from "../redux/slice/vendorSlice";
+import { adminSignOut } from "../services/apis/adminApi/adminApi";
+import { adminLogout } from "../redux/slice/adminSlice";
 
 type Iprops = {
   sidebarWidth: boolean;
@@ -11,7 +13,7 @@ type Iprops = {
   setsidebarWidth: React.Dispatch<React.SetStateAction<boolean>>;
   setSpanVisible: React.Dispatch<React.SetStateAction<boolean>>;
 };
-const NewNav: FC<Iprops> = ({
+const AdminNavBar: FC<Iprops> = ({
   setSpanVisible,
   setsidebarWidth,
   sidebarWidth,
@@ -28,9 +30,9 @@ const NewNav: FC<Iprops> = ({
     setdropdown(!dropdown);
   };
   const logOutHandle = async () => {
-    await vendorSignOut();
-    dispatch(vendorLogout());
-    Navigate("/vendor/login");
+    await adminSignOut();
+    dispatch(adminLogout());
+    Navigate("/admin");
   };
   const Navigate = useNavigate();
   return (
@@ -140,4 +142,4 @@ const NewNav: FC<Iprops> = ({
   );
 };
 
-export default NewNav;
+export default AdminNavBar;

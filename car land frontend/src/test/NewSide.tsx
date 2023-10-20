@@ -42,28 +42,10 @@ const NewSide: FC<Iprop> = ({ spanVisible }) => {
       className="bg-white text-black h-screen fixed rounded-none border-none transition-all duration-200 ease-in-out overflow-hidden"
     >
       <div className="p-2 space-y-3">
-        <div className="grid">
-          <button
-            className={`flex items-center  justify-center  rounded bg-gray-500 dark:bg-gray-800 shadow-lg  shadow-black/20 dark:shadow-black/40 ${
-              spanVisible ? " w-12 h-10" : "w-full h-16"
-            }`}
-            onClick={() => {
-              dispatch(rmhubId());
-              Navigate("/vendor/vendorhome");
-            }}
-          >
-            <p
-              className={`${
-                spanVisible ? "text-xs font-semibold" : " text-2xl"
-              }  text-white dark:text-gray-500`}
-            >
-              <h1>Change Hub</h1>
-            </p>
-          </button>
-        </div>
+      
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
-          onClick={() => Navigate("/vendor/vendordashboard")}
+          onClick={() => Navigate("/admin/admindashboard")}
           // onClick={highlightSidebarItem}
         >
           <svg
@@ -112,7 +94,7 @@ const NewSide: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          // onClick={() => Navigate("/admin/usermanagement")}
+          onClick={() => Navigate("/admin/usermanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -135,7 +117,7 @@ const NewSide: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          // onClick={() => Navigate("/admin/vendormanagement")}
+          onClick={() => Navigate("/admin/vendormanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -159,7 +141,7 @@ const NewSide: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          // onClick={() => Navigate("/admin/carmanagement")}
+          onClick={() => Navigate("/admin/carmanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"
@@ -184,7 +166,7 @@ const NewSide: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          // onClick={() => Navigate("/admin/hubmanagement")}
+          onClick={() => Navigate("/admin/hubmanagement")}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"

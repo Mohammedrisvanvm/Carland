@@ -7,11 +7,11 @@ export const adminAuth=async (values:{}): Promise<AxiosResponse<any>> => {
 export const adminSignOut=async (): Promise<AxiosResponse<any>> => {
     return axiosBase.get("admin/auth/logout");
 }
-export const getAllUser=async (): Promise<AxiosResponse<any>>=>{
-    return axiosBase.get("/admin/usermanagement/allusers")
+export const getAllUser=async (search:string,currentPage:number): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get(`/admin/usermanagement/allusers?search=${search}&currentPage=${currentPage}`)
 }
-export const getAllVendors=async (): Promise<AxiosResponse<any>>=>{
-    return axiosBase.get("/admin/vendormanagement/allvendors")
+export const getAllVendors=async (search:string,currentPage:number): Promise<AxiosResponse<any>>=>{
+    return axiosBase.get(`/admin/vendormanagement/allvendors?search=${search}&currentPage=${currentPage}`)
 }
 export const getAllHubs=async (search:string,currentPage:number): Promise<AxiosResponse<any>>=>{
     return axiosBase.get(`/admin/hubmanagement/allhubs?search=${search}&currentPage=${currentPage}`)
