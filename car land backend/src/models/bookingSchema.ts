@@ -25,11 +25,11 @@ const bookingSchema: Schema = new Schema(
       required: true,
     },
     bookingStartDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     bookingEndDate: {
-      type: String,
+      type: Date,
       required: true,
     },
     carPrice: {
@@ -64,7 +64,7 @@ const bookingSchema: Schema = new Schema(
     },
     status: {
       type: String,
-      enum: ["PickUp", 'pickUpreq', "Ongoing", "Completed", "Cancelled"],
+      enum: ["PickUp", 'pickUpreq', "Ongoing","dropOffReq" ,"Completed", "Cancelled"],
       default:"PickUp"
     },
   },

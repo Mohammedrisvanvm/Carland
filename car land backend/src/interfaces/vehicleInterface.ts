@@ -25,8 +25,8 @@ interface IVehicle extends Document {
   ban: boolean;
   isVerified: boolean;
   bookingDates: {
-    pickUp: string[];
-    dropOff: string[];
+    pickUp: Date[];
+    dropOff: Date[];
   };
 }
 interface IVehicle {

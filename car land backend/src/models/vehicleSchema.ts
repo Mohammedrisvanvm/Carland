@@ -71,18 +71,16 @@ const vehicleSchema: Schema = new Schema(
       default: false,
     },
     bookingDates: {
-      type: {
-        pickUp: [
-          {
-            type: String,
-          },
-        ],
-        dropOff: [
-          {
-            type: String,
-          },
-        ],
-      },
+      pickUp: [
+        {
+          type: Date,
+        },
+      ],
+      dropOff: [
+        {
+          type: Date,
+        },
+      ],
     },
   },
   { timestamps: true }

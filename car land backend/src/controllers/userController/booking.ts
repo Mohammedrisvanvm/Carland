@@ -40,8 +40,9 @@ type values = {
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const { pickUpDate, dropOffDate, carId }: values = req.body.data;
-
-    const days: number = dateCount(pickUpDate, dropOffDate);
+    const startDate: Date = new Date(pickUpDate);
+    const endDate: Date = new Date(dropOffDate);
+    const days: number = dateCount(startDate, endDate);
 
     if (!days) {
       throw new Error("date issue");
@@ -84,15 +85,16 @@ export const bookCar = AsyncHandler(
       { vehicles: { $in: carId } },
       { _id: 1, hubName: 1 }
     );
-
-    const days: number = dateCount(pickUpDate, dropOffDate);
+    const startDate: Date = new Date(pickUpDate);
+    const endDate: Date = new Date(dropOffDate);
+    const days: number = dateCount(startDate, endDate);
 
     const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate(
       { _id: carId },
       {
-        $set: {
-          "bookingDates.pickUp": pickUpDate,
-          "bookingDates.dropOff": dropOffDate,
+        $push: {
+          "bookingDates.pickUp": startDate,
+          "bookingDates.dropOff": endDate,
         },
       }
     );
@@ -106,8 +108,8 @@ export const bookCar = AsyncHandler(
       userId,
       hubName: hubDetails.hubName,
       vehicleName: vehicle.vehicleName,
-      bookingStartDate: pickUpDate,
-      bookingEndDate: dropOffDate,
+      bookingStartDate: startDate,
+      bookingEndDate: endDate,
       carPrice: vehicle.fairPrice,
       paymentStatus,
       paymentDetails: {
@@ -202,7 +204,6 @@ export const bookingDetails = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       })
     );
-    console.log(bookingDetailsWithImage);
 
     res.json({
       message: "user booking Details",
@@ -231,7 +232,6 @@ export const cancelBooking = AsyncHandler(
     };
     const { bookingID }: query = req.query;
     const booking: IBookWithTimestamps = await bookModel.findById(bookingID);
-    console.log(booking.paymentDetails.razorpay_payment_id, booking);
     razorpay.payments
       .refund(booking.paymentDetails.razorpay_payment_id, {
         amount: `${booking.totalPrice}`,
@@ -254,14 +254,12 @@ export const cancelBooking = AsyncHandler(
 export const dropOffReq = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const bookingID: string = req.query.bookingID as string;
-
-   const booking:IBookWithTimestamps= await bookModel.findOneAndUpdate(
+    const booking: IBookWithTimestamps = await bookModel.findOneAndUpdate(
       { _id: bookingID },
-      { $set: { status: "Completed" } }
+      { $set: { status: "dropOffReq" } }
     );
-    console.log();
-    
-    await vehicleModel.findOneAndUpdate({id:booking.vehicleId})
+    console.log(booking);
+
     res.json({ message: "dropOff Requested" });
   }
 );

@@ -120,3 +120,6 @@ export const pickupReq = async (id: string): Promise<AxiosResponse> => {
 export const cancelBooking = async (id: string): Promise<AxiosResponse> => {
   return await axiosBase.patch(`/users/booking/cancelbooking?bookingID=${id}`);
 };
+export const dropOffReq = async (id: string): Promise<AxiosResponse> => {
+  return await axiosBase.patch(`/users/booking/dropoffreq?bookingID=${id}`);
+};

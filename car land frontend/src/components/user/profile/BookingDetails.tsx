@@ -3,6 +3,7 @@ import scroll from "./CustomScrollbar.module.css";
 import {
   bookingdetails,
   cancelBooking,
+  dropOffReq,
   pickupReq,
 } from "../../../services/apis/userApi/userApi";
 import {
@@ -52,11 +53,11 @@ const BookingDetails: React.FC = () => {
     setSingleBooking(null);
   };
   console.log(singleBooking);
-const dropOffReq=async(id:string)=>{
-  console.log(id);
-  
-
-}
+  const dropOffHandler = async (id: string) => {
+    await dropOffReq(id)
+    setLoading(!loading);
+    setSingleBooking(null);
+  };
   return (
     <>
       <div className="justify-between sm:mt-5 h-96">
@@ -239,25 +240,36 @@ const dropOffReq=async(id:string)=>{
                   )}
                   {singleBooking._doc.status == "Ongoing" ? (
                     <>
-                   <div className="flex justify-evenly">
+                      <div className="flex justify-evenly">
+                        <button
+                          type="button"
+                          // onClick={() => handleConfirmation(singleBooking._doc._id)}
+                          className="bg-blue-600 text-white px-5 py-2 rounded"
+                        >
+                          {" "}
+                          extend
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => dropOffHandler(singleBooking._doc._id)}
+                          className="bg-green-600 text-white px-5 py-2 rounded"
+                        >
+                          {" "}
+                          dropOffReq?
+                        </button>
+                      </div>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                    {singleBooking._doc.status == "dropOffReq" ? (
                     <button
                       type="button"
-                      // onClick={() => handleConfirmation(singleBooking._doc._id)}
                       className="bg-blue-600 text-white px-5 py-2 rounded"
                     >
                       {" "}
-                      extend
+                      dropOffReq Requested
                     </button>
-                    <button
-                    type="button"
-                    onClick={() => dropOffReq(singleBooking._doc._id)}
-                    className="bg-green-600 text-white px-5 py-2 rounded"
-                  >
-                    {" "}
-                    dropOffReq?
-                  </button>
-                  </div>
-                  </>
                   ) : (
                     ""
                   )}
