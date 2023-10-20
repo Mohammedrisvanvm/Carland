@@ -13,7 +13,7 @@ import NewSide from "../../../test/NewSide";
 type Iprop = {
   sidebarWidth?: boolean;
 };
-  const  VendorBookingManagement: FC<Iprop> = ({ }) => {
+  const  AdminBooking: FC<Iprop> = ({sidebarWidth}) => {
   const [bookings, setBookings] = React.useState<
     IConfirmBookWithImage[] | null
   >(null);
@@ -41,17 +41,9 @@ console.log(response);
     fetchData();
   }, [search,currentPage]);
 
-  const [sidebarWidth, setsidebarWidth] = React.useState<boolean>(true);
-  const [spanVisible, setSpanVisible] = React.useState<boolean>(false);
   return (
     <>
-    <NewNav
-        setSpanVisible={setSpanVisible}
-        sidebarWidth={sidebarWidth}
-        spanVisible={spanVisible}
-        setsidebarWidth={setsidebarWidth}
-      />
-        <NewSide spanVisible={spanVisible}/>
+ 
       <div
         className={` ${
           sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
@@ -213,4 +205,4 @@ console.log(response);
 };
 
 
-export default VendorBookingManagement;
+export default AdminBooking;

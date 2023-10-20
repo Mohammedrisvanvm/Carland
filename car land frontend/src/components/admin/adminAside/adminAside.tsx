@@ -42,7 +42,6 @@ const AdminAside: FC<Iprop> = ({ spanVisible }) => {
       className="bg-white text-black h-screen fixed rounded-none border-none transition-all duration-200 ease-in-out overflow-hidden"
     >
       <div className="p-2 space-y-3">
-      
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           onClick={() => Navigate("/admin/admindashboard")}
@@ -191,7 +190,11 @@ const AdminAside: FC<Iprop> = ({ spanVisible }) => {
         <button
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
-          onClick={() => Navigate("/admin/bookingmanagement")}
+          onClick={() => {
+            console.log("sdfghj");
+
+            Navigate("/admin/bookingmanagement");
+          }}
         >
           <svg
             className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"

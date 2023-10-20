@@ -11,13 +11,13 @@ const AdminCarManagementPage = () => {
   const [spanVisible, setSpanVisible] = React.useState<boolean>(false);
   return (
     <>
-       <NewNav
+       <AdminNavBar
         setSpanVisible={setSpanVisible}
         sidebarWidth={sidebarWidth}
         spanVisible={spanVisible}
         setsidebarWidth={setsidebarWidth}
       />
-        <NewSide spanVisible={spanVisible}/>
+        <AdminAside spanVisible={spanVisible}/>
         <CarManagement sidebarWidth={sidebarWidth} />
     
     </>
