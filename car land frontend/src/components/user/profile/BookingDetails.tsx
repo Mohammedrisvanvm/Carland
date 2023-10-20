@@ -52,7 +52,11 @@ const BookingDetails: React.FC = () => {
     setSingleBooking(null);
   };
   console.log(singleBooking);
+const dropOffReq=async(id:string)=>{
+  console.log(id);
+  
 
+}
   return (
     <>
       <div className="justify-between sm:mt-5 h-96">
@@ -246,7 +250,7 @@ const BookingDetails: React.FC = () => {
                     </button>
                     <button
                     type="button"
-                    // onClick={() => handleConfirmation(singleBooking._doc._id)}
+                    onClick={() => dropOffReq(singleBooking._doc._id)}
                     className="bg-green-600 text-white px-5 py-2 rounded"
                   >
                     {" "}

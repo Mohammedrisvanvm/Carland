@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 
 import { useLocation } from "react-router-dom";
 
-import { useEffect, useState, Fragment, ChangeEvent } from "react";
+import React, { Fragment, ChangeEvent } from "react";
 
 import { RangePickerProps } from "antd/es/date-picker";
 
@@ -16,19 +16,19 @@ import Loader from "../utils/Loader";
 import { MainHeader } from "../components/userHeader/MainHeader/MainHeader";
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const Content = () => {
-  const [vehicles, setVehicles] = useState<Vehicles[] | undefined>([]);
+  const [vehicles, setVehicles] = React.useState<Vehicles[] | undefined>([]);
   const Navigate = useNavigate();
   let location = useLocation();
-  const [search, setSearch] = useState<string>("");
-  const [filter, setFilter] = useState<string>("");
-  const [loader, setLoader] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [totalpage, setTotalpage] = useState<number>(1);
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [seletedDate, setSeletedDate] = useState<string[]>([]);
-  const [seletedDateTemp, setSeletedDateTemp] = useState<string[]>([]);
-  const [latitude, setLatitude] = useState<number | null>(null);
-  const [longitude, setLongitude] = useState<number | null>(null);
+  const [search, setSearch] = React.useState<string>("");
+  const [filter, setFilter] = React.useState<string>("");
+  const [loader, setLoader] = React.useState<boolean>(false);
+  const [currentPage, setCurrentPage] = React.useState<number>(1);
+  const [totalpage, setTotalpage] = React.useState<number>(1);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
+  const [seletedDate, setSeletedDate] = React.useState<string[]>([]);
+  const [seletedDateTemp, setSeletedDateTemp] = React.useState<string[]>([]);
+  const [latitude, setLatitude] = React.useState<number | null>(null);
+  const [longitude, setLongitude] = React.useState<number | null>(null);
   const pageSize = 4;
   const { RangePicker } = DatePicker;
 
@@ -78,7 +78,7 @@ export const Content = () => {
   };
   // console.log(location);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await userGetVehicle(
@@ -103,7 +103,7 @@ export const Content = () => {
     fetchData();
   }, [currentPage, search, filter, latitude, longitude, seletedDate]);
 
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = React.useState<boolean>(true);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < dayjs().endOf("day");
   };
@@ -119,77 +119,84 @@ export const Content = () => {
           <div className="relative" style={{ height: "450px" }}>
             <div className="w-full h-96  p-5">
               <div className="bg-white h-full w-full p-10  flex justify-center bg-[url('/download.jpg')] bg-contain">
-                <div className="absolute bottom-0  border-4 rounded-3xl border-zinc-400  h-48 w-2/3 bg-white bg-[url('/colour.jpg')] p-10" >
+                <div className="absolute bottom-0  border-4 rounded-xl border-zinc-400 h-56  sm:h-48 sm:w-2/3 w-4/5 bg-white bg-[url('/colour.jpg')] sm:px-0 px-2 sm:grid sm:grid-cols-3">
                   {" "}
-                  <form onSubmit={handlesearch}>
-                  <div className="flex items-center justify-center mb-5 ">
-                  <div className="relative w-96">
-                    
-                    <input
-                      type="text"
-                      placeholder="Search using Location"
-                      value={searchQuery}
-                      onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                        setSearchQuery(event.target.value);
-                      }}
-                      className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
-                    />
-
-                    <img
-                      onClick={() =>
-                        navigator.geolocation.getCurrentPosition((position) => {
-                          setLatitude(position.coords.latitude);
-                          setLongitude(position.coords.longitude);
-                          // getlocation();
-                          console.log(position.coords);
-                        })
-                      }
-                      title="current location"
-                      className="h-6 w-6 absolute right-2 top-3"
-                      src="https://www.svgrepo.com/show/127575/location-sign.svg"
-                      alt="current location"
-                    />
+                  <div className="bg-gray-400 sm:col-span-1 mt-2 sm:mt-0 py-3 sm:rounded-l-lg flex justify-center items-center text-white  px-2 capitalize font-semibold sm:text-5xl">
+                    <p className="">search your best car here</p>{" "}
                   </div>
+                  <div className="sm:col-span-2 sm:grid  mt-7 grid-rows-2 justify-center items-center rounded-r-lg">
+                    <form onSubmit={handlesearch}>
+                      <div className="flex items-center justify-center mb-5 col-span-2 ">
+                        <div className="relative w-96">
+                          <input
+                            type="text"
+                            placeholder="Search using Location"
+                            value={searchQuery}
+                            onChange={(
+                              event: ChangeEvent<HTMLInputElement>
+                            ) => {
+                              setSearchQuery(event.target.value);
+                            }}
+                            className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
+                          />
 
-                  <button
-                    type="submit"
-                    className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
-                  >
-                    Search
-                  </button>
-                </div>
-                </form>
-              <form onSubmit={handleDate}>
-                <div className="flex items-center justify-center mb-5">
-                  <RangePicker
-                    size="middle"
-                    className="h-12"
-                    format="YYYY-MM-DD"
-                    placeholder={["Start Time", "End Time"]}
-                    onChange={onChange}
-                    disabledDate={disabledDate}
-                  />
+                          <img
+                            onClick={() => {
+                              if (!latitude) {
+                                navigator.geolocation.getCurrentPosition(
+                                  (position) => {
+                                    setLatitude(position.coords.latitude);
+                                    setLongitude(position.coords.longitude);
+                                  }
+                                );
+                              } else {
+                                setLatitude(null);
+                                setLongitude(null);
+                              }
+                            }}
+                            title="current location"
+                            className="h-6 w-6 absolute right-2 top-3"
+                            src="https://www.svgrepo.com/show/127575/location-sign.svg"
+                            alt="current location"
+                          />
+                        </div>
 
-                  <button
-                    type="submit"
-                    className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide mx-2 text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
-                    aria-label="Sign up"
-                    title="Sign up"
-                  >
-                    get cars
-                  </button>
-                </div>
-              </form>
+                        <button
+                          type="submit"
+                          className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
+                        >
+                          Search
+                        </button>
+                      </div>
+                    </form>
+                    <form onSubmit={handleDate}>
+                      <div className="flex items-center justify-center mb-5">
+                        <RangePicker
+                          size="middle"
+                          className="h-12"
+                          format="YYYY-MM-DD"
+                          placeholder={["Start Time", "End Time"]}
+                          onChange={onChange}
+                          disabledDate={disabledDate}
+                        />
+
+                        <button
+                          type="submit"
+                          className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide mx-2 text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
+                          aria-label="Sign up"
+                          title="Sign up"
+                        >
+                          get cars
+                        </button>
+                      </div>
+                    </form>{" "}
+                  </div>
                 </div>
               </div>
             </div>
           </div>
           <div className="px-4 mt-6 sm:my-0 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
             <div className="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl md:mb-12">
-              <h2 className="max-w-lg mb-10 font-sans inline-block font-bold leading-none text-center tracking-tight text-gray-900 text-sm sm:text-4xl md:mx-auto">
-                Rent a car and explore the city at your own pace
-              </h2>
-
               {/* <div className="sm:flex justify-around">
                 {" "}
                 <div></div>

@@ -36,7 +36,7 @@ function App() {
            <Route path="/chat" element={<VendorChat />} />
            <Route path="/bug" element={<Content />} />
            {/* <Route path="/newnav" element={<NewNav />} /> */}
-           <Route path="/newside1" element={<NewSide1 />} />
+           {/* <Route path="/newside1" element={<NewSide1 />} /> */}
            <Route path="/newpage" element={<Newpage />} />
         </Routes>
       </BrowserRouter>
