@@ -5,6 +5,7 @@ import { IConfirmBookWithImage } from "../../../interfaces/bookingConfirmInterfa
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import {
+  dropOffreqAction,
   getBookings,
   pickUpreqAction,
 } from "../../../services/apis/vendorApi/vendorApi";
@@ -21,6 +22,7 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
     IConfirmBookWithImage[] | null
   >(null);
   const [search, setSearch] = React.useState<string>("");
+  const [status, setStatus] = React.useState<string|null>(null);
   const [showModal, setShowModal] = React.useState<boolean>(false);
   const [loader, setLoader] = React.useState<boolean>(false);
   const [showModalData, setshowModalData] = React.useState<string | null>(null);
@@ -45,8 +47,8 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
       }
     };
     fetchData();
-  }, [search, currentPage]);
-  const acceptAction = async () => {
+  }, [search, currentPage,loader]);
+  const pickUpAction = async () => {
     try {
       setLoader(true);
 
@@ -59,6 +61,20 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
       console.log(error);
     }
   };
+  const dropOffAction=async()=>{
+    try {
+      setLoader(true);
+
+      const response: AxiosResponse = await dropOffreqAction(showModalData);
+      if (response.data?.message) {
+        setLoader(false);
+        setShowModal(false);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+    
+  }
   return (
     <>
       <div
@@ -215,8 +231,9 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
                             onClick={() => {
                               setShowModal(true);
                               setshowModalData(item._doc._id);
+                              setStatus(item._doc.status)
                             }}
-                            disabled={item._doc.status !== "pickUpreq"}
+                            disabled={item._doc.status !== "pickUpreq" && item._doc.status !== "dropOffReq"}
                           >
                             {" "}
                             action
@@ -238,7 +255,8 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
 
                         <div className="px-4 py-8  h-52 overflow-y-auto bg-gray-100 ">
                           <h1 className="flex font-bold text-2xl pb-5 justify-center">
-                            pick Up request
+                            { status =='dropOffReq' ?'drop Off Request':''}
+                            { status =='pickUpreq' ?'pick Up request':''}
                           </h1>
                           <div className="flex flex-row justify-evenly">
                             <button
@@ -250,7 +268,8 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
                               cancel
                             </button>
                             <button
-                              onClick={() => acceptAction()}
+                           onClick={status === 'dropOffReq' ? dropOffAction : pickUpAction}
+                              
                               className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
                             >
                               accept

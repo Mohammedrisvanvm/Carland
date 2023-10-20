@@ -70,3 +70,25 @@ export const pickUpreqAction = AsyncHandler(
     res.status(200).json({ message: "Request accepted" });
   }
 );
+export const dropOffAction = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const bookingID: string = req.query.bookingID as string;
+console.log(bookingID);
+
+   const booking:IBookWithTimestamps= await bookModel.findOneAndUpdate(
+      { _id: bookingID },
+      { $set: { status: "Completed" } }
+    );
+
+
+const vehicle :IVehicle=await vehicleModel.findById(booking.vehicleId)
+
+const targetPickUpDate = new Date(booking.bookingStartDate);
+const targetDropOffDate = new Date(booking.bookingEndDate);
+
+ if (vehicle.bookingDates.pickUp.some(date => date.getTime() === booking.bookingStartDate.getTime())) {
+await vehicleModel.findByIdAndUpdate(booking.vehicleId,{$pull:{ 'bookingDates.pickUp': targetPickUpDate,'bookingDates.dropOff':targetDropOffDate }})
+}
+    res.json({ message: "completed" });
+  }
+);

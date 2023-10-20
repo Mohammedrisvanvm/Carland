@@ -47,3 +47,7 @@ export const getBookings = async (id: string | null | undefined,search:string,cu
 export const  pickUpreqAction= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/bookings/pickupreqaction?bookingID=${id}`);
 };
+export const dropOffreqAction= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.patch(`/vendors/bookings/dropoffreqaction?bookingID=${id}`);
+};
+

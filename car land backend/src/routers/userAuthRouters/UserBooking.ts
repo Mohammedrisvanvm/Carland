@@ -10,6 +10,7 @@ UserBookingRouter.get('/bookingconfirmdetails',bookingConfirmDetails)
 UserBookingRouter.get('/bookingdetails',bookingDetails)
 UserBookingRouter.patch('/pickupReq',pickupReq)
 UserBookingRouter.patch('/dropoffreq',dropOffReq)
+
 UserBookingRouter.patch('/cancelbooking',cancelBooking)
 
 export default UserBookingRouter

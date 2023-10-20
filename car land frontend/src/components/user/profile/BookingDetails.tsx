@@ -273,6 +273,17 @@ const BookingDetails: React.FC = () => {
                   ) : (
                     ""
                   )}
+                    {singleBooking._doc.status == "Completed" ? (
+                    <button
+                      type="button"
+                      className="bg-green-600 text-white px-5 py-2 rounded"
+                    >
+                      {" "}
+                      Completed
+                    </button>
+                  ) : (
+                    ""
+                  )}
                 </div>
                 <div className="flex justify-evenly">
                   {singleBooking._doc.status === "Cancelled" ? (
@@ -291,7 +302,7 @@ const BookingDetails: React.FC = () => {
                   ) : (
                     <>
                       {" "}
-                      {singleBooking._doc.status == "Ongoing" ? (
+                      {singleBooking._doc.status == "Ongoing" ||"Completed" ? (
                         ""
                       ) : (
                         <>
@@ -300,7 +311,7 @@ const BookingDetails: React.FC = () => {
                             onClick={() => cancelHandle(singleBooking._doc._id)}
                             className="bg-red-600 px-6 rounded-lg py-2 text-white"
                           >
-                            Cancel
+                            Cancelsdv
                           </button>
                         </>
                       )}
