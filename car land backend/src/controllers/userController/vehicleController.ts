@@ -18,7 +18,7 @@ export const userVehicles = AsyncHandler(
     };
 
     const { search, filter, lat, lng, seletedDate }: search = req.query;
-    console.log(search, filter, lat, lng, seletedDate);
+    console.log(search,"1", filter,"2", lat,"3", lng,"4", seletedDate);
 
     const query: { isVerified: boolean; vehicleName?: RegExp; fuel?: string } =
       { isVerified: true };

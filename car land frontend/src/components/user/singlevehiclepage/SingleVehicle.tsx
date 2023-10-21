@@ -140,13 +140,24 @@ const SingleCar: FC = () => {
       (current.isAfter(minDate) && current.isBefore(maxDate))
     );
   };
-
+  const range = (start: number, end: number) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+  const disabledDateTime = () => ({
+    // disabledHours: () => range(0, 24).splice(4, 20),
+    // disabledMinutes: () => range(30, 60),
+    // disabledSeconds: () => [55, 56],
+  });
   return (
     <>
       <MainHeader />
-      <div className="sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-4">
+      <div className="sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-4 px-10 py-10">
         <div className="relative w-full col-span-2  h-auto sm:h-screen overflow-y-scroll">
-          <div className="relative h-56 overflow-hidden rounded-lg md:h-96 bg-gray-300">
+          <div className="relative h-56 overflow-hidden rounded-lg md:h-96 border-2 drop-shadow-md">
             {images.map((image, index) => (
               <div
                 key={index}
@@ -156,7 +167,7 @@ const SingleCar: FC = () => {
               >
                 <img
                   src={image}
-                  className="absolute block bg-gray-300 sm:h-80 sm:w-1/2 -translate-x-1/2 px-3 -translate-y-1/2 top-1/2 left-1/2 object-cover"
+                  className="absolute block  sm:h-80 sm:w-1/2 -translate-x-1/2 px-3 -translate-y-1/2 top-1/2 left-1/2 object-cover"
                   alt={`Slide ${index + 1}`}
                 />
               </div>
@@ -169,7 +180,7 @@ const SingleCar: FC = () => {
             onClick={prevSlide}
           >
             <svg
-              className="w-4 h-4 sm:text-white text-gray-500 dark:text-gray-800"
+              className="w-4 h-4  text-gray-400 dark:text-gray-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -191,7 +202,7 @@ const SingleCar: FC = () => {
             onClick={nextSlide}
           >
             <svg
-              className="w-4 h-4 sm:text-white text-gray-500 dark:text-gray-800"
+              className="w-4 h-4  text-gray-400 dark:text-gray-800"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -213,10 +224,12 @@ const SingleCar: FC = () => {
             <RangePicker
               size="middle"
               className="h-12"
-              format="YYYY-MM-DD"
+              showTime={{ format: "hh A" }}
+              format="YYYY-MM-DD hh A"
               placeholder={["Start Time", "End Time"]}
               onChange={onChange}
               disabledDate={disabledDate}
+              disabledTime={disabledDateTime}
             />
           </div>
           {seletedDate ? (

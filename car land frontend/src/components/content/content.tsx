@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 
 import { useLocation } from "react-router-dom";
 
-import React, { Fragment, ChangeEvent } from "react";
+import React, { Fragment, ChangeEvent, useEffect } from "react";
 
 import { RangePickerProps } from "antd/es/date-picker";
 
@@ -14,7 +14,25 @@ import { AxiosResponse } from "../../interfaces/axiosinterface";
 import { userGetVehicle } from "../../services/apis/userApi/userApi";
 import Loader from "../../utils/Loader";
 import { MainHeader } from "../userHeader/MainHeader/MainHeader";
+import { GeocodingResponse } from "../../interfaces/geocodingInterface";
 
+interface GeolocationPosition {
+  coords: GeolocationCoordinates;
+  timestamp: number;
+}
+type Current = {
+  latitude: number;
+  longitude: number;
+};
+interface GeolocationCoordinates {
+  latitude: number;
+  longitude: number;
+  altitude: number | null;
+  accuracy: number;
+  altitudeAccuracy: number | null;
+  heading: number | null;
+  speed: number | null;
+}
 // import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 export const Content = () => {
   const [vehicles, setVehicles] = React.useState<Vehicles[] | undefined>([]);
@@ -23,13 +41,18 @@ export const Content = () => {
   const [search, setSearch] = React.useState<string>("");
   const [filter, setFilter] = React.useState<string>("");
   const [loader, setLoader] = React.useState<boolean>(false);
+  const [action, setAction] = React.useState<boolean>(false);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [totalpage, setTotalpage] = React.useState<number>(1);
   const [searchQuery, setSearchQuery] = React.useState<string>("");
   const [seletedDate, setSeletedDate] = React.useState<string[]>([]);
+  const [suggestion, setSuggestion] = React.useState<any[]>([]);
   const [seletedDateTemp, setSeletedDateTemp] = React.useState<string[]>([]);
   const [latitude, setLatitude] = React.useState<number | null>(null);
   const [longitude, setLongitude] = React.useState<number | null>(null);
+  const [currentLocation, setCurrentLocation] = React.useState<Current | null>(
+    null
+  );
   const pageSize = 4;
   const { RangePicker } = DatePicker;
 
@@ -47,7 +70,7 @@ export const Content = () => {
     }
     // console.log("Selected Time: ", typeof(value[0].$d), value[0].$d);
     console.log("Formatted Selected Time: ", typeof dateString, dateString);
-    setSeletedDateTemp(dateString);
+    setSeletedDate(dateString);
   }
 
   function onOk(value: any) {
@@ -59,12 +82,14 @@ export const Content = () => {
     const response = await mapboxAPI.get(
       `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
     );
+
+    console.log(response);
+
     if (response.data.features.length === 0) {
       console.log("Location not found");
       return;
     }
     console.log(response);
-
     const points = response.data.features[1];
     console.log(parseFloat(points.center[1]));
     const latitude: number = parseFloat(points.center[1]);
@@ -77,6 +102,16 @@ export const Content = () => {
     } = { latitude: latitude, longitude: longitude };
     console.log(searchedLocation, "searched Location");
   };
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      const response: GeocodingResponse = await mapboxAPI.get(
+        `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
+      );
+      setSuggestion(response.data.features);
+    };
+    fetchLocation();
+  }, [searchQuery]);
   // console.log(location);
 
   React.useEffect(() => {
@@ -102,12 +137,21 @@ export const Content = () => {
     };
 
     fetchData();
-  }, [currentPage, search, filter, latitude, longitude, seletedDate]);
+  }, [currentPage, search, filter, action]);
 
-  const [isOpen, setIsOpen] = React.useState<boolean>(true);
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
     return current && current < dayjs().endOf("day");
   };
+
+  async function CurrentLocation(coords: Current) {
+    const res: GeocodingResponse = await mapboxAPI.get(
+      `https://api.mapbox.com/geocoding/v5/mapbox.places/${coords.longitude},${coords.latitude}.json`
+    );
+    setSearchQuery(res.data.features[0].place_name);
+  }
+  console.log(currentLocation?.latitude);
+
+  console.log(latitude, longitude);
 
   return (
     <Fragment>
@@ -120,34 +164,50 @@ export const Content = () => {
           <div className="relative" style={{ height: "450px" }}>
             <div className="w-full h-96  p-5">
               <div className="bg-white h-full w-full p-10  flex justify-center bg-[url('/download.jpg')] bg-contain">
-                <div className="absolute bottom-0  border-4 rounded-xl border-zinc-400 h-56  sm:h-48 sm:w-2/3 w-4/5 bg-white bg-[url('/colour.jpg')] sm:px-0 px-2 sm:grid sm:grid-cols-3">
+                <div className="absolute  bottom-0 shadow rounded-xl border-zinc-400 h-56  sm:h-56 sm:w-2/3 w-4/5 bg-white  sm:px-0 px-2 sm:grid sm:grid-cols-3">
                   {" "}
-                  <div className="bg-gray-400 sm:col-span-1 mt-2 sm:mt-0 py-3 sm:rounded-l-lg flex justify-center items-center text-white  px-2 capitalize font-semibold sm:text-5xl">
+                  <div className="border-4 sm:col-span-1 sm:rounded-l-lg flex justify-center items-center text-black px-4 capitalize font-semibold sm:text-5xl">
                     <p className="">search your best car here</p>{" "}
                   </div>
-                  <div className="sm:col-span-2 sm:grid  mt-7 grid-rows-2 justify-center items-center rounded-r-lg">
+                  <div className="sm:col-span-2 grid  grid-rows-2  items-center rounded-r-lg">
                     <form onSubmit={handlesearch}>
-                      <div className="flex items-center justify-center mb-5 col-span-2 ">
-                        <div className="relative w-96">
-                          <input
-                            type="text"
-                            placeholder="Search using Location"
-                            value={searchQuery}
-                            onChange={(
-                              event: ChangeEvent<HTMLInputElement>
-                            ) => {
-                              setSearchQuery(event.target.value);
-                            }}
-                            className="h-12 px-4 border border-black rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
-                          />
+                      <div className="grid grid-cols-8 mb-5 p-2 ">
+                        <input
+                          type="text"
+                          placeholder="Search using Location"
+                          value={searchQuery}
+                          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                            setSearchQuery(event.target.value);
+                          }}
+                          className="h-12 px-4 col-span-7 rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 w-full pr-10"
+                        />
 
-                          <img
+                        <div className="z-50 absolute gap-3  text-gray-600 grid grid-rows-1 p-1">
+                          {latitude
+                            ? ""
+                            : suggestion.map((item) => (
+                                <div
+                                  key={item.id}
+                                  onClick={() => {
+                                    setSuggestion([]);
+                                    setLongitude(item.center[0]);
+                                    setLatitude(item.center[1]);
+                                    setSearchQuery(item.place_name);
+                                  }}
+                                  className="hover:bg-gray-200 bg-white p-2 border"
+                                >
+                                  {item.place_name}
+                                </div>
+                              ))}
+                        </div>
+
+                        <div className="flex justify-center items-center">
+                          <svg
                             onClick={() => {
                               if (!latitude) {
                                 navigator.geolocation.getCurrentPosition(
-                                  (position) => {
-                                    setLatitude(position.coords.latitude);
-                                    setLongitude(position.coords.longitude);
+                                  (position: GeolocationPosition) => {
+                                    CurrentLocation(position.coords);
                                   }
                                 );
                               } else {
@@ -155,23 +215,18 @@ export const Content = () => {
                                 setLongitude(null);
                               }
                             }}
-                            title="current location"
-                            className="h-6 w-6 absolute right-2 top-3"
-                            src="https://www.svgrepo.com/show/127575/location-sign.svg"
-                            alt="current location"
-                          />
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6 hover:cursor-pointer"
+                            viewBox="0 0 512 512"
+                          >
+                            <path
+                              fill="navyblue"
+                              d="M256 0c17.7 0 32 14.3 32 32V66.7C368.4 80.1 431.9 143.6 445.3 224H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H445.3C431.9 368.4 368.4 431.9 288 445.3V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V445.3C143.6 431.9 80.1 368.4 66.7 288H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H66.7C80.1 143.6 143.6 80.1 224 66.7V32c0-17.7 14.3-32 32-32zM128 256a128 128 0 1 0 256 0 128 128 0 1 0 -256 0zm128-80a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"
+                            />
+                          </svg>
                         </div>
-
-                        <button
-                          type="submit"
-                          className="h-12 px-4 mx-2 border border-gray-300 rounded-md focus:ring focus:ring-gray-300 focus:outline-none"
-                        >
-                          Search
-                        </button>
                       </div>
-                    </form>
-                    <form onSubmit={handleDate}>
-                      <div className="flex items-center justify-center mb-5">
+                      <div className="justify-center flex bg-black">
                         <RangePicker
                           size="middle"
                           className="h-12"
@@ -180,17 +235,17 @@ export const Content = () => {
                           onChange={onChange}
                           disabledDate={disabledDate}
                         />
-
-                        <button
-                          type="submit"
-                          className=" items-center text-sm justify-center sm:w-full w-28 rounded-lg h-12  font-medium tracking-wide mx-2 text-white transition duration-200 sm:rounded-r-lg shadow-md bg-black focus:shadow-outline focus:outline-none"
-                          aria-label="Sign up"
-                          title="Sign up"
-                        >
-                          get cars
-                        </button>
                       </div>
-                    </form>{" "}
+                    </form>
+
+                    <div className="flex items-center  justify-center mb-5">
+                      <button
+                        onClick={() => setAction(!action)}
+                        className="h-12 w-full mx-2 border bg-black  rounded-md hover:bg-gray-500 text-white "
+                      >
+                        Search
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
