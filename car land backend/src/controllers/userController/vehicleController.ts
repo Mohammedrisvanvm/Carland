@@ -127,8 +127,30 @@ export const singleCar = AsyncHandler(
     const id: string = typeof req.query.id === "string" ? req.query.id : "";
     const vehicle: IVehicle = await vehicleModel.findById(id);
     const hub: Ihub = await hubModel.findOne({ vehicles: { $in: [id] } });
-  
+    console.log(vehicle.bookingDates);
+    let datesArray: Date[] = [];
+    // vehicle.bookingDates.pickUp.forEach((pickUpDate, index) => {
+    //   vehicle.bookingDates.dropOff.forEach((dropOffDate, index) => {
+    //     let currentDate = new Date(pickUpDate);
 
-    res.json({ vehicle, location: hub.location });
+    //     while (currentDate <= dropOffDate) {
+    //       datesArray.push(new Date(currentDate));
+
+    //       currentDate.setDate(currentDate.getDate() + 1);
+    //     }
+    //   });
+    // });
+    for (let i = 0; i < vehicle.bookingDates.pickUp.length; i++) {
+      let currentDate = new Date(vehicle.bookingDates.pickUp[i]);
+      const dropOffDate = vehicle.bookingDates.dropOff[i];
+    
+      while (currentDate <= dropOffDate) {
+        datesArray.push(new Date(currentDate));
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+    console.log(datesArray);
+
+    res.json({ vehicle, location: hub.location,datesArray });
   }
 );

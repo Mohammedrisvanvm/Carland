@@ -1,8 +1,10 @@
 import React, { FC, ChangeEvent, useEffect } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { DatePicker } from "antd";
-const { RangePicker } = DatePicker;
+
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+
+import dayjs from "dayjs";
 
 import { toast } from "react-toastify";
 import { Vehicles } from "../../../interfaces/vehicleInterface";
@@ -15,7 +17,7 @@ import Payment from "../payment/Payment";
 import StaticMapRoute from "../profile/StaticMapRoute";
 import mapboxAPI from "../../../services/mapbox/mapbox";
 import { GeocodingResponse } from "../../../interfaces/geocodingInterface";
-
+import { RangePickerProps } from "antd/es/date-picker";
 let images: string[] = [];
 
 const SingleCar: FC = () => {
@@ -23,12 +25,12 @@ const SingleCar: FC = () => {
   const [activeSlide, setActiveSlide] = React.useState<number>(0);
   const [open, setOpen] = React.useState<boolean>(false);
   const [map, setMap] = React.useState<boolean>(false);
-  const [place, setPlace] = React.useState<string>('');
+  const [place, setPlace] = React.useState<string>("");
   const [seletedDate, setSeletedDate] = React.useState<string[] | string>("");
   const Navigate = useNavigate();
   const location = useLocation();
   const [paybutton, setPaybutton] = React.useState<boolean>(false);
-
+  const [oldbookingDates, setOldbookingDates] = React.useState<Date[]>([]);
   type ILocation = {
     lng: number;
     lat: number;
@@ -61,7 +63,9 @@ const SingleCar: FC = () => {
           response.data.vehicle?.SubImages.forEach((image) => {
             images.push(image);
           });
-
+          if (response.data?.datesArray) {
+            setOldbookingDates(response.data?.datesArray);
+          }
           setLocation(response.data?.location);
           setMap(true);
         }
@@ -75,10 +79,8 @@ const SingleCar: FC = () => {
     };
   }, []);
 
-
   const [price, setPrice] = React.useState<number>(0);
   React.useEffect(() => {
-    
     const date1 = new Date(seletedDate[0]);
     const date2 = new Date(seletedDate[1]);
 
@@ -117,13 +119,28 @@ const SingleCar: FC = () => {
       setPaybutton(!paybutton);
     }
   };
-  useEffect(()=>{
-  const fetchData=async()=>{
-      const res:GeocodingResponse=await mapboxAPI.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${Location?.lng},${Location?.lat}.json`) 
-      setPlace(res.data.features[0].place_name)
-    }
-    fetchData()
-  },[Location])
+  useEffect(() => {
+    const fetchData = async () => {
+      const res: GeocodingResponse = await mapboxAPI.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${Location?.lng},${Location?.lat}.json`
+      );
+      setPlace(res.data.features[0].place_name);
+    };
+    fetchData();
+  }, [Location]);
+
+  console.log(oldbookingDates);
+  const { RangePicker } = DatePicker;
+  const disabledDate: RangePickerProps["disabledDate"] = (current) => {
+    const minDate = dayjs(oldbookingDates[0]);
+    const maxDate = dayjs(oldbookingDates[oldbookingDates.length - 1]);
+
+    return (
+      (current && current < dayjs().endOf("day")) ||
+      (current.isAfter(minDate) && current.isBefore(maxDate))
+    );
+  };
+
   return (
     <>
       <MainHeader />
@@ -199,29 +216,30 @@ const SingleCar: FC = () => {
               format="YYYY-MM-DD"
               placeholder={["Start Time", "End Time"]}
               onChange={onChange}
-              // disabledDate={disabledDate}
+              disabledDate={disabledDate}
             />
           </div>
-{seletedDate ? (<><div className="sm:h-44 h-auto mt-4 w-full p-2">
-            <div className="h-full border-4 sm:grid sm:grid-cols-2 grid-col-1 p-3">
-              <div className="">
-                <span className="text-lg font-semibold">From</span>
-                <p>{new Date(seletedDate[0]).toDateString()}</p>
-                <p>
-                {place}
-                </p>
+          {seletedDate ? (
+            <>
+              <div className="sm:h-44 h-auto mt-4 w-full p-2">
+                <div className="h-full border-4 sm:grid sm:grid-cols-2 grid-col-1 p-3">
+                  <div className="">
+                    <span className="text-lg font-semibold">From</span>
+                    <p>{new Date(seletedDate[0]).toDateString()}</p>
+                    <p>{place}</p>
+                  </div>
+                  <div className="">
+                    <span className="text-lg font-semibold">To</span>
+                    <p>{new Date(seletedDate[1]).toDateString()}</p>
+                    <p>{place}</p>
+                  </div>
+                </div>
               </div>
-              <div className="">
-                <span className="text-lg font-semibold">To</span>
-                <p>{new Date(seletedDate[1]).toDateString()}</p>
-                <p>
-              {place}
-                </p>
-              </div>
-           
-            </div>
-          </div></>):""}
-          
+            </>
+          ) : (
+            ""
+          )}
+
           <div className="sm:h-44 h-auto mt-4 w-full text-base font-medium p-2 border-2 border-gray-500 bg-gray-200">
             <div className=" flex justify-between mb-2">
               <p className="text-lg font-bold">

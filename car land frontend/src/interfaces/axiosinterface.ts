@@ -10,6 +10,7 @@ export interface AxiosResponse<T = any> {
     vehicles?: Vehicles[];
     count?:number
     vehicle?:Vehicles
+    datesArray?:Date[]
     vendors?:IVendor[]
     users?:user[]
     user?:user
