@@ -15,6 +15,7 @@ import { userGetVehicle } from "../../services/apis/userApi/userApi";
 import Loader from "../../utils/Loader";
 import { MainHeader } from "../userHeader/MainHeader/MainHeader";
 import { AxiosResponse } from "../../interfaces/axiosinterface";
+import { UserFooter } from "../userFooter/userFooter";
 
 interface GeolocationPosition {
   coords: GeolocationCoordinates;
@@ -147,29 +148,25 @@ export const Content = () => {
         <>
           {" "}
           <MainHeader />
-          <div className="relative" style={{ height: "450px" }}>
-            <div className="w-full h-96  p-5">
-              <div className="bg-white h-full w-full p-10  flex justify-center bg-[url('/download.jpg')] bg-contain">
-                <div className="absolute  bottom-0 shadow rounded-xl border-zinc-400 h-56  sm:h-56 sm:w-2/3 w-4/5 bg-white  sm:px-0 px-2 sm:grid sm:grid-cols-3">
-                  {" "}
-                  <div className="bg-black text-white sm:col-span-1 sm:rounded-l-lg flex justify-center items-center  px-4 capitalize font-semibold sm:text-5xl">
-                    <p className="">search your best car here</p>{" "}
-                  </div>
-                  <div className="items-center justify-center  sm:col-span-2 sm:rounded-r-lg ">
-                    <div className="p-10 ">
-                      <div className="flex relative justify-center ">
-                        {" "}
-                        <input
-                          type="text"
-                          placeholder="Search using Location"
-                          value={searchQuery}
-                          onChange={(event: ChangeEvent<HTMLInputElement>) => {
-                            setSearchQuery(event.target.value);
-                          }}
-                          // onBlur={()=>setSuggestion([])}
-
-                          className="h-12  w-full rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300 "
-                        />
+          <div className="relative w-full" style={{ height: "450px" }}>
+      <div className="w-full p-5">
+        <div className="w-full h-10 p-10 flex justify-center bg-[u] " >
+          <div className="absolute bottom-0 shadow rounded-xl border-zinc-400 h-56 sm:h-56 sm:w-2/3 w-4/5 bg-white bg-cover bg-no-repeat sm:px-0 px-2 sm:grid sm:grid-cols-3" >
+            <div className="bg-black text-white sm:col-span-1 sm:rounded-l-lg flex justify-center items-center px-4 capitalize font-semibold sm:text-5xl">
+              <p className="">Search your best car here</p>
+            </div>
+            <div className="items-center justify-center sm:col-span-2 sm:rounded-r-lg">
+              <div className="p-10">
+                <div className="flex relative justify-center">
+                  <input
+                    type="text"
+                    placeholder="Search using Location"
+                    value={searchQuery}
+                    onChange={(event: ChangeEvent<HTMLInputElement>) => {
+                      setSearchQuery(event.target.value);
+                    }}
+                    className="h-12 w-full rounded-md focus:border-gray-300 focus:ring focus:ring-gray-300"
+                  />
                         <ul className="z-50 absolute top-10 w-full  text-gray-600 grid grid-rows-1 ">
                           {latitude
                             ? ""
@@ -363,6 +360,7 @@ export const Content = () => {
           </div>
         </>
       )}
+      <UserFooter/>
     </Fragment>
   );
 };

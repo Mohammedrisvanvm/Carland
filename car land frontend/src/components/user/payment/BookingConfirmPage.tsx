@@ -33,14 +33,16 @@ const BookingConfirmPage: React.FC = () => {
 
   return (
     <>
-      <MainHeader />
-      <div className="container mt-5 mb-5 h-96">
-        <div className="flex justify-center">
-          <div className="w-8/12">
-            <div className="card">
-           
-
-              <div className="invoice p-5">
+      <div className="sm:h-screen h-full">
+        <MainHeader />
+        <div className="container mt-5 mb-5 ">
+          <div className="flex justify-center">
+            <div className="w-8/12">
+              <p className="flex absolute items-center text-blue-500  border-2 rounded-3xl hover:cursor-pointer p-1" onClick={()=>Navigate('/')}>
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 576 512"><path d="M575.8 255.5c0 18-15 32.1-32 32.1h-32l.7 160.2c0 2.7-.2 5.4-.5 8.1V472c0 22.1-17.9 40-40 40H456c-1.1 0-2.2 0-3.3-.1c-1.4 .1-2.8 .1-4.2 .1H416 392c-22.1 0-40-17.9-40-40V448 384c0-17.7-14.3-32-32-32H256c-17.7 0-32 14.3-32 32v64 24c0 22.1-17.9 40-40 40H160 128.1c-1.5 0-3-.1-4.5-.2c-1.2 .1-2.4 .2-3.6 .2H104c-22.1 0-40-17.9-40-40V360c0-.9 0-1.9 .1-2.8V287.6H32c-18 0-32-14-32-32.1c0-9 3-17 10-24L266.4 8c7-7 15-8 22-8s15 2 21 7L564.8 231.5c8 7 12 15 11 24z"/></svg>
+              <span className="ml-2 text-black">  back to home</span>
+              </p>
+              <div className="invoice p-5 mt-10">
                 <h5 className="text-left">Your Booking Confirmed!</h5>
 
                 <span className="font-semibold block text-green-600 mt-4">
@@ -156,74 +158,74 @@ const BookingConfirmPage: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div className="flex justify-center">
-        <button
-          onClick={() => Navigate("/bookingDetails")}
-          className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
-        >
-          Back To Booking Details
-        </button>
-      </div>
-
-      <footer
-        className="text-center text-white mt-4 "
-        style={{ backgroundColor: "#607d8b" }}
-      >
-        <hr className="border-b border-gray-700" />
-
-        <div className="container" style={{ height: "50" }}>
-          <section className="mb-3">
-            <a
-              href="#"
-              className="btn btn-floating btn-lg text-white me-3"
-              role="button"
+          <div className="flex justify-center items-center ">
+            <div
+              onClick={() => Navigate("/bookingDetails")}
+              className="bg-gray-800 w-44
+            hover:bg-gray-700 text-white  font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
             >
-              <i className="fab fa-facebook-f"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-floating btn-lg text-white me-3"
-              role="button"
-            >
-              <i className="fab fa-twitter"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-floating btn-lg text-white me-3"
-              role="button"
-            >
-              <i className="fab fa-google"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-floating btn-lg text-white me-3"
-              role="button"
-            >
-              <i className="fab fa-instagram"></i>
-            </a>
-            <a
-              href="#"
-              className="btn btn-floating btn-lg text-white"
-              role="button"
-            >
-              <i className="fab fa-youtube"></i>
-            </a>
-          </section>
+              To Booking Details
+            </div>
+          </div>
         </div>
 
         <div
-          className="text-center p-3 "
-          style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", color: " #e0e0e0" }}
+          className="text-center sm:absolute bottom-0  w-full text-white sm:mt-24 "
+          style={{ backgroundColor: "#607d8b" }}
         >
-          © 2023 Copyright:{" "}
-          <button onClick={() => Navigate("/")} className="text-white">
-            carland.com
-          </button>
+          <hr className="border-2 border-gray-700" />
+
+          <div className="container" style={{ height: "50" }}>
+            <section className="mb-3">
+              <a
+                href="#"
+                className="btn btn-floating btn-lg text-white me-3"
+                role="button"
+              >
+                <i className="fab fa-facebook-f"></i>
+              </a>
+              <a
+                href="#"
+                className="btn btn-floating btn-lg text-white me-3"
+                role="button"
+              >
+                <i className="fab fa-twitter"></i>
+              </a>
+              <a
+                href="#"
+                className="btn btn-floating btn-lg text-white me-3"
+                role="button"
+              >
+                <i className="fab fa-google"></i>
+              </a>
+              <a
+                href="#"
+                className="btn btn-floating btn-lg text-white me-3"
+                role="button"
+              >
+                <i className="fab fa-instagram"></i>
+              </a>
+              <a
+                href="#"
+                className="btn btn-floating btn-lg text-white"
+                role="button"
+              >
+                <i className="fab fa-youtube"></i>
+              </a>
+            </section>
+          </div>
+
+          <div
+            className="text-center p-3 "
+            style={{ backgroundColor: "rgba(0, 0, 0, 0.2)", color: " #e0e0e0" }}
+          >
+            © 2023 Copyright:{" "}
+            <button onClick={() => Navigate("/")} className="text-white">
+              carland.com
+            </button>
+          </div>
         </div>
-      </footer>
+      </div>
     </>
   );
 };

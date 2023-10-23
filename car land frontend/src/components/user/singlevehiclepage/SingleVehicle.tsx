@@ -19,6 +19,7 @@ import mapboxAPI from "../../../services/mapbox/mapbox";
 import { GeocodingResponse } from "../../../interfaces/geocodingInterface";
 import { RangePickerProps } from "antd/es/date-picker";
 import moment from "moment";
+import { UserFooter } from "../../userFooter/userFooter";
 let images: string[] = [];
 
 const SingleCar: FC = () => {
@@ -604,6 +605,7 @@ const SingleCar: FC = () => {
           </div>
         </div>
       </div>
+      <UserFooter/>
     </>
   );
 };

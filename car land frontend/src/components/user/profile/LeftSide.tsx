@@ -27,9 +27,9 @@ const LeftSide: FC<Iprop> = ({ value }) => {
   return (
     <>
       <MainHeader />
-      <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 h-screen">
-        <div className="grid max-w-screen-lg gap-8 row-gap-5 md:row-gap-8 sm:mx-auto lg:grid-cols-2 ">
-          <div className="transition duration-300 transform bg-white rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center">
+      <div className="px-4 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 h-screen ">
+        <div className="grid max-w-screen-lg gap-8 row-gap-5 md:row-gap-8 sm:mx-auto lg:grid-cols-2  ">
+          <div className="transition duration-300 transform bg-white rounded  hover:-translate-y-1 shadow-md hover:shadow md:text-center">
             <div>
               <div className="relative pb-56 mb-4 sm:mx-36 mx-10 mt-12 sm:mt-0 rounded shadow lg:pb-64">
                 <img
@@ -166,7 +166,7 @@ const LeftSide: FC<Iprop> = ({ value }) => {
               </div>
             </div>
           </div>
-          <div className="transition duration-300 transform rounded shadow-sm hover:-translate-y-1 hover:shadow md:text-center ">
+          <div className="transition duration-300 transform rounded shadow-md hover:-translate-y-1 hover:shadow md:text-center ">
             <Pages role={page} setloading={setloading} loading={loading} />
           </div>
         </div>
