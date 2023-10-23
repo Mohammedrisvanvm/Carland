@@ -129,23 +129,14 @@ export const singleCar = AsyncHandler(
     const hub: Ihub = await hubModel.findOne({ vehicles: { $in: [id] } });
     console.log(vehicle.bookingDates);
     let datesArray: Date[] = [];
-    // vehicle.bookingDates.pickUp.forEach((pickUpDate, index) => {
-    //   vehicle.bookingDates.dropOff.forEach((dropOffDate, index) => {
-    //     let currentDate = new Date(pickUpDate);
 
-    //     while (currentDate <= dropOffDate) {
-    //       datesArray.push(new Date(currentDate));
-
-    //       currentDate.setDate(currentDate.getDate() + 1);
-    //     }
-    //   });
-    // });
     for (let i = 0; i < vehicle.bookingDates.pickUp.length; i++) {
       let currentDate = new Date(vehicle.bookingDates.pickUp[i]);
       const dropOffDate = vehicle.bookingDates.dropOff[i];
     
       while (currentDate <= dropOffDate) {
         datesArray.push(new Date(currentDate));
+        currentDate.setHours(0, 0, 0, 0); 
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }

@@ -36,7 +36,7 @@ interface GeolocationCoordinates {
 export const Content = () => {
   const [vehicles, setVehicles] = React.useState<Vehicles[] | undefined>([]);
   const Navigate = useNavigate();
-  let location = useLocation();
+
   const [search, setSearch] = React.useState<string>("");
   const [filter, setFilter] = React.useState<string>("");
   const [loader, setLoader] = React.useState<boolean>(false);

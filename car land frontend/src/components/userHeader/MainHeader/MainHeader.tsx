@@ -24,7 +24,7 @@ export const MainHeader = (): ReactElement => {
     <>
       <nav className="w-full flex justify-between items-center navbar ">
         <img
-        onClick={()=>Navigate('/')}
+          onClick={() => Navigate("/")}
           src="/carland-logos_black.png"
           alt=""
           className="px-10 h-16 w-auto contain"
@@ -74,6 +74,16 @@ export const MainHeader = (): ReactElement => {
                       className="font-medium  tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
                     >
                       profile
+                    </button>
+                  </li>
+                  <li className="mb-4">
+                    <button
+                      onClick={() => Navigate("/bookingDetails")}
+                      aria-label="Our product"
+                      title="home"
+                      className="font-medium  tracking-wide text-gray-700 transition-colors duration-200 hover:text-deep-purple-accent-400"
+                    >
+                      Bookings
                     </button>
                   </li>
 

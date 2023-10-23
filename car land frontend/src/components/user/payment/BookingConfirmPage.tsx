@@ -1,53 +1,44 @@
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router";
 import { IConfirmBook } from "../../../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import {  bookingconfirmdetails } from "../../../services/apis/userApi/userApi";
+import { bookingconfirmdetails } from "../../../services/apis/userApi/userApi";
 import { MainHeader } from "../../userHeader/MainHeader/MainHeader";
-
 
 const BookingConfirmPage: React.FC = () => {
   const Navigate = useNavigate();
-const [bookingData,setbookingData]=useState<IConfirmBook|null>(null)
-const queryParams = new URLSearchParams(location.search);
-const carId: string | null = queryParams.get("carId");
-type Params = {
-  id?: string;
-};
-const user=useAppSelector((state)=>state.user)
-const { id }: Params = useParams<{ id: string }>();
-useEffect(()=>{
-  const fetchData = async (): Promise<void> => {
-    try {
-      const response: AxiosResponse = await bookingconfirmdetails(id);
-      
-      if (response.data?.bookingConfirmDetails) {
-        setbookingData(response.data?.bookingConfirmDetails);
-      }
-    } catch (error:any) {
-      console.log(error);
-      
-    }
+  const [bookingData, setbookingData] = useState<IConfirmBook | null>(null);
+  const queryParams = new URLSearchParams(location.search);
+  const carId: string | null = queryParams.get("carId");
+  type Params = {
+    id?: string;
   };
-  fetchData();
-},[])
+  const user = useAppSelector((state) => state.user);
+  const { id }: Params = useParams<{ id: string }>();
+  useEffect(() => {
+    const fetchData = async (): Promise<void> => {
+      try {
+        const response: AxiosResponse = await bookingconfirmdetails(id);
 
+        if (response.data?.bookingConfirmDetails) {
+          setbookingData(response.data?.bookingConfirmDetails);
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <>
       <MainHeader />
-      <div className="container mt-5 mb-5 overflow-hidden">
+      <div className="container mt-5 mb-5 h-96">
         <div className="flex justify-center">
           <div className="w-8/12">
             <div className="card">
-              <div className="text-left logo p-2 px-5">
-                <img
-                  src="/carland-logos_black.png"
-                  className="w-12"
-                  alt="Logo"
-                />
-              </div>
+           
 
               <div className="invoice p-5">
                 <h5 className="text-left">Your Booking Confirmed!</h5>
@@ -56,7 +47,13 @@ useEffect(()=>{
                   Hello, {user.userName}
                 </span>
                 <span>
-                  Your Booking has been confirmed and will be available tomorrow
+                  Your Booking has been confirmed and will be available on{" "}
+                  <span className="text-green-600 font-semibold">
+                    {" "}
+                    {bookingData
+                      ? new Date(bookingData?.bookingStartDate).toDateString()
+                      : ""}
+                  </span>{" "}
                   in shop!
                 </span>
 
@@ -67,7 +64,13 @@ useEffect(()=>{
                   <ul className="sm:flex justify-around">
                     <li>
                       <span className="block text-gray-500">Order Date</span>
-                      <span>{new Date().toLocaleDateString()}</span>
+                      <span>
+                        {bookingData
+                          ? new Date(
+                              bookingData?.createdAt
+                            ).toLocaleDateString()
+                          : ""}
+                      </span>
                     </li>
                     <li>
                       <span className="block text-gray-500">Order id</span>
@@ -90,12 +93,18 @@ useEffect(()=>{
                       <span>{bookingData?.totalPrice}</span>
                     </li>
                     <li>
-                      <span className="block text-gray-500">paymentDetails</span>
-                      <span className="text-green-500">{bookingData?.paymentStatus}</span>
+                      <span className="block text-gray-500">
+                        paymentDetails
+                      </span>
+                      <span className="text-green-500">
+                        {bookingData?.paymentStatus}
+                      </span>
                     </li>
                     <li>
                       <span className="block text-gray-500">payment id</span>
-                      <span>{bookingData?.paymentDetails?.razorpay_payment_id}</span>
+                      <span>
+                        {bookingData?.paymentDetails?.razorpay_payment_id}
+                      </span>
                     </li>
                   </ul>
                 </div>
@@ -136,8 +145,14 @@ useEffect(()=>{
                     help center
                   </a>
                 </span>
-       
-                <span>{new Date().toLocaleDateString(undefined,{ year: 'numeric', month: 'long', day: 'numeric' })}</span>
+
+                <span>
+                  {new Date().toLocaleDateString(undefined, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
               </div>
             </div>
           </div>
@@ -145,11 +160,12 @@ useEffect(()=>{
       </div>
 
       <div className="flex justify-center">
-       
-          <button onClick={()=>Navigate('/profile')} className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline">
-            Back To Booking Details
-          </button>
-      
+        <button
+          onClick={() => Navigate("/bookingDetails")}
+          className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg focus:outline-none focus:shadow-outline"
+        >
+          Back To Booking Details
+        </button>
       </div>
 
       <footer

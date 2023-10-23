@@ -25,9 +25,9 @@ const StaticMapRoute:FC<MapboxComponentProps> = ({latitude,longitude}) => {
    
      
   return (
-    <div>
+    <div className="">
        <div className="flex flex-col items-center">
-    <div id="map" className="w-full h-44" />
+    <div id="map" className="w-full h-44 shadow-md rounded-lg shadow-gray-400" />
   </div>
     </div>
   )

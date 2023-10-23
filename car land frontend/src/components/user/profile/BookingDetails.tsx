@@ -50,11 +50,12 @@ const BookingDetails: React.FC = () => {
   };
   const cancelHandle = async (id: string) => {
     await cancelBooking(id);
+    setLoading(!loading);
     setSingleBooking(null);
   };
   console.log(singleBooking);
   const dropOffHandler = async (id: string) => {
-    await dropOffReq(id)
+    await dropOffReq(id);
     setLoading(!loading);
     setSingleBooking(null);
   };
@@ -62,7 +63,7 @@ const BookingDetails: React.FC = () => {
     <>
       <div className="justify-between sm:mt-5 h-96">
         <h5 className="m-10 text-xl text-center font-bold leading-none sm:text-2xl">
-          MY Bookings
+          My Bookings
         </h5>
 
         <div
@@ -181,6 +182,12 @@ const BookingDetails: React.FC = () => {
                   </span>
                 </p>
                 <p>
+                Payment Status:{" "}
+                  <span className="text-green-600">
+                    {singleBooking._doc.paymentStatus}
+                  </span>
+                </p>
+                <p>
                   payment id:{" "}
                   <span className="text-green-600">
                     {singleBooking._doc.paymentDetails?.razorpay_payment_id}
@@ -216,18 +223,33 @@ const BookingDetails: React.FC = () => {
                 </div>
                 <div>
                   {singleBooking._doc.status == "PickUp" ? (
-                    <button
-                      type="button"
-                      onClick={() => handleConfirmation(singleBooking._doc._id)}
-                      className="bg-blue-600 text-white px-5 py-2 rounded"
-                    >
-                      {" "}
-                      pickup Request
-                    </button>
+                    <>
+                      <div className="flex justify-evenly">
+                        <button
+                          type="button"
+                          onClick={() => cancelHandle(singleBooking._doc._id)}
+                          className="bg-red-600 px-6 rounded-lg py-2 text-white"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleConfirmation(singleBooking._doc._id)
+                          }
+                          className="bg-blue-600 text-white px-5 py-2 rounded"
+                        >
+                          {" "}
+                          pickup Request
+                        </button>
+                      </div>
+                    </>
                   ) : (
                     ""
                   )}
                   {singleBooking._doc.status == "pickUpreq" ? (
+                       <>
+                       <div className="flex justify-evenly">
                     <button
                       type="button"
                       className="bg-blue-600 text-white px-5 py-2 rounded"
@@ -235,6 +257,15 @@ const BookingDetails: React.FC = () => {
                       {" "}
                       pickup Requested
                     </button>
+                      <button
+                      type="button"
+                      onClick={() => cancelHandle(singleBooking._doc._id)}
+                      className="bg-red-600 px-6 rounded-lg py-2 text-white"
+                    >
+                      Cancel
+                    </button>
+                    </div>
+                    </>
                   ) : (
                     ""
                   )}
@@ -262,7 +293,7 @@ const BookingDetails: React.FC = () => {
                   ) : (
                     ""
                   )}
-                    {singleBooking._doc.status == "dropOffReq" ? (
+                  {singleBooking._doc.status == "dropOffReq" ? (
                     <button
                       type="button"
                       className="bg-blue-600 text-white px-5 py-2 rounded"
@@ -273,7 +304,7 @@ const BookingDetails: React.FC = () => {
                   ) : (
                     ""
                   )}
-                    {singleBooking._doc.status == "Completed" ? (
+                  {singleBooking._doc.status == "Completed" ? (
                     <button
                       type="button"
                       className="bg-green-600 text-white px-5 py-2 rounded"
@@ -302,7 +333,7 @@ const BookingDetails: React.FC = () => {
                   ) : (
                     <>
                       {" "}
-                      {singleBooking._doc.status == "Ongoing" ||"Completed" ? (
+                      {singleBooking._doc.status == "Ongoing" || "Completed" ? (
                         ""
                       ) : (
                         <>
@@ -311,7 +342,7 @@ const BookingDetails: React.FC = () => {
                             onClick={() => cancelHandle(singleBooking._doc._id)}
                             className="bg-red-600 px-6 rounded-lg py-2 text-white"
                           >
-                            Cancelsdv
+                            Cancel
                           </button>
                         </>
                       )}

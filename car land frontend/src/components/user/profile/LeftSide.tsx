@@ -5,25 +5,24 @@ import { useAppSelector } from "../../../redux/store/storeHook";
 import { Authcheck, user } from "../../../interfaces/userAuth";
 import { currrentUserFetch } from "../../../services/apis/userApi/userApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-
-const LeftSide: FC = () => {
-  const [page, setPage] = useState<string>("Account");
+type Iprop = {
+  value?: string;
+};
+const LeftSide: FC<Iprop> = ({ value }) => {
+  const [page, setPage] = useState<string>(value ? value : "Account");
   const [loading, setloading] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<user| undefined>(undefined);
+  const [currentUser, setCurrentUser] = useState<user | undefined>(undefined);
   useEffect(() => {
     const fetchUser = async () => {
-      const {data}: Authcheck = await currrentUserFetch();
-     
-     
-      
-        setCurrentUser(data?.user);
-      
+      const { data }: Authcheck = await currrentUserFetch();
+
+      setCurrentUser(data?.user);
     };
     fetchUser();
   }, [loading]);
 
   console.log(currentUser);
-  
+
   const user = useAppSelector((state) => state.user);
   return (
     <>
@@ -42,7 +41,9 @@ const LeftSide: FC = () => {
               <div className="flex flex-col  text-center">
                 <p className="text-lg font-bold"> {user.userName}</p>
                 <p className="mb-5 text-xs text-gray-800">{user.email}</p>
-                <p className="mb-5 text-xs text-gray-800">{currentUser?.gender}</p>
+                <p className="mb-5 text-xs text-gray-800">
+                  {currentUser?.gender}
+                </p>
                 <hr className="mx-6" />
 
                 <ul className=" m-3 text-center  space-y-3 font-medium tracking-wide text-gray-700  transition-colors duration-200 hover:text-deep-purple-accent-400">
@@ -130,13 +131,27 @@ const LeftSide: FC = () => {
                         aria-label="Verification"
                         onClick={() => setPage("Verification")}
                         title="Verification"
-                        disabled={currentUser?.profileVerificationRequest|| currentUser?.verifiedProfile}
-                        className={`${currentUser?.profileVerificationRequest ? 'disabled':''}`}
+                        disabled={
+                          currentUser?.profileVerificationRequest ||
+                          currentUser?.verifiedProfile
+                        }
+                        className={`${
+                          currentUser?.profileVerificationRequest
+                            ? "disabled"
+                            : ""
+                        }`}
                       >
-                        Profile Verification 
-                        <span className="mr-2 text-sm text-center text-orange-500"> {currentUser?.profileVerificationRequest ? "pending":''}</span>
-                        <span className="mr-2 text-sm text-center text-green-500">  {currentUser?.verifiedProfile ? "verified":''}</span>
-                       
+                        Profile Verification
+                        <span className="mr-2 text-sm text-center text-orange-500">
+                          {" "}
+                          {currentUser?.profileVerificationRequest
+                            ? "pending"
+                            : ""}
+                        </span>
+                        <span className="mr-2 text-sm text-center text-green-500">
+                          {" "}
+                          {currentUser?.verifiedProfile ? "verified" : ""}
+                        </span>
                       </button>
                     </li>
                     <hr />

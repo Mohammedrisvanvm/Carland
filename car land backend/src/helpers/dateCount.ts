@@ -1,6 +1,9 @@
 export function dateCount(pickUpDate: Date, dropDate: Date): number {
 
-  const timeDifference: number = pickUpDate.getTime() - dropDate.getTime();
+  const timeDifference: number =  dropDate.getTime()-pickUpDate.getTime()
+
   const daysDifference: number = timeDifference / (1000 * 60 * 60 * 24);
-  return Math.abs(daysDifference);
+  console.log(daysDifference,timeDifference);
+  
+  return Math.round(daysDifference)
 }

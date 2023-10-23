@@ -12,6 +12,7 @@ import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import { RazorpayRefund } from "../../interfaces/razorpayInterface";
 import { generateId } from "../../helpers/createId";
+import moment from "moment";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -33,20 +34,15 @@ type values = {
   pickUpDate: string;
   dropOffDate: string;
   carId: string;
+  amount: number;
   razorpay_payment_id?: string;
   razorpay_order_id?: string;
   razorpay_signature?: string;
 };
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const { pickUpDate, dropOffDate, carId }: values = req.body.data;
-    const startDate: Date = new Date(pickUpDate);
-    const endDate: Date = new Date(dropOffDate);
-    const days: number = dateCount(startDate, endDate);
+    const { pickUpDate, dropOffDate, carId, amount }: values = req.body.data;
 
-    if (!days) {
-      throw new Error("date issue");
-    }
     const vehicle: IVehicle = await vehicleModel.findById(carId);
     type Irazresponse = {
       id: string;
@@ -61,7 +57,7 @@ export const razorpayPayment = AsyncHandler(
       created_at: number;
     };
     const response: Irazresponse = await razorpay.orders.create({
-      amount: Number(vehicle.fairPrice) * days * 100,
+      amount: amount * 100,
       currency: "INR",
       receipt: generateRandomString(10),
     });
@@ -75,18 +71,29 @@ export const bookCar = AsyncHandler(
       pickUpDate,
       dropOffDate,
       carId,
+      amount,
       razorpay_payment_id,
       razorpay_order_id,
       razorpay_signature,
     }: values = req.body.data;
     const userId: string = req.headers.authorization;
 
+    //     const startDate = moment(pickUpDate,"ddd MMM D YYYY h A")
+    //     const endDate = moment(pickUpDate,"ddd MMM D YYYY h A")
+    //     const days: number = dateCount(startDate.toDate(), endDate.toDate());
+    // console.log(days);
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
       { _id: 1, hubName: 1 }
     );
-    const startDate: Date = new Date(pickUpDate);
-    const endDate: Date = new Date(dropOffDate);
+
+    const startDate = new Date(pickUpDate);
+    startDate.setHours(startDate.getHours() + 5);
+    startDate.setMinutes(startDate.getMinutes() + 30);
+    const endDate = new Date(dropOffDate);
+    endDate.setHours(endDate.getHours() + 5);
+    endDate.setMinutes(endDate.getMinutes() + 30);
+
     const days: number = dateCount(startDate, endDate);
 
     const vehicle: IVehicle = await vehicleModel.findByIdAndUpdate(
@@ -108,8 +115,8 @@ export const bookCar = AsyncHandler(
       userId,
       hubName: hubDetails.hubName,
       vehicleName: vehicle.vehicleName,
-      bookingStartDate: startDate,
-      bookingEndDate: endDate,
+      bookingStartDate: pickUpDate,
+      bookingEndDate: dropOffDate,
       carPrice: vehicle.fairPrice,
       paymentStatus,
       paymentDetails: {
@@ -117,7 +124,7 @@ export const bookCar = AsyncHandler(
         razorpay_order_id,
         razorpay_signature,
       },
-      totalPrice: days * Number(vehicle.fairPrice),
+      totalPrice: amount,
       days,
     });
     booking.save();
@@ -238,11 +245,30 @@ export const cancelBooking = AsyncHandler(
         speed: "optimum",
         receipt: `${generateId()}`,
       })
-      .then((res: RazorpayRefund) => {
+      .then(async (res: RazorpayRefund) => {
         booking.status = "Cancelled";
         booking.paymentStatus = "Refunded";
         booking.refundedDetails = res;
         booking.save();
+        const vehicle: IVehicle = await vehicleModel.findById(
+          booking.vehicleId
+        );
+
+        const targetPickUpDate = new Date(booking.bookingStartDate);
+        const targetDropOffDate = new Date(booking.bookingEndDate);
+
+        if (
+          vehicle.bookingDates.pickUp.some(
+            (date) => date.getTime() === booking.bookingStartDate.getTime()
+          )
+        ) {
+          await vehicleModel.findByIdAndUpdate(booking.vehicleId, {
+            $pull: {
+              "bookingDates.pickUp": targetPickUpDate,
+              "bookingDates.dropOff": targetDropOffDate,
+            },
+          });
+        }
       })
       .catch((error: any) => {
         console.log(error);

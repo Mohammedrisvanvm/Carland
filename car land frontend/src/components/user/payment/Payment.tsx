@@ -24,6 +24,7 @@ type Ivalues = {
     pickUpDate: string;
     dropOffDate: string;
     carId: string | null;
+    amount:number
     razorpay_signature?: string;
     razorpay_order_id?: string;
     razorpay_payment_id?: string;
