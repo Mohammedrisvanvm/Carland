@@ -50,4 +50,7 @@ export const  pickUpreqAction= async (id: string | null | undefined): Promise<Ax
 export const dropOffreqAction= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.patch(`/vendors/bookings/dropoffreqaction?bookingID=${id}`);
 };
+export const dashboardDetails= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/hub/dashboard?hubId=${id}`);
+};
 

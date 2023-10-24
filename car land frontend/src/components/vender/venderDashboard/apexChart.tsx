@@ -19,12 +19,12 @@ export const DistributedChart = () => {
       });
     
       return (
-       <div className="mt-10 flex justify-center">
+       <div className="mt-5 flex justify-center border rounded-lg shadow-md p-5">
               <Chart
                 options={chartData.options}
                 series={chartData.series}
                 type="bar"
-                width="600"
+                width="700"
               />
               </div>
         

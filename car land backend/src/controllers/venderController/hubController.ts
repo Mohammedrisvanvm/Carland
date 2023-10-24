@@ -7,6 +7,8 @@ import { verifyJwt } from "../../utils/jwtUtils/jwtutils";
 
 import IVendor from "../../interfaces/vendorInterface";
 import VendorModel from "../../models/vendorSchema";
+import bookModel from "../../models/bookingSchema";
+import IBookWithTimestamps from "src/interfaces/bookingInterface";
 
 export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -18,9 +20,9 @@ export const addhub = AsyncHandler(
       hubImage,
       hubMultiImage,
       placeName,
-      location
+      location,
     }: Ihub = req.body.values;
-console.log(req.body);
+    console.log(req.body);
 
     const hub: Ihub | null = await hubModel.findOne({ hubName });
 
@@ -49,11 +51,9 @@ console.log(req.body);
         hubImage: images[0].url,
         hubMultiImage: multi,
       });
-   
-     
-      
+
       await VendorModel.findOneAndUpdate(
-        { phoneNumber:req.headers.authorization},
+        { phoneNumber: req.headers.authorization },
         { $addToSet: { renthubs: hub._id } }
       );
       res.json({ message: `created new hub ${hub.hubName}` });
@@ -79,16 +79,38 @@ export const getHubs = AsyncHandler(
       throw new Error("accessToken not available");
     }
     const jwtdata: Ipayload = verifyJwt(accessTokenvendor);
-console.log(typeof(req.headers.authorization),'number');
+    console.log(typeof req.headers.authorization, "number");
 
     const dbout: IVendor = await VendorModel.findOne(
       { phoneNumber: req.headers.authorization },
       { renthubs: 1, _id: 0 }
     );
-console.log(dbout);
+    console.log(dbout);
     const hubs: Ihub[] = await hubModel.find({ _id: { $in: dbout.renthubs } });
 
     res.json({ hubs });
   }
 );
 
+export const dashboardDetails = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const id = req.query.hubId as string;
+    const data: IBookWithTimestamps[] = await bookModel.aggregate([
+      { $match: { hubId: id } },
+      {
+        $group: {
+          _id: null,
+          totalAmountCompleted: {
+            $sum: {
+              $cond: [{ $eq: ["$status", "Completed"] }, "$totalPrice", 0],
+            },
+          },
+          totalOrders: { $sum: 1 },
+          totalUsers: { $sum: 1 },
+        },
+      },
+    ]);
+    res.status(200).json({dashboardDetails:data})
+    console.log(data);
+  }
+);
