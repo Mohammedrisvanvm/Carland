@@ -17,6 +17,25 @@ export const dashboardDetailsAdmin = AsyncHandler(
           },
           totalOrders: { $sum: 1 },
           totalUsers: { $addToSet: "$userId" },
+
+          totalPickup: {
+            $sum: { $cond: [{ $eq: ["$status", "PickUp"] }, 1, 0] },
+          },
+          totalPickUpreq: {
+            $sum: { $cond: [{ $eq: ["$status", "pickUpreq"] }, 1, 0] },
+          },
+          totalOngoing: {
+            $sum: { $cond: [{ $eq: ["$status", "Ongoing"] }, 1, 0] },
+          },
+          totalDropOffReq: {
+            $sum: { $cond: [{ $eq: ["$status", "dropOffReq"] }, 1, 0] },
+          },
+          totalCompleted: {
+            $sum: { $cond: [{ $eq: ["$status", "Completed"] }, 1, 0] },
+          },
+          totalCancelled: {
+            $sum: { $cond: [{ $eq: ["$status", "Cancelled"] }, 1, 0] },
+          },
         },
       },
       {
@@ -25,12 +44,39 @@ export const dashboardDetailsAdmin = AsyncHandler(
           totalAmountCompleted: 1,
           totalOrders: 1,
           totalUsers: { $size: "$totalUsers" },
+          totalCancelled: 1,
+          totalOngoing: 1,
+          totalPickup: 1,
+          totalDropOffReq: 1,
+          totalPickUpreq: 1,
+          totalCompleted: 1,
         },
       },
     ]);
-    console.log(data);
 
-    res.status(200).json({ dashboardDetails: data });
-    console.log(data);
+    const resultArray: number[] = [];
+
+    if (data.length > 0) {
+      const firstResult: any = data[0]; // Assuming there's only one result
+
+      for (const key in firstResult) {
+        if (
+          typeof firstResult[key] === "number" &&
+          key != "totalAmountCompleted" &&
+          key != "totalOrders" &&
+          key != "totalUsers"
+        ) {
+          resultArray.push(firstResult[key]);
+        }
+      }
+    }
+
+ 
+    res
+      .status(200)
+      .json({
+        message: "dashboardDetails",
+        dashboardDetails: { data, resultArray },
+      });
   }
 );

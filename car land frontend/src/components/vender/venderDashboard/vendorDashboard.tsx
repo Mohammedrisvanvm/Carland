@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import { DistributedChart } from "./apexChart";
+
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { dashboardDetails } from "../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
+import { DistributedChart } from "../../../hook/apexChart";
 type Iprop = {
   sidebarWidth: boolean;
 };
@@ -18,9 +19,9 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
         const response:AxiosResponse = await dashboardDetails(hubId);
         console.log(response.data?.dashboardDetails);
         if(response.data?.dashboardDetails){
-          setUsers(response.data.dashboardDetails[0].totalUsers)
-          setTotalOrders(response.data.dashboardDetails[0].totalOrders)
-          setRevenue(response.data.dashboardDetails[0].totalAmountCompleted)
+          setUsers(response.data.dashboardDetails.data[0].totalUsers)
+          setTotalOrders(response.data.dashboardDetails.data[0].totalOrders)
+          setRevenue(response.data.dashboardDetails.data[0].totalAmountCompleted)
         }
       } catch (error:any) {
 
@@ -30,7 +31,8 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
     };
     fetchData();
   }, []);
-
+  const categories:string[]=["bookings", "ongoing", "completed", "cancelled"]
+ const data : number[]=[30, 40, 45, 50, ]
   return (
     <>
       <div
@@ -83,7 +85,7 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
           </div>
         </div>
 
-        <DistributedChart />
+        <DistributedChart categories={categories}  data={data}/>
       </div>
     </>
   );

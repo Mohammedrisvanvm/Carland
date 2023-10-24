@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { DistributedChart } from "../../vender/venderDashboard/apexChart";
 import { dashboardDetailsAdmin } from "../../../services/apis/adminApi/adminApi";
+import { DistributedChart } from "../../../hook/apexChart";
 type Iprop = {
   sidebarWidth: boolean;
 };
@@ -11,16 +11,30 @@ const AdminDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
   const [users, setUsers] = React.useState<number>(0);
   const [totalOrders, setTotalOrders] = React.useState<number>(0);
   const [revenue, setRevenue] = React.useState<number>(0);
-  console.log(hubId);
+  const [data, setData] = React.useState<Array<number>|null>(null);
+  
+
+  const categories: string[] = [
+    "PickUp",
+    "PickUpreq",
+    "ongoing",
+    "DropOffReq",
+    "completed",
+    "cancelled"
+  ];
+  
+  console.log(data,111);
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const response: AxiosResponse = await dashboardDetailsAdmin();
         console.log(response.data?.dashboardDetails);
         if (response.data?.dashboardDetails) {
-          setUsers(response.data.dashboardDetails[0].totalUsers);
-          setTotalOrders(response.data.dashboardDetails[0].totalOrders);
-          setRevenue(response.data.dashboardDetails[0].totalAmountCompleted);
+          setUsers(response.data.dashboardDetails.data[0].totalUsers);
+          setTotalOrders(response.data.dashboardDetails.data[0].totalOrders);
+          setRevenue(response.data.dashboardDetails.data[0].totalAmountCompleted);
+          setData(response.data.dashboardDetails.resultArray)
         }
       } catch (error: any) {
         console.log(error);
@@ -30,8 +44,8 @@ const AdminDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
   }, []);
 
   return (
-    <>  
-        <div
+    <>
+      <div
         className={` ${
           sidebarWidth ? " ml-64 text-left " : " text-center ml-16"
         } bg-gray-100 px-6  w-5/6 transition-all duration-200 ease-in-out  p-5`}
@@ -80,8 +94,8 @@ const AdminDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
             </span>
           </div>
         </div>
-
-        <DistributedChart />
+{data ?   <DistributedChart categories={categories} data={data} />:''}
+      
       </div>
     </>
   );

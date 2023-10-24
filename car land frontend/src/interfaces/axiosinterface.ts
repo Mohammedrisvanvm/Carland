@@ -20,7 +20,7 @@ export interface AxiosResponse<T = any> {
     id?: string;
     bookingDetails?: IConfirmBookWithImage[];
     bookingConfirmDetails?: IConfirmBook;
-    dashboardDetails?:IdashboardDetails[]
+    dashboardDetails?:IdashboardDetails
     location?: hubdata;
     status?: number;
     statusText?: string;
