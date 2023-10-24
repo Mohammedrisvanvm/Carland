@@ -37,7 +37,7 @@ export const allBookings = AsyncHandler(
         ...item,
         image: vehicleImageMap[item.vehicleId],
       }));
-      const count: number = await bookModel.countDocuments();
+      const count: number = bookingDetailsWithImage.length<=4 ? bookingDetailsWithImage.length: await bookModel.countDocuments();
  
       
     res.json({

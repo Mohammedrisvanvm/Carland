@@ -5,8 +5,8 @@ interface Ihub  {
   isVerified: Boolean;
   ban: Boolean;
   location: {
-    lat: number;
-    lng: number;
+    latitude: number;
+    longitude: number;
   }
   placeName:string
   pincode: number;

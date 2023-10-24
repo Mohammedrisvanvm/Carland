@@ -6,14 +6,11 @@ import { IConfirmBookWithImage } from "../../../interfaces/bookingConfirmInterfa
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
 import { getBookingsManagement } from "../../../services/apis/adminApi/adminApi";
-import NewNav from "../../../test/NewNav";
-import NewSide from "../../../test/NewSide";
-
 
 type Iprop = {
   sidebarWidth?: boolean;
 };
-  const  AdminBooking: FC<Iprop> = ({sidebarWidth}) => {
+const AdminBooking: FC<Iprop> = ({ sidebarWidth }) => {
   const [bookings, setBookings] = React.useState<
     IConfirmBookWithImage[] | null
   >(null);
@@ -26,24 +23,26 @@ type Iprop = {
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
-        const response: AxiosResponse = await getBookingsManagement(search,currentPage);
-console.log(response);
+        const response: AxiosResponse = await getBookingsManagement(
+          search,
+          currentPage
+        );
+        console.log(response);
 
         if (response.data?.bookingDetails)
           setBookings(response.data.bookingDetails);
-          if (response.data?.count) {
-            setTotalpage(Math.ceil(response.data.count / 5));
-          }
+        if (response.data?.count) {
+          setTotalpage(Math.ceil(response.data.count / 5));
+        }
       } catch (error: any) {
         console.log(error);
       }
     };
     fetchData();
-  }, [search,currentPage]);
+  }, [search, currentPage]);
 
   return (
     <>
- 
       <div
         className={` ${
           sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
@@ -95,31 +94,34 @@ console.log(response);
         <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-2 py-3">
                 index
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-5 py-3">
                 vehicle image
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-5 py-3">
                 Vehicle Name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-5 py-3">
                 hubName
               </th>
+              <th scope="col" className=" py-3">
+                pickUp location
+              </th>
 
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 py-3">
                 bookingStartDate
               </th>
 
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 py-3">
                 bookingEndDate
               </th>
 
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 py-3">
                 days
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-3 py-3">
                 totalPrice
               </th>
 
@@ -139,7 +141,7 @@ console.log(response);
                       scope="row"
                       className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {index + 1}
+                      {index + 1 + (currentPage - 1) * 5}
                     </td>
                     <td className="px-6 py-2">
                       <img
@@ -154,6 +156,7 @@ console.log(response);
                       {item._doc.vehicleName}
                     </td>
                     <td className="px-6 py-2">{item._doc.hubName}</td>
+                    <td className=" py-2">{item._doc.locationName}</td>
                     <td
                       scope="row"
                       className="px-6  py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
@@ -203,6 +206,5 @@ console.log(response);
     </>
   );
 };
-
 
 export default AdminBooking;

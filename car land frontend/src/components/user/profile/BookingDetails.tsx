@@ -28,6 +28,8 @@ const BookingDetails: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       const response: AxiosResponse = await bookingdetails();
+      console.log(response);
+
       if (response.data?.bookingDetails) {
         setDetails(response.data?.bookingDetails);
       }
@@ -119,81 +121,91 @@ const BookingDetails: React.FC = () => {
                 <div className=" flex justify-center">
                   <img src={singleBooking.image} alt="" />
                 </div>
-                <p>
-                  order id:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc._id}
-                  </span>
-                </p>
+                <div className=" px-24">
+                  <div className="flex flex-col items-start">
+                  <p>
+                    order id:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc._id}
+                    </span>
+                  </p>
 
-                <p>
-                  vehicle Name:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.vehicleName}
-                  </span>
-                </p>
-                <p>
-                  Hub Name:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.hubName}
-                  </span>
-                </p>
-                <p>
-                  booking Start Date:{" "}
-                  <span className="text-green-600">
-                    {new Date(
-                      singleBooking._doc.bookingStartDate
-                    ).toLocaleDateString()}
-                  </span>
-                </p>
-                <p>
-                  {" "}
-                  booking End Date:{" "}
-                  <span className="text-green-600">
-                    {new Date(
-                      singleBooking._doc.bookingEndDate
-                    ).toLocaleDateString()}
-                  </span>
-                </p>
-                <p>
-                  car Price:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.carPrice}{" "}
-                    <span className="text-gray-500">(rs)</span>
-                  </span>
-                </p>
-                <p>
-                  total Price:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.totalPrice}{" "}
-                    <span className="text-gray-500">(rs)</span>
-                  </span>
-                </p>
-                <p>
-                  days:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.days}
-                  </span>
-                </p>
-                <p>
-                  status:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.status}
-                  </span>
-                </p>
-                <p>
-                Payment Status:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.paymentStatus}
-                  </span>
-                </p>
-                <p>
-                  payment id:{" "}
-                  <span className="text-green-600">
-                    {singleBooking._doc.paymentDetails?.razorpay_payment_id}
-                  </span>
-                </p>
+                  <p>
+                    vehicle Name:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.vehicleName}
+                    </span>
+                  </p>
+                  <p>
+                    Hub Name:{" "}
+                    <span className="text-green-600 ">
+                      {singleBooking._doc.hubName}
+                    </span>
+                  </p>
 
+                  <p>
+                    booking Start Date:{" "}
+                    <span className="text-green-600">
+                      {new Date(
+                        singleBooking._doc.bookingStartDate
+                      ).toLocaleDateString()}
+                    </span>
+                  </p>
+                  <p>
+                    {" "}
+                    booking End Date:{" "}
+                    <span className="text-green-600">
+                      {new Date(
+                        singleBooking._doc.bookingEndDate
+                      ).toLocaleDateString()}
+                    </span>
+                  </p>
+                  <p>
+                    car Price:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.carPrice}{" "}
+                      <span className="text-gray-500">(rs)</span>
+                    </span>
+                  </p>
+                  <p>
+                    total Price:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.totalPrice}{" "}
+                      <span className="text-gray-500">(rs)</span>
+                    </span>
+                  </p>
+                  <p>
+                    days:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.days}
+                    </span>
+                  </p>
+                  <p>
+                    status:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.status}
+                    </span>
+                  </p>
+                  <p>
+                    Payment Status:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.paymentStatus}
+                    </span>
+                  </p>
+                  <p>
+                    payment id:{" "}
+                    <span className="text-green-600">
+                      {singleBooking._doc.paymentDetails?.razorpay_payment_id}
+                    </span>
+                  </p>
+                  <p className="  rounded-md mt-2 bg-blue-600 text-white shadow-lg">
+                    location:{" "}
+                    <span className="text-white ">
+                      {singleBooking._doc.locationName}
+                    </span>
+                  </p>
+                  </div>
+                </div>
                 <button
                   type="button"
                   className="rounded-md text-white py-1 px-4"
@@ -248,23 +260,23 @@ const BookingDetails: React.FC = () => {
                     ""
                   )}
                   {singleBooking._doc.status == "pickUpreq" ? (
-                       <>
-                       <div className="flex justify-evenly">
-                    <button
-                      type="button"
-                      className="bg-blue-600 text-white px-5 py-2 rounded"
-                    >
-                      {" "}
-                      pickup Requested
-                    </button>
-                      <button
-                      type="button"
-                      onClick={() => cancelHandle(singleBooking._doc._id)}
-                      className="bg-red-600 px-6 rounded-lg py-2 text-white"
-                    >
-                      Cancel
-                    </button>
-                    </div>
+                    <>
+                      <div className="flex justify-evenly">
+                        <button
+                          type="button"
+                          className="bg-blue-600 text-white px-5 py-2 rounded"
+                        >
+                          {" "}
+                          pickup Requested
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => cancelHandle(singleBooking._doc._id)}
+                          className="bg-red-600 px-6 rounded-lg py-2 text-white"
+                        >
+                          Cancel
+                        </button>
+                      </div>
                     </>
                   ) : (
                     ""

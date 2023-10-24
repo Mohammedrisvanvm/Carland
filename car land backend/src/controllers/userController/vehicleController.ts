@@ -39,8 +39,8 @@ export const userVehicles = AsyncHandler(
 
     const filteredHubDetails = hubDetails.filter((item: Ihub): boolean => {
       const value: number = calculateDistance(
-        item.location.lat,
-        item.location.lng,
+        item.location.latitude,
+        item.location.longitude,
         lat,
         lng
       );

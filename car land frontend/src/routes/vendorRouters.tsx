@@ -26,9 +26,7 @@ const VendorRouters = () => {
         <Route path="/login" element={<ProtectedRouteVendor > <VenderLogin /></ProtectedRouteVendor>} />
         <Route path="/signup" element={<ProtectedRouteVendor ><VendorSignUp /></ProtectedRouteVendor>} />
         <Route path="/otp" element={<ProtectedRouteVendor ><VendorOtp /></ProtectedRouteVendor>} />
-        {/* <Route path="/" element={<AdminProtectRoute> <Home /> </AdminProtectRoute>}></Route> */}
-
-        {/* <Route element={<PrivateRoute  />}> */}
+     
           <Route path="/*" element={ <ProtectedRouteVendor > <VendorHomePage /> </ProtectedRouteVendor>} />
           <Route path="/addhub" element={ <ProtectedRouteVendor > <AddHub/> </ProtectedRouteVendor>} />
           {/* <Route path="/*" element={ <ProtectedRouteVendor > <VendorHomePage /> </ProtectedRouteVendor>} /> */}

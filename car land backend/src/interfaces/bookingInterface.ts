@@ -20,6 +20,7 @@ interface IBook extends Document {
   refundedDetails:RazorpayRefund
   paymentStatus:string
   status: string;
+  locationName:string
   tempStatus:string
   hubLatitude:number
   hubLongitude:number

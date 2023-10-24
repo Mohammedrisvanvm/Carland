@@ -84,7 +84,7 @@ export const bookCar = AsyncHandler(
     // console.log(days);
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
-      { _id: 1, hubName: 1 }
+      { _id: 1, hubName: 1,placeName:1 }
     );
 
     const startDate = new Date(pickUpDate);
@@ -115,6 +115,7 @@ export const bookCar = AsyncHandler(
       userId,
       hubName: hubDetails.hubName,
       vehicleName: vehicle.vehicleName,
+      locationName:hubDetails.placeName,
       bookingStartDate: pickUpDate,
       bookingEndDate: dropOffDate,
       carPrice: vehicle.fairPrice,
@@ -198,10 +199,10 @@ export const bookingDetails = AsyncHandler(
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
-    // console.log(vehicleImageMap);
+    console.log(hubs);
     hubs.forEach((hub) => {
-      hubLatitude[hub._id] = hub.location.lat;
-      hubLongitude[hub._id] = hub.location.lng;
+      hubLatitude[hub._id] = hub.location.latitude;
+      hubLongitude[hub._id] = hub.location.longitude;
     });
     const bookingDetailsWithImage: IBookWithTimestamps[] = bookingDetails.map(
       (item) => ({

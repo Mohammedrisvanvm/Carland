@@ -40,6 +40,9 @@ const bookingSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
+    locationName:{
+      type:String
+    },
     days: {
       type: Number,
       required: true,

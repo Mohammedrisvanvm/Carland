@@ -9,7 +9,7 @@ const CarManagementPage = () => {
   const [spanVisible, setSpanVisible] = React.useState<boolean>(false);
   return (
     <>
-      <NewNav
+      <VendorNavBar
         setSpanVisible={setSpanVisible}
         sidebarWidth={sidebarWidth}
         spanVisible={spanVisible}

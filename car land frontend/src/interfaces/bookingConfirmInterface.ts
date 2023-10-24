@@ -1,5 +1,3 @@
-
-
 export interface IConfirmBook extends Document {
   _id: string;
   hubId: string;
@@ -13,7 +11,7 @@ export interface IConfirmBook extends Document {
   days: number;
   bookingEndDate: string;
   pickuptime: string;
-  image:string
+  image: string;
   paymentDetails?: {
     razorpay_payment_id: string;
     razorpay_order_id: string;
@@ -21,17 +19,15 @@ export interface IConfirmBook extends Document {
   };
   paymentStatus: string;
   status: string;
-  tempStatus:string
-
+  tempStatus: string;
+  locationName: string;
   createdAt: Date;
   updatedAt: Date;
 }
 
-
-export interface IConfirmBookWithImage  {
-_doc:IConfirmBook,
-image:string,
-hubLatitude:number,
-hubLongitude:number
+export interface IConfirmBookWithImage {
+  _doc: IConfirmBook;
+  image: string;
+  hubLatitude: number;
+  hubLongitude: number;
 }
-

@@ -1,268 +1,66 @@
-import React from 'react'
-
-
-const VenderHubs = () => {
+import React, { FC } from "react";
+import { DistributedChart } from "./apexChart";
+type Iprop = {
+  sidebarWidth: boolean;
+};
+const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
   return (
     <>
-
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
-          <div className="grid grid-cols-3 gap-4 mb-4">
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
+      <div
+        className={` ${
+          sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
+        } bg-gray-100 px-6 fixed w-5/6 transition-all duration-200 ease-in-out h-96`}
+        style={{ height: "560px" }}
+      >
+        <div className=" grid w-full gap-5 sm:grid-cols-3 lg:grid-cols-3 px-40 pt-5">
+          <div
+            className={`${
+              true
+                ? "enabled:hover:border-gray-400 cursor-pointer"
+                : "opacity-50 pointer-events-none"
+            } flex justify-center items-center h-40   overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
+          >
+            <span className="self-center flex flex-col text-white justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+              awesdfggh
+              <p className="text-red-600 bg-white ">
+                {true ? "" : "(under process)"}
               </p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800 shadow-xl shadow-black/20 dark:shadow-black/40">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
+            </span>
           </div>
-          <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p className="text-2xl text-gray-400 dark:text-gray-500">
-              <svg
-                className="w-3.5 h-3.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 18"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 1v16M1 9h16"
-                />
-              </svg>
-            </p>
+          <div
+            className={`${
+              true
+                ? "enabled:hover:border-gray-400 cursor-pointer"
+                : "opacity-50 pointer-events-none"
+            } flex justify-center items-center h-40  overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
+          >
+            <span className="self-center flex flex-col text-black justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+              awesdfggh
+              <p className="text-red-600 bg-white ">
+                {true ? "under process" : "(under process)"}
+              </p>
+            </span>
           </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
+          <div
+            className={`${
+              true
+                ? "enabled:hover:border-gray-400 cursor-pointer"
+                : "opacity-50 pointer-events-none"
+            } flex justify-center items-center h-40    overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
+          >
+            <span className="self-center flex flex-col text-white justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+              awesdfggh
+              <p className="text-red-600 bg-white ">
+                {true ? "" : "(under process)"}
               </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center justify-center h-48 mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            <p className="text-2xl text-gray-400 dark:text-gray-500">
-              <svg
-                className="w-3.5 h-3.5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 18 18"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M9 1v16M1 9h16"
-                />
-              </svg>
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
-            <div className="flex items-center justify-center rounded bg-gray-50 h-28 dark:bg-gray-800">
-              <p className="text-2xl text-gray-400 dark:text-gray-500">
-                <svg
-                  className="w-3.5 h-3.5"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 18 18"
-                >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M9 1v16M1 9h16"
-                  />
-                </svg>
-              </p>
-            </div>
+            </span>
           </div>
         </div>
-    
-    </>
-  )
-}
 
-export default VenderHubs
+        <DistributedChart/>
+      </div>
+    </>
+  );
+};
+
+export default VendorDashboard;
