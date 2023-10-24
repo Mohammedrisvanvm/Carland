@@ -7,10 +7,10 @@ import { useNavigate } from "react-router";
 
 
   type Iprops = {
-    sidebarWidth: boolean;
-    spanVisible: boolean;
-    setsidebarWidth: React.Dispatch<React.SetStateAction<boolean>>;
-    setSpanVisible: React.Dispatch<React.SetStateAction<boolean>>;
+    sidebarWidth?: boolean;
+    spanVisible?: boolean;
+    setsidebarWidth?: React.Dispatch<React.SetStateAction<boolean>>;
+    setSpanVisible?: React.Dispatch<React.SetStateAction<boolean>>;
   };
   const VendorNavBar: FC<Iprops> = ({
     setSpanVisible,

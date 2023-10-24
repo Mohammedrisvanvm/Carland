@@ -28,9 +28,11 @@ interface IVehicle extends Document {
     pickUp: Date[];
     dropOff: Date[];
   };
+   placeName?:string
 }
 interface IVehicle {
   vehicleData: IVehicle[];
+ 
 }
 
 export default IVehicle;

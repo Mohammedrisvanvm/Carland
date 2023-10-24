@@ -25,4 +25,5 @@ DocumentVehicle:string
     dropOff: string[];
   };
   ban: boolean;
+  placeName?:string
 }

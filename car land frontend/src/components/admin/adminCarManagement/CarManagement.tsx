@@ -39,7 +39,7 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
       }
     };
     fetchData();
-  }, [search, currentPage]);
+  }, [search, currentPage,loading]);
   const banHandle = async (value: string | undefined) => {
     await banCar(value);
     setLoading(!loading);

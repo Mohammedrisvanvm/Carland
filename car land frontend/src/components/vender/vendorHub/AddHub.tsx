@@ -1,5 +1,5 @@
 import { FormikConfig, FormikHelpers, useFormik } from "formik";
-import { ChangeEvent, FC, useRef, useState } from "react";
+import React,{ ChangeEvent, FC, SetStateAction } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { HubAdd } from "../../../services/apis/vendorApi/vendorApi";
@@ -10,6 +10,8 @@ import Map from "./Map";
 import MapboxComponent from "./Map";
 import { hub } from "../../../interfaces/userAuth";
 import Loader from "../../../utils/Loader";
+import { GeocodingResponse } from "../../../interfaces/geocodingInterface";
+import mapboxAPI from "../../../services/mapbox/mapbox";
 
 const convertToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -23,28 +25,25 @@ const convertToBase64 = (file: File): Promise<string> => {
     };
   });
 };
-export interface IHub {
-  hubName: string;
-  place: object;
-  pincode: string;
-  hubImage: string;
-  hubMultiImage: Array<string>;
-  validityDate: string;
-  license: string;
-}
+type Current = {
+  latitude: number;
+  longitude: number;
+};
+
 const AddHub: FC = () => {
   const Navigate = useNavigate();
-  const [showMap, setShowMap] = useState<boolean>(false);
-  const [loader, setLoader] = useState<boolean>(false);
-  const [location, setLocation] = useState<object|null>(null);
+  const [showMap, setShowMap] = React.useState<boolean>(false);
+  const [loader, setLoader] = React.useState<boolean>(false);
+  const [location, setLocation] = React.useState<Current|null>(null);
+  const [searchQuery, setSearchQuery] = React.useState<string>("");
   const initialValues: hub = {
     hubName: "",
-    place: {},
     pincode: "",
     hubImage: "",
     hubMultiImage: [],
     validityDate: "",
     license: "",
+    placeName: '',
    
   };
 
@@ -53,21 +52,25 @@ const AddHub: FC = () => {
     actions: FormikHelpers<hub>
   ): Promise<void> => {
     try {
-      console.log(location);
+      console.log();
        
       if(location){
 
-        values.place = location;
+        values.placeName = searchQuery;
+        values.location=location
+
         setLoader(!loader)
         const res: AxiosResponse = await HubAdd(values);
         setLoader(!loader)
         toast.success(res.data?.message);
         Navigate("/vendor");
+    
       }else{
         toast.error('add location');
       }
     } catch (error: any) {
       toast.error(error.response.data.message);
+      setLoader(!loader)
       console.log(error);
     }
   };
@@ -134,11 +137,24 @@ const AddHub: FC = () => {
       console.log(error);
     }
   };
-
+  React.useEffect(()=>{
+    const CurrentLocation=async()=>{
+      const res: GeocodingResponse = await mapboxAPI.get(
+        `https://api.mapbox.com/geocoding/v5/mapbox.places/${location?.longitude},${location?.latitude}.json`
+      ); 
+      setSearchQuery(res.data.features[0].place_name);
+    }
+    CurrentLocation()
+  },[location])
+ 
   return (
     <>
       {" "}
-      <VendorNavBar />
+      <VendorNavBar sidebarWidth={false} spanVisible={false} setsidebarWidth={function (value: SetStateAction<boolean>): void {
+        throw new Error("Function not implemented.");
+      } } setSpanVisible={function (value: SetStateAction<boolean>): void {
+        throw new Error("Function not implemented.");
+      } } />
       {loader ? <Loader/> :(<>
       <div className="flex justify-center overflow-x-auto shadow-md sm:rounded-lg mt-14 m-8 ">
         <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white my-8 flex justify-center">
@@ -300,4 +316,4 @@ const AddHub: FC = () => {
   );
 };
 
-export default AddHub;
+export default AddHub

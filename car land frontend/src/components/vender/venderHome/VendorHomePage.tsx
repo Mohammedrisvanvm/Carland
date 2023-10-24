@@ -74,7 +74,7 @@ const VendorHomePage = () => {
                   }}
                   className={`${
                     item.isVerified
-                      ? "enabled:hover:border-gray-400"
+                      ? "enabled:hover:border-gray-400 cursor-pointer"
                       : "opacity-50 pointer-events-none"
                   } flex justify-center items-center h-48 overflow-hidden bg-contain transition-shadow duration-200 bg-white rounded shadow-xl group hover:shadow-2xl`}
                   style={{
@@ -82,8 +82,10 @@ const VendorHomePage = () => {
                     backgroundColor: "rgba(255, 255, 255, 0.1)",
                   }}
                 >
-                  <span className="self-center flex text-white justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+                  <span className="self-center flex flex-col text-white justify-center my-14  text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
                     {item.hubName}
+                    <p className="text-red-600 bg-white ">{
+                    item.isVerified ?'':"(under process)"}</p>
                   </span>
                 </div>
               ))

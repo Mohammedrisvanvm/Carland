@@ -37,13 +37,13 @@ const HubManagement: FC<Iprop> = ({ sidebarWidth }) => {
       }
     };
     fetchData();
-  }, [search, currentPage]);
+  }, [search, currentPage,loading]);
   const handleVerify = async (value: string | undefined) => {
     await Verifyhub(value);
     setShowModal(false);
     setLoading(!loading);
   };
-  const banHandle = async (value: string) => {
+  const banHandle = async (value: string|undefined) => {
     await banHub(value);
     setLoading(!loading);
   };

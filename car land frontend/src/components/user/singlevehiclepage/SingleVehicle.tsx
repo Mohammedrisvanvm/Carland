@@ -33,10 +33,12 @@ const SingleCar: FC = () => {
   const location = useLocation();
   const [paybutton, setPaybutton] = React.useState<boolean>(false);
   const [oldbookingDates, setOldbookingDates] = React.useState<Date[]>([]);
+
   type ILocation = {
-    lng: number;
-    lat: number;
+    latitude: number;
+    longitude: number;
   };
+  
   const [Location, setLocation] = React.useState<ILocation | null>(null);
   const queryParams = new URLSearchParams(location.search);
   const carId: string | null = queryParams.get("carId");
@@ -74,6 +76,7 @@ const SingleCar: FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
+console.log(response);
 
         if (response.data?.vehicle && response.data?.location) {
           setVehicle(response.data?.vehicle);
@@ -84,7 +87,8 @@ const SingleCar: FC = () => {
           if (response.data?.datesArray) {
             setOldbookingDates(response.data?.datesArray);
           }
-          setLocation(response.data?.location);
+          setLocation(response.data?.location.coords);
+          setPlace(response.data?.location.placeName)
           setMap(true);
         }
       } catch (error: any) {
@@ -107,6 +111,8 @@ const SingleCar: FC = () => {
         (new Date(todate).getTime() - new Date(fromdate).getTime()) / 3600000
       );
       const perhour = vehicle ? Math.round(vehicle?.fairPrice / 24) : 0;
+     
+console.log(time,perhour, vehicle?.fairPrice);
 
       setPrice(time * perhour);
     }
@@ -139,15 +145,7 @@ const SingleCar: FC = () => {
       setPaybutton(!paybutton);
     }
   };
-  useEffect(() => {
-    const fetchData = async () => {
-      const res: GeocodingResponse = await mapboxAPI.get(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${Location?.lng},${Location?.lat}.json`
-      );
-      setPlace(res.data.features[0].place_name);
-    };
-    fetchData();
-  }, [Location]);
+
 
   const { RangePicker } = DatePicker;
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
@@ -300,7 +298,7 @@ const SingleCar: FC = () => {
                 {vehicle?.vehicleName} <span>{vehicle?.year}</span>
               </p>
 
-              <div className="text-lg font-bold">car land</div>
+              <div className="text-lg font-bold">#</div>
             </div>
 
             <div className="grid sm:grid-cols-4 grid-cols-2 gap-4 capitalize">
@@ -434,8 +432,8 @@ const SingleCar: FC = () => {
               <>
                 {" "}
                 <StaticMapRoute
-                  latitude={Location ? Location.lat : 0}
-                  longitude={Location ? Location.lng : 0}
+                  latitude={Location ? Location.latitude : 0}
+                  longitude={Location ? Location.longitude : 0}
                 />
               </>
             ) : (

@@ -8,8 +8,8 @@ interface Ihub  {
     lat: number;
     lng: number;
   }
-  place?: object;
-  pincode: Number;
+  placeName:string
+  pincode: number;
   vehicles: Array<string>;
   validityDate: Date;
   license: string;

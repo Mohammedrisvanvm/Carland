@@ -142,6 +142,6 @@ export const singleCar = AsyncHandler(
     }
     console.log(datesArray);
 
-    res.json({ vehicle, location: hub.location,datesArray });
+    res.status(200).json({ vehicle, location:{placeName:hub.placeName,coords:hub.location} ,datesArray });
   }
 );

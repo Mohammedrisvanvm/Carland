@@ -16,16 +16,16 @@ export interface user {
   profileVerificationRequest?:boolean
   verifiedProfile?:boolean
 }
+type Current = {
+  latitude: number;
+  longitude: number;
+};
 export interface hub{
-  place: object;
- 
-  _id:string,
   hubName: string;
+  location?:Current
+  _id?:string,
   isVerified?: boolean;
   ban?: boolean;
-  location?: {
-    lat:number,lng:number
-  }|undefined;
   placeName?:string;
   pincode: string;
   validityDate: string;

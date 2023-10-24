@@ -12,13 +12,15 @@ export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const {
       hubName,
-      place,
       pincode,
       validityDate,
       license,
       hubImage,
       hubMultiImage,
+      placeName,
+      location
     }: Ihub = req.body.values;
+console.log(req.body);
 
     const hub: Ihub | null = await hubModel.findOne({ hubName });
 
@@ -39,29 +41,19 @@ export const addhub = AsyncHandler(
 
       const hub: Ihub = await hubModel.create({
         hubName,
-        location: place,
+        location,
+        placeName,
         pincode,
         validityDate,
         license: images[1].url,
         hubImage: images[0].url,
         hubMultiImage: multi,
       });
-      const accessTokenvendor: string = req.cookies.accessTokenvendor;
-      interface Ipayload {
-        payload?: {
-          id: string;
-          name: string;
-          email: string;
-          number: string;
-        };
-        expired?: boolean;
-      }
-      const value: Ipayload = verifyJwt(accessTokenvendor);
-      if (!value) {
-        throw new Error("accessToken problem");
-      }
-      await VendorModel.findByIdAndUpdate(
-        { _id: value.payload.id },
+   
+     
+      
+      await VendorModel.findOneAndUpdate(
+        { phoneNumber:req.headers.authorization},
         { $addToSet: { renthubs: hub._id } }
       );
       res.json({ message: `created new hub ${hub.hubName}` });

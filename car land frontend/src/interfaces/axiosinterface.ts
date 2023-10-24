@@ -8,26 +8,30 @@ export interface AxiosResponse<T = any> {
     hubs?: hub[];
     message?: string;
     vehicles?: Vehicles[];
-    count?:number
-    vehicle?:Vehicles
-    datesArray?:Date[]
-    vendors?:IVendor[]
-    users?:user[]
-    user?:user
+    count?: number;
+    vehicle?: Vehicles;
+    datesArray?: Date[];
+    vendors?: IVendor[];
+    users?: user[];
+    user?: user;
     accessToken?: string;
-    razorpay?:Irazresponse
-    id?:string,
-    bookingDetails?:IConfirmBookWithImage[]
-    bookingConfirmDetails?:IConfirmBook
-    location?: {
-      lat: number;
-      lng: number;
-    }
+    razorpay?: Irazresponse;
+    id?: string;
+    bookingDetails?: IConfirmBookWithImage[];
+    bookingConfirmDetails?: IConfirmBook;
+    location?: hubdata;
+    status?: number;
+    statusText?: string;
+    headers?: any;
+    config?: AxiosRequestConfig;
+    request?: any;
   };
-  status?: number;
-  statusText?: string;
-  headers?: any;
-  config?: AxiosRequestConfig;
-  request?: any;
-  
 }
+
+interface hubdata {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+  placeName: string;
+};
