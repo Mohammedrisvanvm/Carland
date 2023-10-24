@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
-import bcrypt from "bcrypt";
 import IAdmin from "../../interfaces/adminInterface";
 import adminModel from "../../models/adminSchema";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
@@ -16,7 +15,7 @@ export const adminLogin = AsyncHandler(
     const data: IADMINB = req.body.values;
     // const data: IADMINB = req.body
 
-    let response: IAdmin | null = await adminModel.findOne({
+    const response: IAdmin | null = await adminModel.findOne({
       email: data.email,
     });
   

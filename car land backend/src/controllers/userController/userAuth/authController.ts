@@ -58,7 +58,7 @@ export const userOtpverify = AsyncHandler(
       console.log(data);
 
       if (UserOtpToken) {
-        const { payload, expired }: UserJwt = verifyJwt(UserOtpToken);
+        const { payload }: UserJwt = verifyJwt(UserOtpToken);
 
         if (payload?.token == data) {
           let userExist: IUser | null = await userModel.findOne({

@@ -22,10 +22,10 @@ export const vendorLoginController = AsyncHandler(
 
 
     if (venderExist) {
-      let response: number = await sendOtp(req.body.values.number);
+      const response: number = await sendOtp(req.body.values.number);
       console.log(response);
 
-      let Token = jwtSign({ token: response, vendor: req.body.values }, "5min");
+      const Token = jwtSign({ token: response, vendor: req.body.values }, "5min");
 
       res
         .status(200)
@@ -54,10 +54,10 @@ export const venderSignUpController = AsyncHandler(
     if (venderExist) {
       throw new Error("User Already Exists");
     } else {
-      let response: number = await sendOtp(data.number);
+      const response: number = await sendOtp(data.number);
       console.log(response);
 
-      let Token = jwtSign({ token: response, vendor: data }, "5min");
+      const Token = jwtSign({ token: response, vendor: data }, "5min");
       res
         .status(200)
         .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
@@ -85,7 +85,7 @@ export const vendorOtpverify = AsyncHandler(
 
     const data: vendorbody = req.body;
     if (vendorOtpToken) {
-      const { payload, expired }: VendorJwt = verifyJwt(vendorOtpToken);
+      const { payload }: VendorJwt = verifyJwt(vendorOtpToken);
       console.log(payload);
       
       if (payload?.token == data.value) {

@@ -1,6 +1,5 @@
 import  { Schema, model } from "mongoose";
 import bcrypt from 'bcrypt'
-import IVender from "../interfaces/vendorInterface";
 import IVendor from "../interfaces/vendorInterface";
 
 

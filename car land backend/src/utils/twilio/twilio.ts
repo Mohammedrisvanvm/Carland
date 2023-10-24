@@ -16,15 +16,15 @@ export function getotp() {
 
 export const sendOtp = async (phoneNumber: number):Promise<number> => {
   try {
-    let otp=getotp()
-  //  await client.messages
-  //     .create({
-  //       body: `otp verification from carland  ${ otp}`,
-  //       to: `+91${phoneNumber}`, 
-  //       from: "++1 267 362 9139", 
-  //     })
-  //     .then((message) => console.log(message.sid))
-  //     .catch((error) => console.error("Error sending message:", error));
+    const otp=getotp()
+   await client.messages
+      .create({
+        body: `otp verification from carland  ${otp}`,
+        to: `+91${phoneNumber}`, 
+        from: "++1 267 362 9139", 
+      })
+      .then((message) => console.log(message.sid))
+      .catch((error) => console.error("Error sending message:", error));
     return otp
   } catch (error: any) {
     throw new Error(error);

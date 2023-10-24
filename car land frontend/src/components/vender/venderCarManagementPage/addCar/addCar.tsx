@@ -1,4 +1,4 @@
-import { FormikConfig, FormikHelpers, useFormik } from "formik";
+import {  FormikHelpers, useFormik } from "formik";
 import { ChangeEvent, KeyboardEvent, useState } from "react";
 import { useNavigate } from "react-router";
 import { AddCarSchema } from "../../../../validationSchemas/validationSchema";
@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { CarAdd } from "../../../../services/apis/vendorApi/vendorApi";
 import { AxiosResponse } from "../../../../interfaces/axiosinterface";
 import { useAppSelector } from "../../../../redux/store/storeHook";
-import { error } from "console";
+;
 import Loader from "../../../../utils/Loader";
 
 const convertToBase64 = (file: File): Promise<string> => {
@@ -85,7 +85,7 @@ const AddCar = () => {
         const Base = await convertToBase64(file);
         setFieldValue("DocumentVehicle", Base);
       }
-    } catch (error) {
+    } catch (error:any) {
       console.log(error);
     }
   };

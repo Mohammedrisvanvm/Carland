@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import chatModel from "../../models/chatSchema";
-import conversationModel from "../../models/conversationSchema";
 
 export const addNewMessage = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {

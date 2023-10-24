@@ -128,10 +128,10 @@ export const singleCar = AsyncHandler(
     const vehicle: IVehicle = await vehicleModel.findById(id);
     const hub: Ihub = await hubModel.findOne({ vehicles: { $in: [id] } });
     console.log(vehicle.bookingDates);
-    let datesArray: Date[] = [];
+    const datesArray: Date[] = [];
 
     for (let i = 0; i < vehicle.bookingDates.pickUp.length; i++) {
-      let currentDate = new Date(vehicle.bookingDates.pickUp[i]);
+      const currentDate = new Date(vehicle.bookingDates.pickUp[i]);
       const dropOffDate = vehicle.bookingDates.dropOff[i];
     
       while (currentDate <= dropOffDate) {

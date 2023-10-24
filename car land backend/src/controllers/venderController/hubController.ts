@@ -78,8 +78,8 @@ export const getHubs = AsyncHandler(
     if (!accessTokenvendor) {
       throw new Error("accessToken not available");
     }
-    const jwtdata: Ipayload = verifyJwt(accessTokenvendor);
-    console.log(typeof req.headers.authorization, "number");
+ 
+
 
     const dbout: IVendor = await VendorModel.findOne(
       { phoneNumber: req.headers.authorization },

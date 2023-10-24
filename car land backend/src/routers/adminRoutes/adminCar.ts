@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { banCar, getAllCars, verifyCar } from "../../controllers/adminController/CarManagement";
-let adminCar = Router();
+const adminCar = Router();
 
 
 

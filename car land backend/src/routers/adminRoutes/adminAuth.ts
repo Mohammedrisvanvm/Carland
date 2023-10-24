@@ -2,7 +2,7 @@ import { Router } from "express";
 import {  adminCheck, adminLogin, adminLogout } from "../../controllers/adminController/adminAuth";
 
 
-let adminAuth=Router()
+const adminAuth=Router()
 
 
 adminAuth.post('/',adminLogin)

@@ -12,7 +12,6 @@ import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import { RazorpayRefund } from "../../interfaces/razorpayInterface";
 import { generateId } from "../../helpers/createId";
-import moment from "moment";
 
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
@@ -41,9 +40,8 @@ type values = {
 };
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const { pickUpDate, dropOffDate, carId, amount }: values = req.body.data;
+    const {  amount }: values = req.body.data;
 
-    const vehicle: IVehicle = await vehicleModel.findById(carId);
     type Irazresponse = {
       id: string;
       entity: string;
@@ -108,7 +106,7 @@ export const bookCar = AsyncHandler(
 
     console.log(vehicle);
 
-    let paymentStatus: string = "FullPaid";
+    const paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({
       hubId: hubDetails._id,
       vehicleId: carId,

@@ -4,17 +4,7 @@ import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import IVendor from "../../interfaces/vendorInterface";
 import AsyncHandler from "express-async-handler";
 
-interface VendorJwt {
-  payload?: {
-    token?: number;
-    vendor?: {
-      userName: string;
-      email: string;
-      number: number;
-    };
-  } | null;
-  expired: boolean;
-}
+
 
 interface IVerifyjwt {
   payload?: {

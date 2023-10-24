@@ -1,4 +1,4 @@
-import mongoose, { Schema, model, Document } from "mongoose";
+import  { Schema, model} from "mongoose";
 import bcrypt from "bcrypt";
 import IUser from "../interfaces/userInterface";
 import { NextFunction } from "express";

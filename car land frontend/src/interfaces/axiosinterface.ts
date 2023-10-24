@@ -27,13 +27,13 @@ export interface AxiosResponse<T = any> {
     headers?: any;
     config?: AxiosRequestConfig;
     request?: any;
-  };
+  }
 }
 
 interface hubdata {
   coords: {
     latitude: number;
     longitude: number;
-  };
+  }
   placeName: string;
-};
+}

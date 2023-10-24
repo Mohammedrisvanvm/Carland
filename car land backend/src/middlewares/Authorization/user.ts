@@ -5,17 +5,6 @@ import AsyncHandler from "express-async-handler";
 import IUser from "../../interfaces/userInterface";
 import userModel from "../../models/userSchema";
 
-interface VendorJwt {
-  payload?: {
-    token?: number;
-    vendor?: {
-      userName: string;
-      email: string;
-      number: number;
-    };
-  } | null;
-  expired: boolean;
-}
 
 interface IVerifyjwt {
   payload?: {

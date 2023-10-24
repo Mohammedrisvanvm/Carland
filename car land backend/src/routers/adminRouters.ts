@@ -7,7 +7,7 @@ import adminCar from "./adminRoutes/adminCar";
 import adminBooking from "./adminRoutes/adminBooking";
 import adminDashboard from "./adminRoutes/adminDashboard";
 
-let router=Router()
+const router=Router()
 
 
 router.use('/auth',adminAuth)

@@ -47,7 +47,7 @@ export interface GeocodingResponse {
       xsrfHeaderName: string;
       maxContentLength: number;
       maxBodyLength: number;
-      env: {};
+      env?: {};
       headers: {
         Accept: string;
         'Content-Type': string | null;

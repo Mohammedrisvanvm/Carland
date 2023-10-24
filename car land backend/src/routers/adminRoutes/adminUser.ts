@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { ProfileVerification, banUser, getAllUser } from "../../controllers/adminController/userManagement";
-let adminUser = Router();
+const adminUser = Router();
 
 
 

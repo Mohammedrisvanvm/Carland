@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
-import IVehicle from "../../interfaces/vehicleInterface";
-import vehicleModel from "../../models/vehicleSchema";
+
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import bookModel from "../../models/bookingSchema";
 export const dashboardDetailsAdmin = AsyncHandler(

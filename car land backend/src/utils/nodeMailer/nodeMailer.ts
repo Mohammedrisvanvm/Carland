@@ -33,7 +33,7 @@ import nodemailer from 'nodemailer';
           <p>Car Land</p>
         </div>`
       };
-      transporter.sendMail(mailOptions, (error: any, info: any) => {
+      transporter.sendMail(mailOptions, (error: any) => {
         if (error) {
           console.log("Failed to generate otp");
         } else {

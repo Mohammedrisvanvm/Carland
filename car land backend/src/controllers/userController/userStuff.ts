@@ -2,7 +2,6 @@ import { Request, Response } from "express";
 import AsyncHandler from "express-async-handler";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../utils/twilio/twilio";
-import user from "../../models/userSchema";
 import userModel from "../../models/userSchema";
 import cloudinary from "../../config/cloudinary";
 import fs from "fs";
@@ -62,8 +61,6 @@ export const verifyOtp = AsyncHandler(
 export const userprofileData = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const token: string = req.headers.authorization;
-    const userjwt: UserJwt = verifyJwt(token);
-    console.log(req.body);
     type profile = {
       gender: string;
       userName: string;

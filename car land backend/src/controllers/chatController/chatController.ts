@@ -39,7 +39,7 @@ export const getConversation = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     console.log(req.params, 12222222222);
 
-    let conversation: any = await conversationModel.find({
+    const conversation: any = await conversationModel.find({
       members: { $in: [req.params.userId] },
     });
 

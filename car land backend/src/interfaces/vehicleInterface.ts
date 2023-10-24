@@ -7,12 +7,12 @@ interface IVehicle extends Document {
   year: string;
   colour: string;
   fuel: string;
-  numofseats: Number;
+  numofseats: number;
   hubName: string;
-  mileage: Number;
-  fairPrice: Number;
-  fairKm: Number;
-  status: Boolean;
+  mileage: number;
+  fairPrice: number;
+  fairKm: number;
+  status: boolean;
   specification: Array<string>;
   vehicleValidate: Date;
   DocumentVehicle: string;

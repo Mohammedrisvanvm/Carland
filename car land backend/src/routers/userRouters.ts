@@ -5,7 +5,7 @@ import userStuffController from "./userAuthRouters/UserStuffContoller";
 import { userAuthenticate } from "../middlewares/Authorization/user";
 import UserBooking from "./userAuthRouters/UserBooking";
 
-let router=Router()
+const router=Router()
 
 
 router.use('/auth',userAuthRouters)

@@ -10,7 +10,7 @@ next(error)
 
 
 
-const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction): void => {
+const errorHandler = (err: Error, req: Request, res: Response, ): void => {
   let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   let message = err.message;
 

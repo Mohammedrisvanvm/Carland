@@ -5,7 +5,7 @@ import hubRouters from "./vendorRouters/hubRouters";
 import { vendorAuthenticate } from "../middlewares/Authorization/vendor";
 import vendorBookings from "./vendorRouters/vendorBookings";
 
-let router = Router();
+const router = Router();
 
 router.use("/auth", vendorAuthRouters);
 router.use("/vehicle", vendorAuthenticate, vendorVehicleRouters);

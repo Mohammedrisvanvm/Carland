@@ -2,8 +2,8 @@ interface Ihub  {
   save(): unknown;
   _id: string;
   hubName: string;
-  isVerified: Boolean;
-  ban: Boolean;
+  isVerified: boolean;
+  ban: boolean;
   location: {
     latitude: number;
     longitude: number;

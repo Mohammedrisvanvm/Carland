@@ -11,8 +11,8 @@ interface IUser extends Document {
   phone_number?: number;
   verified_phonenumber?: boolean;
   gender?: string;
-  license?: Array<String>;
-  adhaar?: Array<String>;
+  license?: Array<string>;
+  adhaar?: Array<string>;
   profileVerificationRequest?:boolean
   verifiedProfile?:boolean
   createdAt: Date;

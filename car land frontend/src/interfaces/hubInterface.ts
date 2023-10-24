@@ -1,8 +1,8 @@
 interface Ihub {
   _id?: string;
   hubName: string;
-  isVerified?: Boolean |undefined;
-  ban?: Boolean;
+  isVerified?: boolean |undefined;
+  ban?: boolean;
   place?: string;
   pincode: string;
   location: string;

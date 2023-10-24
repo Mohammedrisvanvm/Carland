@@ -1,4 +1,3 @@
-import { NextFunction } from "express";
 import { Server, Socket } from "socket.io";
 
 interface userdataSocket extends Socket {
