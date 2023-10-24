@@ -46,7 +46,7 @@ const AdminBooking: FC<Iprop> = ({ sidebarWidth }) => {
       <div
         className={` ${
           sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
-        } bg-gray-100 px-6 fixed w-6/6 transition-all duration-200 ease-in-out h-96`}
+        } bg-gray-100 px-6 fixed w-5/6 transition-all duration-200 ease-in-out h-96`}
         style={{ height: "560px" }}
       >
         <div className="flex relative justify-between  py-5 ">

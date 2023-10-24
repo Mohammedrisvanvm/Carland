@@ -44,4 +44,7 @@ export const banCar=async (value:string|undefined): Promise<AxiosResponse<any>>=
 export const getBookingsManagement = async (search:string,currentPage:number): Promise<AxiosResponse<any>> => {
     return axiosBase.get(`/admin/bookingmanagement/allbookings?search=${search}&currentPage=${currentPage}`);
   };
+export const dashboardDetailsAdmin = async (): Promise<AxiosResponse<any>> => {
+    return axiosBase.get(`/admin/dashboard/dashboardDetails`);
+  };
   

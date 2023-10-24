@@ -14,7 +14,7 @@ const AdminDashboardPage = () => {
         setsidebarWidth={setsidebarWidth}
       />
       <AdminAside spanVisible={spanVisible} />
-      <AdminDashboard />
+      <AdminDashboard sidebarWidth={sidebarWidth} />
     </>
   );
 };
