@@ -12,16 +12,28 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
   const [users,setUsers]=React.useState<number>(0)
   const [totalOrders,setTotalOrders]=React.useState<number>(0)
   const [revenue,setRevenue]=React.useState<number>(0)
-  console.log(hubId);
+  const [data, setData] = React.useState<Array<number>|null>(null);
+
+  const categories: string[] = [
+    "PickUp",
+    "PickUpreq",
+    "ongoing",
+    "DropOffReq",
+    "completed",
+    "cancelled"
+  ];
+  
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const response:AxiosResponse = await dashboardDetails(hubId);
         console.log(response.data?.dashboardDetails);
         if(response.data?.dashboardDetails){
-          setUsers(response.data.dashboardDetails.data[0].totalUsers)
-          setTotalOrders(response.data.dashboardDetails.data[0].totalOrders)
-          setRevenue(response.data.dashboardDetails.data[0].totalAmountCompleted)
+          setUsers(response.data.dashboardDetails.data[0].totalUsers);
+          setTotalOrders(response.data.dashboardDetails.data[0].totalOrders);
+          setRevenue(response.data.dashboardDetails.data[0].totalAmountCompleted);
+          setData(response.data.dashboardDetails.resultArray)
         }
       } catch (error:any) {
 
@@ -31,8 +43,7 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
     };
     fetchData();
   }, []);
-  const categories:string[]=["bookings", "ongoing", "completed", "cancelled"]
- const data : number[]=[30, 40, 45, 50, ]
+
   return (
     <>
       <div
@@ -84,8 +95,8 @@ const VendorDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
             </span>
           </div>
         </div>
-
-        <DistributedChart categories={categories}  data={data}/>
+{data ?  <DistributedChart categories={categories}  data={data}/>:''}
+       
       </div>
     </>
   );

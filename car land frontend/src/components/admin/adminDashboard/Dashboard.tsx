@@ -23,7 +23,7 @@ const AdminDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
     "cancelled"
   ];
   
-  console.log(data,111);
+
 
   React.useEffect(() => {
     const fetchData = async () => {

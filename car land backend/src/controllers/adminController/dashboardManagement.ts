@@ -54,10 +54,11 @@ export const dashboardDetailsAdmin = AsyncHandler(
       },
     ]);
 
+
     const resultArray: number[] = [];
 
     if (data.length > 0) {
-      const firstResult: any = data[0]; // Assuming there's only one result
+      const firstResult: any = data[0];
 
       for (const key in firstResult) {
         if (
@@ -71,12 +72,9 @@ export const dashboardDetailsAdmin = AsyncHandler(
       }
     }
 
- 
-    res
-      .status(200)
-      .json({
-        message: "dashboardDetails",
-        dashboardDetails: { data, resultArray },
-      });
+    res.status(200).json({
+      message: "dashboard Details Admin",
+      dashboardDetails: { data, resultArray },
+    });
   }
 );
