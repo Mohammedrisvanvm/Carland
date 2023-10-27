@@ -4,6 +4,7 @@ import { vendorLogout } from "../../../redux/slice/vendorSlice";
 import { vendorSignOut } from "../../../services/apis/vendorApi/vendorApi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
+import ChatApp from "../../../test/Data";
 
 
   type Iprops = {
@@ -20,7 +21,7 @@ import { useNavigate } from "react-router";
   }) => {
     const dispatch = useDispatch();
     const vendor = useAppSelector((state) => state.vendor);
-  
+    const [modal, setModal] =React.useState<boolean>(false);
     const [dropdown, setdropdown] = React.useState<boolean>(false);
   
     const dropdownHandler = () => {
@@ -41,8 +42,8 @@ import { useNavigate } from "react-router";
             id="menu-button"
             onClick={() => {
               // expandSidebar()
-              setsidebarWidth(!sidebarWidth);
-              setSpanVisible(!spanVisible);
+              // setsidebarWidth(!sidebarWidth);
+              // setSpanVisible(!spanVisible);
             }}
           >
             {/* <button id="menu-button" onclick="expandSidebar()"> */}
@@ -64,15 +65,19 @@ import { useNavigate } from "react-router";
             />
           </div>
           <div className="space-x-12">
+       
             <button>
               <img
-                onClick={() => Navigate("/vendor/chat")}
+                // onClick={() => Navigate("/vendor/chat")}
+                onClick={() => Navigate("/newpage")}
+             
                 width="25"
                 className="text-black"
                 src="https://img.icons8.com/color/48/speech-bubble-with-dots.png"
                 alt="speech-bubble-with-dots"
               />
             </button>
+    
             <button onClick={dropdownHandler}>
               <svg
                 className="flex-shrink-0 w-5 h-5 text-gray-500 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white"

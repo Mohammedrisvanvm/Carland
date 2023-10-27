@@ -1,7 +1,7 @@
 import React, { FC, ChangeEvent, useEffect } from "react";
-import { Dialog, Transition } from "@headlessui/react";
 import { DatePicker } from "antd";
 
+import { Dialog, Transition } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 
 import dayjs from "dayjs";
@@ -249,16 +249,17 @@ console.log(time,perhour, vehicle?.fairPrice);
             </svg>
             <span className="sr-only">Next</span>
           </button>
-          <div className=" p-2 flex flex-col sm:flex-row  justify-center items-center font-semibold sm:text-lg border-2 rounded-md shadow-md">
+          <div className=" p-2 flex flex-col sm:flex-row  justify-center items-center font-semibold sm:text-lg border-2 rounded-md shadow-md ">
             <p className="sm:mr-2"> Pick your date {"->"}</p>
 
             <RangePicker
               size="middle"
-              className="h-12"
+              className="h-12 text-black"
               showTime={{ format: "hh A" }}
               format="YYYY-MM-DD hh A"
               placeholder={["Start Time", "End Time"]}
               onChange={onChange}
+              style={{color:"black"}}
               disabledDate={disabledDate}
               // disabledTime={disabledDateTime}
             />

@@ -70,8 +70,8 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res: any = await createConversation(hubId,bookingId);
-        console.log(res);
+        const res: any = await createConversation(hubId,user._id);
+        console.log(res.data);
         
         setCurrentChat(res.data.conversation[0]);
       } catch (error: any) {

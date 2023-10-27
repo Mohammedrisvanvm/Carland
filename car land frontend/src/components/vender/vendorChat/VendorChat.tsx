@@ -70,11 +70,11 @@ const VendorChat: FC = () => {
       conversationId: currentChat?._id,
       messageText: newMessage,
       receiverId: user?._id,
-      senderId: "651266a8c077d53eab4abe13",
+      senderId: vendor.id,
     };
     console.log(message);
     socket.current?.emit("sendMessage", {
-      senderId: "651266a8c077d53eab4abe13",
+      senderId: vendor.id,
       receiverId: user?._id,
       socketId: socket.current.id,
       text: newMessage,

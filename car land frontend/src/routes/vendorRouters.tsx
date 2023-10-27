@@ -7,12 +7,9 @@ import AddCarPage from "../components/vender/venderCarManagementPage/addCar/addC
 import { VendorOtp } from "../components/vender/venderAuth/vendorOtp/vendorOtp";
 import VendorSignUp from "../components/vender/venderAuth/vendorSignup/venderSignup";
 import VenderLogin from "../components/vender/venderAuth/vendorLogin/vendorLogin";
-import PrivateRoute from "../utils/PrivateRoute";
 import AddHub from "../components/vender/vendorHub/AddHub";
 import { useState } from "react";
-import VendorNavBar from "../components/vender/vendorNavbar/vendorNavBar";
 import ProtectedRouteVendor from "./protectedRoutes/vendor";
-import VendorBooking from "../components/vender/vendorBookingManagement/Vendorbooking";
 import VendorChat from "../components/vender/vendorChat/VendorChat";
 import VendorBookingPage from "../components/vender/vendorBookingManagement/VendorBookingPage";
 

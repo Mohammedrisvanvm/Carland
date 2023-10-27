@@ -6,7 +6,6 @@ import { HubAdd } from "../../../services/apis/vendorApi/vendorApi";
 import { vendorHubSchema } from "../../../validationSchemas/validationSchema";
 import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import Map from "./Map";
 import MapboxComponent from "./Map";
 import { hub } from "../../../interfaces/userAuth";
 import Loader from "../../../utils/Loader";

@@ -20,6 +20,7 @@ import NewNav from "./test/NewNav";
 import NewSide from "./test/NewSide";
 import Newpage from "./test/Newpage";
 import NewSide1 from "./test/NewSide1";
+import ChatApp from "./test/Data";
 
 function App() {
  
@@ -37,7 +38,7 @@ function App() {
            <Route path="/bug" element={<Content />} />
            {/* <Route path="/newnav" element={<NewNav />} /> */}
            {/* <Route path="/newside1" element={<NewSide1 />} /> */}
-           <Route path="/newpage" element={<Newpage />} />
+           <Route path="/newpage" element={<ChatApp />} />
         </Routes>
       </BrowserRouter>
 

@@ -55,11 +55,28 @@ export const Content = () => {
   );
   const pageSize = 4;
   const { RangePicker } = DatePicker;
+  interface DayjsObject {
+    $D: number;
+    $H: number;
+    $L: string;
+    $M: number;
+    $W: number;
+    $d: string;
+    $m: number;
+    $s: number;
+    $y: number;
+  }
   const onChange = (
-    value: DatePickerProps["value"] | RangePickerProps["value"],
+    value:any,
     dateString: [string, string] | string
   ) => {
-    setSeletedDate(dateString);
+    const date1 = value[0] as DayjsObject;
+    const date2 = value[1] as DayjsObject;
+    if (value[0] && value[1]) {
+      const selectedDate = `${date1.$d}, ${date2.$d}`;
+
+      setSeletedDate(selectedDate);
+    }
   };
 
   const handlesearch = async (e: ChangeEvent<HTMLFormElement>) => {
@@ -220,7 +237,8 @@ export const Content = () => {
                       <RangePicker
                         size="middle"
                         className="h-12 border-black text-gray-500 "
-                        format="YYYY-MM-DD"
+                        showTime={{ format: "hh A" }}
+                        format="YYYY-MM-DD hh A"
                         placeholder={["Start Time", "End Time"]}
                         onChange={onChange}
                         disabledDate={disabledDate}
@@ -238,7 +256,7 @@ export const Content = () => {
             </div>
           </div>
           <div className="px-4 mt-6 sm:my-0 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
-            <div className="max-w-xl  md:mx-auto sm:text-center lg:max-w-2xl md:mb-12"></div>
+
 
             <div className="flex justify-between my-10 ">
               <div className="flex">

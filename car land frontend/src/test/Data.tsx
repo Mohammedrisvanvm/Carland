@@ -1,77 +1,121 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { useState, FC, ChangeEvent, HtmlHTMLAttributes } from "react";
+import data from "@emoji-mart/data";
+import Picker from "@emoji-mart/react";
+import io, { Socket } from "socket.io-client";
+import { useAppSelector } from "../redux/store/storeHook";
+import { getConversations } from "../services/apis/chatApi/chatApi";
+
+import { Iconversation } from "../interfaces/chatInterface";
 import { AxiosResponse } from "../interfaces/axiosinterface";
-import { Pagination } from "antd";
-import {
-  banUser,
-  banVendor,
-  getAllUser,
-  getAllVendors,
-  verifyProfile,
-} from "../services/apis/adminApi/adminApi";
-import { hub, user } from "../interfaces/userAuth";
-import Loader from "../utils/Loader";
 
-type Iprop = {
-  sidebarWidth: boolean;
-};
-const VendorManagement: FC<Iprop> = ({ sidebarWidth }) => {
-  const [vendors, setVendors] = React.useState<IVendor[]|undefined>([]);
-  const [loading, setLoading] = React.useState<boolean>(false)
+const ENDPOINT: string = "ws://localhost:3131/";
+const ChatApp:FC = () => {
+  type Imessage = { text: string; sender: string };
+  const [messages, setMessages] = useState<Imessage[]>([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [modal, setModal] = useState(false);
+  const scroll = React.useRef<HTMLElement | null>(null);
+const vendor=useAppSelector((state)=>state.vendor)
 
-  const [modalData, setModalData] = React.useState<user | undefined>(Object);
-  const [showModal, setShowModal] = React.useState<boolean>(false);
-  const [search, setSearch] = React.useState<string>("");
-  const [currentPage, setCurrentPage] = React.useState<number>(1);
-  const [totalpage, setTotalpage] = React.useState<number>(1);
+  // @socketconnection
+  type IConversation = {
+    _id: string;
+    members: string[];
+    createdAt: Date;
+    updatedAt: Date;
+  };
+  const socket = React.useRef<Socket>();
+  const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
+  const [conversation, setConversation] = React.useState<
+    Iconversation[]| undefined
+  >([]);
+  socket.current = io(ENDPOINT);
 
   React.useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      try {
-        const response: AxiosResponse = await getAllVendors(search,currentPage);
-        console.log(response.data?.vendors);
-        setVendors(response.data?.vendors);
+    socket.current?.connect();
+    socket.current?.on("connected", () => setSocketConnected(true));
+    
+    return ()=>setSocketConnected(false)
+  }, []);
 
-      
-        if (response.data?.count) {
-          setTotalpage(Math.ceil(response.data.count / 5));
-        }
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res: AxiosResponse = await getConversations(vendor.hubId);
+        console.log(res.data?.conversation);
+        
+        setConversation(res.data?.conversation);
       } catch (error: any) {
         console.log(error);
       }
     };
     fetchData();
-  }, [search, currentPage,loading]);
-  const banHandle = async (value: string | undefined) => {
-    setLoading(true)
-    await banVendor(value);
-    setLoading(false);
+  }, [vendor.id]);
+  React.useEffect(() => {
+    scroll.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewMessage(e.target.value);
   };
-  
+
+  const handleSendMessage = () => {
+    if (newMessage) {
+      setMessages([...messages, { text: newMessage, sender: "user" }]);
+      setNewMessage("");
+      // Simulate a response from the chatbot (you can replace this with actual responses)
+      setTimeout(() => {
+        setMessages([
+          ...messages,
+          { text: "This is a response.", sender: "bot" },
+        ]);
+      }, 1000);
+    }
+  };
+
+  const handleToggleEmojiPicker = () => {
+    setShowEmojiPicker(!showEmojiPicker);
+  };
+
+  const handleSelectEmoji = (emoji: any) => {
+    setNewMessage(newMessage + emoji.native);
+    setShowEmojiPicker(!showEmojiPicker);
+  };
 
   return (
     <>
-      <div
-        className={` ${
-          sidebarWidth ? " ml-64 text-left " : " text-center ml-16 pt-2"
-        } bg-gray-100 px-6 fixed w-6/6 transition-all duration-200 ease-in-out h-96`}
-        style={{ height: "560px" }}
-      >
-        <div className="flex relative justify-between  py-5 ">
-          {" "}
-          <div className="w-10 h-5">
-            <select
-              id="countries"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            >
-              <option selected>filter</option>
-              <option value="US">United States</option>
-              <option value="CA">Canada</option>
-              <option value="FR">France</option>
-              <option value="DE">Germany</option>
-            </select>
+      <div className="h-screen w-screen p-5 border-4 border-black text-white flex">
+        <div className="w-1/3 max-h-full border-r-2 p-2">
+          <div className="h-16 relative bg-gray-300 p-3  flex items-center">
+            <div className=" rounded-lg">
+              <img
+                className="w-9 h-9 rounded-full "
+                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                alt="user photo"
+              />
+              <div className="absolute right-7 top-5">
+                <svg
+                  viewBox="0 0 24 24"
+                  height="24"
+                  width="24"
+                  preserveAspectRatio="xMidYMid meet"
+                  version="1.1"
+                  x="0px"
+                  y="0px"
+                  className="hover:cursor-pointer"
+                  enable-background="new 0 0 24 24"
+                >
+                  <path
+                    fill="gray"
+                    d="M12,7c1.104,0,2-0.896,2-2c0-1.105-0.895-2-2-2c-1.104,0-2,0.894-2,2 C10,6.105,10.895,7,12,7z M12,9c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,9.895,13.104,9,12,9z M12,15 c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,15.894,13.104,15,12,15z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
           </div>
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="relative w-full my-2 flex items-center px-2 ">
+            <div className="absolute inset-y-0  flex items-center pl-3 pointer-events-none">
               <svg
                 className="w-5 h-5 text-gray-500 dark:text-gray-400"
                 aria-hidden="true"
@@ -86,111 +130,217 @@ const VendorManagement: FC<Iprop> = ({ sidebarWidth }) => {
                 ></path>
               </svg>
             </div>
-            <input
-              type="text"
-              id="table-search"
-              className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search"
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                setSearch(e.target.value)
-              }
-            />
+            <div className="mr-3 flex justify-between ">
+              <input
+                type="text"
+                id="table-search"
+                className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search"
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                  // setSearch(e.target.value)
+                  console.log(e);
+                }}
+              />
+            </div>
+            <div className="absolute right-7">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="1em"
+                viewBox="0 0 576 512"
+                className="hover:cursor-pointer"
+              >
+                <path
+                  fill="gray"
+                  d="M151.6 42.4C145.5 35.8 137 32 128 32s-17.5 3.8-23.6 10.4l-88 96c-11.9 13-11.1 33.3 2 45.2s33.3 11.1 45.2-2L96 146.3V448c0 17.7 14.3 32 32 32s32-14.3 32-32V146.3l32.4 35.4c11.9 13 32.2 13.9 45.2 2s13.9-32.2 2-45.2l-88-96zM320 480h32c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H480c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32zm0-128H544c17.7 0 32-14.3 32-32s-14.3-32-32-32H320c-17.7 0-32 14.3-32 32s14.3 32 32 32z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <hr />
+
+          <div className="h-5/6 w-96 overflow-y-scroll">
+            {conversation ? conversation.map((item) => (
+              <>
+                <div className="flex items-center p-2 hover:bg-gray-300  w-96 rounded-lg">
+                  <img
+                    className="w-12 h-12 rounded-full mr-5"
+                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                    alt="user photo"
+                  />
+                  <span className="text-black font-base text-xl">
+                    {item.members[1]}
+                  </span>
+                </div>
+                <hr />
+              </>
+            )):''}
           </div>
         </div>
 
-        { loading ? <Loader/> : <>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead className="text-xs justify-between text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="px-6 py-3">
-                index
-              </th>
-          
-              <th scope="col" className="px-6 py-3">
-                Name
-              </th>
+        {/* right side of the chat screen */}
+        <div className=" text-black mt-2 w-full px-2 flex flex-col ">
+          {" "}
+          <div className="h-16 relative bg-gray-300 p-3  flex items-center">
+            <div className=" rounded-lg">
+              <img
+                className="w-9 h-9 rounded-full "
+                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                alt="user photo"
+              />
 
-              <th scope="col" className="px-6 py-3">
-                email
-              </th>
-
-              <th scope="col" className="px-6 py-3">
-                ban
-              </th>
-
-              <th scope="col" className="px-6 py-3">
-                phone Number
-              </th>
-              <th scope="col" className="px-6 py-3">
-                hub(count)
-              </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Vehicle Validity Date
-              </th> */}
-              <th scope="col" className="px-6 py-3">
-                Status
-              </th>
-              {/* <th scope="col" className="px-6 py-3">
-                Action
-              </th> */}
-            </tr>
-          </thead>
-          <tbody>
-            {vendors
-              ? vendors.map((item, index) => (
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td className="w-4 p-4">{index + 1}</td>                
-                    <td className="px-6 py-4"> {item.userName}</td>
-                    <td className="px-6 py-4"> {item.email}</td>
-                    <td className="px-6 py-4">
+              <div className="absolute right-7 top-5">
+                <svg
+                  viewBox="0 0 24 24"
+                  height="24"
+                  width="24"
+                  preserveAspectRatio="xMidYMid meet"
+                  version="1.1"
+                  x="0px"
+                  y="0px"
+                  className="hover:cursor-pointer"
+                  enable-background="new 0 0 24 24"
+                >
+                  <path
+                    fill="gray"
+                    d="M12,7c1.104,0,2-0.896,2-2c0-1.105-0.895-2-2-2c-1.104,0-2,0.894-2,2 C10,6.105,10.895,7,12,7z M12,9c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,9.895,13.104,9,12,9z M12,15 c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,15.894,13.104,15,12,15z"
+                  ></path>
+                </svg>
+              </div>
+            </div>
+            <div>
+              {" "}
+              <div className="flex-col flex pl-5">
+                {" "}
+                <span className="text-black font-base text-xl ">user name</span>
+                <span className="text-green-400 font-base text-xs ">
+                  online{" "}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="bg-green-100 w-full h-full  overflow-y-scroll p-10">
+            {" "}
+            {messages
+              ? messages.map((item) => (
+                  <div ref={scroll as React.RefObject<HTMLDivElement>}>
+                    <div
+                      className={`flex  ${
+                        // item.senderId == "651266a8c077d53eab4abe13"
+                        false ? "justify-end" : "justify-start"
+                      }  `}
+                    >
                       {" "}
-                      <button
-                        onClick={() => banHandle(item._id)}
-                        className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40"
-                      >
-                        <span
-                          className={`${
-                            item.ban ? "text-red-600" : "text-blue-600 "
-                          }`}
-                        >
-                          {item.ban ? "banned" : "not banned"}
-                        </span>
-                      </button>
-                    </td>
-                    <td className="px-6 py-4"> {item.phoneNumber}</td>
-                    <td className="px-6 py-4"> {item.renthubs?.length}</td>
-                 
-                    {/* <td className="px-6 py-4">  {item.vehicleValidityDate}</td>
-              <td className="px-6 py-4"> <button className="bg-black">
-              {item.status}
-                </button></td> */}
-
-                    <td className="px-6 py-4">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                      >
-                        Edit
-                      </a>
-                    </td>
-                  </tr>
+                      <img
+                        className="w-10 h-10 rounded-full mr-5"
+                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                        alt="user photo"
+                      />
+                      <p className="p-2 bg-blue-400 rounded-lg max-w-xs">
+                        {/* {item.messageText} */} ggg
+                      </p>
+                    </div>
+                    {` `}
+                    <div
+                      className={`mt-3 flex  ${
+                        // item.senderId == "651266a8c077d53eab4abe13"
+                        false ? "justify-end px-2" : "justify-start px-14"
+                      }  text-gray-400 text-xs mb-4`}
+                    >
+                      {" "}
+                      <p>
+                        {/* {format(item.createdAt)} */}
+                        3pm
+                      </p>
+                    </div>
+                  </div>
                 ))
-              : "not one"}
-
-          </tbody>
-        </table>
-        </>}
-        <div className="text-center mt-10">
-          <Pagination
-            className="text-black"
-            onChange={(page: number, pageSize: number) => setCurrentPage(page)}
-            current={currentPage}
-            total={totalpage * 10}
-          />
+              : ""}
+          </div>
+          <div className="p-4 w-full bottom-0 bg-gray-200">
+            <div className="flex items-center sm:space-x-2">
+              <input
+                type="text"
+                className="flex-grow border rounded-full p-2"
+                placeholder="Type a message..."
+                value={newMessage}
+                onChange={handleInputChange}
+              />
+              <button
+                className="bg-blue-500 text-white p-2 rounded-full"
+                onClick={handleToggleEmojiPicker}
+              >
+                😄
+              </button>
+              <button
+                className="bg-blue-500 text-white p-2 rounded-full"
+                onClick={handleSendMessage}
+              >
+                Send
+              </button>
+            </div>
+            {showEmojiPicker && (
+              <div className=" absolute bottom-24">
+                <Picker data={data} onEmojiSelect={handleSelectEmoji} />
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      {/* <div className="bg-white w-full  ">
+        <div className="flex flex-col justify-between h-screen">
+          <div className=" border bg-gray-100 flex-grow">
+            {messages.map((message, index) => (
+              <div
+                key={index}
+                className={`mb-2 ${
+                  message.sender === "user" ? "text-right" : "text-left"
+                }`}
+              >
+                <div
+                  className={`rounded-lg p-2 ${
+                    message.sender === "user"
+                      ? "bg-blue-500 text-white"
+                      : "bg-gray-300 text-gray-800"
+                  }`}
+                >
+                  {message.text}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="p-4  bg-gray-200">
+            <div className="flex items-center sm:space-x-2">
+              <input
+                type="text"
+                className="flex-grow border rounded-full p-2"
+                placeholder="Type a message..."
+                value={newMessage}
+                onChange={handleInputChange}
+              />
+              <button
+                className="bg-blue-500 text-white p-2 rounded-full"
+                onClick={handleToggleEmojiPicker}
+              >
+                😄
+              </button>
+              <button
+                className="bg-blue-500 text-white p-2 rounded-full"
+                onClick={handleSendMessage}
+              >
+                Send
+              </button>
+            </div>
+            {showEmojiPicker && (
+              <div className=" absolute bottom-24">
+                <Picker data={data} onEmojiSelect={handleSelectEmoji} />
+              </div>
+            )}
+          </div>
+        </div>
+      </div> */}
     </>
   );
 };
 
-export default VendorManagement;
+export default ChatApp;

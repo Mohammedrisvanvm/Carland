@@ -26,6 +26,9 @@ const getUser = (userId: string) => {
 };
 export const socketConnect = (io: Server) => {
   io.on("connection", (socket: userdataSocket) => {
+
+    console.log(socket.id);
+    
     socket.on("addUser", (userId) => {
       console.log(userId, 1221);
       addUser(userId, socket.id);
