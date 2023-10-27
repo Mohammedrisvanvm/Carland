@@ -29,9 +29,10 @@ export const socketConnect = (io: Server) => {
 
     console.log(socket.id);
     
-    socket.on("addUser", (userId) => {
+    socket.on("addUser", (userId,socketId) => {
       console.log(userId, 1221);
-      addUser(userId, socket.id);
+      addUser(userId, socketId);
+      console.log(users);
       io.emit("getUsers", users);
     });
     socket.on("disconnect", () => {
@@ -41,8 +42,8 @@ export const socketConnect = (io: Server) => {
       io.emit("getUsers", users);
     });
 
-    socket.on("sendMessage", ({ senderId, receiverId, text, socketId }) => {
-      console.log(senderId, receiverId, socketId, text, "12345678");
+    socket.on("sendMessage", ({ senderId, receiverId, text }) => {
+      console.log(senderId, receiverId, text, "12345678");
       const user = getUser(receiverId);
 
       try {

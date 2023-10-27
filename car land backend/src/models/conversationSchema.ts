@@ -4,11 +4,11 @@ const conversationSchema: Schema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "user",
+
     },
     hubId: {
       type: Schema.Types.ObjectId,
-      ref: "hub",
+     
     },
   },
   { timestamps: true }

@@ -4,7 +4,8 @@ import { hub, user } from "./userAuth";
 import { Irazresponse } from "./razorpayInterface";
 import { IConfirmBook, IConfirmBookWithImage } from "./bookingConfirmInterface";
 import { IdashboardDetails } from "./dashboardInterface";
-import { Iconversation } from "./chatInterface";
+import { IConversation } from "./chatInterface";
+
 export interface AxiosResponse<T = any> {
   data?: {
     hubs?: hub[];
@@ -24,7 +25,7 @@ export interface AxiosResponse<T = any> {
     dashboardDetails?:IdashboardDetails
     location?: hubdata;
     status?: number;
-    conversation?:Iconversation[]
+    conversation?:IConversation[]
     statusText?: string;
     headers?: any;
     config?: AxiosRequestConfig;

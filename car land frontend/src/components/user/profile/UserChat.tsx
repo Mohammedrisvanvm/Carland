@@ -116,7 +116,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
     }
   };
   React.useEffect(() => {
-    socket.current?.emit("addUser", user._id);
+    socket.current?.emit("addUser", user._id,currentChat?._id);
   }, [user]);
   React.useEffect(() => {
     socket.current?.on("getmessage", (data) => {

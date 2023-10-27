@@ -16,7 +16,7 @@ const ENDPOINT: string = "ws://localhost:3131/";
 
 const VendorChat: FC = () => {
   const vendor = useAppSelector((state) => state.vendor);
-  console.log(vendor);
+
   
   const scroll = React.useRef<HTMLElement | null>(null);
   const socket = React.useRef<Socket>();

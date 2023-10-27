@@ -1,51 +1,29 @@
 import React, { useState, FC, ChangeEvent, HtmlHTMLAttributes } from "react";
-import data from "@emoji-mart/data";
-import Picker from "@emoji-mart/react";
+
 import io, { Socket } from "socket.io-client";
 import { useAppSelector } from "../redux/store/storeHook";
 import { getConversations } from "../services/apis/chatApi/chatApi";
 
-import { Iconversation } from "../interfaces/chatInterface";
 import { AxiosResponse } from "../interfaces/axiosinterface";
+import { IConversation } from "../interfaces/chatInterface";
+import ChatAppRight from "./newadmin";
 
-const ENDPOINT: string = "ws://localhost:3131/";
-const ChatApp:FC = () => {
-  type Imessage = { text: string; sender: string };
-  const [messages, setMessages] = useState<Imessage[]>([]);
-  const [newMessage, setNewMessage] = useState("");
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [modal, setModal] = useState(false);
-  const scroll = React.useRef<HTMLElement | null>(null);
-const vendor=useAppSelector((state)=>state.vendor)
 
-  // @socketconnection
-  type IConversation = {
-    _id: string;
-    members: string[];
-    createdAt: Date;
-    updatedAt: Date;
-  };
-  const socket = React.useRef<Socket>();
-  const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
+const ChatApp: FC = () => {
+  const vendor = useAppSelector((state) => state.vendor);
+  const [chatRight, setChatRight] = React.useState<boolean>(false);
+  const [currentChat, setCurrentChat] = React.useState<IConversation|null>(null);
+ 
   const [conversation, setConversation] = React.useState<
-    Iconversation[]| undefined
+    IConversation[] | undefined
   >([]);
-  socket.current = io(ENDPOINT);
-
-  React.useEffect(() => {
-    socket.current?.connect();
-    socket.current?.on("connected", () => setSocketConnected(true));
-    
-    return ()=>setSocketConnected(false)
-  }, []);
-
-
+ 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const res: AxiosResponse = await getConversations(vendor.hubId);
         console.log(res.data?.conversation);
-        
+
         setConversation(res.data?.conversation);
       } catch (error: any) {
         console.log(error);
@@ -53,40 +31,11 @@ const vendor=useAppSelector((state)=>state.vendor)
     };
     fetchData();
   }, [vendor.id]);
-  React.useEffect(() => {
-    scroll.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setNewMessage(e.target.value);
-  };
-
-  const handleSendMessage = () => {
-    if (newMessage) {
-      setMessages([...messages, { text: newMessage, sender: "user" }]);
-      setNewMessage("");
-      // Simulate a response from the chatbot (you can replace this with actual responses)
-      setTimeout(() => {
-        setMessages([
-          ...messages,
-          { text: "This is a response.", sender: "bot" },
-        ]);
-      }, 1000);
-    }
-  };
-
-  const handleToggleEmojiPicker = () => {
-    setShowEmojiPicker(!showEmojiPicker);
-  };
-
-  const handleSelectEmoji = (emoji: any) => {
-    setNewMessage(newMessage + emoji.native);
-    setShowEmojiPicker(!showEmojiPicker);
-  };
 
   return (
     <>
       <div className="h-screen w-screen p-5 border-4 border-black text-white flex">
-        <div className="w-1/3 max-h-full border-r-2 p-2">
+        <div className="w-96 max-h-full border-r-2 p-2">
           <div className="h-16 relative bg-gray-300 p-3  flex items-center">
             <div className=" rounded-lg">
               <img
@@ -142,7 +91,7 @@ const vendor=useAppSelector((state)=>state.vendor)
                 }}
               />
             </div>
-            <div className="absolute right-7">
+            <div className="absolute right-3">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="1em"
@@ -160,132 +109,36 @@ const vendor=useAppSelector((state)=>state.vendor)
           <hr />
 
           <div className="h-5/6 w-96 overflow-y-scroll">
-            {conversation ? conversation.map((item) => (
-              <>
-                <div className="flex items-center p-2 hover:bg-gray-300  w-96 rounded-lg">
-                  <img
-                    className="w-12 h-12 rounded-full mr-5"
-                    src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                    alt="user photo"
-                  />
-                  <span className="text-black font-base text-xl">
-                    {item.members[1]}
-                  </span>
-                </div>
-                <hr />
-              </>
-            )):''}
+            {conversation
+              ? conversation.map((item) => (
+                  <>
+                    <div
+                      onClick={() => {
+                        setCurrentChat(item)
+                        setChatRight(true)}}
+                      className="flex items-center p-2 hover:bg-gray-300  w-80 rounded-lg"
+                    >
+                      <img
+                        className="w-12 h-12 rounded-full mr-5"
+                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                        alt="user photo"
+                      />
+                      <span className="text-black font-base text-xl">
+                        {item.userName}
+                      </span>
+                    </div>
+                    <div className="pr-4">
+                      {" "}
+                      <hr />
+                    </div>
+                  </>
+                ))
+              : ""}
           </div>
         </div>
 
         {/* right side of the chat screen */}
-        <div className=" text-black mt-2 w-full px-2 flex flex-col ">
-          {" "}
-          <div className="h-16 relative bg-gray-300 p-3  flex items-center">
-            <div className=" rounded-lg">
-              <img
-                className="w-9 h-9 rounded-full "
-                src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                alt="user photo"
-              />
-
-              <div className="absolute right-7 top-5">
-                <svg
-                  viewBox="0 0 24 24"
-                  height="24"
-                  width="24"
-                  preserveAspectRatio="xMidYMid meet"
-                  version="1.1"
-                  x="0px"
-                  y="0px"
-                  className="hover:cursor-pointer"
-                  enable-background="new 0 0 24 24"
-                >
-                  <path
-                    fill="gray"
-                    d="M12,7c1.104,0,2-0.896,2-2c0-1.105-0.895-2-2-2c-1.104,0-2,0.894-2,2 C10,6.105,10.895,7,12,7z M12,9c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,9.895,13.104,9,12,9z M12,15 c-1.104,0-2,0.894-2,2c0,1.104,0.895,2,2,2c1.104,0,2-0.896,2-2C13.999,15.894,13.104,15,12,15z"
-                  ></path>
-                </svg>
-              </div>
-            </div>
-            <div>
-              {" "}
-              <div className="flex-col flex pl-5">
-                {" "}
-                <span className="text-black font-base text-xl ">user name</span>
-                <span className="text-green-400 font-base text-xs ">
-                  online{" "}
-                </span>
-              </div>
-            </div>
-          </div>
-          <div className="bg-green-100 w-full h-full  overflow-y-scroll p-10">
-            {" "}
-            {messages
-              ? messages.map((item) => (
-                  <div ref={scroll as React.RefObject<HTMLDivElement>}>
-                    <div
-                      className={`flex  ${
-                        // item.senderId == "651266a8c077d53eab4abe13"
-                        false ? "justify-end" : "justify-start"
-                      }  `}
-                    >
-                      {" "}
-                      <img
-                        className="w-10 h-10 rounded-full mr-5"
-                        src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                        alt="user photo"
-                      />
-                      <p className="p-2 bg-blue-400 rounded-lg max-w-xs">
-                        {/* {item.messageText} */} ggg
-                      </p>
-                    </div>
-                    {` `}
-                    <div
-                      className={`mt-3 flex  ${
-                        // item.senderId == "651266a8c077d53eab4abe13"
-                        false ? "justify-end px-2" : "justify-start px-14"
-                      }  text-gray-400 text-xs mb-4`}
-                    >
-                      {" "}
-                      <p>
-                        {/* {format(item.createdAt)} */}
-                        3pm
-                      </p>
-                    </div>
-                  </div>
-                ))
-              : ""}
-          </div>
-          <div className="p-4 w-full bottom-0 bg-gray-200">
-            <div className="flex items-center sm:space-x-2">
-              <input
-                type="text"
-                className="flex-grow border rounded-full p-2"
-                placeholder="Type a message..."
-                value={newMessage}
-                onChange={handleInputChange}
-              />
-              <button
-                className="bg-blue-500 text-white p-2 rounded-full"
-                onClick={handleToggleEmojiPicker}
-              >
-                😄
-              </button>
-              <button
-                className="bg-blue-500 text-white p-2 rounded-full"
-                onClick={handleSendMessage}
-              >
-                Send
-              </button>
-            </div>
-            {showEmojiPicker && (
-              <div className=" absolute bottom-24">
-                <Picker data={data} onEmojiSelect={handleSelectEmoji} />
-              </div>
-            )}
-          </div>
-        </div>
+        {chatRight ? <ChatAppRight currentChat={currentChat}/> : ""}
       </div>
       {/* <div className="bg-white w-full  ">
         <div className="flex flex-col justify-between h-screen">

@@ -33,7 +33,7 @@ function App() {
           <Route path="/admin/*" element={<AdminRouters />} />
           <Route path="/vendor/*" element={<VendorRouters />} />
           {/* <Route path="/test" element={<Test />} /> */}
-           <Route path="/new" element={<Newadmin />} />
+           {/* <Route path="/new" element={<Newadmin />} /> */}
            <Route path="/chat" element={<VendorChat />} />
            <Route path="/bug" element={<Content />} />
            {/* <Route path="/newnav" element={<NewNav />} /> */}
