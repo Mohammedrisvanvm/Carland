@@ -15,12 +15,13 @@ export const createConversation = AsyncHandler(
     }
 
     let conversation = await conversationModel.findOne({ userId, hubId });
+console.log(conversation,12);
 
     if (!conversation) {
       conversation = await conversationModel.create({ hubId, userId });
     }
 
-    const user = await userModel.findById(conversation[0].userId);
+    const user = await userModel.findById(conversation.userId);
     const withUser = await conversationModel.aggregate([
       {
         $lookup: {
@@ -36,7 +37,7 @@ export const createConversation = AsyncHandler(
         },
       },
     ]);
-    console.log(withUser, user, 12);
+  
 
     res.status(201).json({ conversation });
   }

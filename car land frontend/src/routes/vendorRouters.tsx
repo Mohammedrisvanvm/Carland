@@ -10,8 +10,8 @@ import VenderLogin from "../components/vender/venderAuth/vendorLogin/vendorLogin
 import AddHub from "../components/vender/vendorHub/AddHub";
 import { useState } from "react";
 import ProtectedRouteVendor from "./protectedRoutes/vendor";
-import VendorChat from "../components/vender/vendorChat/VendorChat";
 import VendorBookingPage from "../components/vender/vendorBookingManagement/VendorBookingPage";
+import VendorChat from "../components/vender/vendorChat/VendorChat";
 
 
 const VendorRouters = () => {
@@ -30,6 +30,7 @@ const VendorRouters = () => {
           <Route path="/vendordashboard" element={<ProtectedRouteVendor > <VenderDashboardPage /></ProtectedRouteVendor>} />
           <Route path="/vendorcars" element={ <CarManagementPage />} />
           <Route path="/vendorbookings" element={ <VendorBookingPage />} />
+          <Route path="/vendorchat" element={ <VendorChat />} />
           <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
           <Route path="/chat" element={<ProtectedRouteVendor > <VendorChat /></ProtectedRouteVendor>} />
           {/* <Route path="/vendorhubs" element={<Dashboard />} /> */}

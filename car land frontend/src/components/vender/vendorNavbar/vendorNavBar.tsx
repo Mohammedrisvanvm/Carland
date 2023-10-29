@@ -69,7 +69,7 @@ import ChatApp from "../../../test/Data";
             <button>
               <img
                 // onClick={() => Navigate("/vendor/chat")}
-                onClick={() => Navigate("/newpage")}
+                onClick={() => Navigate("/vendor/vendorchat")}
              
                 width="25"
                 className="text-black"

@@ -9,13 +9,14 @@ import {
   getMessages,
 } from "../../../services/apis/chatApi/chatApi";
 import { format } from "timeago.js";
+import { IConversation } from "../../../interfaces/chatInterface";
 const ENDPOINT: string = "http://localhost:3131/";
 type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
   bookingId:string,
   hubId:string
 };
-const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
+const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
   const scroll = React.useRef<HTMLElement | null>(null);
   const user = useAppSelector((state) => state.user);
   type IMessage = {
@@ -29,12 +30,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
     updatedAt?: Date;
     _id?: string;
   }
-  type IConversation = {
-    _id: string;
-    members: string[];
-    createdAt: Date;
-    updatedAt: Date;
-  };
+ 
   const [currentChat, setCurrentChat] = React.useState<IConversation>();
   const [messages, setMessages] = React.useState<DateMessage[]>([]);
   const [arrivalMessage, setArrivalMessage] = React.useState<DateMessage>();
@@ -58,12 +54,15 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
         createdAt: new Date(Date.now()),
       }); 
     });
+    // return ()=>{
+    //   socket.current?.emit("removefromuser",user._id);
+    // }
   }, []);
   console.log(arrivalMessage);
 
   React.useEffect(() => {
     arrivalMessage &&
-      currentChat?.members.includes(arrivalMessage.senderId as string) &&
+      currentChat?.hubId &&
       setMessages([...messages, arrivalMessage]);
   }, [arrivalMessage,currentChat]);
 
@@ -73,7 +72,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
         const res: any = await createConversation(hubId,user._id);
         console.log(res.data);
         
-        setCurrentChat(res.data.conversation[0]);
+        setCurrentChat(res.data.conversation);
       } catch (error: any) {
         console.log(error);
       }
@@ -94,16 +93,16 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
   const handleSendMessage = async () => {
     if (NewMessage) {
       socket.current?.emit("sendMessage", {
-        socketId: socket.current.id,
+        socketId: currentChat?._id,
         text: NewMessage,
         senderId: user?._id,
-        receiverId: "651266a8c077d53eab4abe13",
+        receiverId: currentChat?.hubId,
       });
       const message: IMessage = {
         conversationId: currentChat?._id,
         messageText: NewMessage,
         senderId: user?._id,
-        receiverId: "651266a8c077d53eab4abe13",
+        receiverId: currentChat?.hubId,
       };
       try {
         const res: any = await addNewMessage(message);
@@ -117,12 +116,12 @@ const UserChat: FC<Iprop> = ({ setShowChat,bookingId,hubId }) => {
   };
   React.useEffect(() => {
     socket.current?.emit("addUser", user._id,currentChat?._id);
-  }, [user]);
+  }, []);
   React.useEffect(() => {
     socket.current?.on("getmessage", (data) => {
       console.log(data);
     });
-  }, [socket]);
+  }, []);
   React.useEffect(() => {
     socket.current?.connect();
     socket.current?.on("connected", () => setSocketConnected(true));

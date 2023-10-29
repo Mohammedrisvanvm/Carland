@@ -1,18 +1,18 @@
 import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
-import { addNewMessage, getMessages } from "../services/apis/chatApi/chatApi";
-import { IConversation } from "../interfaces/chatInterface";
 import io, { Socket } from "socket.io-client";
-import { useAppSelector } from "../redux/store/storeHook";
 import { format } from "timeago.js";
+import { IConversation } from "../../../interfaces/chatInterface";
+import { useAppSelector } from "../../../redux/store/storeHook";
+import { addNewMessage, getMessages } from "../../../services/apis/chatApi/chatApi";
 
 
 type Iprops = {
   currentChat: IConversation | null;
 };
 const ENDPOINT: string = "ws://localhost:3131/";
-const ChatAppRight: FC<Iprops> = ({ currentChat }) => {
+const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   const vendor = useAppSelector((state) => state.vendor);
   console.log(currentChat);
   // @socketconnection
@@ -227,4 +227,4 @@ const ChatAppRight: FC<Iprops> = ({ currentChat }) => {
   );
 };
 
-export default ChatAppRight;
+export default VendorChatRight;

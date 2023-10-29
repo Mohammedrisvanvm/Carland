@@ -8,16 +8,17 @@ import { AxiosResponse } from "../interfaces/axiosinterface";
 import { IConversation } from "../interfaces/chatInterface";
 import ChatAppRight from "./newadmin";
 
-
 const ChatApp: FC = () => {
   const vendor = useAppSelector((state) => state.vendor);
   const [chatRight, setChatRight] = React.useState<boolean>(false);
-  const [currentChat, setCurrentChat] = React.useState<IConversation|null>(null);
- 
+  const [currentChat, setCurrentChat] = React.useState<IConversation | null>(
+    null
+  );
+
   const [conversation, setConversation] = React.useState<
     IConversation[] | undefined
   >([]);
- 
+
   React.useEffect(() => {
     const fetchData = async () => {
       try {
@@ -114,8 +115,9 @@ const ChatApp: FC = () => {
                   <>
                     <div
                       onClick={() => {
-                        setCurrentChat(item)
-                        setChatRight(true)}}
+                        setCurrentChat(item);
+                        setChatRight(true);
+                      }}
                       className="flex items-center p-2 hover:bg-gray-300  w-80 rounded-lg"
                     >
                       <img
@@ -138,60 +140,8 @@ const ChatApp: FC = () => {
         </div>
 
         {/* right side of the chat screen */}
-        {chatRight ? <ChatAppRight currentChat={currentChat}/> : ""}
+        {chatRight ? <ChatAppRight currentChat={currentChat} /> : ""}
       </div>
-      {/* <div className="bg-white w-full  ">
-        <div className="flex flex-col justify-between h-screen">
-          <div className=" border bg-gray-100 flex-grow">
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                className={`mb-2 ${
-                  message.sender === "user" ? "text-right" : "text-left"
-                }`}
-              >
-                <div
-                  className={`rounded-lg p-2 ${
-                    message.sender === "user"
-                      ? "bg-blue-500 text-white"
-                      : "bg-gray-300 text-gray-800"
-                  }`}
-                >
-                  {message.text}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="p-4  bg-gray-200">
-            <div className="flex items-center sm:space-x-2">
-              <input
-                type="text"
-                className="flex-grow border rounded-full p-2"
-                placeholder="Type a message..."
-                value={newMessage}
-                onChange={handleInputChange}
-              />
-              <button
-                className="bg-blue-500 text-white p-2 rounded-full"
-                onClick={handleToggleEmojiPicker}
-              >
-                😄
-              </button>
-              <button
-                className="bg-blue-500 text-white p-2 rounded-full"
-                onClick={handleSendMessage}
-              >
-                Send
-              </button>
-            </div>
-            {showEmojiPicker && (
-              <div className=" absolute bottom-24">
-                <Picker data={data} onEmojiSelect={handleSelectEmoji} />
-              </div>
-            )}
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };
