@@ -2,12 +2,13 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { AdminAuthSchema } from "../../../validationSchemas/validationSchema";
 import { useNavigate } from "react-router";
-import { toast } from "react-toastify";
+
 import { adminAuth } from "../../../services/apis/adminApi/adminApi";
 
 import { useAppDispatch,useAppSelector } from "../../../redux/store/storeHook";
 import { setAdmin } from "../../../redux/slice/adminSlice";
 import { useDispatch } from "react-redux";
+import { toastHelper } from "../../../utils/toastConfig";
 
 
 
@@ -54,8 +55,8 @@ const AdminLogin = () => {
       Navigate("/admin/admindashboard");
     } catch (error: any) {
       console.log(error);
-      
-      toast.error(error.response.data.message);
+      toastHelper('error',error.response.data.message)
+   
     }
   };
   const {
