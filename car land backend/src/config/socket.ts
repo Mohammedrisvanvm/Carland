@@ -48,6 +48,8 @@ export const socketConnect = (io: Server) => {
       console.log(senderId, receiverId, text, "12345678");
       const user = getUser(receiverId);
 console.log(user);
+console.log(users);
+
 console.log(socketId);
 
       try {

@@ -4,8 +4,7 @@ import conversationModel from "../../models/conversationSchema";
 import userModel from "../../models/userSchema";
 import IUser from "../../interfaces/userInterface";
 import { Iconversation } from "../../interfaces/chatInterface";
-import mongoose, { ObjectId } from "mongoose";
-
+import mongoose, { ObjectId, isObjectIdOrHexString } from "mongoose";
 
 export const createConversation = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -15,7 +14,7 @@ export const createConversation = AsyncHandler(
     }
 
     let conversation = await conversationModel.findOne({ userId, hubId });
-console.log(conversation,12);
+    console.log(conversation, 12);
 
     if (!conversation) {
       conversation = await conversationModel.create({ hubId, userId });
@@ -37,7 +36,6 @@ console.log(conversation,12);
         },
       },
     ]);
-  
 
     res.status(201).json({ conversation });
   }
@@ -47,7 +45,7 @@ export const getConversation = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     console.log(req.params, 12222222222);
     interface IConversation {
-      _id: ObjectId ; 
+      _id: ObjectId;
       userId: ObjectId;
       hubId: ObjectId;
       createdAt: Date;
@@ -55,12 +53,17 @@ export const getConversation = AsyncHandler(
       userName: string[];
       image: string[];
     }
-    
+    const hubId=req.params.hubId as string
 
     // const conversation: Iconversation[] = await conversationModel.find({
     //   hubId: req.params.hubId,
     // });
-    const conversation:IConversation[] = await conversationModel.aggregate([
+    const conversation: IConversation[] = await conversationModel.aggregate([
+      {
+        $match:  {
+          hubId: new mongoose.Types.ObjectId(req.params.hubId)
+        },
+      },
       {
         $lookup: {
           from: "users",
@@ -74,15 +77,14 @@ export const getConversation = AsyncHandler(
           _id: 1,
           userId: 1,
           hubId: 1,
-          createdAt:1,
-          updatedAt:1,
+          createdAt: 1,
+          updatedAt: 1,
           userName: "$userData.userName",
           image: "$userData.image",
         },
       },
     ]);
- 
-
+console.log(conversation);
 
     res.status(200).json({ conversation });
   }
