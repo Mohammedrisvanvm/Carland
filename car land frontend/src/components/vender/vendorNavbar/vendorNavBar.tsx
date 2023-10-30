@@ -36,7 +36,7 @@ import ChatApp from "../../../test/Data";
     };
     const Navigate = useNavigate();
     return (
-      <nav className="bg-white border-b border-gray-300">
+      <nav className="bg-white border-b border-gray-300 ">
         <div className="flex justify-between items-center px-6">
           <button
             id="menu-button"

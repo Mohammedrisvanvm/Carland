@@ -169,3 +169,12 @@ export const dashboardDetails = AsyncHandler(
       });
   }
 );
+
+export const profileData = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+
+const hubId=req.query.hubId as string
+const hub:Ihub=await hubModel.findById(hubId)
+console.log(hub);
+res.status(200).json({hub})
+  })

@@ -53,4 +53,7 @@ export const dropOffreqAction= async (id: string | null | undefined): Promise<Ax
 export const dashboardDetails= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/hub/dashboard?hubId=${id}`);
 };
+export const vendorProfile= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/hub/profile?hubId=${id}`);
+};
 
