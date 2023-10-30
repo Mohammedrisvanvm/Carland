@@ -55,9 +55,7 @@ export const getConversation = AsyncHandler(
     }
     const hubId=req.params.hubId as string
 
-    // const conversation: Iconversation[] = await conversationModel.find({
-    //   hubId: req.params.hubId,
-    // });
+   
     const conversation: IConversation[] = await conversationModel.aggregate([
       {
         $match:  {
