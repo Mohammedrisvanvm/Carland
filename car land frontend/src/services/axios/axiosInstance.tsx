@@ -18,9 +18,10 @@ import useAccessError, {
 } from "./tokenCheck";
 import { userLogout } from "../../redux/slice/userSlice";
 import { adminLogout } from "../../redux/slice/adminSlice";
+ const baseURL:string=import.meta.env.VITE_BASEURL 
 
 export const axiosBase = axios.create({
-  baseURL: "http://localhost:3131/",
+  baseURL: baseURL,
   timeout: 10000,
   withCredentials: true,
 });

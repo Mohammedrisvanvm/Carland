@@ -29,7 +29,7 @@ const io = new Server<
   SocketData
 >(newserver,{
   cors: {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000","https://carland-five.vercel.app"],
       credentials: true,
   },
 });
@@ -45,7 +45,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000",'https://carland-five.vercel.app'],
     credentials: true,
   })
 );
