@@ -10,7 +10,7 @@ const publicKey = fs.readFileSync(path.join(dirname, 'keys', 'rsa.key.pub'), 'ut
 
 export const jwtSign = (payload: object, expiresIn: string | number) => {
 
-    console.log(privateKey,'4554545454',publicKey);
+  
     
     return jwt.sign(payload, privateKey, { algorithm: 'RS256', expiresIn });
 };
