@@ -11,6 +11,7 @@ const dirname = './././';
 const privateKey = fs_1.default.readFileSync(path_1.default.join(dirname, 'keys', 'rsa.key'), 'utf8');
 const publicKey = fs_1.default.readFileSync(path_1.default.join(dirname, 'keys', 'rsa.key.pub'), 'utf8');
 const jwtSign = (payload, expiresIn) => {
+    console.log(privateKey, '4554545454', publicKey);
     return jsonwebtoken_1.default.sign(payload, privateKey, { algorithm: 'RS256', expiresIn });
 };
 exports.jwtSign = jwtSign;
