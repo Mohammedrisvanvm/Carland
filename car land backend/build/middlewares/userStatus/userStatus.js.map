@@ -1,1 +1,0 @@
-{"version":3,"file":"userStatus.js","sourceRoot":"","sources":["../../../src/middlewares/userStatus/userStatus.ts"],"names":[],"mappings":";;;AAKO,MAAM,UAAU,GAAC,CAAC,GAAwB,EAAC,GAAyB,EAAC,IAAiB,EAAC,EAAE;IAChG,IAAG,CAAC,GAAG,CAAC,IAAI,EAAC;QACb,OAAO,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,iBAAiB,CAAC,CAAA;KAC7C;IACD,OAAO,IAAI,EAAE,CAAA;AACb,CAAC,CAAA;AALY,QAAA,UAAU,cAKtB"}
