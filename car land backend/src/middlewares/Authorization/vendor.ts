@@ -53,6 +53,7 @@ export const vendorAuthenticate = AsyncHandler(
         } else {
           const access: string = await jwtSign(
             { id: vendor._id, name: vendor.userName, email: vendor.email },
+
             "15min"
           );
 
