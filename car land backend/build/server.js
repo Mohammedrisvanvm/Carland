@@ -22,7 +22,7 @@ const app = (0, express_1.default)();
 const newserver = http_1.default.createServer(app);
 const io = new socket_io_1.Server(newserver, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "https://carland-five.vercel.app"],
         credentials: true,
     },
 });
@@ -33,7 +33,7 @@ app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(express_1.default.static(path_1.default.resolve() + "/public"));
 app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", 'https://carland-five.vercel.app'],
     credentials: true,
 }));
 app.use("/users", userRouters_1.default);
