@@ -55,7 +55,6 @@ export const getConversation = AsyncHandler(
     }
     const hubId=req.params.hubId as string
 
-<<<<<<< HEAD
    
     const conversation: IConversation[] = await conversationModel.aggregate([
       {
@@ -63,11 +62,6 @@ export const getConversation = AsyncHandler(
           hubId: new mongoose.Types.ObjectId(req.params.hubId)
         },
       },
-=======
- 
-    const conversation:IConversation[] = await conversationModel.aggregate([
-      
->>>>>>> profile
       {
         $lookup: {
           from: "users",
