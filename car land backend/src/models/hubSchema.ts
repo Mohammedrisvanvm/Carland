@@ -1,4 +1,4 @@
-import  { Schema, model } from "mongoose";
+import { Schema, model } from "mongoose";
 import Ihub from "../interfaces/hubInterface";
 
 const hubSchema: Schema = new Schema(
@@ -31,16 +31,17 @@ const hubSchema: Schema = new Schema(
       type: Date,
       required: true,
     },
-    vehicles:{
-      type:[{ type: Schema.Types.ObjectId }]
-      
+    vehicles: {
+      type: [{ type: Schema.Types.ObjectId }],
     },
     license: {
       type: String,
       required: true,
     },
     hubImage: {
-      type: String,
+      // url: { type: String },
+      // publicid: { type: String },
+      type:String,
       required: true,
     },
     hubMultiImage: {
@@ -51,5 +52,9 @@ const hubSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const hubModel=model<Ihub>("hub",hubSchema)
-export default hubModel
+type image = {
+  url?: string;
+  publicid?: string;
+};
+const hubModel = model<Ihub>("hub", hubSchema);
+export default hubModel;

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import { addhub, dashboardDetails, getHubs, profileData } from "../../controllers/venderController/hubController";
+import { addhub, dashboardDetails, getHubs, profileData, profileDataUpdate } from "../../controllers/venderController/hubController";
+import { parseImages } from "../../utils/multer/multer";
 
 const hubRouters=Router()
 
@@ -7,6 +8,7 @@ const hubRouters=Router()
 hubRouters.post('/addhub',addhub)
 hubRouters.get('/gethubs',getHubs)
 hubRouters.get('/profile',profileData)
+hubRouters.patch('/profile/update',profileDataUpdate)
 hubRouters.get('/dashboard',dashboardDetails)
 
 
