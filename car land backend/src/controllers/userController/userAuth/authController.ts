@@ -4,7 +4,7 @@ import userModel from "../../../models/userSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
-import MailService from "../../../utils/nodeMailer/nodeMailer";
+import  { MailServiceOtp } from "../../../utils/nodeMailer/otp";
 import { getotp } from "../../../utils/twilio/twilio";
 
 export const userSignUpController = AsyncHandler(
@@ -25,7 +25,7 @@ export const userSignUpController = AsyncHandler(
       throw new Error("User Already Exists");
     } else {
       const otp = getotp();
-      MailService(data.email, otp);
+      MailServiceOtp(data.email, otp);
 
       const Token = jwtSign({ token: otp, user: data }, "5min");
       res
@@ -136,7 +136,7 @@ export const userLoginController = AsyncHandler(
           },
           "15min"
         );
-        MailService(userExist.email, token);
+        MailServiceOtp(userExist.email, token);
         res
           .status(200)
           .cookie("UserOtpToken", userOtpToken, {

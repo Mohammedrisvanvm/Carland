@@ -12,7 +12,9 @@ import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import { RazorpayRefund } from "../../interfaces/razorpayInterface";
 import { generateId } from "../../helpers/createId";
-
+import IUser from "../../interfaces/userInterface";
+import userModel from "../../models/userSchema";
+import { mailServiceConfirmBooking } from "../../utils/nodeMailer/confirmBooking";
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -40,7 +42,7 @@ type values = {
 };
 export const razorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    const {  amount }: values = req.body.data;
+    const { amount }: values = req.body.data;
 
     type Irazresponse = {
       id: string;
@@ -76,13 +78,10 @@ export const bookCar = AsyncHandler(
     }: values = req.body.data;
     const userId: string = req.headers.authorization;
 
-    //     const startDate = moment(pickUpDate,"ddd MMM D YYYY h A")
-    //     const endDate = moment(pickUpDate,"ddd MMM D YYYY h A")
-    //     const days: number = dateCount(startDate.toDate(), endDate.toDate());
-    // console.log(days);
+    const user: IUser = await userModel.findById(userId);
     const hubDetails: Ihub = await hubModel.findOne(
       { vehicles: { $in: carId } },
-      { _id: 1, hubName: 1,placeName:1 }
+      { _id: 1, hubName: 1, placeName: 1 }
     );
 
     const startDate = new Date(pickUpDate);
@@ -113,7 +112,7 @@ export const bookCar = AsyncHandler(
       userId,
       hubName: hubDetails.hubName,
       vehicleName: vehicle.vehicleName,
-      locationName:hubDetails.placeName,
+      locationName: hubDetails.placeName,
       bookingStartDate: pickUpDate,
       bookingEndDate: dropOffDate,
       carPrice: vehicle.fairPrice,
@@ -127,6 +126,8 @@ export const bookCar = AsyncHandler(
       days,
     });
     booking.save();
+
+    mailServiceConfirmBooking(user.email,user.userName,booking)
     res.json({ id: booking._id });
   }
 );
