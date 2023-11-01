@@ -29,7 +29,7 @@ const io = new Server<
   SocketData
 >(newserver,{
   cors: {
-      origin: ["http://localhost:3000","https://carland-five.vercel.app",'https://carlandrent.netlify.app'],
+      origin: ["http://localhost:3000","https://carland-five.vercel.app","https://carlandrent.netlify.app"],
       credentials: true,
   },
 });
