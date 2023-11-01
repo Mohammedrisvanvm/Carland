@@ -85,9 +85,9 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
     }
 });
 exports.vendorLogOut = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenvendor", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenvendor", "", { httpOnly: true, sameSite: 'none', maxAge: 0 });
     res
-        .cookie("refreshTokenvendor", "", { httpOnly: true, maxAge: 0 })
+        .cookie("refreshTokenvendor", "", { httpOnly: true, sameSite: 'none', maxAge: 0 })
         .status(200)
         .json({ message: "logout user" });
 });

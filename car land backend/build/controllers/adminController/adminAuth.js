@@ -40,10 +40,11 @@ exports.adminCheck = (0, express_async_handler_1.default)(async (req, res) => {
     else if (refreshTokenAdmin) {
         const verifiedJWT = (0, jwtutils_1.verifyJwt)(refreshTokenAdmin);
         const access = (0, jwtutils_1.jwtSign)({ email: verifiedJWT.payload?.email }, "15min");
-        res.cookie("accessTokenAdmin", access, { httpOnly: true, maxAge: 5000 });
+        res.cookie("accessTokenAdmin", access, { httpOnly: true, sameSite: 'none', maxAge: 5000 });
         res
             .cookie("refreshTokenAdmin", refreshTokenAdmin, {
             httpOnly: true,
+            sameSite: 'none',
             maxAge: 7 * 24 * 60 * 60,
         })
             .json({ isloggedin: true });
@@ -53,9 +54,9 @@ exports.adminCheck = (0, express_async_handler_1.default)(async (req, res) => {
     }
 });
 exports.adminLogout = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', });
     res
-        .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0 })
+        .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', })
         .json({ message: "admin Logouted" });
 });
 //# sourceMappingURL=adminAuth.js.map

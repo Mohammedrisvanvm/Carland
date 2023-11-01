@@ -42,11 +42,12 @@ exports.userAuthenticate = (0, express_async_handler_1.default)(async (req, res,
             else {
                 const access = await (0, jwtutils_1.jwtSign)({ id: user._id, name: user.userName, email: user.email }, "15min");
                 res.cookie("accessTokenUser", access, {
-                    httpOnly: true,
+                    httpOnly: true, sameSite: 'none',
                     maxAge: 1000 * 60 * 60 * 24,
                 });
                 res.cookie("refreshTokenUser", refreshTokenuser, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
+                    sameSite: 'none',
                     httpOnly: true,
                 });
                 console.log(access, 111);

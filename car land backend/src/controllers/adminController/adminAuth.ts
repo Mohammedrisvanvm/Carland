@@ -65,10 +65,11 @@ export const adminCheck = AsyncHandler(
     } else if (refreshTokenAdmin) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenAdmin);
       const access = jwtSign({ email: verifiedJWT.payload?.email }, "15min");
-      res.cookie("accessTokenAdmin", access, { httpOnly: true, maxAge: 5000 });
+      res.cookie("accessTokenAdmin", access, { httpOnly: true,sameSite:'none', maxAge: 5000 });
       res
         .cookie("refreshTokenAdmin", refreshTokenAdmin, {
           httpOnly: true,
+          sameSite:'none',
           maxAge: 7 * 24 * 60 * 60,
         })
         .json({ isloggedin: true });
@@ -80,9 +81,9 @@ export const adminCheck = AsyncHandler(
 
 export const adminLogout = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',});
     res
-      .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0 })
+      .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',})
       .json({ message: "admin Logouted" });
   }
 );

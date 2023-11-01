@@ -136,9 +136,9 @@ export const vendorOtpverify = AsyncHandler(
 
 export const vendorLogOut = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenvendor", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenvendor", "", { httpOnly: true,sameSite:'none', maxAge: 0 });
     res
-      .cookie("refreshTokenvendor", "", { httpOnly: true, maxAge: 0 })
+      .cookie("refreshTokenvendor", "", { httpOnly: true,sameSite:'none', maxAge: 0 })
       .status(200)
       .json({ message: "logout user" });
   }

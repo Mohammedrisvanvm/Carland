@@ -148,7 +148,7 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                     .json({
                     user: newUser,
                     accessToken,
-                    message: `welcome back ${newUser?.userName} `,
+                    message: `welcome back ${newUser?.userName}`,
                 });
             }
             else {
@@ -178,9 +178,9 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
     }
 });
 exports.userLogoutController = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0, sameSite: 'none', });
     res
-        .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0 })
+        .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0, sameSite: 'none', })
         .status(200)
         .json({ message: "logout user" });
 });
@@ -199,10 +199,11 @@ exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
             }
             const access = await (0, jwtutils_1.jwtSign)({ id: user._id, name: user.userName, email: user.email }, "30s");
             const Ref = await (0, jwtutils_1.jwtSign)({ email: user.email }, "7d");
-            res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000 });
+            res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000, sameSite: 'none' });
             res
                 .cookie("refreshTokenUser", Ref, {
                 httpOnly: true,
+                sameSite: 'none',
                 maxAge: 7 * 24 * 60 * 60,
             })
                 .json({ user });

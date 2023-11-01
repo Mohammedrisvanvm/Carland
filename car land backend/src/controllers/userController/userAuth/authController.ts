@@ -220,7 +220,7 @@ export const userGoogleAuth = AsyncHandler(
               .json({
                 user: newUser,
                 accessToken,
-                message: `welcome back ${newUser?.userName} `,
+                message: `welcome back ${newUser?.userName}`,
               });
           } else {
             const user: IUser | null = await userModel.create({
@@ -257,9 +257,9 @@ export const userGoogleAuth = AsyncHandler(
 
 export const userLogoutController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0 });
+    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0,sameSite:'none', });
     res
-      .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0 })
+      .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0,sameSite:'none', })
       .status(200)
       .json({ message: "logout user" });
   }
@@ -299,10 +299,11 @@ export const userCheck = AsyncHandler(
         );
 
         const Ref = await jwtSign({ email: user.email }, "7d");
-        res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000 });
+        res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000,sameSite:'none' });
         res
           .cookie("refreshTokenUser", Ref, {
             httpOnly: true,
+            sameSite:'none',
             maxAge: 7 * 24 * 60 * 60,
           })
           .json({ user });
