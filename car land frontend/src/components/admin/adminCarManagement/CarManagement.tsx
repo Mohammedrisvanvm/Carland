@@ -28,7 +28,7 @@ const CarManagement: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllCars(search, currentPage);
-        console.log(response);
+
 
         if (response.data?.vehicles) setCars(response.data?.vehicles);
         if (response.data?.count) {

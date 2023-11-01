@@ -51,7 +51,7 @@ export const SignIn = () => {
     validateOnMount: true,
     validationSchema: LoginSchema,
   });
-  console.log(errors.email, errors.password);
+
 
   return (
     <div className="w-full max-w-xl xl:px-8 xl:w-5/12">

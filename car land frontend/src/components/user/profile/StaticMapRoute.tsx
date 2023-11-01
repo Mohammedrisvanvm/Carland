@@ -8,7 +8,7 @@ interface MapboxComponentProps {
 }
 
 const StaticMapRoute: FC<MapboxComponentProps> = ({ latitude, longitude }) => {
-  console.log(latitude, longitude);
+
 
   React.useEffect(() => {
     const map = new mapboxgl.Map({

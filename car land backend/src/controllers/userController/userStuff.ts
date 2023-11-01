@@ -23,12 +23,12 @@ interface UserJwt {
 }
 export const verifyNumber = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    // console.log(11,req.headers.authorization);
+ 
 
     const number: number = req.body.phoneNumber;
     const otp = await sendOtp(number);
 
-    console.log(otp);
+
 
     const Token = jwtSign({ token: otp, number }, "5min");
     res

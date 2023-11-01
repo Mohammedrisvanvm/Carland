@@ -86,15 +86,15 @@ export const Content = () => {
       `/geocoding/v5/mapbox.places/${encodeURIComponent(searchQuery)}.json`
     );
 
-    console.log(response);
+
 
     if (response.data.features.length === 0) {
       console.log("Location not found");
       return;
     }
-    console.log(response);
+ 
     const points = response.data.features[1];
-    console.log(parseFloat(points.center[1]));
+
     const latitude: number = parseFloat(points.center[1]);
     const longitude: number = parseFloat(points.center[0]);
     setLatitude(latitude);
@@ -103,7 +103,7 @@ export const Content = () => {
       latitude: number;
       longitude: number;
     } = { latitude: latitude, longitude: longitude };
-    console.log(searchedLocation, "searched Location");
+   
   };
 
   useEffect(() => {
@@ -115,7 +115,7 @@ export const Content = () => {
     };
     fetchLocation();
   }, [searchQuery]);
-  // console.log(location);
+
 
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
@@ -128,7 +128,7 @@ export const Content = () => {
           longitude,
           seletedDate
         );
-        console.log(response);
+  
 
         setVehicles(response.data?.vehicles);
         if (response.data?.count) {
@@ -152,9 +152,7 @@ export const Content = () => {
     );
     setSearchQuery(res.data.features[0].place_name);
   }
-  console.log(currentLocation?.latitude);
 
-  console.log(latitude, longitude);
 
   return (
     <Fragment>

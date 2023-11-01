@@ -72,7 +72,7 @@ userSchema.pre("save", async function (next: NextFunction) {
   this.password = await bcrypt.hash(this.password, salt);
 });
 userSchema.methods.matchPassword = async function (enteredPassword: string) {
-  console.log(enteredPassword, "pass");
+ 
 
   return await bcrypt.compare(enteredPassword, this.password);
 };

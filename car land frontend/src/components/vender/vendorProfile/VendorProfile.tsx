@@ -26,12 +26,12 @@ const VendorProfile: FC<Iprop> = ({ sidebarWidth }) => {
   const [imageMain, setImageMain] = React.useState<string | null>(null);
   const [imageSub, setImageSub] = React.useState<string | null>(null);
   const [validityDate, SetValidityDate] = React.useState<string | null>(null);
-  console.log(license, imageMain, setImageSub);
+
 
   React.useEffect(() => {
     const fetchData = async () => {
       const res: AxiosResponse = await vendorProfile(vendor.hubId);
-      console.log(res.data?.hub);
+   
       if (res.data?.hub) {
         setHub(res.data.hub);
       }
@@ -53,7 +53,7 @@ const VendorProfile: FC<Iprop> = ({ sidebarWidth }) => {
       : thirtyDaysAgo.toISOString().split("T")[0];
 
   const updateProfile = async () => {
-    console.log(license, imageMain, imageSub, validityDate);
+
     setLoader(true)
     try {
       const res: AxiosResponse = await updateProfileHub(

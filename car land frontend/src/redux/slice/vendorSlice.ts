@@ -43,12 +43,6 @@ export const vendorLogin: any = createAsyncThunk(
     }
   }
 );
-// export const vendorLogout = createAsyncThunk("vendor/logout", async (hai:string) => {
-//     console.log(hai);
-
-//   const response: Authcheck = await vendorSignOut();
-//   return response?.data.message;
-// });
 const vendorSlice = createSlice({
   name: "vendor",
   initialState,

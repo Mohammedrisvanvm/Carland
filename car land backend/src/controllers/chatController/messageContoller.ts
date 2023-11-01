@@ -20,7 +20,7 @@ export const addNewMessage = AsyncHandler(
       receiverId,
       conversationId,
     });
-    console.log(newMessage);
+
 
     const savedMessage = await newMessage.save();
     res.status(201).json({ savedMessage });

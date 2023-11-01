@@ -1,6 +1,5 @@
 import { Router } from "express";
 import { addhub, dashboardDetails, getHubs, profileData, profileDataUpdate } from "../../controllers/venderController/hubController";
-import { parseImages } from "../../utils/multer/multer";
 
 const hubRouters=Router()
 

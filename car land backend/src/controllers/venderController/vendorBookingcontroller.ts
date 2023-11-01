@@ -11,7 +11,7 @@ export const getBookings = AsyncHandler(
     const currentPage = req.query.currentPage as string;
 
     const skip = (Number(currentPage) - 1) * 5;
-    console.log(hubID);
+   
 
     const bookingDetailsVendor: IBookWithTimestamps[] = await bookModel
       .find({
@@ -28,19 +28,19 @@ export const getBookings = AsyncHandler(
     const vehicles: IVehicle[] = await vehicleModel.find({
       _id: { $in: vehiclesID },
     });
-    // console.log(vehicles);
+
     const vehicleImageMap: { [key: string]: string } = {};
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
-    // console.log(vehicleImageMap);
+ 
 
     const bookingDetailsWithImage: IBookWithTimestamps[] =
       bookingDetailsVendor.map((item) => ({
         ...item,
         image: vehicleImageMap[item.vehicleId],
       }));
-    console.log(bookingDetailsWithImage);
+    
     const count: number = await bookModel
       .find({ hubId: { $in: hubID } })
       .count();
@@ -60,7 +60,7 @@ export const pickUpreqAction = AsyncHandler(
     };
     const { bookingID }: query = req.query;
 
-    console.log(bookingID);
+
 
     await bookModel.findByIdAndUpdate(
       { _id: bookingID },
@@ -73,7 +73,7 @@ export const pickUpreqAction = AsyncHandler(
 export const dropOffAction = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const bookingID: string = req.query.bookingID as string;
-console.log(bookingID);
+
 
    const booking:IBookWithTimestamps= await bookModel.findOneAndUpdate(
       { _id: bookingID },

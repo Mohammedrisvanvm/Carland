@@ -26,7 +26,7 @@ export const addhub = AsyncHandler(
       placeName,
       location,
     }: Ihub = req.body.values;
-    console.log(req.body);
+
 
     const hub: Ihub | null = await hubModel.findOne({ hubName });
 
@@ -174,7 +174,7 @@ export const profileData = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const hubId = req.query.hubId as string;
     const hub: Ihub = await hubModel.findById(hubId);
-    console.log(hub);
+
     res.status(200).json({ hub });
   }
 );
@@ -190,8 +190,7 @@ export const profileDataUpdate = AsyncHandler(
     const { license, imageMain, imageSub, validityDate, hubId }: body =
       req.body;
     const hub: Ihub | null = await hubModel.findById(hubId);
-    console.log(hub, 11);
-    console.log(license, imageMain, imageSub, validityDate, hubId, 11);
+
     const imagesUploadPromises = [];
     const imagesRemovePromises = [];
     if (imageMain) {
@@ -240,14 +239,10 @@ export const profileDataUpdate = AsyncHandler(
     const images: CloudinaryUploader[] = await Promise.all(
       imagesUploadPromises
     );
-    console.log(images, 22, remove);
+   
 
     images.map((item) => {
-      console.log(
-        item.public_id,
-        `hubdoc/${hub.hubName + "license"}`,
-        item.public_id === `hubdoc/${hub.hubName + "license"}`
-      );
+     
       if (item.public_id === `hubdoc/${hub.hubName + "license"}`) {
         hub.license = item.url;
       }

@@ -45,7 +45,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
       const senderId: string = data.senderId || "";
-      console.log(data);
+   
 
       setArrivalMessage({
         senderId,
@@ -58,7 +58,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
     //   socket.current?.emit("removefromuser",user._id);
     // }
   }, []);
-  console.log(arrivalMessage);
+
 
   React.useEffect(() => {
     arrivalMessage &&
@@ -70,7 +70,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
     const fetchData = async () => {
       try {
         const res: any = await createConversation(hubId,user._id);
-        console.log(res.data);
+     
         
         setCurrentChat(res.data.conversation);
       } catch (error: any) {
@@ -82,13 +82,13 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
-      console.log(res);
+    
 
       setMessages(res.data);
     };
     fetchData();
   }, [currentChat]);
-  console.log(messages, currentChat?._id);
+ 
 
   const handleSendMessage = async () => {
     if (NewMessage) {
@@ -106,7 +106,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
       };
       try {
         const res: any = await addNewMessage(message);
-        console.log(res);
+       
         setMessages([...messages, res.data.savedMessage]);
         setNewMessage("");
       } catch (error: any) {
@@ -117,11 +117,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
   React.useEffect(() => {
     socket.current?.emit("addUser", user._id,currentChat?._id);
   }, []);
-  React.useEffect(() => {
-    socket.current?.on("getmessage", (data) => {
-      console.log(data);
-    });
-  }, []);
+
   React.useEffect(() => {
     socket.current?.connect();
     socket.current?.on("connected", () => setSocketConnected(true));

@@ -50,7 +50,7 @@ export const userLoginThunk: any = createAsyncThunk(
     const { data }: Authcheck = await userOtpVerify(formValue);
 
     if (data?.user) {
-      console.log(data.accessToken);
+    
 
       data.user.accessToken = data.accessToken;
     }

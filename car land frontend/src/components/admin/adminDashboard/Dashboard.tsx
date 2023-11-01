@@ -29,7 +29,7 @@ const AdminDashboard: FC<Iprop> = ({ sidebarWidth }: Iprop) => {
     const fetchData = async () => {
       try {
         const response: AxiosResponse = await dashboardDetailsAdmin();
-        console.log(response.data?.dashboardDetails);
+        
         if (response.data?.dashboardDetails) {
           setUsers(response.data.dashboardDetails.data[0].totalUsers);
           setTotalOrders(response.data.dashboardDetails.data[0].totalOrders);

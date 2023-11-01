@@ -41,7 +41,7 @@ const AddHub: FC = () => {
     actions: FormikHelpers<hub>
   ): Promise<void> => {
     try {
-      console.log();
+  
        
       if(location){
 

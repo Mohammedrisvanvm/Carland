@@ -54,8 +54,8 @@ export const SignUp = () => {
     validateOnMount: true,
     validationSchema: SignupSchema,
   });
-  // Navigate('/UserOtp')
-  console.log(values);
+
+
 
   return (
     <>

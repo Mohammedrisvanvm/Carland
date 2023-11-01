@@ -22,7 +22,7 @@ const VendorChat: FC = () => {
     const fetchData = async () => {
       try {
         const res: AxiosResponse = await getConversations(vendor.hubId);
-        console.log(res.data?.conversation);
+       
 
         setConversation(res.data?.conversation);
       } catch (error: any) {
@@ -87,7 +87,7 @@ const VendorChat: FC = () => {
                 placeholder="Search"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   // setSearch(e.target.value)
-                  console.log(e);
+              
                 }}
               />
             </div>

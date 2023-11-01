@@ -76,7 +76,7 @@ const SingleCar: FC = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
-console.log(response);
+
 
         if (response.data?.vehicle && response.data?.location) {
           setVehicle(response.data?.vehicle);
@@ -105,14 +105,12 @@ console.log(response);
   React.useEffect(() => {
     if (seletedDate) {
       const [fromdate, todate] = seletedDate.split(",");
-      console.log(new Date(fromdate).getTime(), new Date(todate).getTime());
 
       const time = Math.round(
         (new Date(todate).getTime() - new Date(fromdate).getTime()) / 3600000
       );
       const perhour = vehicle ? Math.round(vehicle?.fairPrice / 24) : 0;
-     
-console.log(time,perhour, vehicle?.fairPrice);
+
 
       setPrice(time * perhour);
     }
@@ -166,22 +164,6 @@ console.log(time,perhour, vehicle?.fairPrice);
     }
     return result;
   };
-  // const disabledDateTime: RangePickerProps['disabledDateTime'] = (currentDate) => {
-  //   const dateStr = currentDate.format('YYYY-MM-DDTHH:mm:ss.SSS[Z]'); // Format to match your array
-  
-  //   if (oldbookingDates.includes(dateStr)) {
-  //     return {
-  //       disabledHours: () => [currentDate.hour()], // Disable the current hour
-  //       disabledMinutes: () => [currentDate.minute()], // Disable the current minute
-  //     };
-  //   }
-  
-  //   return {
-  //     disabledHours: () => [], // No disabled hours for other dates
-  //     disabledMinutes: () => [], // No disabled minutes for other dates
-  //   };
-  // };
-  // console.log(oldbookingDates);
 
   return (
     <>

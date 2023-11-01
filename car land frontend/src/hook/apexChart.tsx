@@ -6,7 +6,7 @@ type Iprops = {
   data: Array<number>;
 };
 export const DistributedChart: FC<Iprops> = ({ categories, data }) => {
-    console.log(data);
+  
     
   const [chartData, setChartData] = React.useState({
     options: {

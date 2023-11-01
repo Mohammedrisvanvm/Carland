@@ -36,13 +36,13 @@ type Iresponse = {
   razorpay_signature: string;
 };
 const Payment: React.FC<Ivalues> = ({ value }: Ivalues) => {
-  console.log(value, 11);
+
   const Navigate = useNavigate();
   async function showRazorpay() {
     const response: AxiosResponse = await razorpayApi(value);
     if (response?.data?.razorpay) {
       var result = response?.data?.razorpay;
-      console.log(response);
+   
 
       const res = await loadRazorpay(
         "https://checkout.razorpay.com/v1/checkout.js"

@@ -20,11 +20,11 @@ export const VendorSignUp = () => {
   const dispatch = useDispatch();
 
   const vender = useSelector((state: any) => state.vender);
-  console.log(vender);
+
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {
-      console.log(values);
+    
 
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
@@ -35,9 +35,8 @@ export const VendorSignUp = () => {
       toast.error(error.response.data.message);
     }
 
-    console.log("submitted");
 
-    //  Navigate('/UserOtp');
+  
   };
   const {
     handleChange,
@@ -55,7 +54,7 @@ export const VendorSignUp = () => {
     validateOnMount: true,
     validationSchema: vendorSignUpSchema,
   });
-  console.log(errors.email, errors.number, errors.userName);
+  
 
   return (
     <div className="relative h-screen overflow-hidden ">

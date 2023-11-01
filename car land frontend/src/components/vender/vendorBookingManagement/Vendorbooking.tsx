@@ -36,7 +36,7 @@ const VendorBooking: FC<Iprop> = ({ sidebarWidth }) => {
           search,
           currentPage
         );
-        console.log(response);
+
         if (response.data?.bookingDetails)
           setBookings(response.data.bookingDetails);
         if (response.data?.count) {

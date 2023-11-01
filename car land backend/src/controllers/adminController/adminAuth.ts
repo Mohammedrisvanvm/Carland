@@ -21,7 +21,7 @@ export const adminLogin = AsyncHandler(
   
 
     if (response && (await response.matchPassword(data.password))) {
-      console.log("hai");
+
       const accessToken = jwtSign(
         { id: response._id, email: response.email },
         "15m"

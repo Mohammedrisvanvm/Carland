@@ -62,7 +62,7 @@ const MyAccount: FC<prop> = ({setloading,loading}) => {
   };
   const verifyOtp = async () => {
     try {
-      console.log("helo");
+      
 
       if (otp?.trim() && otp.length == 6) {
         const { data }: AxiosResponse = await userVerifyNumberOtp(
@@ -77,7 +77,7 @@ const MyAccount: FC<prop> = ({setloading,loading}) => {
         setError("Enter 6 digit otp");
       }
     } catch (error: any) {
-      console.log(error.response.data.message);
+     
       setError(error.response.data.message);
     }
   };

@@ -55,7 +55,7 @@ export const userOtpverify = AsyncHandler(
 
       const data: number = req.body.value;
 
-      console.log(data);
+  
 
       if (UserOtpToken) {
         const { payload }: UserJwt = verifyJwt(UserOtpToken);
@@ -64,7 +64,7 @@ export const userOtpverify = AsyncHandler(
           let userExist: IUser | null = await userModel.findOne({
             email: payload.user?.email,
           });
-          console.log(userExist);
+    
 
           if (!userExist) {
             const user: IUser = await userModel.create({
@@ -115,7 +115,7 @@ export const userLoginController = AsyncHandler(
 
     // const data: data = req.body;
     const data: data = req.body.value;
-    console.log(data);
+
 
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
@@ -124,7 +124,7 @@ export const userLoginController = AsyncHandler(
 
     if (userExist) {
       if (userExist && (await userExist.matchPassword(data.password))) {
-        console.log("enterd");
+        
 
         const token: number = getotp();
         const userOtpToken = jwtSign(

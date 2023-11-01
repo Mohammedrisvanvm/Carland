@@ -21,7 +21,7 @@ export const MailServiceOtp = (email: string, otp: number) => {
           <p>Car Land</p>
         </div>`,
   };
-  transporter.sendMail(mailOptions, (error: any) => {
+  transporter.sendMail(mailOptions, (error:Error) => {
     if (error) {
       console.log("Failed to generate otp");
     } else {

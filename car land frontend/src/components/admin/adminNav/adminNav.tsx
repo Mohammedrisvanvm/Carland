@@ -24,7 +24,7 @@ const AdminNavBar: FC<Iprops> = ({
   const [dropdown, setdropdown] = React.useState<boolean>(false);
 
   const dropdownHandler = () => {
-    console.log("hai");
+
 
     setdropdown(!dropdown);
   };

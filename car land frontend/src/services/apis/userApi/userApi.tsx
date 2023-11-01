@@ -74,14 +74,14 @@ export const ProfileVerificationData = async (
 };
 
 export const bookingCar = async (data: data): Promise<AxiosResponse> => {
-  console.log(data);
+
 
   return await axiosBase.post("/users/booking/bookcar", { data });
 };
 export const verifyRazorpayPayment = async (
   data: Iresponse
 ): Promise<AxiosResponse> => {
-  console.log(data);
+
 
   return await axiosBase.post("/users/booking/razorpayverify", { data });
 };
@@ -99,7 +99,7 @@ type data = {
   razorpay_payment_id?: string;
 };
 export const razorpayApi = async (data: data): Promise<AxiosResponse> => {
-  console.log(data);
+
 
   return await axiosBase.post("/users/booking/razorpay", { data });
 };

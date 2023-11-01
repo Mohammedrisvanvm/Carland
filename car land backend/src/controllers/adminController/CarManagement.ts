@@ -21,7 +21,7 @@ export const getAllCars = AsyncHandler(
       .sort({ createdAt: -1 });
 
     const count: number = await vehicleModel.countDocuments();
-    console.log(count);
+  
 
     res.json({ vehicles, count });
   }

@@ -103,7 +103,7 @@ export const bookCar = AsyncHandler(
       }
     );
 
-    console.log(vehicle);
+
 
     const paymentStatus: string = "FullPaid";
     const booking: IBook = await bookModel.create({
@@ -138,7 +138,7 @@ type Iresponse = {
 };
 export const verifyRazorpayPayment = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.body, 123);
+
 
     const data: Iresponse = req.body.data;
     const token = data.razorpay_order_id + "|" + data.razorpay_payment_id;
@@ -149,7 +149,7 @@ export const verifyRazorpayPayment = AsyncHandler(
 
     if (generated_signature == data.razorpay_signature) {
       res.json({ message: "verified" });
-      console.log(" payment is successful");
+  
     } else {
       res.json({ message: "not verified" });
     }
@@ -157,7 +157,7 @@ export const verifyRazorpayPayment = AsyncHandler(
 );
 export const bookingConfirmDetails = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.query);
+   
     const id: string =
       typeof req.query.bookingID === "string" ? req.query.bookingID : "";
     const bookingConfirmDetails: IBookWithTimestamps = await bookModel.findById(
@@ -184,7 +184,7 @@ export const bookingDetails = AsyncHandler(
         _id: { $in: vehiclesID },
       })
       .sort();
-    // console.log(vehicles);
+   
     const hubs: Ihub[] = await hubModel
       .find({
         _id: { $in: hubID },
@@ -198,7 +198,7 @@ export const bookingDetails = AsyncHandler(
     vehicles.forEach((vehicle) => {
       vehicleImageMap[vehicle._id] = vehicle.singleImage;
     });
-    console.log(hubs);
+   
     hubs.forEach((hub) => {
       hubLatitude[hub._id] = hub.location.latitude;
       hubLongitude[hub._id] = hub.location.longitude;
@@ -284,7 +284,7 @@ export const dropOffReq = AsyncHandler(
       { _id: bookingID },
       { $set: { status: "dropOffReq" } }
     );
-    console.log(booking);
+ 
 
     res.json({ message: "dropOff Requested" });
   }

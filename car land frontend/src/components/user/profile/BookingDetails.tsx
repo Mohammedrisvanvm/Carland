@@ -28,7 +28,7 @@ const BookingDetails: React.FC = () => {
   React.useEffect(() => {
     const fetchData = async () => {
       const response: AxiosResponse = await bookingdetails();
-      console.log(response);
+    
 
       if (response.data?.bookingDetails) {
         setDetails(response.data?.bookingDetails);
@@ -55,7 +55,7 @@ const BookingDetails: React.FC = () => {
     setLoading(!loading);
     setSingleBooking(null);
   };
-  console.log(singleBooking);
+ 
   const dropOffHandler = async (id: string) => {
     await dropOffReq(id);
     setLoading(!loading);

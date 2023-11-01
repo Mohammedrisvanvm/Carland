@@ -6,4 +6,4 @@ export const outputDate = date.toLocaleDateString("en-US", {
     hour: "numeric",
     hour12: true,
   });
-  console.log(outputDate);
+ 

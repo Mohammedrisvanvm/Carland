@@ -17,7 +17,7 @@ const VendorHomePage = () => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getHub();
-        console.log(response.data?.hubs);
+
         setHubs(response.data?.hubs);
       } catch (error) {
         console.log("Error fetching vehicles:", error);

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
+import React, { ChangeEvent,  FC  } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io, { Socket } from "socket.io-client";
@@ -14,11 +14,10 @@ type Iprops = {
 const ENDPOINT: string = "ws://localhost:3131/";
 const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   const vendor = useAppSelector((state) => state.vendor);
-  console.log(currentChat);
+
   // @socketconnection
 
   const socket = React.useRef<Socket>();
-  const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
   type IMessage = {
     conversationId?: string;
     messageText?: string;
@@ -43,7 +42,7 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
-      console.log(res);
+  
 
       setMessages(res.data);
     };
@@ -84,16 +83,7 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
     setNewMessage(newMessage + emoji.native);
     setShowEmojiPicker(!showEmojiPicker);
   };
-  React.useEffect(() => {
-    socket.current?.on("getUsers", (users) => {
-      console.log(users);
-    });
-    //  return ()=> {
-    //   console.log("ahi");
 
-    //   socket.current?.emit("disconnect",vendor.hubId)
-    //  }
-  }, []);
   React.useEffect(() => {
     socket.current?.emit("addUser", currentChat?.hubId, currentChat?._id);
   }, []);
@@ -101,7 +91,7 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
       const senderId: string = data?.senderId || "";
-      console.log(data);
+    
 
       setArrivalMessage({
         senderId,

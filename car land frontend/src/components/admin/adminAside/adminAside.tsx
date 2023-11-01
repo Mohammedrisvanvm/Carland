@@ -191,7 +191,7 @@ const AdminAside: FC<Iprop> = ({ spanVisible }) => {
           className="relative px-3 py-3 flex items-center space-x-4 justify-start text-gray-500 rounded-lg group"
           // onClick={highlightSidebarItem}
           onClick={() => {
-            console.log("sdfghj");
+     
 
             Navigate("/admin/bookingmanagement");
           }}

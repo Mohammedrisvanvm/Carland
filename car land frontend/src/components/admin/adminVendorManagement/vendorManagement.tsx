@@ -20,7 +20,7 @@ const VendorManagement: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllVendors(search,currentPage);
-        console.log(response.data?.vendors);
+    
         setVendors(response.data?.vendors);
 
       

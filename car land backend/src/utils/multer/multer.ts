@@ -40,7 +40,7 @@ const upload = multer({
 
 export const parseImages = AsyncHandler(
   (req: Request, res: Response, next: NextFunction) => {
-    upload.array("images")(req, res, (err: any) => {
+    upload.array("images")(req, res, (err) => {
       if (err) {
         if (err.message === "Not an image") {
           return next(new Error("Not an image"));
@@ -48,7 +48,7 @@ export const parseImages = AsyncHandler(
         if (err.message === "File too large") {
           return next(new Error("File too large"));
         }
-        upload.single("images")(req, res, (err: any) => {
+        upload.single("images")(req, res, (err) => {
           if (err) {
             if (err.message === "Not an image") {
               return next(new Error("Not an image"));

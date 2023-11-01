@@ -3,8 +3,7 @@ import AsyncHandler from "express-async-handler";
 import conversationModel from "../../models/conversationSchema";
 import userModel from "../../models/userSchema";
 import IUser from "../../interfaces/userInterface";
-import { Iconversation } from "../../interfaces/chatInterface";
-import mongoose, { ObjectId, isObjectIdOrHexString } from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 
 export const createConversation = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -14,28 +13,11 @@ export const createConversation = AsyncHandler(
     }
 
     let conversation = await conversationModel.findOne({ userId, hubId });
-    console.log(conversation, 12);
+ 
 
     if (!conversation) {
       conversation = await conversationModel.create({ hubId, userId });
     }
-
-    const user = await userModel.findById(conversation.userId);
-    const withUser = await conversationModel.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "userId",
-          foreignField: "_id",
-          as: "userData",
-        },
-      },
-      {
-        $project: {
-          userData: 1,
-        },
-      },
-    ]);
 
     res.status(201).json({ conversation });
   }
@@ -43,7 +25,7 @@ export const createConversation = AsyncHandler(
 
 export const getConversation = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.params, 12222222222);
+  
     interface IConversation {
       _id: ObjectId;
       userId: ObjectId;
@@ -53,13 +35,12 @@ export const getConversation = AsyncHandler(
       userName: string[];
       image: string[];
     }
-    const hubId=req.params.hubId as string
+    const hubId = req.params.hubId as string;
 
-   
     const conversation: IConversation[] = await conversationModel.aggregate([
       {
-        $match:  {
-          hubId: new mongoose.Types.ObjectId(req.params.hubId)
+        $match: {
+          hubId: new mongoose.Types.ObjectId(req.params.hubId),
         },
       },
       {
@@ -82,7 +63,7 @@ export const getConversation = AsyncHandler(
         },
       },
     ]);
-console.log(conversation);
+ 
 
     res.status(200).json({ conversation });
   }

@@ -63,7 +63,7 @@ export const userVehicles = AsyncHandler(
     const perPage = 4;
     const skip = (pageNumber - 1) * perPage;
 
-    // const vehicles: IVehicle[] =
+
     const filter1: any = {
       isVerified: true,
     };
@@ -82,77 +82,7 @@ export const userVehicles = AsyncHandler(
           .map((id) => new mongoose.Types.ObjectId(id)),
       };
     }
-    // if (seletedDate) {
-    //   const [pickUpDate, dropOffDate]: string[] = seletedDate.split(",");
-    //   const pickupd = new Date(pickUpDate).getDate();
-    //   const dropoffd = new Date(dropOffDate).getDate();
-
-    //   const vehicles: IVehicle[] = await vehicleModel.find();
-    //   const data: any[] = vehicles.map((item) => ({
-    //     pickUp: item.bookingDates.pickUp,
-    //     dropOff: item.bookingDates.dropOff,
-    //     _id: item._id,
-    //   }));
-
-    //   const ids: string[] = data.map((item) => {
-    //     let isDateRangeValid = true;
-
-    //     for (let i = 0; i < item.pickUp.length; i++) {
-    //       if (
-    //         !(
-    //           pickupd >= item.pickUp[i].getDate() &&
-    //           dropoffd <= item.dropOff[i].getDate()
-    //         )
-    //       ) {
-    //         isDateRangeValid = false;
-    //         break; 
-    //       }
-    //     }
-
-    //     if (isDateRangeValid) {
-    //       return item._id;
-    //     }
-    //   });
-
-    //   const validIds = ids.filter((id) => id !== undefined);
-
-    //   console.log(pickupd, dropoffd, validIds);
-
-      // filter1.bookingDates= {
-      //   $nor: [
-      //     {
-      //       bookingDates: {
-      //         $elemMatch: {
-      //           pickUp: pickupd,
-      //         },
-      //       },
-      //     },
-      //     {
-      //       bookingDates: {
-      //         $elemMatch: {
-      //           dropOff: dropoffd,
-      //         },
-      //       },
-      //     },
-      //   ],
-      // };
-      //       const hourlyDates = [];
-      // console.log(pickupd);
-
-      // while (pickupd < dropoffd) {
-      //   hourlyDates.push(new Date(pickupd));
-      //   pickupd.setHours(pickupd.getHours() + 1);
-      // }
-
-      // const isDateIncluded = hourlyDates.some(hourlyDate => {
-      //   const startDate = new Date(hourlyDate);
-      //   const endDate = new Date(startDate);
-      //   endDate.setHours(endDate.getHours() + 1);
-
-      //   return targetDate >= startDate && targetDate < endDate;
-      // });
-      //       console.log(vehicles[1].bookingDates.pickUp, pickupd.toDateString(), 132);
-    // }
+  
 
     const vehicles: IVehicle[] = await vehicleModel.aggregate([
       { $match: filter1 },
@@ -165,16 +95,7 @@ export const userVehicles = AsyncHandler(
     ]);
 
     const count: number = await vehicleModel.countDocuments(query);
-    // const [pickUpDate, dropOffDate]: string[] = seletedDate.split(",");
-    // const pickeddates: any = await vehicleModel.find({
-    //   bookingDates: {
-    //     $not: {
-    //       $elemMatch: { pickUp: pickUpDate, dropOff: dropOffDate }
-    //     }
-    //   }
-    // });
 
-    // console.log(pickeddates);
 
     res.json({ vehicles, count });
   }
@@ -184,7 +105,7 @@ export const singleCar = AsyncHandler(
     const id: string = typeof req.query.id === "string" ? req.query.id : "";
     const vehicle: IVehicle = await vehicleModel.findById(id);
     const hub: Ihub = await hubModel.findOne({ vehicles: { $in: [id] } });
-    console.log(vehicle.bookingDates);
+
     const datesArray: Date[] = [];
 
     for (let i = 0; i < vehicle.bookingDates.pickUp.length; i++) {
@@ -197,7 +118,7 @@ export const singleCar = AsyncHandler(
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
-    console.log(datesArray);
+
 
     res.status(200).json({
       vehicle,

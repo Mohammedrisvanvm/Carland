@@ -35,7 +35,7 @@ const AdminLogin = () => {
     const dispatch=useDispatch()
   const Navigate = useNavigate();
   const admin=useAppSelector((state)=>state.admin)
-  console.log(admin);
+
   useEffect(()=>{
     if(admin.accessToken){
       Navigate('/admin/admindashboard')
@@ -44,11 +44,11 @@ const AdminLogin = () => {
   )
   const submitForm: any = async (values: {}, actions: any) => {
     try {
-      console.log(values);
+  
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
      const response:axiosresponse=await adminAuth(values)
-     console.log(response.data);
+ 
      response.data.admin.accessToken=response.data.accessToken
       dispatch(setAdmin(response.data.admin))
 

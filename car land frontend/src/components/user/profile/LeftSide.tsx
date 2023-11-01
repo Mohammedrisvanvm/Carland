@@ -21,7 +21,7 @@ const LeftSide: FC<Iprop> = ({ value }) => {
     fetchUser();
   }, [loading]);
 
-  console.log(currentUser);
+
 
   const user = useAppSelector((state) => state.user);
   return (

@@ -111,7 +111,7 @@ const [spec,setspec]=useState<string[]>([])
   const handleChangeSpec = async (
     e: ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
-    try { console.log(spec);
+    try { 
       setFieldValue("specification", spec);
     } catch (error) {
       console.log(error);
@@ -130,7 +130,7 @@ const [spec,setspec]=useState<string[]>([])
       console.log(error);
     }
   };
-console.log(values.specification);
+
 
   return (
     <>

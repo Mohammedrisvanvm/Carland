@@ -27,7 +27,7 @@ const AdminBooking: FC<Iprop> = ({ sidebarWidth }) => {
           search,
           currentPage
         );
-        console.log(response);
+       
 
         if (response.data?.bookingDetails)
           setBookings(response.data.bookingDetails);

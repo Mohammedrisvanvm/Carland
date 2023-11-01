@@ -26,7 +26,7 @@ const HubManagement: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllHubs(search, currentPage);
-        console.log(response);
+    
 
         if (response.data?.hubs) setHubs(response.data?.hubs);
         if (response.data?.count) {

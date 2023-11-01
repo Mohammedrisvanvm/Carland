@@ -14,7 +14,7 @@ interface CloudinaryResponse {
 }
 export const addVehicleController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(typeof(req.body.values.year));
+  
     const {
       vehicleName,
       vehicleNumber,
@@ -99,59 +99,7 @@ export const getVehiclesController = AsyncHandler(
       search?: string;
     };
     const { hubId, search }: hubId = req.query;
-    console.log(hubId, search, 11);
-    
-    // if (search == "") {
-    //   var vehicles: IVehicle[] = await hubModel.aggregate([
-    //     {
-    //       $match: {
-    //         _id: new ObjectId(hubId),
-    //       },
-    //     },
-    //     {
-    //       $lookup: {
-    //         from: "vehicles",
-    //         localField: "vehicles",
-    //         foreignField: "_id",
-    //         as: "vehicleData",
-    //       },
-    //     },
 
-    //     {
-    //       $unwind: "$vehicleData",
-    //     },
-    //     {
-    //       $replaceRoot: {
-    //         newRoot: "$vehicleData",
-    //       },
-    //     },
-    //   ]);
-    // } else {
-    //   var vehicles: IVehicle[] = await hubModel.aggregate([
-    //     {
-    //       $match: {
-    //         _id: new ObjectId(hubId),
-    //       },
-    //     },
-    //     {
-    //       $lookup: {
-    //         from: "vehicles",
-    //         localField: "vehicles",
-    //         foreignField: "_id",
-    //         as: "vehicleData",
-    //       },
-    //     },
-
-    //     {
-    //       $unwind: "$vehicleData",
-    //     },
-    //     {
-    //       $replaceRoot: {
-    //         newRoot: "$vehicleData",
-    //       },
-    //     },
-    //   ]);
-    // }
 
     var pipeline = [
       {

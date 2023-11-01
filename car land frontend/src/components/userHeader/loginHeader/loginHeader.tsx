@@ -15,7 +15,7 @@ export const LoginHeader = () => {
   const handleClick = () => {
     setIsToggled(!isToggled);
   };
-console.log(user);
+
 
   const UserLogout = async () => {
     await userSignOut();

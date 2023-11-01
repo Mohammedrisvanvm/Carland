@@ -55,7 +55,7 @@ export const verifyHub = AsyncHandler(
 );
 export const hubSearch = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.query);
+
     type search = {
       search?: string;
     };

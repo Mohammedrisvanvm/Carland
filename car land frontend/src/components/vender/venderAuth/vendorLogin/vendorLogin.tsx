@@ -22,7 +22,7 @@ const VenderLogin = () => {
 
   const submitForm: any = async (values: {}, actions: any) => {
     try {
-      console.log(values);
+   
 
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
@@ -33,7 +33,7 @@ const VenderLogin = () => {
       toast.error(error.response.data.message);
     }
 
-    console.log("submitted");
+  
   };
   const {
     handleChange,

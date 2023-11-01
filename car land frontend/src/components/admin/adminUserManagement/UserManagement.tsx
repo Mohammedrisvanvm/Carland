@@ -22,7 +22,7 @@ const UserManagement: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         const response: AxiosResponse = await getAllUser(search,currentPage);
-        console.log(response.data?.users);
+
 
         setUser(response.data?.users);
 

@@ -25,7 +25,7 @@ import ChatApp from "../../../test/Data";
     const [dropdown, setdropdown] = React.useState<boolean>(false);
   
     const dropdownHandler = () => {
-      console.log("hai");
+
   
       setdropdown(!dropdown);
     };

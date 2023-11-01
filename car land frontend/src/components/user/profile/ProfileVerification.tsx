@@ -65,7 +65,7 @@ const ProfileVerification: FC<prop> = ({ setloading,loading }) => {
     setBackAdhaar(null);
     setImageData([]);
   };
-  console.log(Error);
+
   return (
     <>
       <div className="justify-between sm:mt-5">

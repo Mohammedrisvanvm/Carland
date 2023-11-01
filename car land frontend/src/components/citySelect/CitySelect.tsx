@@ -8,7 +8,7 @@ const API_ENDPOINTS = `https://api.openweathermap.org/data/3.0/onecall?`;
 const API_KEY = `c74d5b78ec373a800f3a214adba28c0a`;
 const getlocation = async(search:string) => {
   const response = await mapboxAPI.get(`/geocoding/v5/mapbox.places/${encodeURIComponent(search)}.json`);
- console.log(response);
+ 
  
 };
 
@@ -18,7 +18,7 @@ export const CitySelect = () => {
   const [latitude, setLatitude] = useState<number | null>(null);
   const [longitude, setLongitude] = useState<number | null>(null);
   const Navigate = useNavigate();
-  console.log(selectedLocation);
+
   const handlesubmit=(e:ChangeEvent<HTMLFormElement>)=>{
     e.preventDefault()
     getlocation(search)
@@ -51,7 +51,7 @@ export const CitySelect = () => {
                 setLatitude(position.coords.latitude);
                 setLongitude(position.coords.longitude);
                 // getlocation();
-                console.log(position.coords);
+            
               })
             }
           >
