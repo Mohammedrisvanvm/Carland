@@ -2,8 +2,7 @@ import AdminNavBar from "../adminNav/adminNav";
 import AdminAside from "../adminAside/adminAside";
 
 import CarManagement from "./CarManagement";
-import NewNav from "../../../test/NewNav";
-import NewSide from "../../../test/NewSide";
+
 import React from "react";
 
 const AdminCarManagementPage = () => {

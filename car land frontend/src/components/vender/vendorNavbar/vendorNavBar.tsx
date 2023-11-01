@@ -4,7 +4,7 @@ import { vendorLogout } from "../../../redux/slice/vendorSlice";
 import { vendorSignOut } from "../../../services/apis/vendorApi/vendorApi";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
-import ChatApp from "../../../test/Data";
+
 
 
   type Iprops = {

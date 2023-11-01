@@ -3,8 +3,7 @@ import AdminAside from "../adminAside/adminAside";
 
 import UserManagement from "./UserManagement";
 import React from "react";
-import NewNav from "../../../test/NewNav";
-import NewSide from "../../../test/NewSide";
+
 const AdminUserManagementPage = () => {
   const [sidebarWidth, setsidebarWidth] = React.useState<boolean>(true);
   const [spanVisible, setSpanVisible] = React.useState<boolean>(false);

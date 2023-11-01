@@ -61,9 +61,10 @@ export const AddCarSchema = yup.object().shape({
     .min(3)
     .matches(/^[a-zA-Z0-9\s]+$/, "Name must not contain special characters")
     .required(),
-    year: yup.number()
-    .min(2005,'year must be at least 2005')
-    .max(currentYear,'year must not be at morethan this year')
+  year: yup
+    .number()
+    .min(2005, "year must be at least 2005")
+    .max(currentYear, "year must not be at morethan this year")
     .required(),
   vehicleNumber: yup
     .string()
@@ -175,8 +176,12 @@ dropDate.setDate(dropDate.getDate() + 1);
 const minDate = pickUpDate.toISOString().split("T")[0];
 
 export const bookingDateSchema = yup.object().shape({
-  pickUpDate: yup.date().min(minDate, 'Date must be tomorrow').required(),
+  pickUpDate: yup.date().min(minDate, "Date must be tomorrow").required(),
   dropDate: yup
     .date()
-    .min(dropDate.toISOString().split("T")[0], 'Date must be 1 day after pickupdate').required()
+    .min(
+      dropDate.toISOString().split("T")[0],
+      "Date must be 1 day after pickupdate"
+    )
+    .required(),
 });

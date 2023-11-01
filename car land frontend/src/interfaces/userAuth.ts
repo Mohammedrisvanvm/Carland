@@ -28,7 +28,7 @@ export interface hub{
   ban?: boolean;
   placeName?:string;
   pincode: string;
-  validityDate: Date;
+  validityDate: Date|string;
   license: string;
   hubImage: string;
   hubMultiImage: Array<string>;

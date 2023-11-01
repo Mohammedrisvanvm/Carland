@@ -2,7 +2,7 @@ import React, { FC, SetStateAction, Dispatch } from "react";
 import LeftSide from "./LeftSide";
 import MyAccount from "./MyAccount";
 import ProfileVerification from "./ProfileVerification";
-import Test from '../../../test/test'
+
 import BookingDetails from "./BookingDetails";
 
 interface MyComponentProps {

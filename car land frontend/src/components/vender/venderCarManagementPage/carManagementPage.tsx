@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import VendorNavBar from "../vendorNavbar/vendorNavBar";
 import VendorAside from "../venderASide/vendorAside";
 import CarList from "./Carlist";
-import NewNav from "../../../test/NewNav";
+
 
 const CarManagementPage = () => {
   const [sidebarWidth, setsidebarWidth] = React.useState<boolean>(true);

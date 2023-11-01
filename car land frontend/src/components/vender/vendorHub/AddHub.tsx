@@ -218,7 +218,6 @@ const AddHub: FC = () => {
                   <input
                     type="Date"
                     pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                    value={values.validityDate}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     name="validityDate"
