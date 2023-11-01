@@ -45,7 +45,7 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000",'https://carland-five.vercel.app'],
+    origin: ["http://localhost:3000",'https://carland-five.vercel.app','https://carlandrent.netlify.app/'],
     credentials: true,
   })
 );
