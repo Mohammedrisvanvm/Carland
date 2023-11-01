@@ -13,8 +13,14 @@ interface Ihub  {
   vehicles: Array<string>;
   validityDate: Date;
   license: string;
-  hubImage: string;
+  // hubImage: string|image
+  hubImage: string
   hubMultiImage: Array<string>;
+ 
 }
+type image = {
+  url?: string;
+  publicid?: string;
+};
 
 export default Ihub;

@@ -1,4 +1,4 @@
-export interface CloudinaryAsset {
+export interface CloudinaryUploader {
     asset_id?: string;
     public_id: string;
     version: number;
@@ -19,3 +19,11 @@ export interface CloudinaryAsset {
     folder?: string;
     api_key?: string;
   }
+ export  interface CloudinaryRemover {
+    deleted: Record<string, string>;
+    deleted_counts: Record<string, any>;
+    partial: boolean;
+    rate_limit_allowed: number;
+    rate_limit_reset_at: Date;
+    rate_limit_remaining: number;
+}
