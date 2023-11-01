@@ -12,6 +12,7 @@ import { useState } from "react";
 import ProtectedRouteVendor from "./protectedRoutes/vendor";
 import VendorBookingPage from "../components/vender/vendorBookingManagement/VendorBookingPage";
 import VendorChat from "../components/vender/vendorChat/VendorChat";
+import VendorProfilePage from "../components/vender/vendorProfile/VendorProfilePage";
 
 
 const VendorRouters = () => {
@@ -30,6 +31,8 @@ const VendorRouters = () => {
           <Route path="/vendordashboard" element={<ProtectedRouteVendor > <VenderDashboardPage /></ProtectedRouteVendor>} />
           <Route path="/vendorcars" element={ <CarManagementPage />} />
           <Route path="/vendorbookings" element={ <VendorBookingPage />} />
+          <Route path="/vendorprofile" element={ <VendorProfilePage />} />
+          
           <Route path="/vendorchat" element={ <VendorChat />} />
           <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
           <Route path="/chat" element={<ProtectedRouteVendor > <VendorChat /></ProtectedRouteVendor>} />

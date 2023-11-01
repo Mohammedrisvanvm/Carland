@@ -53,4 +53,10 @@ export const dropOffreqAction= async (id: string | null | undefined): Promise<Ax
 export const dashboardDetails= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/hub/dashboard?hubId=${id}`);
 };
+export const vendorProfile= async (id: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.get(`/vendors/hub/profile?hubId=${id}`);
+};
+export const updateProfileHub= async (license:string| null,imageMain:string| null,imageSub:string| null,validityDate:string|null,hubId: string | null | undefined): Promise<AxiosResponse<any>> => {
+  return axiosBase.patch('/vendors/hub/profile/update',{license,imageMain,imageSub,validityDate,hubId});
+};
 

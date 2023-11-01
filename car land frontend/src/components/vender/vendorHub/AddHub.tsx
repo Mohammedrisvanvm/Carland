@@ -11,19 +11,9 @@ import { hub } from "../../../interfaces/userAuth";
 import Loader from "../../../utils/Loader";
 import { GeocodingResponse } from "../../../interfaces/geocodingInterface";
 import mapboxAPI from "../../../services/mapbox/mapbox";
+import { convertToBase64 } from "../../../utils/convertToBase64";
 
-const convertToBase64 = (file: File): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = () => {
-      resolve(fileReader.result as string);
-    };
-    fileReader.onerror = (error) => {
-      reject(error);
-    };
-  });
-};
+
 type Current = {
   latitude: number;
   longitude: number;

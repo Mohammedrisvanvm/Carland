@@ -9,6 +9,7 @@ import { IConversation } from "./chatInterface";
 export interface AxiosResponse<T = any> {
   data?: {
     hubs?: hub[];
+    hub?: hub;
     message?: string;
     vehicles?: Vehicles[];
     count?: number;

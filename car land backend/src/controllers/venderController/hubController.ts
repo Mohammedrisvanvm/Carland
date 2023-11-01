@@ -8,7 +8,11 @@ import { verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import IVendor from "../../interfaces/vendorInterface";
 import VendorModel from "../../models/vendorSchema";
 import bookModel from "../../models/bookingSchema";
-import IBookWithTimestamps from "src/interfaces/bookingInterface";
+import IBookWithTimestamps from "../../interfaces/bookingInterface";
+import {
+  CloudinaryUploader,
+  CloudinaryRemover,
+} from "../../interfaces/cloudinaryInterface";
 
 export const addhub = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
@@ -78,8 +82,6 @@ export const getHubs = AsyncHandler(
     if (!accessTokenvendor) {
       throw new Error("accessToken not available");
     }
- 
-
 
     const dbout: IVendor = await VendorModel.findOne(
       { phoneNumber: req.headers.authorization },
@@ -161,11 +163,107 @@ export const dashboardDetails = AsyncHandler(
         }
       }
     }
-    res
-      .status(200)
-      .json({
-        message: "dashboard Details Vendor",
-        dashboardDetails: { data, resultArray },
-      });
+    res.status(200).json({
+      message: "dashboard Details Vendor",
+      dashboardDetails: { data, resultArray },
+    });
+  }
+);
+
+export const profileData = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    const hubId = req.query.hubId as string;
+    const hub: Ihub = await hubModel.findById(hubId);
+    console.log(hub);
+    res.status(200).json({ hub });
+  }
+);
+export const profileDataUpdate = AsyncHandler(
+  async (req: Request, res: Response): Promise<void> => {
+    type body = {
+      license: string;
+      imageMain: string;
+      imageSub: string;
+      validityDate: string;
+      hubId: string;
+    };
+    const { license, imageMain, imageSub, validityDate, hubId }: body =
+      req.body;
+    const hub: Ihub | null = await hubModel.findById(hubId);
+    console.log(hub, 11);
+    console.log(license, imageMain, imageSub, validityDate, hubId, 11);
+    const imagesUploadPromises = [];
+    const imagesRemovePromises = [];
+    if (imageMain) {
+      imagesUploadPromises.push(
+        cloudinary.uploader.upload(imageMain, {
+          folder: "hub",
+          public_id: `${hub.hubName + "imageMain"}`,
+        })
+      );
+      imagesRemovePromises.push(
+        cloudinary.api.delete_resources([`hub/${hub.hubName + "imageMain"}`], {
+          type: "upload",
+          resource_type: "image",
+        })
+      );
+    }
+    if (imageSub) {
+      imagesUploadPromises.push(
+        cloudinary.uploader.upload(imageSub, {
+          folder: "hub",
+          public_id: `${hub.hubName + "imageSub"}`,
+        })
+      );
+      imagesRemovePromises.push(
+        cloudinary.api.delete_resources([`hub/${hub.hubName + "imageSub"}`], {
+          type: "upload",
+          resource_type: "image",
+        })
+      );
+    }
+    if (license) {
+      imagesUploadPromises.push(
+        cloudinary.uploader.upload(license, {
+          folder: "hubdoc",
+          public_id: `${hub.hubName + "license"}`,
+        })
+      );
+      imagesRemovePromises.push(
+        cloudinary.api.delete_resources([`hubdoc/${hub.hubName + "license"}`], {
+          type: "upload",
+          resource_type: "image",
+        })
+      );
+    }
+    const remove: CloudinaryRemover[] = await Promise.all(imagesRemovePromises);
+    const images: CloudinaryUploader[] = await Promise.all(
+      imagesUploadPromises
+    );
+    console.log(images, 22, remove);
+
+    images.map((item) => {
+      console.log(
+        item.public_id,
+        `hubdoc/${hub.hubName + "license"}`,
+        item.public_id === `hubdoc/${hub.hubName + "license"}`
+      );
+      if (item.public_id === `hubdoc/${hub.hubName + "license"}`) {
+        hub.license = item.url;
+      }
+      if (item.public_id === `hub/${hub.hubName + "imageSub"}`) {
+        hub.hubMultiImage = [item.url];
+      }
+      if (item.public_id === `hub/${hub.hubName + "imageMain"}`) {
+        hub.hubImage = item.url;
+      }
+    });
+    if (validityDate) {
+      hub.validityDate = new Date(validityDate);
+    }
+
+    await hub.save();
+
+    res.status(200).json({ message: "updated" });
   }
 );
