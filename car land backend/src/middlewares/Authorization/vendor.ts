@@ -4,8 +4,6 @@ import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import IVendor from "../../interfaces/vendorInterface";
 import AsyncHandler from "express-async-handler";
 
-
-
 interface IVerifyjwt {
   payload?: {
     number?: string;
@@ -16,27 +14,25 @@ export const vendorAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const accessTokenvendortoken: string = req.cookies.accessTokenvendor;
     const refreshTokenvendor: string = req.cookies.refreshTokenvendor;
-    console.log(refreshTokenvendor,accessTokenvendortoken);
-   
- 
+    console.log(refreshTokenvendor, accessTokenvendortoken);
+
     if (!accessTokenvendortoken && !refreshTokenvendor) {
       throw new Error("Vendor Access Denied");
     }
     if (accessTokenvendortoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenvendor);
 
-      
       req.headers.authorization = verifiedJWT.payload.number;
       if (verifiedJWT.payload.number) {
-        const vendor: IVendor | null = await VendorModel.findOne(
-          { phoneNumber: verifiedJWT.payload.number,ban:false },
-         
-        );
+        const vendor: IVendor | null = await VendorModel.findOne({
+          phoneNumber: verifiedJWT.payload.number,
+          ban: false,
+        });
 
         if (!vendor) {
           throw new Error("user banned");
         } else {
-      next();
+          next();
         }
       }
     } else if (!accessTokenvendortoken && refreshTokenvendor) {
@@ -44,7 +40,7 @@ export const vendorAuthenticate = AsyncHandler(
 
       if (verifiedJWT.payload.number) {
         const vendor: IVendor | null = await VendorModel.findOne(
-          { phoneNumber: verifiedJWT.payload.number,ban:false },
+          { phoneNumber: verifiedJWT.payload.number, ban: false },
           { password: 0 }
         );
 
@@ -59,13 +55,16 @@ export const vendorAuthenticate = AsyncHandler(
 
           res.cookie("accessTokenvendor", access, {
             httpOnly: true,
-            sameSite:'none',
-            maxAge:  1000 * 60 * 60 * 24,
+            sameSite: "none",
+            maxAge: 1000 * 60 * 60 * 24,
+            secure: true,
           });
           res.cookie("refreshTokenvendor", refreshTokenvendor, {
-            maxAge:  1000 * 60 * 60 * 24 * 7,
-            sameSite:'none',
             httpOnly: true,
+
+            secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            sameSite: "none",
           });
 
           req.cookies.accessTokenvendor = access;

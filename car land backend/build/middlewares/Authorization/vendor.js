@@ -18,7 +18,10 @@ exports.vendorAuthenticate = (0, express_async_handler_1.default)(async (req, re
         const verifiedJWT = (0, jwtutils_1.verifyJwt)(refreshTokenvendor);
         req.headers.authorization = verifiedJWT.payload.number;
         if (verifiedJWT.payload.number) {
-            const vendor = await vendorSchema_1.default.findOne({ phoneNumber: verifiedJWT.payload.number, ban: false });
+            const vendor = await vendorSchema_1.default.findOne({
+                phoneNumber: verifiedJWT.payload.number,
+                ban: false,
+            });
             if (!vendor) {
                 throw new Error("user banned");
             }
@@ -38,13 +41,15 @@ exports.vendorAuthenticate = (0, express_async_handler_1.default)(async (req, re
                 const access = await (0, jwtutils_1.jwtSign)({ id: vendor._id, name: vendor.userName, email: vendor.email }, "15min");
                 res.cookie("accessTokenvendor", access, {
                     httpOnly: true,
-                    sameSite: 'none',
+                    sameSite: "none",
                     maxAge: 1000 * 60 * 60 * 24,
+                    secure: true,
                 });
                 res.cookie("refreshTokenvendor", refreshTokenvendor, {
-                    maxAge: 1000 * 60 * 60 * 24 * 7,
-                    sameSite: 'none',
                     httpOnly: true,
+                    secure: true,
+                    maxAge: 7 * 24 * 60 * 60 * 1000,
+                    sameSite: "none",
                 });
                 req.cookies.accessTokenvendor = access;
                 next();

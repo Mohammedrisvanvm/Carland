@@ -134,7 +134,7 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                         email: newUser?.email,
                     },
                 }, "15min");
-                console.log(accessToken, '********************************************************');
+                console.log(accessToken, "********************************************************");
                 const refreshToken = (0, jwtutils_1.jwtSign)({ id: newUser?._id }, "7d");
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,
@@ -178,9 +178,17 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
     }
 });
 exports.userLogoutController = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0, sameSite: 'none', });
+    res.cookie("accessTokenUser", "", {
+        httpOnly: true,
+        maxAge: 0,
+        sameSite: "none",
+    });
     res
-        .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0, sameSite: 'none', })
+        .cookie("refreshTokenUser", "", {
+        httpOnly: true,
+        maxAge: 0,
+        sameSite: "none",
+    })
         .status(200)
         .json({ message: "logout user" });
 });
@@ -199,12 +207,30 @@ exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
             }
             const access = await (0, jwtutils_1.jwtSign)({ id: user._id, name: user.userName, email: user.email }, "30s");
             const Ref = await (0, jwtutils_1.jwtSign)({ email: user.email }, "7d");
-            res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000, sameSite: 'none' });
+            res.cookie("accessTokenUser", access, {
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60,
+                secure: true,
+                sameSite: "none",
+            });
+            res.cookie("accessTokenUser", access, {
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60,
+                secure: true,
+                sameSite: "lax",
+            });
+            res.cookie("accessTokenUser", access, {
+                httpOnly: true,
+                maxAge: 7 * 24 * 60 * 60,
+                secure: true,
+                sameSite: "strict",
+            });
             res
                 .cookie("refreshTokenUser", Ref, {
                 httpOnly: true,
-                sameSite: 'none',
-                maxAge: 7 * 24 * 60 * 60,
+                sameSite: "none",
+                secure: true,
+                maxAge: 7 * 24 * 60 * 60 * 1000,
             })
                 .json({ user });
         }

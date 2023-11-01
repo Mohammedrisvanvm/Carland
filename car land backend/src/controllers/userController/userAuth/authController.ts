@@ -4,7 +4,7 @@ import userModel from "../../../models/userSchema";
 import { jwtSign, verifyJwt } from "../../../utils/jwtUtils/jwtutils";
 import IUser from "../../../interfaces/userInterface";
 import axios from "axios";
-import  { MailServiceOtp } from "../../../utils/nodeMailer/otp";
+import { MailServiceOtp } from "../../../utils/nodeMailer/otp";
 import { getotp } from "../../../utils/twilio/twilio";
 
 export const userSignUpController = AsyncHandler(
@@ -39,7 +39,7 @@ interface UserJwt {
   payload?: {
     token?: number;
     user?: {
-      id:string
+      id: string;
       userName: string;
       email: string;
       number?: number | null;
@@ -55,8 +55,6 @@ export const userOtpverify = AsyncHandler(
 
       const data: number = req.body.value;
 
-  
-
       if (UserOtpToken) {
         const { payload }: UserJwt = verifyJwt(UserOtpToken);
 
@@ -64,7 +62,6 @@ export const userOtpverify = AsyncHandler(
           let userExist: IUser | null = await userModel.findOne({
             email: payload.user?.email,
           });
-    
 
           if (!userExist) {
             const user: IUser = await userModel.create({
@@ -116,7 +113,6 @@ export const userLoginController = AsyncHandler(
     // const data: data = req.body;
     const data: data = req.body.value;
 
-
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
       ban: false,
@@ -124,8 +120,6 @@ export const userLoginController = AsyncHandler(
 
     if (userExist) {
       if (userExist && (await userExist.matchPassword(data.password))) {
-        
-
         const token: number = getotp();
         const userOtpToken = jwtSign(
           {
@@ -203,8 +197,11 @@ export const userGoogleAuth = AsyncHandler(
               },
               "15min"
             );
-            console.log(accessToken,'********************************************************');
-            
+            console.log(
+              accessToken,
+              "********************************************************"
+            );
+
             const refreshToken = jwtSign({ id: newUser?._id }, "7d");
 
             res.status(200).cookie("accessTokenUser", accessToken, {
@@ -245,7 +242,7 @@ export const userGoogleAuth = AsyncHandler(
 
             res
               .cookie("refreshTokenUser", refreshToken, {
-                maxAge: 1000 * 60 * 60 * 24*7,
+                maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
               })
               .json({ user, accessToken, message: "created" });
@@ -257,9 +254,17 @@ export const userGoogleAuth = AsyncHandler(
 
 export const userLogoutController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenUser", "", { httpOnly: true, maxAge: 0,sameSite:'none', });
+    res.cookie("accessTokenUser", "", {
+      httpOnly: true,
+      maxAge: 0,
+      sameSite: "none",
+    });
     res
-      .cookie("refreshTokenUser", "", { httpOnly: true, maxAge: 0,sameSite:'none', })
+      .cookie("refreshTokenUser", "", {
+        httpOnly: true,
+        maxAge: 0,
+        sameSite: "none",
+      })
       .status(200)
       .json({ message: "logout user" });
   }
@@ -299,12 +304,30 @@ export const userCheck = AsyncHandler(
         );
 
         const Ref = await jwtSign({ email: user.email }, "7d");
-        res.cookie("accessTokenUser", access, { httpOnly: true, maxAge: 5000,sameSite:'none' });
+        res.cookie("accessTokenUser", access, {
+          httpOnly: true,
+          maxAge: 7 * 24 * 60 * 60,
+          secure: true,
+          sameSite: "none",
+        });
+        res.cookie("accessTokenUser", access, {
+          httpOnly: true,
+          maxAge: 7 * 24 * 60 * 60,
+          secure: true,
+          sameSite: "lax",
+        });
+        res.cookie("accessTokenUser", access, {
+          httpOnly: true,
+          maxAge: 7 * 24 * 60 * 60,
+          secure: true,
+          sameSite: "strict",
+        });
         res
           .cookie("refreshTokenUser", Ref, {
             httpOnly: true,
-            sameSite:'none',
-            maxAge: 7 * 24 * 60 * 60,
+            sameSite: "none",
+            secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
           })
           .json({ user });
       } else {
