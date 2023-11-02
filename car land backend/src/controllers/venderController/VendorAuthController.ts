@@ -29,7 +29,7 @@ export const vendorLoginController = AsyncHandler(
 
       res
         .status(200)
-        .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
+        .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
         .json({ message: "hello" });
     } else {
       throw new Error("Invalid data or banned");
@@ -60,7 +60,7 @@ export const venderSignUpController = AsyncHandler(
       const Token = jwtSign({ token: response, vendor: data }, "5min");
       res
         .status(200)
-        .cookie("vendorOtpToken", Token, { httpOnly: true, maxAge: 300000 })
+        .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
         .json({ message: "message otp sented" });
     }
   }
@@ -119,12 +119,14 @@ export const vendorOtpverify = AsyncHandler(
         res.status(200).cookie("accessTokenvendor", accessToken, {
           maxAge:1000 * 60 * 60 * 24,
           httpOnly: true,
+          sameSite: "none",
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
             maxAge:1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
+            sameSite: "none",
           })
           .json({ vendor: vendorExist, accessToken });
       } else {

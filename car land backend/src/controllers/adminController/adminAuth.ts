@@ -35,12 +35,14 @@ export const adminLogin = AsyncHandler(
       res.status(200).cookie("accessTokenAdmin", accessToken, {
         maxAge: 300000,
         httpOnly: true,
+        sameSite: "none",
       });
 
       res
         .cookie("refreshTokenAdmin", refreshToken, {
           maxAge: 7 * 24 * 60 * 60,
           httpOnly: true,
+          sameSite: "none",
         })
         .json({ admin: response,accessToken:accessToken });
     } else {
