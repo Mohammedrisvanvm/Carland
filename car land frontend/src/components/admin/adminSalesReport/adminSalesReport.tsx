@@ -4,8 +4,8 @@ import { Pagination } from "antd";
 import { IConfirmBook } from "../../../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { salesReportsApi } from "../../../services/apis/vendorApi/vendorApi";
 import PDF from "../../../utils/pdf";
+import { salesReportsAdmin } from "../../../services/apis/adminApi/adminApi";
 
 type Iprop = {
   sidebarWidth: boolean;
@@ -26,8 +26,7 @@ const AdminSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         // const response: any = [];
-        const response: AxiosResponse = await salesReportsApi(
-          id,
+        const response: AxiosResponse = await salesReportsAdmin(
           search,
           currentPage
         );
@@ -105,28 +104,34 @@ const AdminSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
           <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-2 py-3">
                   index
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-5 py-3">
                   vehicle image
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-5 py-3">
                   Vehicle Name
                 </th>
+                <th scope="col" className="px-5 py-3">
+                  hubName
+                </th>
+                <th scope="col" className=" py-3">
+                  pickUp location
+                </th>
 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-3 py-3">
                   bookingStartDate
                 </th>
 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-3 py-3">
                   bookingEndDate
                 </th>
 
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-3 py-3">
                   days
                 </th>
-                <th scope="col" className="px-6 py-3">
+                <th scope="col" className="px-3 py-3">
                   totalPrice
                 </th>
 
@@ -146,15 +151,15 @@ const AdminSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
                 <tbody className="">
                   <tr
                     key={item._id}
-                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                    className="bg-white py-2 border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
                     <td
                       scope="row"
-                      className="px-3  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {index + ((currentPage - 1) * 5 + 1)}
+                      {index + 1 + (currentPage - 1) * 5}
                     </td>
-                    <td className="px-3 ">
+                    <td className="px-6 py-2">
                       <img
                         src={item.image}
                         className="w-16 h-12 object-cover"
@@ -162,33 +167,41 @@ const AdminSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
                     </td>
                     <td
                       scope="row"
-                      className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {item.vehicleName}
                     </td>
+                    <td className="px-6 py-2">{item.hubName}</td>
+                    <td className=" py-2">{item.locationName}</td>
                     <td
                       scope="row"
-                      className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-6  py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {new Date(item.bookingStartDate).toLocaleDateString()}
                     </td>
                     <td
                       scope="row"
-                      className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {new Date(item.bookingEndDate).toLocaleDateString()}
                     </td>
-                    <td className="px-3 ">{item.days}</td>
+                    <td className="px-6 py-2">{item.days}</td>
                     <td
                       scope="row"
-                      className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-6 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {item.totalPrice}
                     </td>
-                    <td className="px-3 ">
-                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
-                        <span className="text-green-500">{item.status}</span>
-                      </button>
+                    <td className="px-6 py-2">
+                      <div className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                        <span
+                          className={`${
+                            item.status ? "text-red-600" : "text-blue-600 "
+                          }`}
+                        >
+                          {item.status}
+                        </span>
+                      </div>
                     </td>
                   </tr>
                 </tbody>

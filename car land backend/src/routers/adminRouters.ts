@@ -6,6 +6,7 @@ import adminHub from "./adminRoutes/adminHub";
 import adminCar from "./adminRoutes/adminCar";
 import adminBooking from "./adminRoutes/adminBooking";
 import adminDashboard from "./adminRoutes/adminDashboard";
+import adminSalesReport from "./adminRoutes/adminSalesReport";
 
 const router=Router()
 
@@ -17,6 +18,7 @@ router.use('/hubmanagement',adminHub)
 router.use('/carmanagement',adminCar)
 router.use('/bookingmanagement',adminBooking)
 router.use('/dashboard',adminDashboard)
+router.use('/salesreport',adminSalesReport)
 
 
 

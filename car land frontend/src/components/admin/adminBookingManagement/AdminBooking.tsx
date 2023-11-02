@@ -156,7 +156,7 @@ const AdminBooking: FC<Iprop> = ({ sidebarWidth }) => {
                       {item._doc.vehicleName}
                     </td>
                     <td className="px-6 py-2">{item._doc.hubName}</td>
-                    <td className=" py-2">{item._doc.locationName}</td>
+                    <td className=" ">{item._doc.locationName}</td>
                     <td
                       scope="row"
                       className="px-6  py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white"

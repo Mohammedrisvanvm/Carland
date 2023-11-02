@@ -4,8 +4,8 @@ import { Pagination } from "antd";
 import { IConfirmBook } from "../../../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import { AxiosResponse } from "../../../interfaces/axiosinterface";
-import { salesReportsApi } from "../../../services/apis/vendorApi/vendorApi";
 import PDF from "../../../utils/pdf";
+import { salesReportsVendor } from "../../../services/apis/vendorApi/vendorApi";
 
 type Iprop = {
   sidebarWidth: boolean;
@@ -26,7 +26,7 @@ const VendorSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
     const fetchData = async (): Promise<void> => {
       try {
         // const response: any = [];
-        const response: AxiosResponse = await salesReportsApi(
+        const response: AxiosResponse = await salesReportsVendor(
           id,
           search,
           currentPage

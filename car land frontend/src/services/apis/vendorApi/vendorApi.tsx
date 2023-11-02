@@ -59,6 +59,6 @@ export const vendorProfile= async (id: string | null | undefined): Promise<Axios
 export const updateProfileHub= async (license:string| null,imageMain:string| null,imageSub:string| null,validityDate:string|null,hubId: string | null | undefined): Promise<AxiosResponse<any>> => {
   return axiosBase.patch('/vendors/hub/profile/update',{license,imageMain,imageSub,validityDate,hubId});
 };
-export const salesReportsApi = async (id: string | null | undefined,search:string,currentPage:number): Promise<AxiosResponse<any>> => {
+export const salesReportsVendor = async (id: string | null | undefined,search:string,currentPage:number): Promise<AxiosResponse<any>> => {
   return axiosBase.get(`/vendors/bookings/salesreports?hubID=${id}&search=${search}&currentPage=${currentPage}`);
 };

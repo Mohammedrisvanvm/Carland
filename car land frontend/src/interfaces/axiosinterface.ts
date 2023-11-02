@@ -23,23 +23,23 @@ export interface AxiosResponse<T = any> {
     id?: string;
     bookingDetails?: IConfirmBookWithImage[];
     bookingConfirmDetails?: IConfirmBook;
-    dashboardDetails?:IdashboardDetails
-    salesReport?:IConfirmBook[]
-    salesReportTotal?:number
+    dashboardDetails?: IdashboardDetails;
+    salesReport?: IConfirmBook[];
+    salesReportTotal?: number;
     location?: hubdata;
     status?: number;
-    conversation?:IConversation[]
+    conversation?: IConversation[];
     statusText?: string;
     headers?: any;
     config?: AxiosRequestConfig;
     request?: any;
-  }
+  };
 }
 
 interface hubdata {
   coords: {
     latitude: number;
     longitude: number;
-  }
+  };
   placeName: string;
 }

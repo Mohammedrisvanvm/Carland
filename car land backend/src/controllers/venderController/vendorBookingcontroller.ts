@@ -96,7 +96,7 @@ export const dropOffAction = AsyncHandler(
   }
 );
 
-export const salesReports = AsyncHandler(
+export const salesReportVendor = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const hubID = req.query.hubID as string;
     const search = req.query.search as string;
