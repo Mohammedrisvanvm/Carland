@@ -11,6 +11,7 @@ const adminHub_1 = __importDefault(require("./adminRoutes/adminHub"));
 const adminCar_1 = __importDefault(require("./adminRoutes/adminCar"));
 const adminBooking_1 = __importDefault(require("./adminRoutes/adminBooking"));
 const adminDashboard_1 = __importDefault(require("./adminRoutes/adminDashboard"));
+const adminSalesReport_1 = __importDefault(require("./adminRoutes/adminSalesReport"));
 const router = (0, express_1.Router)();
 router.use('/auth', adminAuth_1.default);
 router.use('/usermanagement', adminUser_1.default);
@@ -19,5 +20,6 @@ router.use('/hubmanagement', adminHub_1.default);
 router.use('/carmanagement', adminCar_1.default);
 router.use('/bookingmanagement', adminBooking_1.default);
 router.use('/dashboard', adminDashboard_1.default);
+router.use('/salesreport', adminSalesReport_1.default);
 exports.default = router;
 //# sourceMappingURL=adminRouters.js.map

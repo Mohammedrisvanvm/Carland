@@ -16,6 +16,7 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
     });
     if (venderExist) {
         const response = await (0, twilio_1.sendOtp)(req.body.values.number);
+        console.log(response);
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: req.body.values }, "5min");
         res
             .status(200)
@@ -37,6 +38,7 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
     }
     else {
         const response = await (0, twilio_1.sendOtp)(data.number);
+        console.log(response);
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: data }, "5min");
         res
             .status(200)
