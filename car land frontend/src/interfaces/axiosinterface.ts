@@ -24,6 +24,8 @@ export interface AxiosResponse<T = any> {
     bookingDetails?: IConfirmBookWithImage[];
     bookingConfirmDetails?: IConfirmBook;
     dashboardDetails?:IdashboardDetails
+    salesReport?:IConfirmBook[]
+    salesReportTotal?:number
     location?: hubdata;
     status?: number;
     conversation?:IConversation[]

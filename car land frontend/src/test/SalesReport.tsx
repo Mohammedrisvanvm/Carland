@@ -1,44 +1,47 @@
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, FC, useEffect } from "react";
 
 import { Pagination } from "antd";
-import { IConfirmBookWithImage } from "../interfaces/bookingConfirmInterface";
+import {
+  IConfirmBook,
+} from "../interfaces/bookingConfirmInterface";
 import { useAppSelector } from "../redux/store/storeHook";
 import { AxiosResponse } from "../interfaces/axiosinterface";
 import {
-  dropOffreqAction,
-  getBookings,
-  pickUpreqAction,
+  salesReportsApi,
 } from "../services/apis/vendorApi/vendorApi";
-import Loader from "../utils/Loader";
+import PDF from "../utils/pdf";
+import Test from "./Test";
 
 type Iprop = {
   sidebarWidth: boolean;
 };
 
 const SalesReport: FC<Iprop> = ({ sidebarWidth }) => {
+  const [totalAmount, setTotalAmount] = React.useState<number>(0);
   const [currentPage, setCurrentPage] = React.useState<number>(1);
   const [totalpage, setTotalpage] = React.useState<number>(1);
-  const [bookings, setBookings] = React.useState<
-    IConfirmBookWithImage[] | null
-  >(null);
+  const [salesReports, setSalesReports] = React.useState<IConfirmBook[] | null>(
+    null
+  );
+  const componentPrint = React.useRef<HTMLDivElement | null>(null);
   const [search, setSearch] = React.useState<string>("");
-  const [status, setStatus] = React.useState<string | null>(null);
-  const [showModal, setShowModal] = React.useState<boolean>(false);
   const [loader, setLoader] = React.useState<boolean>(false);
-  const [showModalData, setshowModalData] = React.useState<string | null>(null);
   const id = useAppSelector((state) => state.vendor.hubId);
   React.useEffect(() => {
     const fetchData = async (): Promise<void> => {
       try {
         // const response: any = [];
-        const response: AxiosResponse = await getBookings(
+        const response: AxiosResponse = await salesReportsApi(
           id,
           search,
           currentPage
         );
 
-        if (response.data?.bookingDetails)
-          setBookings(response.data.bookingDetails);
+        if (response.data?.salesReport && response.data.salesReportTotal) {
+          setSalesReports(response.data.salesReport);
+          setTotalAmount(response.data.salesReportTotal);
+        }
+
         if (response.data?.count) {
           setTotalpage(Math.ceil(response.data.count / 5));
         }
@@ -48,32 +51,8 @@ const SalesReport: FC<Iprop> = ({ sidebarWidth }) => {
     };
     fetchData();
   }, [search, currentPage, loader]);
-  const pickUpAction = async () => {
-    try {
-      setLoader(true);
+  console.log(salesReports);
 
-      const response: AxiosResponse = await pickUpreqAction(showModalData);
-      if (response.data?.message) {
-        setLoader(false);
-        setShowModal(false);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
-  const dropOffAction = async () => {
-    try {
-      setLoader(true);
-
-      const response: AxiosResponse = await dropOffreqAction(showModalData);
-      if (response.data?.message) {
-        setLoader(false);
-        setShowModal(false);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-  };
   return (
     <React.Fragment>
       <div
@@ -123,181 +102,119 @@ const SalesReport: FC<Iprop> = ({ sidebarWidth }) => {
             />
           </div>
         </div>
-        <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
-          {loader ? (
-            <Loader />
-          ) : (
-            <>
-              <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                <tr>
-                  <th scope="col" className="px-6 py-3">
-                    index
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    vehicle image
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Vehicle Name
-                  </th>
+        <div className="flex justify-end m-4">
+          <PDF print={componentPrint} />  
+        </div>
 
-                  <th scope="col" className="px-6 py-3">
-                    bookingStartDate
-                  </th>
+        <div ref={componentPrint}>
+          <table className="w-full text-sm text-left  text-gray-500 dark:text-gray-400 over">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="px-6 py-3">
+                  index
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  vehicle image
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  Vehicle Name
+                </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    bookingEndDate
-                  </th>
+                <th scope="col" className="px-6 py-3">
+                  bookingStartDate
+                </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    days
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    totalPrice
-                  </th>
+                <th scope="col" className="px-6 py-3">
+                  bookingEndDate
+                </th>
 
-                  <th scope="col" className="px-6 py-3">
-                    Status
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    action
-                  </th>
-                </tr>
-              </thead>
-              <tbody className=" ">
-                {bookings
-                  ? bookings.map((item, index) => (
-                      <tr
-                        key={item._doc._id}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                      >
-                        <td
-                          scope="row"
-                          className="px-3  font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {index + 1}
-                        </td>
-                        <td className="px-3 ">
-                          <img
-                            src={item.image}
-                            className="w-16 h-12 object-cover"
-                          />
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {item._doc.vehicleName}
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {new Date(
-                            item._doc.bookingStartDate
-                          ).toLocaleDateString()}
-                        </td>
-                        <td
-                          scope="row"
-                          className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {new Date(
-                            item._doc.bookingEndDate
-                          ).toLocaleDateString()}
-                        </td>
-                        <td className="px-3 ">{item._doc.days}</td>
-                        <td
-                          scope="row"
-                          className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                        >
-                          {item._doc.totalPrice}
-                        </td>
-                        <td className="px-3 ">
-                          <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
-                            <span
-                              className={`${
-                                item._doc.status
-                                  ? "text-red-600"
-                                  : "text-blue-600 "
-                              }`}
-                            >
-                              {item._doc.status}
-                            </span>
-                          </button>
-                        </td>
-                        <td className="px-3 ">
-                          <button
-                            className={`  text-white bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5`}
-                            onClick={() => {
-                              setShowModal(true);
-                              setshowModalData(item._doc._id);
-                              setStatus(item._doc.status);
-                            }}
-                            disabled={
-                              item._doc.status !== "pickUpreq" &&
-                              item._doc.status !== "dropOffReq"
-                            }
-                          >
-                            {" "}
-                            action
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  : ""}
-                {showModal ? (
-                  <>
-                    <div className="fixed inset-0 bg-opacity-60 backdrop-blur-sm flex justify-center items-center bg-gray-500">
-                      <div className="w-72 sm:w-1/3 h-4/6 flex flex-col">
-                        <button
-                          className="text-white text-xl sm:flex sm:justify-center place-self-end"
-                          onClick={() => setShowModal(false)}
-                        >
-                          x
-                        </button>
+                <th scope="col" className="px-6 py-3">
+                  days
+                </th>
+                <th scope="col" className="px-6 py-3">
+                  totalPrice
+                </th>
 
-                        <div className="px-4 py-8  h-52 overflow-y-auto bg-gray-100 ">
-                          <h1 className="flex font-bold text-2xl pb-5 justify-center">
-                            {status == "dropOffReq" ? "drop Off Request" : ""}
-                            {status == "pickUpreq" ? "pick Up request" : ""}
-                          </h1>
-                          <div className="flex flex-row justify-evenly">
-                            <button
-                              onClick={() => {
-                                setShowModal(false);
-                              }}
-                              className="text-white mt-10 bg-red-700 hover:bg-red-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                            >
-                              cancel
-                            </button>
-                            <button
-                              onClick={
-                                status === "dropOffReq"
-                                  ? dropOffAction
-                                  : pickUpAction
-                              }
-                              className="text-white  mt-10 bg-blue-700 hover:bg-blue-700 focus:outline-none font-medium text-sm rounded-lg px-5 py-2.5 text-center mr-5"
-                            >
-                              accept
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </>
-                ) : (
-                  ""
-                )}
-              </tbody>
-            </>
-          )}
-        </table>
-        <div className="text-center mt-10">
-          <Pagination
-            className="text-black"
-            onChange={(page: number, pageSize: number) => setCurrentPage(page)}
-            current={currentPage}
-            total={totalpage * 10}
-          />
+                <th scope="col" className="px-6 py-3">
+                  Status
+                </th>
+              </tr>
+            </thead>{" "}
+            {salesReports?.length == 0 ? (
+              <>
+                <div className="text-red-500 flex justify-center">
+                  "no completed service"
+                </div>
+              </>
+            ) : (
+              salesReports?.map((item, index) => (
+                <tbody className="">
+                  <tr
+                    key={item._id}
+                    className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
+                  >
+                    <td
+                      scope="row"
+                      className="px-3  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {index + ((currentPage - 1) * 5 + 1)}
+                    </td>
+                    <td className="px-3 ">
+                      <img
+                        src={item.image}
+                        className="w-16 h-12 object-cover"
+                      />
+                    </td>
+                    <td
+                      scope="row"
+                      className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.vehicleName}
+                    </td>
+                    <td
+                      scope="row"
+                      className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {new Date(item.bookingStartDate).toLocaleDateString()}
+                    </td>
+                    <td
+                      scope="row"
+                      className="px-6  font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {new Date(item.bookingEndDate).toLocaleDateString()}
+                    </td>
+                    <td className="px-3 ">{item.days}</td>
+                    <td
+                      scope="row"
+                      className="px-6 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.totalPrice}
+                    </td>
+                    <td className="px-3 ">
+                      <button className="flex items-center justify-center dark:text-blue-500  h-10 w-28 rounded bg-grey dark:bg-gray-800 shadow shadow-black/20 dark:shadow-black/40">
+                        <span className="text-green-500">{item.status}</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              ))
+            )}
+          </table>{" "}
+          <div className="text-center mt-10 removediv">
+            <Pagination
+              className="text-black"
+              onChange={(page: number, pageSize: number) =>
+                setCurrentPage(page)
+              }
+              current={currentPage}
+              total={totalpage * 10}
+            />
+          </div>
+          <div className="absolute bottom-4 right-5">
+            <p className=" text-green-500 capitalize font-semibold text-4xl">
+              total: <span>{totalAmount}</span>
+            </p>
+          </div>
         </div>
       </div>
     </React.Fragment>

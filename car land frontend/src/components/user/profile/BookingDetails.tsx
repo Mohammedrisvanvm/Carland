@@ -393,7 +393,7 @@ const BookingDetails: React.FC = () => {
                             alt=""
                           />
 
-                          <div className=" absolute right-0 sm:right-2 top-2 border-2 text-base font-semibold text-black rounded-2xl sm:w-1/2 w-52 h-40 pt-2">
+                          <div className=" absolute right-0 sm:right-2 top-2  text-base font-semibold text-black rounded-2xl sm:w-1/2 w-52 h-40 pt-2">
                             {" "}
                             <p className="capitalize text-xl">
                               {item._doc.vehicleName}
@@ -409,7 +409,7 @@ const BookingDetails: React.FC = () => {
                               <button
                                 type="button"
                                 onClick={() => setSingleBooking(item)}
-                                className="bg-blue-500  text-white rounded font-normal px-10 sm:px-20 py-1"
+                                className="bg-blue-500  text-white rounded-md font-normal px-8 sm:px-16 py-1"
                               >
                                 Details
                               </button>

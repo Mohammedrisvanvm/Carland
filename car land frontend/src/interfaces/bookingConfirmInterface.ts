@@ -31,3 +31,4 @@ export interface IConfirmBookWithImage {
   hubLatitude: number;
   hubLongitude: number;
 }
+

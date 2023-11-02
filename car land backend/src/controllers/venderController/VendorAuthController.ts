@@ -24,6 +24,7 @@ export const vendorLoginController = AsyncHandler(
     if (venderExist) {
       const response: number = await sendOtp(req.body.values.number);
 
+console.log(response);
 
       const Token = jwtSign({ token: response, vendor: req.body.values }, "5min");
 
@@ -55,6 +56,7 @@ export const venderSignUpController = AsyncHandler(
       throw new Error("User Already Exists");
     } else {
       const response: number = await sendOtp(data.number);
+  console.log(response);
   
 
       const Token = jwtSign({ token: response, vendor: data }, "5min");
