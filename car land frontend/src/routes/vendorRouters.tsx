@@ -13,6 +13,7 @@ import ProtectedRouteVendor from "./protectedRoutes/vendor";
 import VendorBookingPage from "../components/vender/vendorBookingManagement/VendorBookingPage";
 import VendorChat from "../components/vender/vendorChat/VendorChat";
 import VendorProfilePage from "../components/vender/vendorProfile/VendorProfilePage";
+import VendorSalesReport from "../components/vender/vendorSalesReport/VendorSalesReport";
 
 
 const VendorRouters = () => {
@@ -32,6 +33,7 @@ const VendorRouters = () => {
           <Route path="/vendorcars" element={ <CarManagementPage />} />
           <Route path="/vendorbookings" element={ <VendorBookingPage />} />
           <Route path="/vendorprofile" element={ <VendorProfilePage />} />
+          <Route path="/vendorsalesreport" element={ <VendorSalesReport />} />
           
           <Route path="/vendorchat" element={ <VendorChat />} />
           <Route path="/vendorcar/addcar" element={<ProtectedRouteVendor > <AddCarPage /></ProtectedRouteVendor>} />
