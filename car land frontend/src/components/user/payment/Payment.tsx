@@ -1,5 +1,5 @@
 import React from "react";
-import Razorpay from "razorpay";
+
 import {
   bookingCar,
   razorpayApi,
