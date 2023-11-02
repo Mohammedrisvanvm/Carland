@@ -1,7 +1,6 @@
 import React from 'react'
 import VendorNavBar from '../vendorNavbar/vendorNavBar';
 import VendorAside from '../venderASide/vendorAside';
-import SalesReport from '../../../test/SalesReport';
 import VendorSalesReport from './VendorSalesReport';
 
 const VendorSalesReportPage = () => {
