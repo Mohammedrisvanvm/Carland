@@ -30,6 +30,8 @@ const AdminSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
           search,
           currentPage
         );
+       
+        
 
         if (response.data?.salesReport && response.data.salesReportTotal) {
           setSalesReports(response.data.salesReport);

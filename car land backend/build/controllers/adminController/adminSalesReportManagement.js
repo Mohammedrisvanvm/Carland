@@ -54,7 +54,7 @@ exports.salesReportAdmin = (0, express_async_handler_1.default)(async (req, res)
     ]);
     res.json({
         message: "booking Details Admin",
-        salesReportAdmin: bookingDetailsWithImage,
+        salesReport: bookingDetailsWithImage,
         count,
         salesReportTotal: result[0].totalprice,
     });

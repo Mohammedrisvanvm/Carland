@@ -10,6 +10,7 @@ export const salesReportAdmin = AsyncHandler(
     const search = req.query.search as string;
     const currentPage = req.query.currentPage as string;
 
+
     const skip = (Number(currentPage) - 1) * 5;
     const bookingDetailsAdmin: IBookWithTimestamps[] = await bookModel
       .aggregate([
@@ -66,7 +67,7 @@ export const salesReportAdmin = AsyncHandler(
 
     res.json({
       message: "booking Details Admin",
-      salesReportAdmin: bookingDetailsWithImage,
+      salesReport: bookingDetailsWithImage,
       count,
       salesReportTotal: result[0].totalprice,
     });
