@@ -20,7 +20,11 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: req.body.values }, "5min");
         res
             .status(200)
-            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "lax", maxAge: 300000 })
+            .cookie("vendorOtpToken", Token, {
+            httpOnly: true,
+            sameSite: "lax",
+            maxAge: 300000,
+        })
             .json({ message: "hello" });
     }
     else {
@@ -42,12 +46,17 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: data }, "5min");
         res
             .status(200)
-            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "lax", maxAge: 300000 })
+            .cookie("vendorOtpToken", Token, {
+            httpOnly: true,
+            sameSite: "lax",
+            maxAge: 300000,
+        })
             .json({ message: "message otp sented" });
     }
 });
 exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) => {
     const vendorOtpToken = req.cookies?.vendorOtpToken;
+    console.log(vendorOtpToken);
     const data = req.body;
     if (vendorOtpToken) {
         const { payload } = (0, jwtutils_1.verifyJwt)(vendorOtpToken);
@@ -87,11 +96,22 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
             throw new Error("invalid otp");
         }
     }
+    else {
+        throw new Error("token error");
+    }
 });
 exports.vendorLogOut = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenvendor", "", { httpOnly: true, sameSite: 'none', maxAge: 0 });
+    res.cookie("accessTokenvendor", "", {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: 0,
+    });
     res
-        .cookie("refreshTokenvendor", "", { httpOnly: true, sameSite: 'none', maxAge: 0 })
+        .cookie("refreshTokenvendor", "", {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: 0,
+    })
         .status(200)
         .json({ message: "logout user" });
 });
