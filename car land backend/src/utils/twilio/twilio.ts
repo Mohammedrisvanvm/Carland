@@ -9,6 +9,8 @@ export function getotp() {
 }
 
 export const sendOtp = async (phoneNumber: number): Promise<number> => {
+  console.log(client);
+  
   try {
     const otp = getotp();
     await client.messages

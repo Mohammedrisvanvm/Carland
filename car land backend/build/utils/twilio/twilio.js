@@ -13,6 +13,7 @@ function getotp() {
 }
 exports.getotp = getotp;
 const sendOtp = async (phoneNumber) => {
+    console.log(client);
     try {
         const otp = getotp();
         await client.messages
