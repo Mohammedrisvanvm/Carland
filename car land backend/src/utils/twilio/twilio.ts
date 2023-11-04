@@ -1,6 +1,6 @@
-// import Twilio from "twilio";
+import Twilio from "twilio";
 
-// const client = Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
+const client = Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 export function getotp() {
   const min = 100000;
@@ -13,12 +13,12 @@ export const sendOtp = async (phoneNumber: number): Promise<number> => {
   
   try {
     const otp = getotp();
-    // await client.messages
-    //   .create({
-    //     body: `otp verification from carland  ${otp}`,
-    //     to: `+91${phoneNumber}`,
-    //     from: "++1 267 362 9139",
-    //   })
+    await client.messages
+      .create({
+        body: `otp verification from carland  ${otp}`,
+        to: `+91${phoneNumber}`,
+        from: "++1 267 362 9139",
+      })
      
     return otp;
   } catch (error: any) {
