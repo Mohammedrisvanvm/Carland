@@ -13,8 +13,9 @@ import {
 type Iprops = {
   currentChat: IConversation | null;
 };
-const ENDPOINT: string = import.meta.env.VITE_BASEURL;
-// const ENDPOINT: string = "ws://localhost:3131/";
+// const ENDPOINT: string = import.meta.env.VITE_BASEURL;
+const ENDPOINT: string = "ws://localhost:3131/";
+console.log(ENDPOINT)
 const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   const vendor = useAppSelector((state) => state.vendor);
 
@@ -91,6 +92,8 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   }, []);
   React.useEffect(() => {
     socket.current = io(ENDPOINT);
+    console.log(socket.current);
+    
     socket.current?.on("getmessage", (data) => {
       const senderId: string = data?.senderId || "";
 

@@ -154,8 +154,9 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
                 <div className="h-96 w-auto px-5 pt-5 bg-gray-300  overflow-y-auto ">
                   {messages
                     ? messages.map((item) => (
-                        <div ref={scroll as React.RefObject<HTMLDivElement>}>
+                        <div key={item._id} ref={scroll as React.RefObject<HTMLDivElement>}>
                           <div
+                          
                             className={`flex  ${
                               item.senderId == user._id
                                 ? "justify-end"

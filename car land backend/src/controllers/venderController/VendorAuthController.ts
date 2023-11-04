@@ -5,7 +5,6 @@ import vehicleModel from "../../models/vendorSchema";
 import { jwtSign, verifyJwt } from "../../utils/jwtUtils/jwtutils";
 import { sendOtp } from "../../utils/twilio/twilio";
 
-
 export const vendorLoginController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     interface iSign {
@@ -14,23 +13,28 @@ export const vendorLoginController = AsyncHandler(
     }
     const data: iSign = req.body.values;
 
-
     const venderExist: IVendor | null = await vehicleModel.findOne({
       phoneNumber: data.number,
       ban: false,
     });
 
-
     if (venderExist) {
       const response: number = await sendOtp(req.body.values.number);
 
-console.log(response);
+      console.log(response);
 
-      const Token = jwtSign({ token: response, vendor: req.body.values }, "5min");
+      const Token = jwtSign(
+        { token: response, vendor: req.body.values },
+        "5min"
+      );
 
       res
         .status(200)
-        .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
+        .cookie("vendorOtpToken", Token, {
+          httpOnly: true,
+          sameSite: "lax",
+          maxAge: 300000,
+        })
         .json({ message: "hello" });
     } else {
       throw new Error("Invalid data or banned");
@@ -56,13 +60,16 @@ export const venderSignUpController = AsyncHandler(
       throw new Error("User Already Exists");
     } else {
       const response: number = await sendOtp(data.number);
-  console.log(response);
-  
+      console.log(response);
 
       const Token = jwtSign({ token: response, vendor: data }, "5min");
       res
         .status(200)
-        .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
+        .cookie("vendorOtpToken", Token, {
+          httpOnly: true,
+          sameSite: "lax",
+          maxAge: 300000,
+        })
         .json({ message: "message otp sented" });
     }
   }
@@ -84,12 +91,12 @@ interface vendorbody {
 export const vendorOtpverify = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const vendorOtpToken: string = req.cookies?.vendorOtpToken;
+    console.log(vendorOtpToken);
 
     const data: vendorbody = req.body;
     if (vendorOtpToken) {
       const { payload }: VendorJwt = verifyJwt(vendorOtpToken);
-   
-      
+
       if (payload?.token == data.value) {
         let vendorExist: IVendor | null = await vehicleModel.findOne({
           phoneNumber: payload.vendor?.number,
@@ -119,30 +126,40 @@ export const vendorOtpverify = AsyncHandler(
         );
 
         res.status(200).cookie("accessTokenvendor", accessToken, {
-          maxAge:1000 * 60 * 60 * 24,
+          maxAge: 1000 * 60 * 60 * 24,
           httpOnly: true,
-          sameSite: "none",
+          sameSite: "lax",
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
-            maxAge:1000 * 60 * 60 * 24 * 7,
+            maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-            sameSite: "none",
+            sameSite: "lax",
           })
           .json({ vendor: vendorExist, accessToken });
       } else {
         throw new Error("invalid otp");
       }
+    } else {
+      throw new Error("token error");
     }
   }
 );
 
 export const vendorLogOut = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenvendor", "", { httpOnly: true,sameSite:'none', maxAge: 0 });
+    res.cookie("accessTokenvendor", "", {
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 0,
+    });
     res
-      .cookie("refreshTokenvendor", "", { httpOnly: true,sameSite:'none', maxAge: 0 })
+      .cookie("refreshTokenvendor", "", {
+        httpOnly: true,
+        sameSite: "lax",
+        maxAge: 0,
+      })
       .status(200)
       .json({ message: "logout user" });
   }

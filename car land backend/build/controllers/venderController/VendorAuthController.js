@@ -20,7 +20,7 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: req.body.values }, "5min");
         res
             .status(200)
-            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
+            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "lax", maxAge: 300000 })
             .json({ message: "hello" });
     }
     else {
@@ -42,7 +42,7 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: data }, "5min");
         res
             .status(200)
-            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "none", maxAge: 300000 })
+            .cookie("vendorOtpToken", Token, { httpOnly: true, sameSite: "lax", maxAge: 300000 })
             .json({ message: "message otp sented" });
     }
 });
@@ -73,13 +73,13 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
             res.status(200).cookie("accessTokenvendor", accessToken, {
                 maxAge: 1000 * 60 * 60 * 24,
                 httpOnly: true,
-                sameSite: "none",
+                sameSite: "lax",
             });
             res
                 .cookie("refreshTokenvendor", refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
-                sameSite: "none",
+                sameSite: "lax",
             })
                 .json({ vendor: vendorExist, accessToken });
         }
