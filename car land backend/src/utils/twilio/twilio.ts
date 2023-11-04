@@ -17,10 +17,11 @@ export const sendOtp = async (phoneNumber: number): Promise<number> => {
         to: `+91${phoneNumber}`,
         from: "++1 267 362 9139",
       })
-      .then((message) => console.log(message.sid))
-      .catch((error) => console.error("Error sending message:", error));
+     
     return otp;
   } catch (error: any) {
+    console.log(error);
+    
     throw new Error(error);
   }
 };
