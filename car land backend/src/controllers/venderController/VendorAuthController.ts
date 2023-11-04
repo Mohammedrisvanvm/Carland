@@ -32,7 +32,7 @@ export const vendorLoginController = AsyncHandler(
         .status(200)
         .cookie("vendorOtpToken", Token, {
           httpOnly: true,
-          sameSite: "lax",
+         
           maxAge: 300000,
         })
         .json({ message: "hello" });
@@ -67,7 +67,7 @@ export const venderSignUpController = AsyncHandler(
         .status(200)
         .cookie("vendorOtpToken", Token, {
           httpOnly: true,
-          sameSite: "lax",
+         
           maxAge: 300000,
         })
         .json({ message: "message otp sented" });
@@ -128,14 +128,14 @@ export const vendorOtpverify = AsyncHandler(
         res.status(200).cookie("accessTokenvendor", accessToken, {
           maxAge: 1000 * 60 * 60 * 24,
           httpOnly: true,
-          sameSite: "lax",
+         
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-            sameSite: "lax",
+           
           })
           .json({ vendor: vendorExist, accessToken });
       } else {
@@ -151,13 +151,13 @@ export const vendorLogOut = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     res.cookie("accessTokenvendor", "", {
       httpOnly: true,
-      sameSite: "lax",
+     
       maxAge: 0,
     });
     res
       .cookie("refreshTokenvendor", "", {
         httpOnly: true,
-        sameSite: "lax",
+       
         maxAge: 0,
       })
       .status(200)

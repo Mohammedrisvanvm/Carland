@@ -41,7 +41,6 @@ exports.vendorAuthenticate = (0, express_async_handler_1.default)(async (req, re
                 const access = await (0, jwtutils_1.jwtSign)({ id: vendor._id, name: vendor.userName, email: vendor.email }, "15min");
                 res.cookie("accessTokenvendor", access, {
                     httpOnly: true,
-                    sameSite: "lax",
                     maxAge: 1000 * 60 * 60 * 24,
                     secure: true,
                 });
@@ -49,7 +48,6 @@ exports.vendorAuthenticate = (0, express_async_handler_1.default)(async (req, re
                     httpOnly: true,
                     secure: true,
                     maxAge: 7 * 24 * 60 * 60 * 1000,
-                    sameSite: "lax",
                 });
                 req.cookies.accessTokenvendor = access;
                 next();

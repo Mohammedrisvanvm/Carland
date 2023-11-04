@@ -25,7 +25,7 @@ exports.userSignUpController = (0, express_async_handler_1.default)(async (req, 
         const Token = (0, jwtutils_1.jwtSign)({ token: otp, user: data }, "5min");
         res
             .status(200)
-            .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000, sameSite: "lax", })
+            .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000, })
             .json({ message: "message otp sented" });
     }
 });
@@ -59,13 +59,11 @@ exports.userOtpverify = (0, express_async_handler_1.default)(async (req, res) =>
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 900000,
                     httpOnly: true,
-                    sameSite: "lax",
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 7 * 24 * 60 * 60,
                     httpOnly: true,
-                    sameSite: "lax",
                 })
                     .json({ user: userExist, accessToken });
             }
@@ -96,7 +94,6 @@ exports.userLoginController = (0, express_async_handler_1.default)(async (req, r
                 .status(200)
                 .cookie("UserOtpToken", userOtpToken, {
                 maxAge: 300000,
-                sameSite: "lax",
                 httpOnly: true,
             })
                 .json({ message: "user otp sented" });
@@ -141,13 +138,11 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                 const refreshToken = (0, jwtutils_1.jwtSign)({ id: newUser?._id }, "7d");
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,
-                    sameSite: "lax",
                     httpOnly: true,
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
-                    sameSite: "lax",
                     httpOnly: true,
                 })
                     .json({
@@ -171,13 +166,11 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,
                     httpOnly: true,
-                    sameSite: "lax",
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
                     httpOnly: true,
-                    sameSite: "lax",
                 })
                     .json({ user, accessToken, message: "created" });
             }
@@ -188,13 +181,11 @@ exports.userLogoutController = (0, express_async_handler_1.default)(async (req, 
     res.cookie("accessTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
-        sameSite: "lax",
     });
     res
         .cookie("refreshTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
-        sameSite: "lax",
     })
         .status(200)
         .json({ message: "logout user" });
@@ -218,12 +209,10 @@ exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60,
                 secure: true,
-                sameSite: "lax",
             });
             res
                 .cookie("refreshTokenUser", Ref, {
                 httpOnly: true,
-                sameSite: "lax",
                 secure: true,
                 maxAge: 7 * 24 * 60 * 60 * 1000,
             })

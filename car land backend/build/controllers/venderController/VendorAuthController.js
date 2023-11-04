@@ -22,7 +22,6 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
             .status(200)
             .cookie("vendorOtpToken", Token, {
             httpOnly: true,
-            sameSite: "lax",
             maxAge: 300000,
         })
             .json({ message: "hello" });
@@ -48,7 +47,6 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
             .status(200)
             .cookie("vendorOtpToken", Token, {
             httpOnly: true,
-            sameSite: "lax",
             maxAge: 300000,
         })
             .json({ message: "message otp sented" });
@@ -82,13 +80,11 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
             res.status(200).cookie("accessTokenvendor", accessToken, {
                 maxAge: 1000 * 60 * 60 * 24,
                 httpOnly: true,
-                sameSite: "lax",
             });
             res
                 .cookie("refreshTokenvendor", refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
-                sameSite: "lax",
             })
                 .json({ vendor: vendorExist, accessToken });
         }
@@ -103,13 +99,11 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
 exports.vendorLogOut = (0, express_async_handler_1.default)(async (req, res) => {
     res.cookie("accessTokenvendor", "", {
         httpOnly: true,
-        sameSite: "lax",
         maxAge: 0,
     });
     res
         .cookie("refreshTokenvendor", "", {
         httpOnly: true,
-        sameSite: "lax",
         maxAge: 0,
     })
         .status(200)
