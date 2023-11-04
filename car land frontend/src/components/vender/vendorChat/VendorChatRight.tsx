@@ -1,17 +1,20 @@
-import React, { ChangeEvent,  FC  } from "react";
+import React, { ChangeEvent, FC } from "react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import io, { Socket } from "socket.io-client";
 import { format } from "timeago.js";
 import { IConversation } from "../../../interfaces/chatInterface";
 import { useAppSelector } from "../../../redux/store/storeHook";
-import { addNewMessage, getMessages } from "../../../services/apis/chatApi/chatApi";
-
+import {
+  addNewMessage,
+  getMessages,
+} from "../../../services/apis/chatApi/chatApi";
 
 type Iprops = {
   currentChat: IConversation | null;
 };
-const ENDPOINT: string = "ws://localhost:3131/";
+const ENDPOINT: string = import.meta.env.VITE_BASEURL;
+// const ENDPOINT: string = "ws://localhost:3131/";
 const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   const vendor = useAppSelector((state) => state.vendor);
 
@@ -42,7 +45,6 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
-  
 
       setMessages(res.data);
     };
@@ -91,7 +93,6 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
       const senderId: string = data?.senderId || "";
-    
 
       setArrivalMessage({
         senderId,
@@ -100,9 +101,9 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
         createdAt: new Date(Date.now()),
       });
     });
-    return ()=>{
-      socket.current?.emit("removefromuser",vendor.hubId);
-    }
+    return () => {
+      socket.current?.emit("removefromuser", vendor.hubId);
+    };
   }, []);
   React.useEffect(() => {
     arrivalMessage &&

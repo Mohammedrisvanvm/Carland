@@ -10,7 +10,7 @@ import {
 } from "../../../services/apis/chatApi/chatApi";
 import { format } from "timeago.js";
 import { IConversation } from "../../../interfaces/chatInterface";
-const ENDPOINT: string = "http://localhost:3131/";
+const ENDPOINT: string = import.meta.env.VITE_BASEURL
 type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
   bookingId:string,
