@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "del /S /Q build && tsc",
+    "build": "tsc",
     "start": "node build/server.js",
     "lint": "eslint . --ext .ts",
     "prod": "del /S /Q build && tsc && nodemon build/server.js"
