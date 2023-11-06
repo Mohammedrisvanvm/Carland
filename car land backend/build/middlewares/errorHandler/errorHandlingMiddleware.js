@@ -11,9 +11,9 @@ exports.notFound = notFound;
 const errorHandler = (err, req, res) => {
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
-    if (err instanceof mongoose_1.Error.CastError && err.kind === 'ObjectId') {
+    if (err instanceof mongoose_1.Error.CastError && err.kind === "ObjectId") {
         statusCode = 404;
-        message = 'Resource not found';
+        message = "Resource not found";
     }
     res.status(statusCode).json({
         message: message,

@@ -11,6 +11,7 @@ const calculateDistance_1 = require("../../helpers/calculateDistance");
 const mongoose_1 = __importDefault(require("mongoose"));
 exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => {
     const pageNumber = Number(req.query.currentPage);
+    console.log(req.query);
     const { search, filter, lat, lng, seletedDate } = req.query;
     console.log(search, "1", filter, "2", lat, "3", lng, "4", seletedDate);
     const query = { isVerified: true };
@@ -20,10 +21,6 @@ exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => 
     if (filter) {
         query.fuel = filter;
     }
-    // if(seletedDate){
-    //   query.bookingDates.pickUp={$ne:seletedDate[0]}
-    //   query.bookingDates.dropOff={$ne:seletedDate[1]}
-    // }
     const hubDetails = await hubSchema_1.default.find();
     const filteredHubDetails = hubDetails.filter((item) => {
         const value = (0, calculateDistance_1.calculateDistance)(item.location.latitude, item.location.longitude, lat, lng);
@@ -66,6 +63,33 @@ exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => 
         },
     ]);
     const count = await vehicleSchema_1.default.countDocuments(query);
+    const query1 = {};
+    if (seletedDate) {
+        // Initialize the bookingDates object
+        query1.bookingDates = {};
+        // Set the pickUp and dropOff properties to check for inequality
+        query1.bookingDates.pickUp = {
+            $gte: new Date(seletedDate[0]),
+            $lte: new Date(seletedDate[1]),
+        };
+        query1.bookingDates.dropOff = {
+            $gte: new Date(seletedDate[0]),
+            $lte: new Date(seletedDate[1]),
+        };
+    }
+    const vehicles1 = await vehicleSchema_1.default.aggregate([
+        { $match: query1 },
+    ]);
+    if (seletedDate) {
+        console.log(seletedDate.split(",")[0]);
+        console.log(new Date(seletedDate.split(",")[0]));
+        console.log(new Date(seletedDate.split(",")[1]));
+        const vehicles2 = await vehicleSchema_1.default.find({});
+        console.log(vehicles2);
+        vehicles2.map((item) => {
+            // item.pickup
+        });
+    }
     res.json({ vehicles, count });
 });
 exports.singleCar = (0, express_async_handler_1.default)(async (req, res) => {
