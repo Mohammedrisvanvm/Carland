@@ -1,6 +1,5 @@
 import Twilio from 'twilio'
 
-const client = Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 export function getotp() {
   const min = 100000;
@@ -9,7 +8,8 @@ export function getotp() {
 }
 
 export const sendOtp = async (phoneNumber: number): Promise<number> => {
-  // console.log(client);
+
+const client = Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
   
   try {
     const otp = getotp();

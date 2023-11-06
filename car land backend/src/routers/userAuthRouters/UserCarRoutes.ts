@@ -4,7 +4,7 @@ import { singleCar, userVehicles } from "../../controllers/userController/vehicl
 const userCarRouters=Router()
 
 userCarRouters.get('/getvehicles',userVehicles)
-userCarRouters.get('/singleCar',singleCar)
+userCarRouters.get('/singlecar',singleCar)
 
 
 

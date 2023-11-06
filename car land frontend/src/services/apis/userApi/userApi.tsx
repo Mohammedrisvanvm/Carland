@@ -43,7 +43,7 @@ export const userGetVehicle = async (
 export const userSingleGetVehicle = async (
   id: String | null
 ): Promise<AxiosResponse<any>> => {
-  return axiosBase.get(`/users/vehicle/singleCar?id=${id}`);
+  return axiosBase.get(`/users/vehicle/singlecar?id=${id}`);
 };
 export const userVerifyNumber = async (
   phoneNumber: number

@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendOtp = exports.getotp = void 0;
 const twilio_1 = __importDefault(require("twilio"));
-const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
 function getotp() {
     const min = 100000;
     const max = 999999;
@@ -13,7 +12,7 @@ function getotp() {
 }
 exports.getotp = getotp;
 const sendOtp = async (phoneNumber) => {
-    // console.log(client);
+    const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
     try {
         const otp = getotp();
         await client.messages
