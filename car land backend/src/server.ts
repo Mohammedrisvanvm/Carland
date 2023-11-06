@@ -49,7 +49,7 @@ app.use(
     credentials: true,
   })
 );
-https://carlandpro.netlify.app/rentcars
+
 
 app.use("/users", userRouters);
 app.use("/vendors", vendorRouters);
