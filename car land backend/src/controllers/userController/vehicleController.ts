@@ -16,6 +16,7 @@ export const userVehicles = AsyncHandler(
       lng?: number;
       seletedDate?: string;
     };
+    console.log(req.query);
 
     const { search, filter, lat, lng, seletedDate }: search = req.query;
     console.log(search, "1", filter, "2", lat, "3", lng, "4", seletedDate);
@@ -30,11 +31,6 @@ export const userVehicles = AsyncHandler(
       query.fuel = filter;
     }
 
-    // if(seletedDate){
-    //   query.bookingDates.pickUp={$ne:seletedDate[0]}
-    //   query.bookingDates.dropOff={$ne:seletedDate[1]}
-
-    // }
     const hubDetails: Ihub[] = await hubModel.find();
 
     const filteredHubDetails = hubDetails.filter((item: Ihub): boolean => {
@@ -63,7 +59,6 @@ export const userVehicles = AsyncHandler(
     const perPage = 4;
     const skip = (pageNumber - 1) * perPage;
 
-
     const filter1: any = {
       isVerified: true,
     };
@@ -82,7 +77,6 @@ export const userVehicles = AsyncHandler(
           .map((id) => new mongoose.Types.ObjectId(id)),
       };
     }
-  
 
     const vehicles: IVehicle[] = await vehicleModel.aggregate([
       { $match: filter1 },
@@ -95,7 +89,40 @@ export const userVehicles = AsyncHandler(
     ]);
 
     const count: number = await vehicleModel.countDocuments(query);
+    const query1: any = {};
 
+    if (seletedDate) {
+      // Initialize the bookingDates object
+      query1.bookingDates = {};
+
+      // Set the pickUp and dropOff properties to check for inequality
+      query1.bookingDates.pickUp = {
+        $gte: new Date(seletedDate[0]),
+        $lte: new Date(seletedDate[1]),
+      };
+      query1.bookingDates.dropOff = {
+        $gte: new Date(seletedDate[0]),
+        $lte: new Date(seletedDate[1]),
+      };
+    }
+
+    const vehicles1: IVehicle[] = await vehicleModel.aggregate([
+      { $match: query1 },
+    ]);
+    if (seletedDate) {
+      console.log(seletedDate.split(",")[0]);
+
+      console.log(new Date(seletedDate.split(",")[0]));
+      console.log(new Date(seletedDate.split(",")[1]));
+
+      const vehicles2: IVehicle[] = await vehicleModel.find({
+      
+      });
+      console.log(vehicles2);
+      vehicles2.map((item)=>{
+// item.pickup
+      })
+    }
 
     res.json({ vehicles, count });
   }
@@ -118,7 +145,6 @@ export const singleCar = AsyncHandler(
         currentDate.setDate(currentDate.getDate() + 1);
       }
     }
-
 
     res.status(200).json({
       vehicle,

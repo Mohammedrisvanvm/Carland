@@ -1,4 +1,4 @@
-import Twilio from "twilio";
+import Twilio from 'twilio'
 
 const client = Twilio(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
 

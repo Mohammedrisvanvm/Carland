@@ -5,7 +5,7 @@
   "main": "src/server.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc ",
     "start": "node build/server.js",
     "lint": "eslint . --ext .ts",
     "prod": "del /S /Q build && tsc && nodemon build/server.js"
@@ -31,7 +31,7 @@
     "nodemailer": "^6.9.5",
     "razorpay": "^2.9.2",
     "socket.io": "^4.7.2",
-    "twilio": "^4.16.0"
+    "twilio": "^4.19.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
