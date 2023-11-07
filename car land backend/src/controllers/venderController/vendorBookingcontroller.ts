@@ -24,11 +24,9 @@ export const getBookings = AsyncHandler(
       (item) => item.vehicleId
     );
 
-
     const vehicles: IVehicle[] = await vehicleModel.find({
       _id: { $in: vehiclesID },
     });
-
 
     const vehicleImageMap: { [key: string]: string } = {};
     vehicles.forEach((vehicle) => {
@@ -41,10 +39,8 @@ export const getBookings = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       }));
 
-    const count: number = await bookModel
-      .find({ hubId:  hubID  })
-      .count();
-
+    const count: number = await bookModel.find({ hubId: hubID }).count();
+    console.log(count);
 
     res.json({
       message: "unique hub bookingDetails",

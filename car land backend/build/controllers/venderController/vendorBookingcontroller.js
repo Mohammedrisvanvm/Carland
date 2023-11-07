@@ -32,9 +32,8 @@ exports.getBookings = (0, express_async_handler_1.default)(async (req, res) => {
         ...item,
         image: vehicleImageMap[item.vehicleId],
     }));
-    const count = await bookingSchema_1.default
-        .find({ hubId: hubID })
-        .count();
+    const count = await bookingSchema_1.default.find({ hubId: hubID }).count();
+    console.log(count);
     res.json({
         message: "unique hub bookingDetails",
         bookingDetails: bookingDetailsWithImage,
