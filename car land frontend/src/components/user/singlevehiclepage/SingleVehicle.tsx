@@ -2,7 +2,7 @@ import React, { FC, ChangeEvent, useEffect } from "react";
 import { DatePicker } from "antd";
 
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { EyeIcon } from "@heroicons/react/24/outline";
 
 import dayjs from "dayjs";
 
@@ -38,7 +38,7 @@ const SingleCar: FC = () => {
     latitude: number;
     longitude: number;
   };
-  
+
   const [Location, setLocation] = React.useState<ILocation | null>(null);
   const queryParams = new URLSearchParams(location.search);
   const carId: string | null = queryParams.get("carId");
@@ -77,7 +77,6 @@ const SingleCar: FC = () => {
       try {
         const response: AxiosResponse = await userSingleGetVehicle(carId);
 
-
         if (response.data?.vehicle && response.data?.location) {
           setVehicle(response.data?.vehicle);
           images.push(response.data.vehicle?.singleImage);
@@ -88,7 +87,7 @@ const SingleCar: FC = () => {
             setOldbookingDates(response.data?.datesArray);
           }
           setLocation(response.data?.location.coords);
-          setPlace(response.data?.location.placeName)
+          setPlace(response.data?.location.placeName);
           setMap(true);
         }
       } catch (error: any) {
@@ -110,7 +109,6 @@ const SingleCar: FC = () => {
         (new Date(todate).getTime() - new Date(fromdate).getTime()) / 3600000
       );
       const perhour = vehicle ? Math.round(vehicle?.fairPrice / 24) : 0;
-
 
       setPrice(time * perhour);
     }
@@ -143,7 +141,6 @@ const SingleCar: FC = () => {
       setPaybutton(!paybutton);
     }
   };
-
 
   const { RangePicker } = DatePicker;
   const disabledDate: RangePickerProps["disabledDate"] = (current) => {
@@ -241,7 +238,7 @@ const SingleCar: FC = () => {
               format="YYYY-MM-DD hh A"
               placeholder={["Start Time", "End Time"]}
               onChange={onChange}
-              style={{color:"black"}}
+              style={{ color: "black" }}
               disabledDate={disabledDate}
               // disabledTime={disabledDateTime}
             />
@@ -433,105 +430,130 @@ const SingleCar: FC = () => {
               <span className="text-lg font-extrabold">
                 ₹ {price ? price : 0}
               </span>
-              <div
-                className="font-medium  flex capitalize"
-                onClick={() => setOpen(true)}
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  className="hover:cursor-pointer"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M18 16.5a2.25 2.25 0 0 1-2.25 2.25h-7.5v.75c0 .385.29.702.663.745L9 20.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005H18v9.75zM15.75 3.75H6a.75.75 0 0 0-.745.663L5.25 4.5v12c0 .385.29.702.663.745L6 17.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005zm-1.5 9.75a.75.75 0 0 1 .087 1.495L14.25 15H7.5a.75.75 0 0 1-.087-1.495L7.5 13.5h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 9.75h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 6h6.75zM6 18.75a2.25 2.25 0 0 1-2.25-2.25v-12A2.25 2.25 0 0 1 6 2.25h9.75A2.25 2.25 0 0 1 18 4.5v.75h.75A2.25 2.25 0 0 1 21 7.5v12a2.25 2.25 0 0 1-2.25 2.25H9a2.25 2.25 0 0 1-2.25-2.25v-.75H6z"
-                    fill="#10A310"
-                    fill-rule="evenodd"
-                  ></path>
-                </svg>
-                fair summary
-                <Transition.Root show={open} as={React.Fragment}>
-                  <Dialog
-                    as="div"
-                    className="relative z-10"
-                    initialFocus={cancelButtonRef}
-                    onClose={setOpen}
+              {paybutton ? (
+                <>
+                  <div
+                    className="font-medium  flex capitalize"
+                    onClick={() => setOpen(true)}
                   >
-                    <Transition.Child
-                      as={React.Fragment}
-                      enter="ease-out duration-300"
-                      enterFrom="opacity-0"
-                      enterTo="opacity-100"
-                      leave="ease-in duration-200"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      className="hover:cursor-pointer"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-                    </Transition.Child>
-
-                    <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-                      <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                      <path
+                        d="M18 16.5a2.25 2.25 0 0 1-2.25 2.25h-7.5v.75c0 .385.29.702.663.745L9 20.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005H18v9.75zM15.75 3.75H6a.75.75 0 0 0-.745.663L5.25 4.5v12c0 .385.29.702.663.745L6 17.25h9.75a.75.75 0 0 0 .745-.663l.005-.087v-12a.75.75 0 0 0-.663-.745l-.087-.005zm-1.5 9.75a.75.75 0 0 1 .087 1.495L14.25 15H7.5a.75.75 0 0 1-.087-1.495L7.5 13.5h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 9.75h6.75zm0-3.75a.75.75 0 0 1 .087 1.495l-.087.005H7.5a.75.75 0 0 1-.087-1.495L7.5 6h6.75zM6 18.75a2.25 2.25 0 0 1-2.25-2.25v-12A2.25 2.25 0 0 1 6 2.25h9.75A2.25 2.25 0 0 1 18 4.5v.75h.75A2.25 2.25 0 0 1 21 7.5v12a2.25 2.25 0 0 1-2.25 2.25H9a2.25 2.25 0 0 1-2.25-2.25v-.75H6z"
+                        fill="#10A310"
+                        fill-rule="evenodd"
+                      ></path>
+                    </svg>
+                    fair summary
+                    <Transition.Root show={open} as={React.Fragment}>
+                      <Dialog
+                        as="div"
+                        className="relative z-10"
+                        initialFocus={cancelButtonRef}
+                        onClose={setOpen}
+                      >
                         <Transition.Child
                           as={React.Fragment}
                           enter="ease-out duration-300"
-                          enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                          enterTo="opacity-100 translate-y-0 sm:scale-100"
+                          enterFrom="opacity-0"
+                          enterTo="opacity-100"
                           leave="ease-in duration-200"
-                          leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                          leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                          leaveFrom="opacity-100"
+                          leaveTo="opacity-0"
                         >
-                          <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-                              <div className="sm:flex sm:items-start">
-                                <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                                  <ExclamationTriangleIcon
-                                    className="h-6 w-6 text-red-600"
-                                    aria-hidden="true"
-                                  />
-                                </div>
-                                <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                                  <Dialog.Title
-                                    as="h3"
-                                    className="text-base font-semibold leading-6 text-gray-900"
-                                  >
-                                    Deactivate account
-                                  </Dialog.Title>
-                                  <div className="mt-2">
-                                    <p className="text-sm text-gray-500">
-                                      Are you sure you want to deactivate your
-                                      account? All of your data will be
-                                      permanently removed. This action cannot be
-                                      undone.
-                                    </p>
+                          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                        </Transition.Child>
+
+                        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                          <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                            <Transition.Child
+                              as={React.Fragment}
+                              enter="ease-out duration-300"
+                              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                              enterTo="opacity-100 translate-y-0 sm:scale-100"
+                              leave="ease-in duration-200"
+                              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                            >
+                              <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+                                <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+                                  <div className="sm:flex sm:items-start">
+                                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                                      <EyeIcon
+                                        className="h-6 w-6 text-red-600"
+                                        aria-hidden="true"
+                                      />
+                                    </div>
+                                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left bg-white">
+                                      <Dialog.Title
+                                        as="h3"
+                                        className="text-base font-semibold capitalize leading-6 text-gray-900"
+                                      >
+                                        fair summary
+                                      </Dialog.Title>
+                                      <div className="mt-2 border-2 w-96 h-40 text-black capitalize relative rounded-lg p-5  font-semibold">
+                                        <p className="text-lg text-gray-500 flex">
+                                          vehicle name:{" "}
+                                          <span className="text-green-400">
+                                            {vehicle?.vehicleName}
+                                          </span>
+                                        </p>
+                                        <p className="text-lg text-gray-500 flex">
+                                          vehicle price:{" "}
+                                          <span className="text-green-400">
+                                            {vehicle?.fairPrice}
+                                          </span>
+                                        </p>
+                                        <p className="text-lg text-gray-500 flex">
+                                          discount:{" "}
+                                          <span className="text-green-400">
+                                            0
+                                          </span>
+                                        </p>
+
+                                        <p className="text-lg absolute bottom-3 right-5 text-gray-500 flex">
+                                          total:{" "}
+                                          <span className="text-green-400">
+                                            ₹ {price ? price : 0}
+                                          </span>
+                                        </p>
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            </div>
-                            <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
-                              <button
-                                type="button"
-                                className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                                onClick={() => setOpen(false)}
-                              >
-                                Deactivate
-                              </button>
-                              <button
-                                type="button"
-                                className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                                onClick={() => setOpen(false)}
-                                ref={cancelButtonRef}
-                              >
-                                Cancel
-                              </button>
-                            </div>
-                          </Dialog.Panel>
-                        </Transition.Child>
-                      </div>
-                    </div>
-                  </Dialog>
-                </Transition.Root>
-              </div>
+                                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                                  <button
+                                    type="button"
+                                    className="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 sm:ml-3 sm:w-auto"
+                                    onClick={() => setOpen(false)}
+                                  >
+                                    ...ok
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                                    onClick={() => setOpen(false)}
+                                    ref={cancelButtonRef}
+                                  >
+                                    Cancel
+                                  </button>
+                                </div>
+                              </Dialog.Panel>
+                            </Transition.Child>
+                          </div>
+                        </div>
+                      </Dialog>
+                    </Transition.Root>
+                  </div>
+                </>
+              ) : (
+                ""
+              )}
             </div>
             <div>
               {user.accessToken ? (
@@ -586,7 +608,7 @@ const SingleCar: FC = () => {
           </div>
         </div>
       </div>
-      <UserFooter/>
+      <UserFooter />
     </>
   );
 };
