@@ -8,7 +8,7 @@ const notFound = (req, res, next) => {
     next(error);
 };
 exports.notFound = notFound;
-const errorHandler = (err, req, res) => {
+const errorHandler = (err, req, res, next) => {
     let statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     let message = err.message;
     if (err instanceof mongoose_1.Error.CastError && err.kind === "ObjectId") {

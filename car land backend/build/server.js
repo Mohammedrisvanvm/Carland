@@ -11,18 +11,18 @@ const userRouters_1 = __importDefault(require("./routers/userRouters"));
 const VendorRouters_1 = __importDefault(require("./routers/VendorRouters"));
 const adminRouters_1 = __importDefault(require("./routers/adminRouters"));
 const chatRouters_1 = __importDefault(require("./routers/chatRouters"));
-const errorHandlingMiddleware_1 = require("./middlewares/errorHandler/errorHandlingMiddleware");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
 const socket_1 = require("./config/socket");
 const socket_io_1 = require("socket.io");
+const errorHandlingMiddleware_1 = require("./middlewares/errorHandler/errorHandlingMiddleware");
 const app = (0, express_1.default)();
 //socket.io server
 const newserver = http_1.default.createServer(app);
 const io = new socket_io_1.Server(newserver, {
     cors: {
-        origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandrent.netlify.app", "ws://carland.eshopsport.store", "https://carlandpro.netlify.app"],
+        origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandpro.netlify.app", "ws://carland.eshopsport.store"],
         credentials: true,
     },
 });
@@ -33,7 +33,7 @@ app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" }));
 app.use(express_1.default.static(path_1.default.resolve() + "/public"));
 app.use((0, cookie_parser_1.default)());
 app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandrent.netlify.app", "https://carlandpro.netlify.app"],
+    origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandpro.netlify.app"],
     credentials: true,
 }));
 app.use("/users", userRouters_1.default);
