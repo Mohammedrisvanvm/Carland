@@ -37,6 +37,8 @@ const onRequest = (
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
   console.error(`[request error] [${JSON.stringify(error)}]`);
+
+  
   return Promise.reject(error);
 };
 
@@ -54,9 +56,12 @@ interface AxiosError1 {
 const onResponseError = async (error: AxiosError1): Promise<AxiosError> => {
   console.error(`[response error] [${JSON.stringify(error)}]`);
   const { dispatch } = store;
+console.log(121212,error.response?.data);
 
   if (error.response?.data && typeof error.response.data.message === "string") {
     const message = error.response.data.message;
+    console.log(message);
+    
     if (message === "User Access Denied") {
       dispatch(userLogout());
     } else if (message === "Vendor Access Denied") {

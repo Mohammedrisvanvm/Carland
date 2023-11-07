@@ -6,10 +6,7 @@ import userRouters from "./routers/userRouters";
 import vendorRouters from "./routers/VendorRouters";
 import adminRouters from "./routers/adminRouters";
 import chatRouter from "./routers/chatRouters";
-import {
-  errorHandler,
-  notFound,
-} from "./middlewares/errorHandler/errorHandlingMiddleware";
+
 import cookieParser from "cookie-parser";
 import path from 'path'
 import http from 'http'
@@ -17,6 +14,7 @@ import http from 'http'
 import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./interfaces/socketIinterface";
 import { socketConnect } from "./config/socket";
 import { Server  } from "socket.io";
+import { errorHandler, notFound } from "./middlewares/errorHandler/errorHandlingMiddleware";
 
 
 const app = express();
