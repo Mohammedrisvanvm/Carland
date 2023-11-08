@@ -45,10 +45,7 @@ exports.getBookings = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.pickUpreqAction = (0, express_async_handler_1.default)(async (req, res) => {
     const { bookingID } = req.query;
-    // await bookModel.findByIdAndUpdate(
-    //   { _id: bookingID },
-    //   { $set: { status: "Ongoing" } }
-    // );
+    await bookingSchema_1.default.findByIdAndUpdate({ _id: bookingID }, { $set: { status: "Ongoing" } });
     const booking = await bookingSchema_1.default.findOne({
         _id: bookingID,
     });

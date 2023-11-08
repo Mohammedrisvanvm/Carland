@@ -61,10 +61,10 @@ export const pickUpreqAction = AsyncHandler(
     };
     const { bookingID }: query = req.query;
 
-    // await bookModel.findByIdAndUpdate(
-    //   { _id: bookingID },
-    //   { $set: { status: "Ongoing" } }
-    // );
+    await bookModel.findByIdAndUpdate(
+      { _id: bookingID },
+      { $set: { status: "Ongoing" } }
+    );
     const booking: IBookWithTimestamps = await bookModel.findOne({
       _id: bookingID,
     });
