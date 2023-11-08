@@ -15,6 +15,7 @@ import { generateId } from "../../helpers/createId";
 import IUser from "../../interfaces/userInterface";
 import userModel from "../../models/userSchema";
 import { mailServiceConfirmBooking } from "../../utils/nodeMailer/confirmBooking";
+import { mailServiceCancelBooking } from "../../utils/nodeMailer/cancelBookingMail";
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_ID,
   key_secret: process.env.RAZORPAY_SECRET,
@@ -253,7 +254,8 @@ export const cancelBooking = AsyncHandler(
         const vehicle: IVehicle = await vehicleModel.findById(
           booking.vehicleId
         );
-
+        const user:IUser=await userModel.findById(booking._id)
+        mailServiceCancelBooking(user.email, user.userName, booking)
         const targetPickUpDate = new Date(booking.bookingStartDate);
         const targetDropOffDate = new Date(booking.bookingEndDate);
 

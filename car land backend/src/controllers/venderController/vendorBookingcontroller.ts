@@ -4,6 +4,10 @@ import bookModel from "../../models/bookingSchema";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import vehicleModel from "../../models/vehicleSchema";
 import IVehicle from "../../interfaces/vehicleInterface";
+import { mailServiceTakeOff } from "../../utils/nodeMailer/takeOffMail";
+import IUser from "../../interfaces/userInterface";
+import userModel from "../../models/userSchema";
+import { mailServiceDropOff } from "../../utils/nodeMailer/dropOffMail";
 export const getBookings = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     const search = req.query.search as string;
@@ -57,10 +61,17 @@ export const pickUpreqAction = AsyncHandler(
     };
     const { bookingID }: query = req.query;
 
-    await bookModel.findByIdAndUpdate(
-      { _id: bookingID },
-      { $set: { status: "Ongoing" } }
-    );
+    // await bookModel.findByIdAndUpdate(
+    //   { _id: bookingID },
+    //   { $set: { status: "Ongoing" } }
+    // );
+    const booking: IBookWithTimestamps = await bookModel.findOne({
+      _id: bookingID,
+    });
+    const user: IUser = await userModel.findById(booking.userId);
+console.log(booking);
+
+    mailServiceTakeOff(user.email, user.userName, booking);
 
     res.status(200).json({ message: "Request accepted" });
   }
@@ -74,6 +85,8 @@ export const dropOffAction = AsyncHandler(
       { $set: { status: "Completed" } }
     );
 
+    const user: IUser = await userModel.findById(booking.userId);
+    mailServiceDropOff(user.email, user.userName, booking);
     const vehicle: IVehicle = await vehicleModel.findById(booking.vehicleId);
 
     const targetPickUpDate = new Date(booking.bookingStartDate);
@@ -139,7 +152,7 @@ export const salesReportVendor = AsyncHandler(
       }));
 
     const count: number = await bookModel
-      .find({ hubId: { $in: hubID }, status: "Completed" })
+      .find({ hubId: hubID, status: "Completed" })
       .count();
     interface AggregationResult {
       _id: null;

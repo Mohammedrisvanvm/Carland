@@ -7,6 +7,9 @@ exports.salesReportVendor = exports.dropOffAction = exports.pickUpreqAction = ex
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const bookingSchema_1 = __importDefault(require("../../models/bookingSchema"));
 const vehicleSchema_1 = __importDefault(require("../../models/vehicleSchema"));
+const takeOffMail_1 = require("../../utils/nodeMailer/takeOffMail");
+const userSchema_1 = __importDefault(require("../../models/userSchema"));
+const dropOffMail_1 = require("../../utils/nodeMailer/dropOffMail");
 exports.getBookings = (0, express_async_handler_1.default)(async (req, res) => {
     const search = req.query.search;
     const hubID = req.query.hubID;
@@ -42,12 +45,23 @@ exports.getBookings = (0, express_async_handler_1.default)(async (req, res) => {
 });
 exports.pickUpreqAction = (0, express_async_handler_1.default)(async (req, res) => {
     const { bookingID } = req.query;
-    await bookingSchema_1.default.findByIdAndUpdate({ _id: bookingID }, { $set: { status: "Ongoing" } });
+    // await bookModel.findByIdAndUpdate(
+    //   { _id: bookingID },
+    //   { $set: { status: "Ongoing" } }
+    // );
+    const booking = await bookingSchema_1.default.findOne({
+        _id: bookingID,
+    });
+    const user = await userSchema_1.default.findById(booking.userId);
+    console.log(booking);
+    (0, takeOffMail_1.mailServiceTakeOff)(user.email, user.userName, booking);
     res.status(200).json({ message: "Request accepted" });
 });
 exports.dropOffAction = (0, express_async_handler_1.default)(async (req, res) => {
     const bookingID = req.query.bookingID;
     const booking = await bookingSchema_1.default.findOneAndUpdate({ _id: bookingID }, { $set: { status: "Completed" } });
+    const user = await userSchema_1.default.findById(booking.userId);
+    (0, dropOffMail_1.mailServiceDropOff)(user.email, user.userName, booking);
     const vehicle = await vehicleSchema_1.default.findById(booking.vehicleId);
     const targetPickUpDate = new Date(booking.bookingStartDate);
     const targetDropOffDate = new Date(booking.bookingEndDate);
@@ -95,7 +109,7 @@ exports.salesReportVendor = (0, express_async_handler_1.default)(async (req, res
         image: vehicleImageMap[item.vehicleId],
     }));
     const count = await bookingSchema_1.default
-        .find({ hubId: { $in: hubID }, status: "Completed" })
+        .find({ hubId: hubID, status: "Completed" })
         .count();
     const result = await bookingSchema_1.default.aggregate([
         {

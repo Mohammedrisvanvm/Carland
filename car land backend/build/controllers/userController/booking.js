@@ -14,6 +14,7 @@ const crypto_1 = __importDefault(require("crypto"));
 const createId_1 = require("../../helpers/createId");
 const userSchema_1 = __importDefault(require("../../models/userSchema"));
 const confirmBooking_1 = require("../../utils/nodeMailer/confirmBooking");
+const cancelBookingMail_1 = require("../../utils/nodeMailer/cancelBookingMail");
 const razorpay = new razorpay_1.default({
     key_id: process.env.RAZORPAY_ID,
     key_secret: process.env.RAZORPAY_SECRET,
@@ -157,6 +158,8 @@ exports.cancelBooking = (0, express_async_handler_1.default)(async (req, res) =>
         booking.refundedDetails = res;
         booking.save();
         const vehicle = await vehicleSchema_1.default.findById(booking.vehicleId);
+        const user = await userSchema_1.default.findById(booking._id);
+        (0, cancelBookingMail_1.mailServiceCancelBooking)(user.email, user.userName, booking);
         const targetPickUpDate = new Date(booking.bookingStartDate);
         const targetDropOffDate = new Date(booking.bookingEndDate);
         if (vehicle.bookingDates.pickUp.some((date) => date.getTime() === booking.bookingStartDate.getTime())) {
