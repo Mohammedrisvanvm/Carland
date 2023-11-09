@@ -16,6 +16,7 @@ exports.userSignUpController = (0, express_async_handler_1.default)(async (req, 
     const userExist = await userSchema_1.default.findOne({
         email: data.email,
     });
+    console.log(userExist);
     if (userExist) {
         throw new Error("User Already Exists");
     }
@@ -25,16 +26,16 @@ exports.userSignUpController = (0, express_async_handler_1.default)(async (req, 
         const Token = (0, jwtutils_1.jwtSign)({ token: otp, user: data }, "5min");
         res
             .status(200)
-            .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000, })
+            .cookie("UserOtpToken", Token, { httpOnly: true, maxAge: 300000 })
             .json({ message: "message otp sented" });
     }
 });
 exports.userOtpverify = (0, express_async_handler_1.default)(async (req, res) => {
     try {
-        const UserOtpToken = req.cookies?.UserOtpToken;
+        const userOtpToken = req.cookies?.UserOtpToken;
         const data = req.body.value;
-        if (UserOtpToken) {
-            const { payload } = (0, jwtutils_1.verifyJwt)(UserOtpToken);
+        if (userOtpToken) {
+            const { payload } = (0, jwtutils_1.verifyJwt)(userOtpToken);
             if (payload?.token == data) {
                 let userExist = await userSchema_1.default.findOne({
                     email: payload.user?.email,
@@ -67,6 +68,12 @@ exports.userOtpverify = (0, express_async_handler_1.default)(async (req, res) =>
                 })
                     .json({ user: userExist, accessToken });
             }
+            else {
+                throw new Error("invalid token");
+            }
+        }
+        else {
+            throw new Error("token not there");
         }
     }
     catch (error) {

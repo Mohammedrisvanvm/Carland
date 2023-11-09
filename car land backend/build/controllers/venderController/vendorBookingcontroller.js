@@ -50,7 +50,6 @@ exports.pickUpreqAction = (0, express_async_handler_1.default)(async (req, res) 
         _id: bookingID,
     });
     const user = await userSchema_1.default.findById(booking.userId);
-    console.log(booking);
     (0, takeOffMail_1.mailServiceTakeOff)(user.email, user.userName, booking);
     res.status(200).json({ message: "Request accepted" });
 });

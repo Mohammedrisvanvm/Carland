@@ -13,9 +13,8 @@ import {
 type Iprops = {
   currentChat: IConversation | null;
 };
-// const ENDPOINT: string = import.meta.env.VITE_BASEURL;
-const ENDPOINT: string = "ws://localhost:3131/";
-console.log(ENDPOINT)
+const ENDPOINT: string = import.meta.env.VITE_BASEURL;
+
 const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   const vendor = useAppSelector((state) => state.vendor);
 

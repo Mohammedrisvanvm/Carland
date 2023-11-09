@@ -6,13 +6,14 @@ import {
   userLogin,
   userOtpVerify,
 } from "../../services/apis/userApi/userApi";
+import { AxiosResponse } from "../../interfaces/axiosinterface";
 
 interface InitialUser {
   [x: string]: any;
   userName?: string | null;
   email: string | null;
   verifyPhone: boolean | null;
-  _id?:string|null
+  _id?: string | null;
   gender: string | null;
   accessToken: string | null | undefined;
   isLoading: boolean;
@@ -21,7 +22,7 @@ interface InitialUser {
 const initialState: InitialUser = {
   userName: null,
   email: null,
-  _id:null,
+  _id: null,
   accessToken: null,
   isLoading: false,
   verifyPhone: null,
@@ -47,15 +48,19 @@ export const userGoogleThunk: any = createAsyncThunk(
 export const userLoginThunk: any = createAsyncThunk(
   "user/login",
   async (formValue: number) => {
-    const { data }: Authcheck = await userOtpVerify(formValue);
+    try {
+      const { data }: AxiosResponse = await userOtpVerify(formValue);
 
-    if (data?.user) {
-    
+      if (data?.user) {
+        data.user.accessToken = data.accessToken;
+      }
 
-      data.user.accessToken = data.accessToken;
+      return data?.user;
+    } catch (error: any) {
+      console.log(error);
+      
+      toast.error(error.response.data.message);
     }
-
-    return data?.user;
   }
 );
 
@@ -72,9 +77,9 @@ const userSlice = createSlice({
       state.accessToken = null;
       state.isLoading = false;
     },
-    setVerify:(state)=>{
-      state.verifyPhone=true
-    }
+    setVerify: (state) => {
+      state.verifyPhone = true;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -90,7 +95,7 @@ const userSlice = createSlice({
         (state, action: PayloadAction<user>) => {
           state.userName = action.payload.userName;
           state.email = action.payload.email;
-          state._id=action.payload._id;
+          state._id = action.payload._id;
           state.isLoading = false;
           state.verifyPhone = action.payload.verified_phonenumber;
           state.accessToken = action.payload.accessToken;
@@ -114,7 +119,7 @@ const userSlice = createSlice({
           if (action.payload) {
             state.userName = action.payload.userName;
             state.email = action.payload.email;
-            state._id=action.payload._id;
+            state._id = action.payload._id;
             state.isLoading = false;
             state.accessToken = action.payload.accessToken;
           }
@@ -124,11 +129,11 @@ const userSlice = createSlice({
         state.accessToken = null;
         state.email = null;
         state.accessToken = null;
-        state._id=null;
+        state._id = null;
         state.isLoading = false;
       });
   },
 });
 
 export default userSlice.reducer;
-export const { userLogout,setVerify } = userSlice.actions;
+export const { userLogout, setVerify } = userSlice.actions;

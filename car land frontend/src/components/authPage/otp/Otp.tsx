@@ -11,9 +11,11 @@ export const Otp = () => {
   // const dispatch=useAppDispatch()
   const handleChange = async (): Promise<void> => {
     try {
-      dispatch(userLoginThunk());
-      Navigate("/");
+     await dispatch(userLoginThunk(otp));
+  
     } catch (error: any) {
+    
+      
       toast.error(error.response.data.message);
     }
   };

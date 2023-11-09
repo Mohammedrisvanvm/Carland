@@ -69,7 +69,7 @@ export const pickUpreqAction = AsyncHandler(
       _id: bookingID,
     });
     const user: IUser = await userModel.findById(booking.userId);
-console.log(booking);
+
 
     mailServiceTakeOff(user.email, user.userName, booking);
 

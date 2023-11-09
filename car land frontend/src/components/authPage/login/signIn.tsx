@@ -29,7 +29,7 @@ export const SignIn = () => {
       await new Promise<void>((resolve, reject) => setTimeout(resolve, 1000));
       actions.resetForm();
       await userLogin(values);
-      Navigate("/UserOtp");
+      Navigate("/userotp");
     } catch (error: any) {
       toast.error(error.response.data.message);
     }
