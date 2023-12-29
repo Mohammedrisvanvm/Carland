@@ -1,1 +1,0 @@
-{"version":3,"file":"adminVendor.js","sourceRoot":"","sources":["../../../src/routers/adminRoutes/adminVendor.ts"],"names":[],"mappings":";;AAAA,qCAAiC;AACjC,yFAA8F;AAE9F,MAAM,WAAW,GAAC,IAAA,gBAAM,GAAE,CAAA;AAE1B,WAAW,CAAC,GAAG,CAAC,aAAa,EAAC,gCAAa,CAAC,CAAA;AAC5C,WAAW,CAAC,IAAI,CAAC,YAAY,EAAC,4BAAS,CAAC,CAAA;AAExC,kBAAe,WAAW,CAAA"}

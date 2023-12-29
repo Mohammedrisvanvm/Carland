@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { useAppSelector } from "../../../redux/store/storeHook";
@@ -28,10 +28,12 @@ const AdminNavBar: FC<Iprops> = ({
 
     setdropdown(!dropdown);
   };
+
+ 
   const logOutHandle = async () => {
     await adminSignOut();
     dispatch(adminLogout());
-    Navigate("/admin");
+    Navigate("/admin/login");
   };
   const Navigate = useNavigate();
   return (

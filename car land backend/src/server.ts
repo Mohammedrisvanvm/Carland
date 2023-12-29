@@ -17,7 +17,7 @@ import { Server  } from "socket.io";
 import { errorHandler, notFound } from "./middlewares/errorHandler/errorHandlingMiddleware";
 
 
-const app = express();
+export const app = express();
 //socket.io server
 const newserver=http.createServer(app)
 const io = new Server<

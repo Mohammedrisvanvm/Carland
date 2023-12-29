@@ -3,8 +3,8 @@
     "module": "commonjs",
     "target": "es2020",
     "outDir": "./build",
-    "rootDir": "./src",  
-    "baseUrl": ".",  
+    "baseUrl": ".",
+
     "sourceMap": true,
     "pretty": true,
     "allowJs": true,
@@ -13,10 +13,7 @@
     "strict": false,
     "esModuleInterop": true,
     "skipLibCheck": true,
-
+    "types": ["jest", "node"]
   },
-  "include": ["src/**/*.ts"], 
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules", "build"] 
 }

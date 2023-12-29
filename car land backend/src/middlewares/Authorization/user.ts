@@ -59,11 +59,12 @@ export const userAuthenticate = AsyncHandler(
 
           res.cookie("accessTokenUser", access, {
             httpOnly: true,
+            secure:true,
             maxAge: 1000 * 60 * 60 * 24,
           });
           res.cookie("refreshTokenUser", refreshTokenuser, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
-
+            secure:true,
             httpOnly: true,
           });
           console.log(access, 111);

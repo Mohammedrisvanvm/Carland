@@ -151,13 +151,13 @@ export const vendorLogOut = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     res.cookie("accessTokenvendor", "", {
       httpOnly: true,
-     
+      secure:true,
       maxAge: 0,
     });
     res
       .cookie("refreshTokenvendor", "", {
         httpOnly: true,
-       
+        secure:true,
         maxAge: 0,
       })
       .status(200)

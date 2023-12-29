@@ -55,16 +55,13 @@ export const vendorAuthenticate = AsyncHandler(
 
           res.cookie("accessTokenvendor", access, {
             httpOnly: true,
-           
             maxAge: 1000 * 60 * 60 * 24,
             secure: true,
           });
           res.cookie("refreshTokenvendor", refreshTokenvendor, {
             httpOnly: true,
-
             secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
-           
           });
 
           req.cookies.accessTokenvendor = access;

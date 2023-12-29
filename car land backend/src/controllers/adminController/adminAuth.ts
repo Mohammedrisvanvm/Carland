@@ -35,14 +35,14 @@ export const adminLogin = AsyncHandler(
       res.status(200).cookie("accessTokenAdmin", accessToken, {
         maxAge: 300000,
         httpOnly: true,
-       
+       secure:true
       });
 
       res
         .cookie("refreshTokenAdmin", refreshToken, {
           maxAge: 7 * 24 * 60 * 60,
           httpOnly: true,
-         
+         secure:true
         })
         .json({ admin: response,accessToken:accessToken });
     } else {
@@ -67,7 +67,7 @@ export const adminCheck = AsyncHandler(
     } else if (refreshTokenAdmin) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenAdmin);
       const access = jwtSign({ email: verifiedJWT.payload?.email }, "15min");
-      res.cookie("accessTokenAdmin", access, { httpOnly: true,sameSite:'none', maxAge: 5000 });
+      res.cookie("accessTokenAdmin", access, { httpOnly: true,sameSite:'none', secure:true, maxAge: 5000 });
       res
         .cookie("refreshTokenAdmin", refreshTokenAdmin, {
           httpOnly: true,
@@ -83,9 +83,9 @@ export const adminCheck = AsyncHandler(
 
 export const adminLogout = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',});
+    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',secure:true,});
     res
-      .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',})
+      .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0 ,sameSite:'none',secure:true,})
       .json({ message: "admin Logouted" });
   }
 );

@@ -58,13 +58,11 @@ export const userOtpverify = AsyncHandler(
 
       if (userOtpToken) {
         const { payload }: UserJwt = verifyJwt(userOtpToken);
-     
 
         if (payload?.token == data) {
           let userExist: IUser | null = await userModel.findOne({
             email: payload.user?.email,
           });
-       
 
           if (!userExist) {
             const user: IUser = await userModel.create({
@@ -124,10 +122,17 @@ export const userLoginController = AsyncHandler(
       email: data.email,
       ban: false,
     });
+    console.log(userExist);
 
-    if (userExist) {
-      if (userExist && (await userExist.matchPassword(data.password))) {
+    if (!userExist) {
+      throw new Error("user not exist or banned");
+    } else {
+      if (userExist.password) {
+        await userExist.matchPassword(data.password);
+      }
+      if (userExist) {
         const token: number = getotp();
+
         const userOtpToken = jwtSign(
           {
             token: token,
@@ -142,15 +147,13 @@ export const userLoginController = AsyncHandler(
           .status(200)
           .cookie("UserOtpToken", userOtpToken, {
             maxAge: 300000,
-
             httpOnly: true,
+            secure: true,
           })
           .json({ message: "user otp sented" });
       } else {
         throw new Error("invalid user name or password");
       }
-    } else {
-      throw new Error("user not exist or banned");
     }
   }
 );
@@ -267,11 +270,13 @@ export const userLogoutController = AsyncHandler(
     res.cookie("accessTokenUser", "", {
       httpOnly: true,
       maxAge: 0,
+      secure:true,
     });
     res
       .cookie("refreshTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
+        secure:true,
       })
       .status(200)
       .json({ message: "logout user" });
@@ -321,7 +326,6 @@ export const userCheck = AsyncHandler(
         res
           .cookie("refreshTokenUser", Ref, {
             httpOnly: true,
-
             secure: true,
             maxAge: 7 * 24 * 60 * 60 * 1000,
           })
