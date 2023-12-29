@@ -8,32 +8,43 @@ import adminRouters from "./routers/adminRouters";
 import chatRouter from "./routers/chatRouters";
 
 import cookieParser from "cookie-parser";
-import path from 'path'
-import http from 'http'
+import path from "path";
+import http from "http";
 
-import { ClientToServerEvents, InterServerEvents, ServerToClientEvents, SocketData } from "./interfaces/socketIinterface";
+import {
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerToClientEvents,
+  SocketData,
+} from "./interfaces/socketIinterface";
 import { socketConnect } from "./config/socket";
-import { Server  } from "socket.io";
-import { errorHandler, notFound } from "./middlewares/errorHandler/errorHandlingMiddleware";
-
+import { Server } from "socket.io";
+import {
+  errorHandler,
+  notFound,
+} from "./middlewares/errorHandler/errorHandlingMiddleware";
 
 export const app = express();
 //socket.io server
-const newserver=http.createServer(app)
+const newserver = http.createServer(app);
 const io = new Server<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
   SocketData
->(newserver,{
+>(newserver, {
   cors: {
-      origin: ["http://localhost:3000","https://carland-five.vercel.app","https://carlandpro.netlify.app","ws://carland.eshopsport.store"],
-      credentials: true,
+    origin: [
+      "http://localhost:3000",
+      "https://carland-five.vercel.app",
+      "https://carlandpro.netlify.app",
+      "ws://carland.eshopsport.store",
+    ],
+    credentials: true,
   },
 });
 
-
-socketConnect(io)
+socketConnect(io);
 
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
@@ -43,11 +54,14 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: ["http://localhost:3000","https://carland-five.vercel.app","https://carlandpro.netlify.app/"],
+    origin: [
+      "http://localhost:3000",
+      "https://carland-five.vercel.app",
+      "https://carlandpro.netlify.app/",
+    ],
     credentials: true,
   })
 );
-
 
 app.use("/users", userRouters);
 app.use("/vendors", vendorRouters);
@@ -60,4 +74,6 @@ app.get("/", (req: Request, res: Response): void => {
 app.use(notFound);
 app.use(errorHandler);
 
-newserver.listen(config.server.port, () => console.log("server connected @3131"));
+newserver.listen(config.server.port, () =>
+  console.log("server connected @3131")
+);
