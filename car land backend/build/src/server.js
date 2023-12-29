@@ -23,7 +23,12 @@ exports.app = (0, express_1.default)();
 const newserver = http_1.default.createServer(exports.app);
 const io = new socket_io_1.Server(newserver, {
     cors: {
-        origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandpro.netlify.app", "ws://carland.eshopsport.store"],
+        origin: [
+            "http://localhost:3000",
+            "https://carland-five.vercel.app",
+            "https://carlandpro.netlify.app",
+            "ws://carland.eshopsport.store",
+        ],
         credentials: true,
     },
 });
@@ -34,7 +39,11 @@ exports.app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" })
 exports.app.use(express_1.default.static(path_1.default.resolve() + "/public"));
 exports.app.use((0, cookie_parser_1.default)());
 exports.app.use((0, cors_1.default)({
-    origin: ["http://localhost:3000", "https://carland-five.vercel.app", "https://carlandpro.netlify.app"],
+    origin: [
+        "http://localhost:3000",
+        "https://carland-five.vercel.app",
+        "https://carlandpro.netlify.app",
+    ],
     credentials: true,
 }));
 exports.app.use("/users", userRouters_1.default);
