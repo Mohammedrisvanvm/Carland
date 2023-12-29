@@ -99,11 +99,13 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
 exports.vendorLogOut = (0, express_async_handler_1.default)(async (req, res) => {
     res.cookie("accessTokenvendor", "", {
         httpOnly: true,
+        secure: true,
         maxAge: 0,
     });
     res
         .cookie("refreshTokenvendor", "", {
         httpOnly: true,
+        secure: true,
         maxAge: 0,
     })
         .status(200)

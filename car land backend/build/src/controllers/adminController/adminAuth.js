@@ -19,11 +19,13 @@ exports.adminLogin = (0, express_async_handler_1.default)(async (req, res) => {
         res.status(200).cookie("accessTokenAdmin", accessToken, {
             maxAge: 300000,
             httpOnly: true,
+            secure: true
         });
         res
             .cookie("refreshTokenAdmin", refreshToken, {
             maxAge: 7 * 24 * 60 * 60,
             httpOnly: true,
+            secure: true
         })
             .json({ admin: response, accessToken: accessToken });
     }
@@ -40,7 +42,7 @@ exports.adminCheck = (0, express_async_handler_1.default)(async (req, res) => {
     else if (refreshTokenAdmin) {
         const verifiedJWT = (0, jwtutils_1.verifyJwt)(refreshTokenAdmin);
         const access = (0, jwtutils_1.jwtSign)({ email: verifiedJWT.payload?.email }, "15min");
-        res.cookie("accessTokenAdmin", access, { httpOnly: true, sameSite: 'none', maxAge: 5000 });
+        res.cookie("accessTokenAdmin", access, { httpOnly: true, sameSite: 'none', secure: true, maxAge: 5000 });
         res
             .cookie("refreshTokenAdmin", refreshTokenAdmin, {
             httpOnly: true,
@@ -54,9 +56,9 @@ exports.adminCheck = (0, express_async_handler_1.default)(async (req, res) => {
     }
 });
 exports.adminLogout = (0, express_async_handler_1.default)(async (req, res) => {
-    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', });
+    res.cookie("accessTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', secure: true, });
     res
-        .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', })
+        .cookie("refreshTokenAdmin", "", { httpOnly: true, maxAge: 0, sameSite: 'none', secure: true, })
         .json({ message: "admin Logouted" });
 });
 //# sourceMappingURL=adminAuth.js.map

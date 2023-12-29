@@ -1,10 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-describe('Auth', () => {
-    describe('/', () => {
-        it('should get server', () => {
-            expect(true).toBe(true);
-        });
-    });
-});
+// import assert from "assert";
+// describe("Auth", () => {
+//   describe("vendorSignup", () => {
+//     it("should vendorSignup", async (done) => {
+//       setImmediate(done);
+//       setImmediate(done);
+//     });
+//   });
+// });
 //# sourceMappingURL=app.spec.js.map

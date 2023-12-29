@@ -87,8 +87,15 @@ exports.userLoginController = (0, express_async_handler_1.default)(async (req, r
         email: data.email,
         ban: false,
     });
-    if (userExist) {
-        if (userExist && (await userExist.matchPassword(data.password))) {
+    console.log(userExist);
+    if (!userExist) {
+        throw new Error("user not exist or banned");
+    }
+    else {
+        if (userExist.password) {
+            await userExist.matchPassword(data.password);
+        }
+        if (userExist) {
             const token = (0, twilio_1.getotp)();
             const userOtpToken = (0, jwtutils_1.jwtSign)({
                 token: token,
@@ -102,15 +109,13 @@ exports.userLoginController = (0, express_async_handler_1.default)(async (req, r
                 .cookie("UserOtpToken", userOtpToken, {
                 maxAge: 300000,
                 httpOnly: true,
+                secure: true,
             })
                 .json({ message: "user otp sented" });
         }
         else {
             throw new Error("invalid user name or password");
         }
-    }
-    else {
-        throw new Error("user not exist or banned");
     }
 });
 exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) => {
@@ -188,11 +193,13 @@ exports.userLogoutController = (0, express_async_handler_1.default)(async (req, 
     res.cookie("accessTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
+        secure: true,
     });
     res
         .cookie("refreshTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
+        secure: true,
     })
         .status(200)
         .json({ message: "logout user" });
