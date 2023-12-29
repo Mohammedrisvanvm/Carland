@@ -49,11 +49,16 @@
     "@types/supertest": "^2.0.16",
     "@typescript-eslint/eslint-plugin": "^6.8.0",
     "@typescript-eslint/parser": "^6.8.0",
+<<<<<<< HEAD
     "chai": "^4.3.10",
     "eslint": "^8.52.0",
     "mocha": "^10.2.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "tsconfig-paths": "^4.2.0"
+=======
+    "eslint": "^8.52.0",
+    "jest": "^29.7.0"
+>>>>>>> 240800ab6459a5c5ada426c2d33a54a4ee44b7a5
   }
 }

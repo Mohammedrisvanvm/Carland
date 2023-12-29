@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 import { userLoginThunk } from "../../../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
-import { useAppDispatch } from "../../../redux/store/storeHook";
 export const Otp = () => {
   const [otp, setOtp] = useState("");
   const dispatch = useDispatch();
