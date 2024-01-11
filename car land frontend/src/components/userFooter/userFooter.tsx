@@ -1,24 +1,32 @@
+import { useNavigate } from "react-router";
+
 export const UserFooter = () => {
+ 
+  const Navigate = useNavigate();
+
   return (
     <>
-      <hr />
+      <hr className="sm:mx-28 mx-3" />
 
-      <div className="px-4  mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
-        <div className="grid gap-10 row-gap-6 mb-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="px-4 pb-2 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+        <div className="grid row-gap-6 sm:grid-cols-2 lg:grid-cols-4 ">
           <div className="sm:col-span-2">
-            <a
-              href="/"
+            <div
+              onClick={() => Navigate("/")}
               aria-label="Go home"
               title="Company"
               className="inline-flex items-center"
             >
-           <img src="/carland-logos_black.png" alt=""className="h-20 w-auto contain"/>
+              <img
+                src="/carland-logos_black.png"
+                alt=""
+                className="h-20 w-auto contain"
+              />
               <span className="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">
                 Car Land
               </span>
-            </a>
-            <div className=" lg:max-w-sm">
-            
+            </div>
+            <div className="lg:max-w-sm">
               <p className="text-sm text-gray-800">
                 Whether you need a car for a leisurely road trip or a reliable
                 cab for your daily commute, we've got you covered. Our mission
@@ -27,14 +35,14 @@ export const UserFooter = () => {
               </p>
             </div>
           </div>
-          <div className="space-y-2 text-sm">
+          <div className="space-y-2 text-sm mt-10">
             <p className="text-base font-bold tracking-wide text-gray-900">
               Contacts
             </p>
             <div className="flex">
               <p className="mr-1 text-gray-800">Phone:</p>
               <a
-                href="tel:850-123-5021"
+                href="#"
                 aria-label="Our phone"
                 title="Our phone"
                 className="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800"
@@ -63,11 +71,11 @@ export const UserFooter = () => {
                 title="Our address"
                 className="transition-colors duration-300 text-deep-purple-accent-400 hover:text-deep-purple-800"
               >
-                312 Lovely Street, NY
+              Malappuram,Kerala
               </a>
             </div>
           </div>
-          <div>
+          <div className="mt-10">
             <span className="text-base font-bold tracking-wide text-gray-900">
               Social
             </span>
@@ -105,39 +113,27 @@ export const UserFooter = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col-reverse justify-between border-b pb-10 border-t lg:flex-row">
-          <p className="text-sm text-gray-600">
-            Make sure to read and understand our Terms of Service and Privacy
-            Policy to know how we handle your personal information and ensure a
-            safe and secure experience on our website. © 2023 Car Land. All
-            rights reserved.
-          </p>
-          <ul className="flex flex-col lg:mb-0  sm:space-x-5 sm:flex-row">
-            <li>
-              <a
-                href="/"
-                className="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-              >
-                F.A.Q
-              </a>
-            </li>
-            <li>
-              <a
-                href="/"
-                className="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-              >
+
+        <div className="py-5 md:flex md:items-center md:justify-between">
+          <div className="text-center md:text-left">
+            <p className="text-sm text-muted-foreground">
+              &copy; {new Date().getFullYear()} All Rights Reserved
+            </p>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center md:mt-0">
+            <div className="flex space-x-8">
+              <p className="text-sm text-muted-foreground hover:text-gray-600">
+                Terms
+              </p>
+              <p className="text-sm text-muted-foreground hover:text-gray-600">
                 Privacy Policy
-              </a>
-            </li>
-            <li>
-              <a
-                href="/"
-                className="text-sm text-gray-600 transition-colors duration-300 hover:text-deep-purple-accent-400"
-              >
-                Terms &amp; Conditions
-              </a>
-            </li>
-          </ul>
+              </p>
+              <p className="text-sm text-muted-foreground hover:text-gray-600">
+                Cookie Policy
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </>

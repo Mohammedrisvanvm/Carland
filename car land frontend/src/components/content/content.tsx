@@ -15,6 +15,7 @@ import { userGetVehicle } from "../../services/apis/userApi/userApi";
 import Loader from "../../utils/Loader";
 import { MainHeader } from "../userHeader/MainHeader/MainHeader";
 import { AxiosResponse } from "../../interfaces/axiosinterface";
+import SkeletonLoader from "../resumeComponent/SkeletonLoader";
 
 interface GeolocationPosition {
   coords: GeolocationCoordinates;
@@ -311,8 +312,8 @@ export const Content = () => {
               </form>
             </div>
             <div className="grid gap-5 row-gap-5 mb-8 lg:grid-cols-4 sm:grid-cols-2">
-              {vehicles ? (
-                vehicles.map((item) => (
+              {vehicles?.length!=0 ? (
+                vehicles?.map((item) => (
                   <button
                     aria-label="View Item"
                     onClick={() => {
@@ -361,9 +362,11 @@ export const Content = () => {
                 ))
               ) : (
                 <>
-                  <div className="text-lg font-bold text-red-600">
+                  {/* <div className="text-lg font-bold text-red-600">
                     "no cars available in this area {searchQuery}"
-                  </div>
+                  </div> */}
+                  <SkeletonLoader count={3} />
+             
                 </>
               )}
             </div>

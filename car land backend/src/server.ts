@@ -68,12 +68,12 @@ app.use("/vendors", vendorRouters);
 app.use("/admin", adminRouters);
 app.use("/chat", chatRouter);
 app.get("/", (req: Request, res: Response): void => {
-  res.send("hai");
+  res.send("health checked");
 });
 
 app.use(notFound);
 app.use(errorHandler);
 
 newserver.listen(config.server.port, () =>
-  console.log("server connected @3131")
+  console.log(`server connected @ ${config.server.port}`)
 );

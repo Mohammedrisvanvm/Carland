@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc ",
+    "dev":"ts-node src/server.ts",
     "start": "node build/src/server.js",
     "lint": "eslint . --ext .ts",
     "prod": "del /S /Q build && tsc && nodemon build/server.js"

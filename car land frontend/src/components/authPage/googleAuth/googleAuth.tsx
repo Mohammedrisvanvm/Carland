@@ -25,7 +25,7 @@ export const GoogleAuth = () => {
 
   return (
     <>
-      <div className="px-5 pt-6 pb-5 text-center border border-gray-300 rounded lg:w-2/5">
+      <div className="px-5 pt-6 pb-5 text-center  border-gray-300 rounded lg:w-2/5 shadow-2xl">
         <div className="mb-5 font-semibold">Create an account</div>
         <div className="flex justify-center w-full mb-3">
           <button
