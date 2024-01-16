@@ -26,7 +26,7 @@ const io = new socket_io_1.Server(newserver, {
         origin: [
             "http://localhost:3000",
             "https://carland-five.vercel.app",
-            "https://carlandpro.netlify.app",
+            "https://carlandpro.netlify.app/",
             "ws://carland.eshopsport.store",
         ],
         credentials: true,
@@ -51,9 +51,9 @@ exports.app.use("/vendors", VendorRouters_1.default);
 exports.app.use("/admin", adminRouters_1.default);
 exports.app.use("/chat", chatRouters_1.default);
 exports.app.get("/", (req, res) => {
-    res.send("hai");
+    res.send("health checked");
 });
 exports.app.use(errorHandlingMiddleware_1.notFound);
 exports.app.use(errorHandlingMiddleware_1.errorHandler);
-newserver.listen(config_1.config.server.port, () => console.log("server connected @3131"));
+newserver.listen(config_1.config.server.port, () => console.log(`server connected @ ${config_1.config.server.port}`));
 //# sourceMappingURL=server.js.map
