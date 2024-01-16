@@ -57,7 +57,7 @@ app.use(
     origin: [
       "http://localhost:3000",
       "https://carland-five.vercel.app",
-      "https://carlandpro.netlify.app",
+      "https://carlandpro.netlify.app/",
     ],
     credentials: true,
   })
