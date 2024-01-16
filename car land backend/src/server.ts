@@ -37,7 +37,7 @@ const io = new Server<
     origin: [
       "http://localhost:3000",
       "https://carland-five.vercel.app",
-      "https://carlandpro.netlify.app",
+      "https://carlandpro.netlify.app/",
       "ws://carland.eshopsport.store",
     ],
     credentials: true,
