@@ -217,8 +217,8 @@ exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
             if (!user) {
                 throw new Error("user not exist");
             }
-            const access = await (0, jwtutils_1.jwtSign)({ id: user._id, name: user.userName, email: user.email }, "30s");
-            const Ref = await (0, jwtutils_1.jwtSign)({ email: user.email }, "7d");
+            const access = (0, jwtutils_1.jwtSign)({ id: user._id, name: user.userName, email: user.email }, "30s");
+            const Ref = (0, jwtutils_1.jwtSign)({ email: user.email }, "7d");
             res.cookie("accessTokenUser", access, {
                 httpOnly: true,
                 maxAge: 7 * 24 * 60 * 60,

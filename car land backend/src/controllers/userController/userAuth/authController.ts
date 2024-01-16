@@ -311,12 +311,12 @@ export const userCheck = AsyncHandler(
         if (!user) {
           throw new Error("user not exist");
         }
-        const access = await jwtSign(
+        const access =  jwtSign(
           { id: user._id, name: user.userName, email: user.email },
           "30s"
         );
 
-        const Ref = await jwtSign({ email: user.email }, "7d");
+        const Ref =  jwtSign({ email: user.email }, "7d");
         res.cookie("accessTokenUser", access, {
           httpOnly: true,
           maxAge: 7 * 24 * 60 * 60,
