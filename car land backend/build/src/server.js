@@ -26,7 +26,7 @@ const io = new socket_io_1.Server(newserver, {
         origin: [
             "http://localhost:3000",
             "https://carland-five.vercel.app",
-            "https://carlandpro.netlify.app/",
+            "https://carlandpro.netlify.app",
             "ws://carland.eshopsport.store",
         ],
         credentials: true,
@@ -42,7 +42,7 @@ exports.app.use((0, cors_1.default)({
     origin: [
         "http://localhost:3000",
         "https://carland-five.vercel.app",
-        "https://carlandpro.netlify.app/",
+        "https://carlandpro.netlify.app",
     ],
     credentials: true,
 }));
