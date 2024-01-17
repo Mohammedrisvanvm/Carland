@@ -44,11 +44,13 @@ exports.userAuthenticate = (0, express_async_handler_1.default)(async (req, res,
                 res.cookie("accessTokenUser", access, {
                     httpOnly: true,
                     secure: true,
+                    sameSite: 'none',
                     maxAge: 1000 * 60 * 60 * 24,
                 });
                 res.cookie("refreshTokenUser", refreshTokenuser, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
                     secure: true,
+                    sameSite: 'none',
                     httpOnly: true,
                 });
                 console.log(access, 111);

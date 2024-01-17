@@ -21,7 +21,7 @@ exports.createConversation = (0, express_async_handler_1.default)(async (req, re
 });
 exports.getConversation = (0, express_async_handler_1.default)(async (req, res) => {
     const hubId = req.params.hubId;
-    const conversation = await conversationSchema_1.default.aggregate([
+    const allConversation = await conversationSchema_1.default.aggregate([
         {
             $match: {
                 hubId: new mongoose_1.default.Types.ObjectId(req.params.hubId),
@@ -47,7 +47,7 @@ exports.getConversation = (0, express_async_handler_1.default)(async (req, res) 
             },
         },
     ]);
-    res.status(200).json({ conversation });
+    res.status(200).json({ allConversation });
 });
 exports.getChatUser = (0, express_async_handler_1.default)(async (req, res) => {
     const user = await userSchema_1.default.findOne({

@@ -23,29 +23,30 @@ import {
   errorHandler,
   notFound,
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
+import { ServerSocket } from "./utils/newSocket";
 
 export const app = express();
 //socket.io server
 const newserver = http.createServer(app);
-const io = new Server<
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData
->(newserver, {
-  cors: {
-    origin: [
-      "http://localhost:3000",
-      "https://carland-five.vercel.app",
-      "https://carlandpro.netlify.app",
-      "ws://carland.eshopsport.store",
-    ],
-    credentials: true,
-  },
-});
+// const io = new Server<
+//   ClientToServerEvents,
+//   ServerToClientEvents,
+//   InterServerEvents,
+//   SocketData
+// >(newserver, {
+//   cors: {
+//     origin: [
+//       "http://localhost:3000",
+//       "https://carland-five.vercel.app",
+//       "https://carlandpro.netlify.app",
+//       "ws://carland.eshopsport.store",
+//     ],
+//     credentials: true,
+//   },
+// });
 
-socketConnect(io);
-
+// socketConnect(io);
+new ServerSocket(newserver)
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));

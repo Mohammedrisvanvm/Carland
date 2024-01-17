@@ -58,16 +58,17 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
     const message: IMessage = {
       conversationId: currentChat?._id,
       messageText: newMessage,
-      receiverId: currentChat?.userId,
       senderId: currentChat?.hubId,
+      receiverId: currentChat?.userId,
     };
 
     socket.current?.emit("sendMessage", {
+      conversationId: currentChat?._id,
+      messageText: newMessage,
       senderId: currentChat?.hubId,
       receiverId: currentChat?.userId,
-      socketId: currentChat?._id,
-      text: newMessage,
-    });
+    });   
+   
     try {
       const res: any = await addNewMessage(message);
       console.log(res);
@@ -87,20 +88,20 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   };
 
   React.useEffect(() => {
-    socket.current?.emit("addUser", currentChat?.hubId, currentChat?._id);
+    socket.current?.emit("addUser", currentChat?._id);
   }, []);
   React.useEffect(() => {
     socket.current = io(ENDPOINT);
     console.log(socket.current);
     
     socket.current?.on("getmessage", (data) => {
-      const senderId: string = data?.senderId || "";
-
+      console.log(data,"vendorchat");
       setArrivalMessage({
-        senderId,
-        messageText: data.text,
+        senderId:data.senderId,
+        messageText: data.messageText,
         receiverId: data.receiverId,
         createdAt: new Date(Date.now()),
+       
       });
     });
     return () => {
@@ -112,6 +113,8 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
       currentChat?.hubId &&
       setMessages([...messages, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
+  console.log(arrivalMessage);
+  
   return (
     <div className=" text-black mt-2 w-full px-2 flex flex-col ">
       {" "}

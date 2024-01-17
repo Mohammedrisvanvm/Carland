@@ -9,14 +9,13 @@ import {
   getMessages,
 } from "../../../services/apis/chatApi/chatApi";
 import { format } from "timeago.js";
-import { IConversation } from "../../../interfaces/chatInterface";
-const ENDPOINT: string = import.meta.env.VITE_BASEURL
+const ENDPOINT: string = import.meta.env.VITE_BASEURL;
 type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
-  bookingId:string,
-  hubId:string
+  bookingId: string;
+  hubId: string;
 };
-const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
+const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
   const scroll = React.useRef<HTMLElement | null>(null);
   const user = useAppSelector((state) => state.user);
   type IMessage = {
@@ -25,13 +24,20 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
     senderId?: string | null;
     receiverId?: string;
   };
+
   interface DateMessage extends IMessage {
     createdAt: Date;
     updatedAt?: Date;
     _id?: string;
   }
- 
-  const [currentChat, setCurrentChat] = React.useState<IConversation>();
+  interface Iconversation {
+    _id: string;
+    hubId: string;
+    userId: string;
+    createdAt: Date;
+    updatedAt: Date;
+  }
+  const [currentChat, setCurrentChat] = React.useState<Iconversation>();
   const [messages, setMessages] = React.useState<DateMessage[]>([]);
   const [arrivalMessage, setArrivalMessage] = React.useState<DateMessage>();
   const [NewMessage, setNewMessage] = React.useState<string>("");
@@ -41,38 +47,17 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-  React.useEffect(() => {
-    socket.current = io(ENDPOINT);
-    socket.current?.on("getmessage", (data) => {
-      const senderId: string = data.senderId || "";
-   
-
-      setArrivalMessage({
-        senderId,
-        messageText: data.text,
-        receiverId: data.receiverId,
-        createdAt: new Date(Date.now()),
-      }); 
-    });
-    // return ()=>{
-    //   socket.current?.emit("removefromuser",user._id);
-    // }
-  }, []);
 
 
-  React.useEffect(() => {
-    arrivalMessage &&
-      currentChat?.hubId &&
-      setMessages([...messages, arrivalMessage]);
-  }, [arrivalMessage,currentChat]);
+
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res: any = await createConversation(hubId,user._id);
-     
-        
-        setCurrentChat(res.data.conversation);
+        const response = (await createConversation(hubId, user._id)).data
+          ?.conversation;
+
+        setCurrentChat(response);
       } catch (error: any) {
         console.log(error);
       }
@@ -82,46 +67,66 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
   React.useEffect(() => {
     const fetchData = async () => {
       const res: any = await getMessages(currentChat?._id);
-    
 
       setMessages(res.data);
     };
     fetchData();
   }, [currentChat]);
- 
 
+  console.log(arrivalMessage);
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewMessage(e.target.value);
+  };
   const handleSendMessage = async () => {
-    if (NewMessage) {
-      socket.current?.emit("sendMessage", {
-        socketId: currentChat?._id,
-        text: NewMessage,
-        senderId: user?._id,
-        receiverId: currentChat?.hubId,
-      });
-      const message: IMessage = {
-        conversationId: currentChat?._id,
-        messageText: NewMessage,
-        senderId: user?._id,
-        receiverId: currentChat?.hubId,
-      };
-      try {
-        const res: any = await addNewMessage(message);
-       
-        setMessages([...messages, res.data.savedMessage]);
-        setNewMessage("");
-      } catch (error: any) {
-        console.log(error);
-      }
+    const message: IMessage = {
+      conversationId: currentChat?._id,
+      messageText: NewMessage,
+      senderId: user?._id,
+      receiverId: currentChat?.hubId,
+    };
+
+    socket.current?.emit("sendMessage", {
+      conversationId: currentChat?._id,
+      messageText: NewMessage,
+      senderId: user?._id,
+      receiverId: currentChat?.hubId,
+    });
+
+    try {
+      const res: any = await addNewMessage(message);
+
+      setMessages([...messages, res.data.savedMessage]);
+      setNewMessage("");
+    } catch (error: any) {
+      console.log(error);
     }
   };
   React.useEffect(() => {
-    socket.current?.emit("addUser", user._id,currentChat?._id);
+    socket.current?.emit("addUser", currentChat?._id);
+  }, []);
+  React.useEffect(() => {
+    socket.current = io(ENDPOINT);
+    socket.current?.on("getmessage", (data) => {
+      console.log(data, "userchat");
+
+      setArrivalMessage({
+        senderId: data.senderId,
+        messageText: data.messageText,
+        receiverId: data.receiverId,
+        createdAt: new Date(Date.now()),
+      });
+    });
+    return () => {
+      socket.current?.emit("removefromuser", user._id);
+    };
   }, []);
 
   React.useEffect(() => {
-    socket.current?.connect();
-    socket.current?.on("connected", () => setSocketConnected(true));
-  }, []);
+    arrivalMessage &&
+      currentChat?.hubId &&
+      setMessages([...messages, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
+
 
   return (
     <React.Fragment>
@@ -154,9 +159,11 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
                 <div className="h-96 w-auto px-5 pt-5 bg-gray-300  overflow-y-auto ">
                   {messages
                     ? messages.map((item) => (
-                        <div key={item._id} ref={scroll as React.RefObject<HTMLDivElement>}>
+                        <div
+                          key={item._id}
+                          ref={scroll as React.RefObject<HTMLDivElement>}
+                        >
                           <div
-                          
                             className={`flex  ${
                               item.senderId == user._id
                                 ? "justify-end"
@@ -200,9 +207,7 @@ const UserChat: FC<Iprop> = ({ setShowChat,hubId }) => {
                 <input
                   type="text"
                   value={NewMessage}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setNewMessage(e.target.value)
-                  }
+                  onChange={handleInputChange}
                   placeholder="text here"
                   className=" w-full border-l-2 border-gray-200 text-gray-500 focus:border-0 focus:border-gray-400"
                 />

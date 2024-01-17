@@ -16,15 +16,15 @@ const VendorChat: FC = () => {
 
   const [conversation, setConversation] = React.useState<
     IConversation[] | undefined
-  >([]);
+  >();
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
-        const res: AxiosResponse = await getConversations(vendor.hubId);
-       
+        const res =  (await getConversations(vendor.hubId)).data?.allConversation 
+       console.log(res);
 
-        setConversation(res.data?.conversation);
+        setConversation(res);
       } catch (error: any) {
         console.log(error);
       }

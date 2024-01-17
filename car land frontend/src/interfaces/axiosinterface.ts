@@ -28,7 +28,8 @@ export interface AxiosResponse<T = any> {
     salesReportTotal?: number;
     location?: hubdata;
     status?: number;
-    conversation?: IConversation[];
+    conversation: IConversation;
+    allConversation:IConversation[]
     statusText?: string;
     headers?: any;
     config?: AxiosRequestConfig;

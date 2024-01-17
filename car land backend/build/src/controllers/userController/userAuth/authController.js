@@ -60,11 +60,15 @@ exports.userOtpverify = (0, express_async_handler_1.default)(async (req, res) =>
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 900000,
                     httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 7 * 24 * 60 * 60,
                     httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
                 })
                     .json({ user: userExist, accessToken });
             }
@@ -110,6 +114,7 @@ exports.userLoginController = (0, express_async_handler_1.default)(async (req, r
                 maxAge: 300000,
                 httpOnly: true,
                 secure: true,
+                sameSite: "none",
             })
                 .json({ message: "user otp sented" });
         }
@@ -150,11 +155,15 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                 const refreshToken = (0, jwtutils_1.jwtSign)({ id: newUser?._id }, "7d");
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,
+                    secure: true,
+                    sameSite: "none",
                     httpOnly: true,
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
+                    secure: true,
+                    sameSite: "none",
                     httpOnly: true,
                 })
                     .json({
@@ -178,11 +187,15 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,
                     httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
                 });
                 res
                     .cookie("refreshTokenUser", refreshToken, {
                     maxAge: 1000 * 60 * 60 * 24 * 7,
                     httpOnly: true,
+                    secure: true,
+                    sameSite: "none",
                 })
                     .json({ user, accessToken, message: "created" });
             }
@@ -221,14 +234,16 @@ exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
             const Ref = (0, jwtutils_1.jwtSign)({ email: user.email }, "7d");
             res.cookie("accessTokenUser", access, {
                 httpOnly: true,
-                maxAge: 7 * 24 * 60 * 60,
                 secure: true,
+                sameSite: "none",
+                maxAge: 8 * 1000 * 60,
             });
             res
                 .cookie("refreshTokenUser", Ref, {
                 httpOnly: true,
                 secure: true,
-                maxAge: 7 * 24 * 60 * 60 * 1000,
+                sameSite: "none",
+                maxAge: 8 * 1000 * 60,
             })
                 .json({ user });
         }

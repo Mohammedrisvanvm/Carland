@@ -15,24 +15,29 @@ const chatRouters_1 = __importDefault(require("./routers/chatRouters"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
-const socket_1 = require("./config/socket");
-const socket_io_1 = require("socket.io");
 const errorHandlingMiddleware_1 = require("./middlewares/errorHandler/errorHandlingMiddleware");
+const newSocket_1 = require("./utils/newSocket");
 exports.app = (0, express_1.default)();
 //socket.io server
 const newserver = http_1.default.createServer(exports.app);
-const io = new socket_io_1.Server(newserver, {
-    cors: {
-        origin: [
-            "http://localhost:3000",
-            "https://carland-five.vercel.app",
-            "https://carlandpro.netlify.app",
-            "ws://carland.eshopsport.store",
-        ],
-        credentials: true,
-    },
-});
-(0, socket_1.socketConnect)(io);
+// const io = new Server<
+//   ClientToServerEvents,
+//   ServerToClientEvents,
+//   InterServerEvents,
+//   SocketData
+// >(newserver, {
+//   cors: {
+//     origin: [
+//       "http://localhost:3000",
+//       "https://carland-five.vercel.app",
+//       "https://carlandpro.netlify.app",
+//       "ws://carland.eshopsport.store",
+//     ],
+//     credentials: true,
+//   },
+// });
+// socketConnect(io);
+new newSocket_1.ServerSocket(newserver);
 (0, mongoDB_1.DBconnect)();
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" }));

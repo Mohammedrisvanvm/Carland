@@ -37,7 +37,7 @@ export const getConversation = AsyncHandler(
     }
     const hubId = req.params.hubId as string;
 
-    const conversation: IConversation[] = await conversationModel.aggregate([
+    const allConversation: IConversation[] = await conversationModel.aggregate([
       {
         $match: {
           hubId: new mongoose.Types.ObjectId(req.params.hubId),
@@ -65,7 +65,7 @@ export const getConversation = AsyncHandler(
     ]);
  
 
-    res.status(200).json({ conversation });
+    res.status(200).json({ allConversation });
   }
 );
 export const getChatUser = AsyncHandler(

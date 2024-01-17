@@ -89,12 +89,16 @@ export const userOtpverify = AsyncHandler(
           res.status(200).cookie("accessTokenUser", accessToken, {
             maxAge: 900000,
             httpOnly: true,
+            secure: true,
+            sameSite: "none",
           });
 
           res
             .cookie("refreshTokenUser", refreshToken, {
               maxAge: 7 * 24 * 60 * 60,
               httpOnly: true,
+              secure: true,
+              sameSite: "none",
             })
             .json({ user: userExist, accessToken });
         } else {
@@ -149,6 +153,7 @@ export const userLoginController = AsyncHandler(
             maxAge: 300000,
             httpOnly: true,
             secure: true,
+            sameSite: "none",
           })
           .json({ message: "user otp sented" });
       } else {
@@ -217,14 +222,16 @@ export const userGoogleAuth = AsyncHandler(
 
             res.status(200).cookie("accessTokenUser", accessToken, {
               maxAge: 1000 * 60 * 60 * 24,
-
+              secure: true,
+              sameSite: "none",
               httpOnly: true,
             });
 
             res
               .cookie("refreshTokenUser", refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
-
+                secure: true,
+                sameSite: "none",
                 httpOnly: true,
               })
               .json({
@@ -251,12 +258,16 @@ export const userGoogleAuth = AsyncHandler(
             res.status(200).cookie("accessTokenUser", accessToken, {
               maxAge: 1000 * 60 * 60 * 24,
               httpOnly: true,
+              secure: true,
+              sameSite: "none",
             });
 
             res
               .cookie("refreshTokenUser", refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
+                secure: true,
+                sameSite: "none",
               })
               .json({ user, accessToken, message: "created" });
           }
@@ -270,13 +281,13 @@ export const userLogoutController = AsyncHandler(
     res.cookie("accessTokenUser", "", {
       httpOnly: true,
       maxAge: 0,
-      secure:true,
+      secure: true,
     });
     res
       .cookie("refreshTokenUser", "", {
         httpOnly: true,
         maxAge: 0,
-        secure:true,
+        secure: true,
       })
       .status(200)
       .json({ message: "logout user" });
@@ -311,23 +322,25 @@ export const userCheck = AsyncHandler(
         if (!user) {
           throw new Error("user not exist");
         }
-        const access =  jwtSign(
+        const access = jwtSign(
           { id: user._id, name: user.userName, email: user.email },
           "30s"
         );
 
-        const Ref =  jwtSign({ email: user.email }, "7d");
+        const Ref = jwtSign({ email: user.email }, "7d");
         res.cookie("accessTokenUser", access, {
           httpOnly: true,
-          maxAge: 7 * 24 * 60 * 60,
           secure: true,
+          sameSite: "none",
+          maxAge: 8 * 1000 * 60,
         });
 
         res
           .cookie("refreshTokenUser", Ref, {
             httpOnly: true,
             secure: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            sameSite: "none",
+            maxAge: 8 * 1000 * 60,
           })
           .json({ user });
       } else {
