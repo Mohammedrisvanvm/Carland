@@ -25,6 +25,7 @@ import {
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
 import { ServerSocket } from "./utils/newSocket";
 import credentials, { allowedOrigins } from "./middlewares/credentials";
+import Razorpay from "razorpay";
 
 export const app = express();
 //socket.io server
@@ -47,6 +48,7 @@ const newserver = http.createServer(app);
 // });
 
 // socketConnect(io);
+
 new ServerSocket(newserver)
 DBconnect();
 app.use(express.json({ limit: "50mb" }));

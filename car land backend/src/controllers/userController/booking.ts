@@ -7,7 +7,6 @@ import vehicleModel from "../../models/vehicleSchema";
 import Ihub from "../../interfaces/hubInterface";
 import hubModel from "../../models/hubSchema";
 import { dateCount } from "../../helpers/dateCount";
-import Razorpay from "razorpay";
 import crypto from "crypto";
 import IBookWithTimestamps from "../../interfaces/bookingInterface";
 import { RazorpayRefund } from "../../interfaces/razorpayInterface";
@@ -16,10 +15,8 @@ import IUser from "../../interfaces/userInterface";
 import userModel from "../../models/userSchema";
 import { mailServiceConfirmBooking } from "../../utils/nodeMailer/confirmBooking";
 import { mailServiceCancelBooking } from "../../utils/nodeMailer/cancelBookingMail";
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_ID as string,
-  key_secret: process.env.RAZORPAY_SECRET as string,
-});
+import { razorpay } from "../../utils/payment/razorpay";
+
 function generateRandomString(length: number) {
   const characters =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

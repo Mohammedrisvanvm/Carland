@@ -9,16 +9,12 @@ const bookingSchema_1 = __importDefault(require("../../models/bookingSchema"));
 const vehicleSchema_1 = __importDefault(require("../../models/vehicleSchema"));
 const hubSchema_1 = __importDefault(require("../../models/hubSchema"));
 const dateCount_1 = require("../../helpers/dateCount");
-const razorpay_1 = __importDefault(require("razorpay"));
 const crypto_1 = __importDefault(require("crypto"));
 const createId_1 = require("../../helpers/createId");
 const userSchema_1 = __importDefault(require("../../models/userSchema"));
 const confirmBooking_1 = require("../../utils/nodeMailer/confirmBooking");
 const cancelBookingMail_1 = require("../../utils/nodeMailer/cancelBookingMail");
-const razorpay = new razorpay_1.default({
-    key_id: process.env.RAZORPAY_ID,
-    key_secret: process.env.RAZORPAY_SECRET,
-});
+const razorpay_1 = require("../../utils/payment/razorpay");
 function generateRandomString(length) {
     const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let result = "";
@@ -30,7 +26,7 @@ function generateRandomString(length) {
 }
 exports.razorpayPayment = (0, express_async_handler_1.default)(async (req, res) => {
     const { amount } = req.body.data;
-    const response = await razorpay.orders.create({
+    const response = await razorpay_1.razorpay.orders.create({
         amount: amount * 100,
         currency: "INR",
         receipt: generateRandomString(10),
@@ -146,7 +142,7 @@ exports.pickupReq = (0, express_async_handler_1.default)(async (req, res) => {
 exports.cancelBooking = (0, express_async_handler_1.default)(async (req, res) => {
     const { bookingID } = req.query;
     const booking = await bookingSchema_1.default.findById(bookingID);
-    razorpay.payments
+    razorpay_1.razorpay.payments
         .refund(booking.paymentDetails.razorpay_payment_id, {
         amount: `${booking.totalPrice}`,
         speed: "optimum",
