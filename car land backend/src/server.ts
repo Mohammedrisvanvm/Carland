@@ -24,6 +24,7 @@ import {
   notFound,
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
 import { ServerSocket } from "./utils/newSocket";
+import credentials, { allowedOrigins } from "./middlewares/credentials";
 
 export const app = express();
 //socket.io server
@@ -52,13 +53,10 @@ app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 app.use(express.static(path.resolve() + "/public"));
 app.use(cookieParser());
-
+app.use(credentials)
 app.use(
   cors({
-    origin: [
-      "http://localhost:3000",
-      "https://carlandpro.netlify.app",
-    ],
+    origin: allowedOrigins,
     credentials: true,
     optionsSuccessStatus:200
   })
@@ -74,6 +72,7 @@ app.get("/", (req: Request, res: Response): void => {
 
 app.use(notFound);
 app.use(errorHandler);
+
 
 newserver.listen(config.server.port, () =>
   console.log(`server connected @ ${config.server.port}`)
