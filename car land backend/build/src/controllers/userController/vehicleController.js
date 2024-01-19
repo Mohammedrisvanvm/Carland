@@ -90,7 +90,7 @@ exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => 
             // item.pickup
         });
     }
-    res.json({ vehicles, count });
+    res.status(200).json({ vehicles, count });
 });
 exports.singleCar = (0, express_async_handler_1.default)(async (req, res) => {
     const id = typeof req.query.id === "string" ? req.query.id : "";

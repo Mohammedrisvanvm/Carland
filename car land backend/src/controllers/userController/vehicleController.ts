@@ -124,7 +124,7 @@ export const userVehicles = AsyncHandler(
       })
     }
 
-    res.json({ vehicles, count });
+    res.status(200).json({ vehicles, count });
   }
 );
 export const singleCar = AsyncHandler(
