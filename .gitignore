@@ -3,5 +3,7 @@
 /car land backend/src/.env
 /car land backend/.env
 /car land frontend/.env
+/car land frontend/dist
+/car land frontend/dist-ssr
 /car land backend/keys
 /car land backend/src
