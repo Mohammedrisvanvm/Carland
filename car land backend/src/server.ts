@@ -1,31 +1,22 @@
-import express, { Request, Response } from "express";
-import { DBconnect } from "./config/mongoDB";
 import cors from "cors";
+import express, { Request, Response } from "express";
 import { config } from "./config/config";
-import userRouters from "./routers/userRouters";
+import { DBconnect } from "./config/mongoDB";
 import vendorRouters from "./routers/VendorRouters";
 import adminRouters from "./routers/adminRouters";
 import chatRouter from "./routers/chatRouters";
+import userRouters from "./routers/userRouters";
 
 import cookieParser from "cookie-parser";
-import path from "path";
 import http from "http";
+import path from "path";
 
-import {
-  ClientToServerEvents,
-  InterServerEvents,
-  ServerToClientEvents,
-  SocketData,
-} from "./interfaces/socketIinterface";
-import { socketConnect } from "./config/socket";
-import { Server } from "socket.io";
+import credentials, { allowedOrigins } from "./middlewares/credentials";
 import {
   errorHandler,
   notFound,
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
 import { ServerSocket } from "./utils/newSocket";
-import credentials, { allowedOrigins } from "./middlewares/credentials";
-import Razorpay from "razorpay";
 
 export const app = express();
 //socket.io server

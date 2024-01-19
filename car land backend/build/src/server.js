@@ -27,20 +27,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.app = void 0;
-const express_1 = __importDefault(require("express"));
-const mongoDB_1 = require("./config/mongoDB");
 const cors_1 = __importDefault(require("cors"));
+const express_1 = __importDefault(require("express"));
 const config_1 = require("./config/config");
-const userRouters_1 = __importDefault(require("./routers/userRouters"));
+const mongoDB_1 = require("./config/mongoDB");
 const VendorRouters_1 = __importDefault(require("./routers/VendorRouters"));
 const adminRouters_1 = __importDefault(require("./routers/adminRouters"));
 const chatRouters_1 = __importDefault(require("./routers/chatRouters"));
+const userRouters_1 = __importDefault(require("./routers/userRouters"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
-const path_1 = __importDefault(require("path"));
 const http_1 = __importDefault(require("http"));
+const path_1 = __importDefault(require("path"));
+const credentials_1 = __importStar(require("./middlewares/credentials"));
 const errorHandlingMiddleware_1 = require("./middlewares/errorHandler/errorHandlingMiddleware");
 const newSocket_1 = require("./utils/newSocket");
-const credentials_1 = __importStar(require("./middlewares/credentials"));
 exports.app = (0, express_1.default)();
 //socket.io server
 const newserver = http_1.default.createServer(exports.app);
