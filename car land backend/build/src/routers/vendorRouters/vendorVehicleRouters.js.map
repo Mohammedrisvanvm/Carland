@@ -1,0 +1,1 @@
+{"version":3,"file":"vendorVehicleRouters.js","sourceRoot":"","sources":["../../../../src/routers/vendorRouters/vendorVehicleRouters.ts"],"names":[],"mappings":";;AAAA,qCAAiC;AACjC,4FAAmH;AAEnH,MAAM,oBAAoB,GAAC,IAAA,gBAAM,GAAE,CAAA;AAGnC,oBAAoB,CAAC,IAAI,CAAC,aAAa,EAAC,wCAAoB,CAAC,CAAA;AAC7D,oBAAoB,CAAC,GAAG,CAAC,cAAc,EAAC,yCAAqB,CAAC,CAAA;AAK9D,kBAAe,oBAAoB,CAAA"}
