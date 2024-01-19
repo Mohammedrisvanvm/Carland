@@ -26,11 +26,11 @@ const userSchema = new mongoose_1.Schema({
     },
     gender: {
         type: String,
-        default: null
+        default: null,
     },
     phone_number: {
         type: Number,
-        default: null
+        default: null,
     },
     verified_email: {
         type: Boolean,
@@ -46,11 +46,11 @@ const userSchema = new mongoose_1.Schema({
     },
     license: {
         type: (Array),
-        required: false
+        required: false,
     },
     adhaar: {
         type: (Array),
-        required: false
+        required: false,
     },
     profileVerificationRequest: {
         type: Boolean,
@@ -59,7 +59,7 @@ const userSchema = new mongoose_1.Schema({
     verifiedProfile: {
         type: Boolean,
         default: false,
-    }
+    },
 }, { timestamps: true });
 userSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {

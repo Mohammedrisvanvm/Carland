@@ -1,4 +1,4 @@
-import  { Schema, model} from "mongoose";
+import { Schema, model } from "mongoose";
 import bcrypt from "bcrypt";
 import IUser from "../interfaces/userInterface";
 import { NextFunction } from "express";
@@ -23,13 +23,13 @@ const userSchema: Schema = new Schema(
     image: {
       type: String,
     },
-    gender:{
-      type:String,
-      default:null
+    gender: {
+      type: String,
+      default: null,
     },
     phone_number: {
       type: Number,
-      default:null
+      default: null,
     },
     verified_email: {
       type: Boolean,
@@ -43,22 +43,22 @@ const userSchema: Schema = new Schema(
       type: Boolean,
       default: false,
     },
-    license:{
-     type:  Array<String>,
-     required:false
+    license: {
+      type: Array<String>,
+      required: false,
     },
-    adhaar:{
-     type:  Array<String>,
-     required:false
+    adhaar: {
+      type: Array<String>,
+      required: false,
     },
-    profileVerificationRequest:{
+    profileVerificationRequest: {
       type: Boolean,
       default: false,
     },
-    verifiedProfile:{
+    verifiedProfile: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   { timestamps: true }
 );
@@ -69,11 +69,9 @@ userSchema.pre("save", async function (next: NextFunction) {
   }
 
   const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
+  this.password = await bcrypt.hash(this.password as string, salt);
 });
 userSchema.methods.matchPassword = async function (enteredPassword: string) {
- 
-
   return await bcrypt.compare(enteredPassword, this.password);
 };
 
