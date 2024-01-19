@@ -67,7 +67,7 @@ exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" }));
 exports.app.use(express_1.default.static(path_1.default.resolve() + "/public"));
 exports.app.use((0, cookie_parser_1.default)());
-console.log(process.env.RAZORPAY_ID);
+console.log(process.env.RAZO_KEY_ID);
 exports.app.use(credentials_1.default);
 exports.app.use((0, cors_1.default)({
     origin: credentials_1.allowedOrigins,
