@@ -17,8 +17,8 @@ import userModel from "../../models/userSchema";
 import { mailServiceConfirmBooking } from "../../utils/nodeMailer/confirmBooking";
 import { mailServiceCancelBooking } from "../../utils/nodeMailer/cancelBookingMail";
 const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_ID,
-  key_secret: process.env.RAZORPAY_SECRET,
+  key_id: process.env.RAZORPAY_ID as string,
+  key_secret: process.env.RAZORPAY_SECRET as string,
 });
 function generateRandomString(length: number) {
   const characters =
