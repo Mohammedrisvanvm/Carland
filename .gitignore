@@ -1,6 +1,6 @@
 /car land frontend/node_modules
 /car land backend/node_modules
-/car land backend/.env
+/car land backend/src/.env
 /car land frontend/.env
 /car land backend/keys
 /car land backend/src
