@@ -1,5 +1,4 @@
-import  { Schema, model } from "mongoose";
-import bcrypt from 'bcrypt'
+import { Schema, model } from "mongoose";
 import IVendor from "../interfaces/vendorInterface";
 
 
@@ -35,17 +34,8 @@ const VendorSchema:Schema=new Schema({
     }
 },{timestamps:true})
 
-VendorSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) {
-        next()
-    }
 
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-})
-VendorSchema.methods.matchPassword=async function (enteredPassword: string) {
-    return await bcrypt.compare(enteredPassword, this.password)
-}
+
 
 const VendorModel=model<IVendor>('vender',VendorSchema)
 export default VendorModel

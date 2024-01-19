@@ -43,7 +43,7 @@ export const getBookings = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       }));
 
-    const count: number = await bookModel.find({ hubId: hubID }).count();
+    const count: number = await (await bookModel.find({ hubId: hubID })).length;
     console.log(count);
 
     res.json({
@@ -151,9 +151,9 @@ export const salesReportVendor = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       }));
 
-    const count: number = await bookModel
-      .find({ hubId: hubID, status: "Completed" })
-      .count();
+    const count: number = (await bookModel
+      .find({ hubId: hubID, status: "Completed" })).length
+     
     interface AggregationResult {
       _id: null;
       totalprice: number;

@@ -35,7 +35,7 @@ exports.getBookings = (0, express_async_handler_1.default)(async (req, res) => {
         ...item,
         image: vehicleImageMap[item.vehicleId],
     }));
-    const count = await bookingSchema_1.default.find({ hubId: hubID }).count();
+    const count = await (await bookingSchema_1.default.find({ hubId: hubID })).length;
     console.log(count);
     res.json({
         message: "unique hub bookingDetails",
@@ -104,9 +104,8 @@ exports.salesReportVendor = (0, express_async_handler_1.default)(async (req, res
         ...item,
         image: vehicleImageMap[item.vehicleId],
     }));
-    const count = await bookingSchema_1.default
-        .find({ hubId: hubID, status: "Completed" })
-        .count();
+    const count = (await bookingSchema_1.default
+        .find({ hubId: hubID, status: "Completed" })).length;
     const result = await bookingSchema_1.default.aggregate([
         {
             $match: {

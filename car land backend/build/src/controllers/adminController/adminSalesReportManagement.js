@@ -38,7 +38,7 @@ exports.salesReportAdmin = (0, express_async_handler_1.default)(async (req, res)
         ...item,
         image: vehicleImageMap[item.vehicleId],
     }));
-    const count = await bookingSchema_1.default.find({ status: "Completed" }).count();
+    const count = (await bookingSchema_1.default.find({ status: "Completed" })).length;
     const result = await bookingSchema_1.default.aggregate([
         {
             $match: {

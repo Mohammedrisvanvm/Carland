@@ -47,7 +47,7 @@ exports.app.use((0, cors_1.default)({
     origin: [
         "http://localhost:3000",
         "https://carland-five.vercel.app",
-        "https://carlandpro.netlify.app",
+        "https://carlandpro.netlify.app/",
     ],
     credentials: true,
 }));

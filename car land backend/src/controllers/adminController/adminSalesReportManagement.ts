@@ -46,7 +46,7 @@ export const salesReportAdmin = AsyncHandler(
         ...item,
         image: vehicleImageMap[item.vehicleId],
       }));
-    const count: number = await bookModel.find({ status: "Completed" }).count();
+    const count: number = (await bookModel.find({ status: "Completed" })).length;
     interface AggregationResult {
       _id: null;
       totalprice: number;
