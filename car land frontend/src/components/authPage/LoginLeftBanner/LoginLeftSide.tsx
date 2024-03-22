@@ -12,7 +12,6 @@ export const LoginLeftSide: React.FC<IPROPS> = ({ value }) => {
   const AuthComponent = value.Auth;
   const Navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
   return (
     <>
       <div className="relative overflow-x-hidden bg-opacity-75 ">

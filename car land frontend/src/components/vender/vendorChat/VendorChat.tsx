@@ -22,7 +22,7 @@ const VendorChat: FC = () => {
     const fetchData = async () => {
       try {
         const res =  (await getConversations(vendor.hubId)).data?.allConversation 
-       console.log(res);
+      
 
         setConversation(res);
       } catch (error: any) {

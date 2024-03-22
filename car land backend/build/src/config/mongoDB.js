@@ -8,7 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const config_1 = require("./config");
 const DBconnect = () => {
     mongoose_1.default.connect(config_1.config.mongo.url, { retryWrites: true, w: 'majority' }).then(() => console.log("db connected")).catch((error) => {
-        console.log(error);
+        console.log(error + "123456");
     });
 };
 exports.DBconnect = DBconnect;

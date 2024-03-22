@@ -1,41 +1,30 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ServerSocket = void 0;
+exports.socketConnect = void 0;
 const socket_io_1 = require("socket.io");
-class ServerSocket {
-    constructor(server) {
-        this.StartListeners = (socket) => {
-            console.info("message received from " + socket.id);
-            socket.on("handshake", () => {
-                console.info("Hand shake received from " + socket.id);
-            });
-            socket.on("addUser", (chatId) => {
-                console.log(chatId + "erftyguhij");
-                socket.join(chatId);
-            });
-            socket.on("sendMessage", (data) => {
-                console.log(data);
-                socket.broadcast.to(data.conversationId).emit("getmessage", data);
-            });
-            socket.on("disconnect", () => {
-                console.info("Disconnect received from" + socket.id);
-            });
-        };
-        ServerSocket.instance = this;
-        this.users = { uuid: "23", uud: "23" };
-        this.io = new socket_io_1.Server(server, {
-            serveClient: false,
-            pingInterval: 10000,
-            pingTimeout: 0,
-            cookie: false,
-            cors: {
-                origin: "*",
-            },
+const credentials_1 = require("../middlewares/credentials");
+const socketConnect = (server) => {
+    const io = new socket_io_1.Server(server, {
+        maxHttpBufferSize: 1e8,
+        transports: ["websocket", "polling"],
+        cors: {
+            origin: credentials_1.allowedOrigins,
+            methods: ["GET", "POST"],
+            credentials: true,
+        },
+    });
+    io.on("connection", (socket) => {
+        socket.on("addUser", (chatId) => {
+            socket.join(chatId);
         });
-        this.io.on("connect", this.StartListeners);
-        console.log(Object.entries(this.users));
-        console.info("Socket Io Started.");
-    }
-}
-exports.ServerSocket = ServerSocket;
+        socket.on("sendMessage", (data) => {
+            socket.broadcast.to(data.conversationId).emit("getmessage", data);
+        });
+        socket.on("disconnect", () => {
+            console.info("Disconnect received from" + socket.id);
+        });
+    });
+    console.info("Socket Io Started.");
+};
+exports.socketConnect = socketConnect;
 //# sourceMappingURL=newSocket.js.map

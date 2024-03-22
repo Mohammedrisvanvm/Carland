@@ -1,14 +1,13 @@
-import React, { Dispatch, SetStateAction, FC, ChangeEvent } from "react";
+import React, { ChangeEvent, Dispatch, FC, SetStateAction } from "react";
 
 import io, { Socket } from "socket.io-client";
+import { format } from "timeago.js";
 import { useAppSelector } from "../../../redux/store/storeHook";
 import {
   addNewMessage,
   createConversation,
-  getConversations,
-  getMessages,
+  getMessages
 } from "../../../services/apis/chatApi/chatApi";
-import { format } from "timeago.js";
 const ENDPOINT: string = import.meta.env.VITE_BASEURL;
 type Iprop = {
   setShowChat: Dispatch<SetStateAction<boolean>>;
@@ -16,6 +15,7 @@ type Iprop = {
   hubId: string;
 };
 const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
+  const socket = React.useRef<Socket>();
   const scroll = React.useRef<HTMLElement | null>(null);
   const user = useAppSelector((state) => state.user);
   type IMessage = {
@@ -42,21 +42,15 @@ const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
   const [arrivalMessage, setArrivalMessage] = React.useState<DateMessage>();
   const [NewMessage, setNewMessage] = React.useState<string>("");
 
-  const [socketConnected, setSocketConnected] = React.useState<boolean>(false);
-  const socket = React.useRef<Socket>();
   React.useEffect(() => {
     scroll.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
-
-
-
 
   React.useEffect(() => {
     const fetchData = async () => {
       try {
         const response = (await createConversation(hubId, user._id)).data
           ?.conversation;
-
         setCurrentChat(response);
       } catch (error: any) {
         console.log(error);
@@ -73,7 +67,6 @@ const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
     fetchData();
   }, [currentChat]);
 
-  console.log(arrivalMessage);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(e.target.value);
   };
@@ -102,12 +95,8 @@ const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
     }
   };
   React.useEffect(() => {
-    socket.current?.emit("addUser", currentChat?._id);
-  }, []);
-  React.useEffect(() => {
     socket.current = io(ENDPOINT);
     socket.current?.on("getmessage", (data) => {
-      console.log(data, "userchat");
 
       setArrivalMessage({
         senderId: data.senderId,
@@ -116,17 +105,17 @@ const UserChat: FC<Iprop> = ({ setShowChat, hubId }) => {
         createdAt: new Date(Date.now()),
       });
     });
-    return () => {
-      socket.current?.emit("removefromuser", user._id);
-    };
   }, []);
+React.useEffect(() => {
+  
+    socket.current?.emit("addUser", currentChat?._id);
+  }, [currentChat]);
 
   React.useEffect(() => {
     arrivalMessage &&
       currentChat?.hubId &&
       setMessages([...messages, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
-
 
   return (
     <React.Fragment>

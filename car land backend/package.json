@@ -9,7 +9,7 @@
     "dev": "ts-node src/server.ts",
     "start": "node --watch build/src/server.js",
     "lint": "eslint . --ext .ts",
-    "prod": "del /S /Q build && tsc && nodemon build/server.js"
+    "prod": "del /S /Q build && tsc && nodemon build/src/server.js"
   },
   "author": "",
   "license": "ISC",

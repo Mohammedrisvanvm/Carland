@@ -1,7 +1,5 @@
-import React from "react";
 
 const SkeletonLoader = ({count}:{count:number}) => {
-    console.log(count)
   return (
     
     <div

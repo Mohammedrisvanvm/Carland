@@ -13,7 +13,6 @@ const ProtectedRouteuser = ({ children, role }: Props): React.ReactNode => {
   const location = useLocation();
 
   if (role === "user" && user.accessToken) {
-    console.log(location.pathname);
 
     if (
       location.pathname === "/userlogin" ||
@@ -26,7 +25,6 @@ const ProtectedRouteuser = ({ children, role }: Props): React.ReactNode => {
       return children;
     }
   } else {
-    console.log(location.pathname);
     if (
       location.pathname === "/userlogin" ||
       location.pathname === "/usersignup" ||

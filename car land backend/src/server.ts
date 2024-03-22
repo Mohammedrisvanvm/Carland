@@ -6,53 +6,34 @@ import vendorRouters from "./routers/VendorRouters";
 import adminRouters from "./routers/adminRouters";
 import chatRouter from "./routers/chatRouters";
 import userRouters from "./routers/userRouters";
-
 import cookieParser from "cookie-parser";
 import http from "http";
 import path from "path";
-
 import credentials, { allowedOrigins } from "./middlewares/credentials";
 import {
   errorHandler,
   notFound,
 } from "./middlewares/errorHandler/errorHandlingMiddleware";
-import { ServerSocket } from "./utils/newSocket";
+import { socketConnect } from "./utils/newSocket";
 
 export const app = express();
 //socket.io server
-const newserver = http.createServer(app);
-// const io = new Server<
-//   ClientToServerEvents,
-//   ServerToClientEvents,
-//   InterServerEvents,
-//   SocketData
-// >(newserver, {
-//   cors: {
-//     origin: [
-//       "http://localhost:3000",
-//       "https://carland-five.vercel.app",
-//       "https://carlandpro.netlify.app",
-//       "ws://carland.eshopsport.store",
-//     ],
-//     credentials: true,
-//   },
-// });
+const server = http.createServer(app);
 
-// socketConnect(io);
+socketConnect(server);
 
-new ServerSocket(newserver)
 DBconnect();
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: false, limit: "50mb" }));
 app.use(express.static(path.resolve() + "/public"));
 app.use(cookieParser());
 
-app.use(credentials)
+app.use(credentials);
 app.use(
   cors({
     origin: allowedOrigins,
     credentials: true,
-    optionsSuccessStatus:200
+    optionsSuccessStatus: 200,
   })
 );
 
@@ -67,7 +48,6 @@ app.get("/", (req: Request, res: Response): void => {
 app.use(notFound);
 app.use(errorHandler);
 
-
-newserver.listen(config.server.port, () =>
+server.listen(config.server.port, () =>
   console.log(`server connected @ ${config.server.port}`)
 );

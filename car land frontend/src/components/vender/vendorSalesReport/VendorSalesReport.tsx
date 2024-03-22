@@ -46,7 +46,6 @@ const VendorSalesReport: FC<Iprop> = ({ sidebarWidth }) => {
     };
     fetchData();
   }, [search, currentPage, loader]);
-  console.log(salesReports);
 
   return (
     <React.Fragment>

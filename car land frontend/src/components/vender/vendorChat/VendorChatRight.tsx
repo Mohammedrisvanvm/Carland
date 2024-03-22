@@ -49,7 +49,7 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
       setMessages(res.data);
     };
     fetchData();
-  }, [currentChat]);
+  }, []);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setNewMessage(e.target.value);
   };
@@ -71,7 +71,6 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
    
     try {
       const res: any = await addNewMessage(message);
-      console.log(res);
       setMessages([...messages, res.data.savedMessage]);
       setNewMessage("");
     } catch (error: any) {
@@ -88,14 +87,15 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
   };
 
   React.useEffect(() => {
+    if(currentChat){
+      
+    }
     socket.current?.emit("addUser", currentChat?._id);
   }, []);
   React.useEffect(() => {
     socket.current = io(ENDPOINT);
-    console.log(socket.current);
     
     socket.current?.on("getmessage", (data) => {
-      console.log(data,"vendorchat");
       setArrivalMessage({
         senderId:data.senderId,
         messageText: data.messageText,
@@ -113,7 +113,6 @@ const VendorChatRight: FC<Iprops> = ({ currentChat }) => {
       currentChat?.hubId &&
       setMessages([...messages, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
-  console.log(arrivalMessage);
   
   return (
     <div className=" text-black mt-2 w-full px-2 flex flex-col ">

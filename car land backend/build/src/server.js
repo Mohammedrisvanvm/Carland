@@ -43,25 +43,8 @@ const errorHandlingMiddleware_1 = require("./middlewares/errorHandler/errorHandl
 const newSocket_1 = require("./utils/newSocket");
 exports.app = (0, express_1.default)();
 //socket.io server
-const newserver = http_1.default.createServer(exports.app);
-// const io = new Server<
-//   ClientToServerEvents,
-//   ServerToClientEvents,
-//   InterServerEvents,
-//   SocketData
-// >(newserver, {
-//   cors: {
-//     origin: [
-//       "http://localhost:3000",
-//       "https://carland-five.vercel.app",
-//       "https://carlandpro.netlify.app",
-//       "ws://carland.eshopsport.store",
-//     ],
-//     credentials: true,
-//   },
-// });
-// socketConnect(io);
-new newSocket_1.ServerSocket(newserver);
+const server = http_1.default.createServer(exports.app);
+(0, newSocket_1.socketConnect)(server);
 (0, mongoDB_1.DBconnect)();
 exports.app.use(express_1.default.json({ limit: "50mb" }));
 exports.app.use(express_1.default.urlencoded({ extended: false, limit: "50mb" }));
@@ -71,7 +54,7 @@ exports.app.use(credentials_1.default);
 exports.app.use((0, cors_1.default)({
     origin: credentials_1.allowedOrigins,
     credentials: true,
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
 }));
 exports.app.use("/users", userRouters_1.default);
 exports.app.use("/vendors", VendorRouters_1.default);
@@ -82,5 +65,5 @@ exports.app.get("/", (req, res) => {
 });
 exports.app.use(errorHandlingMiddleware_1.notFound);
 exports.app.use(errorHandlingMiddleware_1.errorHandler);
-newserver.listen(config_1.config.server.port, () => console.log(`server connected @ ${config_1.config.server.port}`));
+server.listen(config_1.config.server.port, () => console.log(`server connected @ ${config_1.config.server.port}`));
 //# sourceMappingURL=server.js.map
