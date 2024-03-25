@@ -1,7 +1,7 @@
 /car land frontend/node_modules
 /car land backend/node_modules
 /car land backend/src/.env
-/car land backend/build
+/car land backend/src
 /car land backend/.env
 /car land frontend/.env
 /car land frontend/dist

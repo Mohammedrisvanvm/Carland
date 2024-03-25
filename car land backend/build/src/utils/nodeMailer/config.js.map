@@ -1,0 +1,1 @@
+{"version":3,"file":"config.js","sourceRoot":"","sources":["../../../../src/utils/nodeMailer/config.ts"],"names":[],"mappings":";;;;;;AAAA,4DAAoC;AACvB,QAAA,WAAW,GAA2B,oBAAU,CAAC,eAAe,CAAC;IAC1E,IAAI,EAAE,gBAAgB;IACtB,IAAI,EAAE,GAAG;IACT,MAAM,EAAE,KAAK;IACb,IAAI,EAAE;QACJ,IAAI,EAAE,OAAO,CAAC,GAAG,CAAC,eAAe;QACjC,IAAI,EAAE,OAAO,CAAC,GAAG,CAAC,kBAAkB;KACrC;CACF,CAAC,CAAC"}
