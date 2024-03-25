@@ -40,8 +40,8 @@ const bookingSchema: Schema = new Schema(
       type: Number,
       required: true,
     },
-    locationName:{
-      type:String
+    locationName: {
+      type: String,
     },
     days: {
       type: Number,
@@ -49,26 +49,33 @@ const bookingSchema: Schema = new Schema(
     },
     paymentDetails: {
       type: Object,
-      required:true
+      required: true,
     },
     paymentStatus: {
       type: String,
       enum: ["Refunded", "FullPaid"],
-     required:true
+      required: true,
     },
-    refundedDetails:{
+    refundedDetails: {
       type: Object,
-      default:null
+      default: null,
     },
-    tempStatus:{
-      type:String,
-      enum:['pickUp','pickUpreq','cancel'],
-      default:"pickUp"
+    tempStatus: {
+      type: String,
+      enum: ["pickUp", "pickUpreq", "cancel"],
+      default: "pickUp",
     },
     status: {
       type: String,
-      enum: ["PickUp", 'pickUpreq', "Ongoing","dropOffReq" ,"Completed", "Cancelled"],
-      default:"PickUp"
+      enum: [
+        "PickUp",
+        "pickUpreq",
+        "Ongoing",
+        "dropOffReq",
+        "Completed",
+        "Cancelled",
+      ],
+      default: "PickUp",
     },
   },
   { timestamps: true }

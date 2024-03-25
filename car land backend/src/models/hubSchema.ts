@@ -41,7 +41,7 @@ const hubSchema: Schema = new Schema(
     hubImage: {
       // url: { type: String },
       // publicid: { type: String },
-      type:String,
+      type: String,
       required: true,
     },
     hubMultiImage: {

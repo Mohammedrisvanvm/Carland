@@ -4,11 +4,9 @@ const conversationSchema: Schema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-
     },
     hubId: {
       type: Schema.Types.ObjectId,
-     
     },
   },
   { timestamps: true }
