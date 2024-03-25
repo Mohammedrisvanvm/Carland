@@ -42,7 +42,7 @@ app.use("/vendors", vendorRouters);
 app.use("/admin", adminRouters);
 app.use("/chat", chatRouter);
 app.get("/", (req: Request, res: Response): void => {
-  res.send("health checked");
+  res.send("health checked test");
 });
 
 app.use(notFound);
