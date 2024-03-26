@@ -61,7 +61,7 @@ exports.app.use("/vendors", VendorRouters_1.default);
 exports.app.use("/admin", adminRouters_1.default);
 exports.app.use("/chat", chatRouters_1.default);
 exports.app.get("/", (req, res) => {
-    res.send("health checked");
+    res.send("health checked test");
 });
 exports.app.use(errorHandlingMiddleware_1.notFound);
 exports.app.use(errorHandlingMiddleware_1.errorHandler);

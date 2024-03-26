@@ -12,12 +12,12 @@ const VendorSchema = new mongoose_1.Schema({
         unique: true,
     },
     renthubs: {
-        type: [{ type: mongoose_1.Schema.Types.ObjectId }]
+        type: [{ type: mongoose_1.Schema.Types.ObjectId }],
     },
     phoneNumber: {
         type: String,
         required: true,
-        unique: true
+        unique: true,
     },
     image: {
         type: String,
@@ -27,9 +27,9 @@ const VendorSchema = new mongoose_1.Schema({
     },
     ban: {
         type: Boolean,
-        default: false
-    }
+        default: false,
+    },
 }, { timestamps: true });
-const VendorModel = (0, mongoose_1.model)('vender', VendorSchema);
+const VendorModel = (0, mongoose_1.model)("vender", VendorSchema);
 exports.default = VendorModel;
 //# sourceMappingURL=vendorSchema.js.map

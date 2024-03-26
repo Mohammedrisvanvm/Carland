@@ -18,6 +18,6 @@ const adminSchema = new mongoose_1.Schema({
 adminSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt_1.default.compare(enteredPassword, this.password);
 };
-const adminModel = (0, mongoose_1.model)('admin', adminSchema);
+const adminModel = (0, mongoose_1.model)("admin", adminSchema);
 exports.default = adminModel;
 //# sourceMappingURL=adminSchema.js.map

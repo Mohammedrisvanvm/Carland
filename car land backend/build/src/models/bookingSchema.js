@@ -39,7 +39,7 @@ const bookingSchema = new mongoose_1.Schema({
         required: true,
     },
     locationName: {
-        type: String
+        type: String,
     },
     days: {
         type: Number,
@@ -47,26 +47,33 @@ const bookingSchema = new mongoose_1.Schema({
     },
     paymentDetails: {
         type: Object,
-        required: true
+        required: true,
     },
     paymentStatus: {
         type: String,
         enum: ["Refunded", "FullPaid"],
-        required: true
+        required: true,
     },
     refundedDetails: {
         type: Object,
-        default: null
+        default: null,
     },
     tempStatus: {
         type: String,
-        enum: ['pickUp', 'pickUpreq', 'cancel'],
-        default: "pickUp"
+        enum: ["pickUp", "pickUpreq", "cancel"],
+        default: "pickUp",
     },
     status: {
         type: String,
-        enum: ["PickUp", 'pickUpreq', "Ongoing", "dropOffReq", "Completed", "Cancelled"],
-        default: "PickUp"
+        enum: [
+            "PickUp",
+            "pickUpreq",
+            "Ongoing",
+            "dropOffReq",
+            "Completed",
+            "Cancelled",
+        ],
+        default: "PickUp",
     },
 }, { timestamps: true });
 const bookModel = (0, mongoose_1.model)("booking", bookingSchema);
