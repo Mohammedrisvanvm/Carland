@@ -13,16 +13,14 @@ interface IVerifyjwt {
 }
 export const userAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    console.log(req.headers.authorization);
+
 
     const accessTokenusertoken: string = req.cookies.accessTokenUser;
     const refreshTokenuser: string = req.cookies.refreshTokenUser;
-    console.log(refreshTokenuser, accessTokenusertoken);
 
     if (!accessTokenusertoken && !refreshTokenuser) {
       throw new Error("User Access Denied");
     }
-    console.log(accessTokenusertoken);
 
     if (accessTokenusertoken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshTokenuser);
@@ -69,7 +67,6 @@ export const userAuthenticate = AsyncHandler(
             sameSite: 'none',
             httpOnly: true,
           });
-          console.log(access, 111);
           req.headers.authorization = user._id;
           req.cookies.accessTokenUser = access;
           next();

@@ -10,7 +10,6 @@ const express_async_handler_1 = __importDefault(require("express-async-handler")
 exports.vendorAuthenticate = (0, express_async_handler_1.default)(async (req, res, next) => {
     const accessTokenvendortoken = req.cookies.accessTokenvendor;
     const refreshTokenvendor = req.cookies.refreshTokenvendor;
-    console.log(refreshTokenvendor, accessTokenvendortoken);
     if (!accessTokenvendortoken && !refreshTokenvendor) {
         throw new Error("Vendor Access Denied");
     }

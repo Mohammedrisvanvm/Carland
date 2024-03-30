@@ -33,15 +33,11 @@ const getUser = (userId: string) => {
 export const socketConnect = (io: Server) => {
   io.on("connection", (socket: userdataSocket) => {
     socket.on("addUser", (userId, socketId) => {
-      console.log(userId, "user", socketId, "socket");
-
       addUser(userId, socketId);
 
       io.emit("getUsers", users);
     });
     socket.on("removefromuser", (userId) => {
-      console.log(userId);
-
       removeUser(userId);
 
       io.emit("getUsers", users);
@@ -51,8 +47,6 @@ export const socketConnect = (io: Server) => {
       "sendMessage",
       ({ senderId, receiverId, text, socketId }: ISentMessage) => {
         const user = getUser(receiverId);
-
-        console.log(senderId, receiverId, text, socketId);
 
         try {
           io.to(user.socketId).emit("getmessage", {

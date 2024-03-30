@@ -11,9 +11,7 @@ const calculateDistance_1 = require("../../helpers/calculateDistance");
 const mongoose_1 = __importDefault(require("mongoose"));
 exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => {
     const pageNumber = Number(req.query.currentPage);
-    console.log(req.query);
     const { search, filter, lat, lng, seletedDate } = req.query;
-    console.log(search, "1", filter, "2", lat, "3", lng, "4", seletedDate);
     const query = { isVerified: true };
     if (search) {
         query.vehicleName = new RegExp(search, "i");
@@ -81,11 +79,7 @@ exports.userVehicles = (0, express_async_handler_1.default)(async (req, res) => 
         { $match: query1 },
     ]);
     if (seletedDate) {
-        console.log(seletedDate.split(",")[0]);
-        console.log(new Date(seletedDate.split(",")[0]));
-        console.log(new Date(seletedDate.split(",")[1]));
         const vehicles2 = await vehicleSchema_1.default.find({});
-        console.log(vehicles2);
         vehicles2.map((item) => {
             // item.pickup
         });

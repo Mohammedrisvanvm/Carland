@@ -8,14 +8,11 @@ const jwtutils_1 = require("../../utils/jwtUtils/jwtutils");
 const express_async_handler_1 = __importDefault(require("express-async-handler"));
 const userSchema_1 = __importDefault(require("../../models/userSchema"));
 exports.userAuthenticate = (0, express_async_handler_1.default)(async (req, res, next) => {
-    console.log(req.headers.authorization);
     const accessTokenusertoken = req.cookies.accessTokenUser;
     const refreshTokenuser = req.cookies.refreshTokenUser;
-    console.log(refreshTokenuser, accessTokenusertoken);
     if (!accessTokenusertoken && !refreshTokenuser) {
         throw new Error("User Access Denied");
     }
-    console.log(accessTokenusertoken);
     if (accessTokenusertoken) {
         const verifiedJWT = (0, jwtutils_1.verifyJwt)(refreshTokenuser);
         req.headers.authorization = verifiedJWT.payload?.id;
@@ -53,7 +50,6 @@ exports.userAuthenticate = (0, express_async_handler_1.default)(async (req, res,
                     sameSite: 'none',
                     httpOnly: true,
                 });
-                console.log(access, 111);
                 req.headers.authorization = user._id;
                 req.cookies.accessTokenUser = access;
                 next();

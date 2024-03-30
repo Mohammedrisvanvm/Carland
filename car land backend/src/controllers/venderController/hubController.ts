@@ -87,7 +87,7 @@ export const getHubs = AsyncHandler(
       { phoneNumber: req.headers.authorization },
       { renthubs: 1, _id: 0 }
     );
-    console.log(dbout);
+
     const hubs: Ihub[] = await hubModel.find({ _id: { $in: dbout.renthubs } });
 
     res.json({ hubs });

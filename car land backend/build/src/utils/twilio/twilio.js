@@ -15,8 +15,7 @@ const sendOtp = async (phoneNumber) => {
     const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
     try {
         const otp = getotp();
-        await client.messages
-            .create({
+        await client.messages.create({
             body: `otp verification from carland  ${otp}`,
             to: `+91${phoneNumber}`,
             from: "++1 267 362 9139",
@@ -24,7 +23,6 @@ const sendOtp = async (phoneNumber) => {
         return otp;
     }
     catch (error) {
-        console.log(error);
         throw new Error(error);
     }
 };

@@ -16,7 +16,6 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
     });
     if (venderExist) {
         const response = await (0, twilio_1.sendOtp)(req.body.values.number);
-        console.log(response);
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: req.body.values }, "5min");
         res
             .status(200)
@@ -24,7 +23,7 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
             httpOnly: true,
             maxAge: 300000,
         })
-            .json({ message: "hello" });
+            .json({ message: "Otp Token Sented To Number" });
     }
     else {
         throw new Error("Invalid data or banned");
@@ -41,7 +40,6 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
     }
     else {
         const response = await (0, twilio_1.sendOtp)(data.number);
-        console.log(response);
         const Token = (0, jwtutils_1.jwtSign)({ token: response, vendor: data }, "5min");
         res
             .status(200)
@@ -62,6 +60,7 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
             let vendorExist = await vendorSchema_1.default.findOne({
                 phoneNumber: payload.vendor?.number,
             });
+            console.log(vendorExist);
             if (!vendorExist) {
                 const vendor = await vendorSchema_1.default.create({
                     userName: payload.vendor?.userName,

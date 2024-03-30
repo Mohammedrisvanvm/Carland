@@ -21,7 +21,7 @@ export const vendorLoginController = AsyncHandler(
     if (venderExist) {
       const response: number = await sendOtp(req.body.values.number);
 
-      console.log(response);
+   
 
       const Token = jwtSign(
         { token: response, vendor: req.body.values },
@@ -32,10 +32,9 @@ export const vendorLoginController = AsyncHandler(
         .status(200)
         .cookie("vendorOtpToken", Token, {
           httpOnly: true,
-         
           maxAge: 300000,
         })
-        .json({ message: "hello" });
+        .json({ message: "Otp Token Sented To Number" });
     } else {
       throw new Error("Invalid data or banned");
     }
@@ -44,6 +43,7 @@ export const vendorLoginController = AsyncHandler(
 export const venderSignUpController = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     interface iSign {
+      id: string;
       email: string;
       userName: string;
       number: number;
@@ -60,14 +60,14 @@ export const venderSignUpController = AsyncHandler(
       throw new Error("User Already Exists");
     } else {
       const response: number = await sendOtp(data.number);
-      console.log(response);
+    
 
       const Token = jwtSign({ token: response, vendor: data }, "5min");
       res
         .status(200)
         .cookie("vendorOtpToken", Token, {
           httpOnly: true,
-         
+
           maxAge: 300000,
         })
         .json({ message: "message otp sented" });
@@ -101,6 +101,7 @@ export const vendorOtpverify = AsyncHandler(
         let vendorExist: IVendor | null = await vehicleModel.findOne({
           phoneNumber: payload.vendor?.number,
         });
+console.log(vendorExist);
 
         if (!vendorExist) {
           const vendor: IVendor = await vehicleModel.create({
@@ -128,14 +129,12 @@ export const vendorOtpverify = AsyncHandler(
         res.status(200).cookie("accessTokenvendor", accessToken, {
           maxAge: 1000 * 60 * 60 * 24,
           httpOnly: true,
-         
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
             httpOnly: true,
-           
           })
           .json({ vendor: vendorExist, accessToken });
       } else {
@@ -151,13 +150,13 @@ export const vendorLogOut = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
     res.cookie("accessTokenvendor", "", {
       httpOnly: true,
-      secure:true,
+      secure: true,
       maxAge: 0,
     });
     res
       .cookie("refreshTokenvendor", "", {
         httpOnly: true,
-        secure:true,
+        secure: true,
         maxAge: 0,
       })
       .status(200)

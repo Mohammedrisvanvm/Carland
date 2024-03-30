@@ -16,7 +16,6 @@ exports.userSignUpController = (0, express_async_handler_1.default)(async (req, 
     const userExist = await userSchema_1.default.findOne({
         email: data.email,
     });
-    console.log(userExist);
     if (userExist) {
         throw new Error("User Already Exists");
     }
@@ -91,7 +90,6 @@ exports.userLoginController = (0, express_async_handler_1.default)(async (req, r
         email: data.email,
         ban: false,
     });
-    console.log(userExist);
     if (!userExist) {
         throw new Error("user not exist or banned");
     }
@@ -218,13 +216,10 @@ exports.userLogoutController = (0, express_async_handler_1.default)(async (req, 
         .json({ message: "logout user" });
 });
 exports.userCheck = (0, express_async_handler_1.default)(async (req, res) => {
-    console.log(req.cookies);
     const accessToken = req.cookies?.accessTokenUser;
     const refreshToken = req.cookies?.refreshTokenUser;
-    console.log(accessToken, refreshToken);
     if (!accessToken) {
         const verifiedJWT = (0, jwtutils_1.verifyJwt)(refreshToken);
-        console.log(verifiedJWT);
         if (verifiedJWT) {
             const user = await userSchema_1.default.findOne({ email: verifiedJWT.payload?.email }, { password: 0 });
             if (!user) {

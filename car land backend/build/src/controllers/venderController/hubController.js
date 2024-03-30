@@ -46,7 +46,6 @@ exports.getHubs = (0, express_async_handler_1.default)(async (req, res) => {
         throw new Error("accessToken not available");
     }
     const dbout = await vendorSchema_1.default.findOne({ phoneNumber: req.headers.authorization }, { renthubs: 1, _id: 0 });
-    console.log(dbout);
     const hubs = await hubSchema_1.default.find({ _id: { $in: dbout.renthubs } });
     res.json({ hubs });
 });

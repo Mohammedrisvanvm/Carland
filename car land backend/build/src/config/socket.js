@@ -15,18 +15,15 @@ const getUser = (userId) => {
 const socketConnect = (io) => {
     io.on("connection", (socket) => {
         socket.on("addUser", (userId, socketId) => {
-            console.log(userId, "user", socketId, "socket");
             addUser(userId, socketId);
             io.emit("getUsers", users);
         });
         socket.on("removefromuser", (userId) => {
-            console.log(userId);
             removeUser(userId);
             io.emit("getUsers", users);
         });
         socket.on("sendMessage", ({ senderId, receiverId, text, socketId }) => {
             const user = getUser(receiverId);
-            console.log(senderId, receiverId, text, socketId);
             try {
                 io.to(user.socketId).emit("getmessage", {
                     senderId,

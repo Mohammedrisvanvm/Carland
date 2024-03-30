@@ -14,7 +14,6 @@ export const vendorAuthenticate = AsyncHandler(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const accessTokenvendortoken: string = req.cookies.accessTokenvendor;
     const refreshTokenvendor: string = req.cookies.refreshTokenvendor;
-    console.log(refreshTokenvendor, accessTokenvendortoken);
 
     if (!accessTokenvendortoken && !refreshTokenvendor) {
       throw new Error("Vendor Access Denied");

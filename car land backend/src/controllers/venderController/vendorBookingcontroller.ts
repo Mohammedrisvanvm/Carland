@@ -43,8 +43,7 @@ export const getBookings = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       }));
 
-    const count: number = await (await bookModel.find({ hubId: hubID })).length;
-    console.log(count);
+    const count: number = (await bookModel.find({ hubId: hubID })).length;
 
     res.json({
       message: "unique hub bookingDetails",
@@ -69,7 +68,6 @@ export const pickUpreqAction = AsyncHandler(
       _id: bookingID,
     });
     const user: IUser = await userModel.findById(booking.userId);
-
 
     mailServiceTakeOff(user.email, user.userName, booking);
 
@@ -151,9 +149,10 @@ export const salesReportVendor = AsyncHandler(
         image: vehicleImageMap[item.vehicleId],
       }));
 
-    const count: number = (await bookModel
-      .find({ hubId: hubID, status: "Completed" })).length
-     
+    const count: number = (
+      await bookModel.find({ hubId: hubID, status: "Completed" })
+    ).length;
+
     interface AggregationResult {
       _id: null;
       totalprice: number;

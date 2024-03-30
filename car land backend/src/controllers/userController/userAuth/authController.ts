@@ -20,7 +20,7 @@ export const userSignUpController = AsyncHandler(
     const userExist: IUser | null = await userModel.findOne({
       email: data.email,
     });
-    console.log(userExist);
+  
 
     if (userExist) {
       throw new Error("User Already Exists");
@@ -126,7 +126,7 @@ export const userLoginController = AsyncHandler(
       email: data.email,
       ban: false,
     });
-    console.log(userExist);
+   
 
     if (!userExist) {
       throw new Error("user not exist or banned");
@@ -302,16 +302,16 @@ interface IVerifyjwt {
 }
 export const userCheck = AsyncHandler(
   async (req: Request, res: Response): Promise<any> => {
-    console.log(req.cookies);
+   
 
     const accessToken: string = req.cookies?.accessTokenUser;
     const refreshToken: string = req.cookies?.refreshTokenUser;
 
-    console.log(accessToken, refreshToken);
+
 
     if (!accessToken) {
       const verifiedJWT: IVerifyjwt = verifyJwt(refreshToken);
-      console.log(verifiedJWT);
+  
 
       if (verifiedJWT) {
         const user: IUser | null = await userModel.findOne(

@@ -16,10 +16,9 @@ export const userVehicles = AsyncHandler(
       lng?: number;
       seletedDate?: string;
     };
-    console.log(req.query);
+   
 
     const { search, filter, lat, lng, seletedDate }: search = req.query;
-    console.log(search, "1", filter, "2", lat, "3", lng, "4", seletedDate);
 
     const query: { isVerified: boolean; vehicleName?: RegExp; fuel?: string } =
       { isVerified: true };
@@ -110,15 +109,12 @@ export const userVehicles = AsyncHandler(
       { $match: query1 },
     ]);
     if (seletedDate) {
-      console.log(seletedDate.split(",")[0]);
-
-      console.log(new Date(seletedDate.split(",")[0]));
-      console.log(new Date(seletedDate.split(",")[1]));
+    
 
       const vehicles2: IVehicle[] = await vehicleModel.find({
       
       });
-      console.log(vehicles2);
+     
       vehicles2.map((item)=>{
 // item.pickup
       })
