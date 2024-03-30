@@ -31,8 +31,10 @@ export const vendorLoginController = AsyncHandler(
       res
         .status(200)
         .cookie("vendorOtpToken", Token, {
-          httpOnly: true,
           maxAge: 300000,
+          httpOnly: true,
+          secure: true,
+          sameSite: "none",
         })
         .json({ message: "Otp Token Sented To Number",otp:response });
     } else {

@@ -20,8 +20,10 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
         res
             .status(200)
             .cookie("vendorOtpToken", Token, {
-            httpOnly: true,
             maxAge: 300000,
+            httpOnly: true,
+            secure: true,
+            sameSite: "none",
         })
             .json({ message: "Otp Token Sented To Number", otp: response });
     }
