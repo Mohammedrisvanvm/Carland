@@ -12,8 +12,8 @@ function getotp() {
 }
 exports.getotp = getotp;
 const sendOtp = async (phoneNumber) => {
-    const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
     try {
+        const client = (0, twilio_1.default)(process.env.TWILIO_ACCOUNT_SID, process.env.AUTH_TOKEN);
         const otp = getotp();
         await client.messages.create({
             body: `otp verification from carland  ${otp}`,

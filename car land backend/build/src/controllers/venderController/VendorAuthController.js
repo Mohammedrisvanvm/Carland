@@ -23,7 +23,7 @@ exports.vendorLoginController = (0, express_async_handler_1.default)(async (req,
             httpOnly: true,
             maxAge: 300000,
         })
-            .json({ message: "Otp Token Sented To Number" });
+            .json({ message: "Otp Token Sented To Number", otp: response });
     }
     else {
         throw new Error("Invalid data or banned");
