@@ -47,6 +47,8 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
             .status(200)
             .cookie("vendorOtpToken", Token, {
             httpOnly: true,
+            secure: true,
+            sameSite: "none",
             maxAge: 300000,
         })
             .json({ message: "message otp sented" });
@@ -83,11 +85,15 @@ exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) 
             const refreshToken = (0, jwtutils_1.jwtSign)({ number: vendorExist?.phoneNumber }, "7d");
             res.status(200).cookie("accessTokenvendor", accessToken, {
                 maxAge: 1000 * 60 * 60 * 24,
+                secure: true,
+                sameSite: "none",
                 httpOnly: true,
             });
             res
                 .cookie("refreshTokenvendor", refreshToken, {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
+                secure: true,
+                sameSite: "none",
                 httpOnly: true,
             })
                 .json({ vendor: vendorExist, accessToken });

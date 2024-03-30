@@ -69,7 +69,8 @@ export const venderSignUpController = AsyncHandler(
         .status(200)
         .cookie("vendorOtpToken", Token, {
           httpOnly: true,
-
+          secure: true,
+          sameSite: "none",
           maxAge: 300000,
         })
         .json({ message: "message otp sented" });
@@ -135,12 +136,16 @@ console.log(vendorExist);
 
         res.status(200).cookie("accessTokenvendor", accessToken, {
           maxAge: 1000 * 60 * 60 * 24,
+          secure: true,
+          sameSite: "none",
           httpOnly: true,
         });
 
         res
           .cookie("refreshTokenvendor", refreshToken, {
             maxAge: 1000 * 60 * 60 * 24 * 7,
+            secure: true,
+            sameSite: "none",
             httpOnly: true,
           })
           .json({ vendor: vendorExist, accessToken });
