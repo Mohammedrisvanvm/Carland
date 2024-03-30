@@ -51,11 +51,14 @@ exports.venderSignUpController = (0, express_async_handler_1.default)(async (req
     }
 });
 exports.vendorOtpverify = (0, express_async_handler_1.default)(async (req, res) => {
+    console.log(req.cookies);
     const vendorOtpToken = req.cookies?.vendorOtpToken;
     console.log(vendorOtpToken);
     const data = req.body;
+    console.log(data);
     if (vendorOtpToken) {
         const { payload } = (0, jwtutils_1.verifyJwt)(vendorOtpToken);
+        console.log(payload);
         if (payload?.token == data.value) {
             let vendorExist = await vendorSchema_1.default.findOne({
                 phoneNumber: payload.vendor?.number,
