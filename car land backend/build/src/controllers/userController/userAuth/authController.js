@@ -149,7 +149,6 @@ exports.userGoogleAuth = (0, express_async_handler_1.default)(async (req, res) =
                         email: newUser?.email,
                     },
                 }, "15min");
-                console.log(accessToken, "********************************************************");
                 const refreshToken = (0, jwtutils_1.jwtSign)({ id: newUser?._id }, "7d");
                 res.status(200).cookie("accessTokenUser", accessToken, {
                     maxAge: 1000 * 60 * 60 * 24,

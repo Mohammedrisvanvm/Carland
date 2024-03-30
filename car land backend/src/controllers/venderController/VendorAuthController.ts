@@ -93,23 +93,19 @@ interface vendorbody {
 }
 export const vendorOtpverify = AsyncHandler(
   async (req: Request, res: Response): Promise<void> => {
-    console.log(req.cookies);
     
     const vendorOtpToken: string = req.cookies?.vendorOtpToken;
-    console.log(vendorOtpToken);
 
     const data: vendorbody = req.body;
-    console.log(data);
     
     if (vendorOtpToken) {
       const { payload }: VendorJwt = verifyJwt(vendorOtpToken);
-console.log(payload);
+
 
       if (payload?.token == data.value) {
         let vendorExist: IVendor | null = await vehicleModel.findOne({
           phoneNumber: payload.vendor?.number,
         });
-console.log(vendorExist);
 
         if (!vendorExist) {
           const vendor: IVendor = await vehicleModel.create({

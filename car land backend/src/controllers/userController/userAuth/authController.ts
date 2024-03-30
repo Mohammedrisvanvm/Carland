@@ -213,10 +213,7 @@ export const userGoogleAuth = AsyncHandler(
               },
               "15min"
             );
-            console.log(
-              accessToken,
-              "********************************************************"
-            );
+          
 
             const refreshToken = jwtSign({ id: newUser?._id }, "7d");
 
